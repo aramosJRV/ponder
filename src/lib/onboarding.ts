@@ -9,7 +9,7 @@ import { Preferences } from "@capacitor/preferences";
  * builds use @capacitor/preferences (survives WebView storage eviction), web
  * falls back to localStorage. Mirrors the storage strategy in authStorage.ts.
  */
-const KEY = "promptings.onboarded.v1";
+const KEY = "ponder.onboarded.v1";
 const isNative = Capacitor.isNativePlatform();
 
 export async function hasOnboarded(): Promise<boolean> {

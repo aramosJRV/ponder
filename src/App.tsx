@@ -58,7 +58,7 @@ export default function App() {
   if (boot === "starting") {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <span className="font-display text-2xl italic text-muted">Promptings</span>
+        <span className="font-display text-2xl italic text-muted">Ponder</span>
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function App() {
   if (boot === "error" || !session) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center px-8 text-center">
-        <span className="font-display text-2xl italic text-muted">Promptings</span>
+        <span className="font-display text-2xl italic text-muted">Ponder</span>
         <p className="mt-4 max-w-xs text-muted">
           Couldn’t start your session. Check your connection and try again.
         </p>

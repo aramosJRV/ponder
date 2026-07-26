@@ -1,4 +1,4 @@
-package com.jrvsolutions.promptings;
+package com.jrvsolutions.ponder;
 
 import com.getcapacitor.BridgeActivity;
 

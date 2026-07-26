@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Promptings</string>
-    <string name="title_activity_main">Promptings</string>
-    <string name="package_name">com.jrvsolutions.promptings</string>
-    <string name="custom_url_scheme">com.jrvsolutions.promptings</string>
+    <string name="app_name">Ponder</string>
+    <string name="title_activity_main">Ponder</string>
+    <string name="package_name">com.jrvsolutions.ponder</string>
+    <string name="custom_url_scheme">com.jrvsolutions.ponder</string>
 </resources>

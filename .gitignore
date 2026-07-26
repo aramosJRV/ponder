@@ -7,6 +7,12 @@ supabase/.temp/
 supabase/.branches/
 ios/App/Pods/
 android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+android/captures/
+android/local.properties
+*.iml
 
 # Local Netlify folder
 .netlify

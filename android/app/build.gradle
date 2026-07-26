@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.jrvsolutions.promptings"
+    namespace "com.jrvsolutions.ponder"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.jrvsolutions.promptings"
+        applicationId "com.jrvsolutions.ponder"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

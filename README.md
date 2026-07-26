@@ -1,4 +1,4 @@
-# Promptings
+# Ponder
 
 Personal daily devotional app. Generates devotional content around topics you
 sense God is speaking about, supports multiple topics in parallel, and helps

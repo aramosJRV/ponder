@@ -11,7 +11,7 @@ interface TodayCache {
   cached_at: string;
 }
 
-const KEY = "promptings.today.v1";
+const KEY = "ponder.today.v1";
 
 export function saveTodayCache(data: Omit<TodayCache, "cached_at">): void {
   try {

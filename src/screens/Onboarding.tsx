@@ -11,6 +11,8 @@ type Slide = {
   title: string;
   saying?: string; // featured line, shown in display italic
   body: string;
+  verse?: string; // scripture epigraph (WEB), shown with a reference
+  verseRef?: string; // e.g. "Luke 2:19"
   footnote?: string; // smaller supporting line
   Mark: () => JSX.Element;
 };
@@ -18,10 +20,12 @@ type Slide = {
 const SLIDES: Slide[] = [
   {
     eyebrow: "Welcome to",
-    title: "Promptings",
+    title: "Ponder",
     saying: "God speaks loudest when we are quiet.",
     body:
       "A quiet daily space to listen for what God may be stirring — and to watch it take shape over time.",
+    verse: "But Mary kept all these sayings, pondering them in her heart.",
+    verseRef: "Luke 2:19",
     Mark: MarkSunrise,
   },
   {
@@ -131,6 +135,19 @@ export default function Onboarding({ onDone }: Props) {
             <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-muted">
               {s.body}
             </p>
+
+            {s.verse && (
+              <figure className="mt-6 max-w-xs border-t border-hairline pt-5">
+                <p className="font-display text-lg italic leading-snug text-ink/80">
+                  “{s.verse}”
+                </p>
+                {s.verseRef && (
+                  <figcaption className="mt-2 text-xs font-semibold uppercase tracking-[0.22em] text-moss">
+                    {s.verseRef}
+                  </figcaption>
+                )}
+              </figure>
+            )}
 
             {s.footnote && (
               <p className="mt-6 max-w-xs border-t border-hairline pt-5 font-display text-lg italic text-ink/70">
