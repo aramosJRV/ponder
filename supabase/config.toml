@@ -1,0 +1,17 @@
+# CLI config (used if deploying with `supabase functions deploy`)
+project_id = "rkslrbcbncecekghwbap"
+
+[auth]
+# Frictionless onboarding: first launch mints an anonymous user. The HOSTED
+# project must also enable this in the dashboard (Auth > Sign In / Providers >
+# Anonymous sign-ins) — this block only affects `supabase start` / local dev.
+enable_anonymous_sign_ins = true
+
+[functions.generate-entry]
+# Auth is enforced inside the function (service key or user JWT) because the
+# new sb_secret_* keys are not JWTs and cron/pg_net calls would fail verify_jwt.
+verify_jwt = false
+
+[functions.synthesize]
+# Same reasoning as generate-entry: auth checked inside the function.
+verify_jwt = false

@@ -1,0 +1,12 @@
+node_modules/
+.env
+data/
+dist/
+.DS_Store
+supabase/.temp/
+supabase/.branches/
+ios/App/Pods/
+android/.gradle/
+
+# Local Netlify folder
+.netlify
