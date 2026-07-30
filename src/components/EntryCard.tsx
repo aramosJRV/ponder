@@ -1,4 +1,5 @@
 import type { DailyEntry } from "../lib/types";
+import ReportButton from "./ReportButton";
 
 export default function EntryCard({ entry }: { entry: DailyEntry }) {
   const challenge = entry.entry_type === "challenge";
@@ -75,6 +76,14 @@ export default function EntryCard({ entry }: { entry: DailyEntry }) {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="mt-8 flex items-center justify-between gap-4 border-t border-hairline pt-4">
+        <p className="text-[13px] leading-snug text-muted">
+          Written by AI as material for reflection — not a word about your life.
+          Scripture is the World English Bible.
+        </p>
+        <ReportButton entry={entry} />
       </section>
     </article>
   );

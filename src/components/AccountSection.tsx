@@ -133,7 +133,7 @@ export default function AccountSection() {
         <>
           <p className="mt-1 text-sm leading-relaxed text-muted">
             Your journal lives only on this device. Add an email to protect it — so you don’t lose
-            your topics and notes if you change or reset your phone.
+            your threads and notes if you change or reset your phone.
           </p>
           <input
             type="email"

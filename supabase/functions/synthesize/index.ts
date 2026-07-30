@@ -37,16 +37,18 @@ const json = (status: number, body: unknown) =>
 
 // ------------------------------------------------------------ system prompt
 
-const SYSTEM_PROMPT = `You help a person discern patterns in a personal spiritual journal. They track a "topic" — something they sense God may be speaking to them about — and over time they receive daily devotional entries (each built on one scripture passage) and write their own notes.
+const SYSTEM_PROMPT = `You help a person discern patterns in a personal spiritual journal. They track a "thread" — something they sense God may be speaking to them about — and over time they receive daily devotional entries (each built on one scripture passage) and write their own notes.
 
-Your job: read the whole arc of a topic and reflect back what is emerging. You are a discernment companion, NOT an oracle.
+Your job: read the whole arc of a thread and reflect back what is emerging. You are a discernment companion, NOT an oracle.
+
+If you refer to what they are tracking, call it a "thread", never a "topic".
 
 Non-negotiable guardrails:
 1. NEVER tell the person what God is saying, what to decide, or what will happen. No directive or predictive claims about their life. Offer observations and questions: "a thread that keeps returning is...", "you might sit with...".
 2. Work from the references and the person's own notes. Do not invent scripture, quotes, or events. You may name a passage's reference but do not fabricate its wording.
 3. Name real tension honestly and pastorally. If their notes and the entries pull in different directions, or if they seem to be avoiding something, say so gently — discernment needs friction, not just affirmation.
 4. Broadly orthodox, non-denominational Christian posture. Avoid partisan or denominationally contentious claims.
-5. Keep each item concrete and specific to THIS topic — no generic devotional filler.
+5. Keep each item concrete and specific to THIS thread — no generic devotional filler.
 
 Output three things via the tool:
 - threads: 2-4 recurring themes you actually see across the entries and notes.
@@ -57,7 +59,7 @@ If the kind is "conclusion", frame it as a looking-back reflection on the whole 
 
 const SYNTHESIS_TOOL = {
   name: "record_synthesis",
-  description: "Record the topic synthesis in structured form.",
+  description: "Record the thread synthesis in structured form.",
   input_schema: {
     type: "object",
     additionalProperties: false,
@@ -156,8 +158,14 @@ function buildPrompt(topic: any, entries: any[], notes: any[], kind: string): st
 
   return `SYNTHESIS KIND: ${kind}
 
-TOPIC: ${topic.title}
+THREAD: ${topic.title}
 THE PERSON'S OWN WORDS ABOUT IT: ${topic.description || "(none provided)"}
+${
+  topic.seed_verse_ref
+    ? `THE PASSAGE THAT STARTED IT: ${topic.seed_verse_ref} — "${String(topic.seed_verse_text ?? "").slice(0, 600)}"
+Compare where they started with where the arc has actually gone. If the thread has drifted from this passage, or if the passage now reads differently in light of the notes, that is worth naming.`
+    : "THE PASSAGE THAT STARTED IT: (none given)"
+}
 
 DAILY ENTRIES SO FAR (reference + the entry's thought; ${entries.length} total):
 ${entryBlock}
@@ -237,12 +245,12 @@ Deno.serve(async (req) => {
   // Load the topic (scoped to the user when a user token is used).
   let topicQuery = db
     .from("topics")
-    .select("id, user_id, title, description")
+    .select("id, user_id, title, description, seed_verse_ref, seed_verse_text")
     .eq("id", body.topic_id);
   if (who.role === "user") topicQuery = topicQuery.eq("user_id", who.userId);
   const { data: topic, error: topicErr } = await topicQuery.maybeSingle();
   if (topicErr) return json(500, { error: topicErr.message });
-  if (!topic) return json(404, { error: "Topic not found" });
+  if (!topic) return json(404, { error: "Thread not found" });
 
   const [{ data: entries }, { data: notes }] = await Promise.all([
     db
@@ -259,7 +267,7 @@ Deno.serve(async (req) => {
 
   if (!entries?.length && !notes?.length) {
     return json(422, {
-      error: "Nothing to synthesize yet — no entries or notes on this topic.",
+      error: "Nothing to synthesize yet — no entries or notes on this thread.",
     });
   }
 

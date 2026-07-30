@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 interface Props {
   /** Called when onboarding finishes. `createFirstTopic` is true when the
-   *  user tapped the primary CTA and wants to open the New Topic sheet. */
+   *  user tapped the primary CTA and wants to open the New Thread sheet. */
   onDone: (createFirstTopic: boolean) => void;
 }
 
@@ -30,9 +30,9 @@ const SLIDES: Slide[] = [
   },
   {
     eyebrow: "Bring what's stirring",
-    title: "Start with a topic",
+    title: "Start with a thread",
     body:
-      "A topic is something you sense God may be speaking to you about — patience, a decision, a relationship. Hold several at once; each keeps its own daily thread.",
+      "A thread is something you sense God may be speaking to you about — patience, a decision, a relationship. Hold several at once; each unfolds a day at a time.",
     footnote: "Notice what stirs. Name what you sense.",
     Mark: MarkStack,
   },
@@ -50,7 +50,7 @@ const SLIDES: Slide[] = [
     title: "Keep what surfaces",
     saying: "Let the word of God sink deep into our souls.",
     body:
-      "Jot a note on any entry. Your notes gather into a journal for each topic, so threads and patterns become visible over time.",
+      "Jot a note on any entry. Your notes gather into a journal for each thread, so patterns become visible over time.",
     Mark: MarkNote,
   },
   {
@@ -65,7 +65,7 @@ const SLIDES: Slide[] = [
     eyebrow: "When you're ready",
     title: "Begin with one thing on your heart",
     body:
-      "Name the first thing you sense God may be speaking about. You can add more topics anytime.",
+      "Name the first thing you sense God may be speaking about. You can add more threads anytime.",
     Mark: MarkSeed,
   },
 ];
@@ -91,7 +91,7 @@ export default function Onboarding({ onDone }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col bg-paper">
-      {/* Skip — always available, marks onboarding done without creating a topic */}
+      {/* Skip — always available, marks onboarding done without creating a thread */}
       <div className="flex h-14 items-center justify-end px-5">
         {index < last && (
           <button
@@ -191,7 +191,7 @@ export default function Onboarding({ onDone }: Props) {
               onClick={() => onDone(true)}
               className="pressable min-h-[52px] w-full rounded-2xl bg-moss text-base font-semibold text-white"
             >
-              Create my first topic
+              Create my first thread
             </button>
             <button
               onClick={() => onDone(false)}

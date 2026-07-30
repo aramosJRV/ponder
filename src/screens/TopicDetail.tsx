@@ -45,7 +45,7 @@ export default function TopicDetail({ topicId, onBack }: Props) {
         setNotes(n);
         setSyntheses(s);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not load topic");
+        setError(err instanceof Error ? err.message : "Could not load thread");
       } finally {
         setLoading(false);
       }
@@ -87,7 +87,7 @@ export default function TopicDetail({ topicId, onBack }: Props) {
         <button onClick={onBack} className="pressable text-sm font-semibold text-muted">
           ← Back
         </button>
-        <p className="mt-6 text-muted">{error || "Topic not found."}</p>
+        <p className="mt-6 text-muted">{error || "Thread not found."}</p>
       </div>
     );
   }
@@ -112,7 +112,7 @@ export default function TopicDetail({ topicId, onBack }: Props) {
   return (
     <div className="mx-auto min-h-screen max-w-lg px-6 pb-28 pt-6">
       <button onClick={onBack} className="pressable min-h-[44px] text-sm font-semibold text-muted">
-        ← Topics
+        ← Threads
       </button>
 
       <header className="mb-2 mt-2">
@@ -125,6 +125,17 @@ export default function TopicDetail({ topicId, onBack }: Props) {
         </div>
         {topic.description && (
           <p className="mt-2 text-[15px] leading-relaxed text-muted">{topic.description}</p>
+        )}
+        {topic.seed_verse_ref && topic.seed_verse_text && (
+          <blockquote className="mt-4 rounded-2xl border border-hairline bg-surface p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-moss">
+              Where this began
+            </p>
+            <p className="mt-2 text-[15px] italic leading-relaxed text-ink/85">
+              {topic.seed_verse_text}
+            </p>
+            <p className="mt-2 text-sm font-semibold text-muted">{topic.seed_verse_ref}</p>
+          </blockquote>
         )}
       </header>
 
@@ -223,7 +234,7 @@ export default function TopicDetail({ topicId, onBack }: Props) {
           <div className="rounded-2xl border border-hairline bg-surface p-5">
             <p className="font-display text-2xl">What's emerging?</p>
             <p className="mt-1.5 text-sm leading-relaxed text-muted">
-              A reflective read of this topic's entries and notes — recurring threads, honest
+              A reflective read of this thread's entries and notes — what keeps returning, honest
               tensions, and a few next steps for prayer or study.
             </p>
             {topic.status !== "concluded" && (
@@ -233,7 +244,7 @@ export default function TopicDetail({ topicId, onBack }: Props) {
                 className="pressable mt-4 min-h-[44px] w-full rounded-xl bg-moss py-3 font-semibold text-white disabled:opacity-50"
               >
                 {synthesizing
-                  ? "Listening for the threads…"
+                  ? "Listening for what returns…"
                   : syntheses.length
                     ? "Refresh synthesis"
                     : "Generate synthesis"}

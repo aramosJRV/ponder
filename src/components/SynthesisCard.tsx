@@ -1,4 +1,5 @@
 import type { Synthesis } from "../lib/types";
+import ReportButton from "./ReportButton";
 
 export default function SynthesisCard({
   synthesis,
@@ -30,11 +31,15 @@ export default function SynthesisCard({
         )}
       </div>
 
-      <Section title="Recurring threads" items={content.threads} />
+      <Section title="What keeps returning" items={content.threads} />
       {content.tensions.length > 0 && (
         <Section title="Tensions & open questions" items={content.tensions} />
       )}
       <Section title="Next steps" items={content.next_steps} />
+
+      <div className="mt-4 border-t border-hairline pt-3">
+        <ReportButton synthesis={synthesis} />
+      </div>
     </div>
   );
 }

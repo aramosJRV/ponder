@@ -195,7 +195,7 @@ export default function Settings() {
         />
         <p className="mt-2 text-sm leading-relaxed text-muted">
           How often an entry questions your framing instead of affirming it. A discernment tool
-          needs some friction — 0% means every entry sits inside your current sense of the topic.
+          needs some friction — 0% means every entry sits inside your current sense of the thread.
         </p>
       </section>
 
@@ -207,17 +207,17 @@ export default function Settings() {
         {savingProfile ? "Saving…" : savedMsg || "Save changes"}
       </button>
 
-      {/* Focus topic */}
+      {/* Focus thread */}
       <section className="mt-8 rounded-2xl border border-hairline bg-surface p-5">
-        <h2 className="font-display text-xl">Focus topic</h2>
+        <h2 className="font-display text-xl">Focus thread</h2>
         <p className="mt-1 text-sm text-muted">
-          The topic your daily notification centres on. Choose “Rotate” to cycle through all
-          active topics.
+          The thread your daily notification centres on. Choose “Rotate” to cycle through all
+          active threads.
         </p>
 
         <div className="mt-4 space-y-1">
           <FocusOption
-            label="Rotate among active topics"
+            label="Rotate among active threads"
             checked={focusId === null}
             disabled={focusBusy}
             onSelect={() => void chooseFocus(null)}
@@ -232,7 +232,7 @@ export default function Settings() {
             />
           ))}
           {topics.length === 0 && (
-            <p className="py-2 text-sm text-muted">No active topics to focus on yet.</p>
+            <p className="py-2 text-sm text-muted">No active threads to focus on yet.</p>
           )}
         </div>
       </section>

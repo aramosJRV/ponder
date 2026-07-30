@@ -1,8 +1,13 @@
 # Ponder
 
-Personal daily devotional app. Generates devotional content around topics you
-sense God is speaking about, supports multiple topics in parallel, and helps
-you discern patterns over time via notes and topic-level synthesis.
+Personal daily devotional app. Generates devotional content around **threads** —
+things you sense God is speaking about — supports multiple threads in parallel,
+and helps you discern patterns over time via notes and thread-level synthesis.
+
+> **Naming:** the user-facing term is **Thread**. The database, TypeScript
+> identifiers and filenames still use `topic` / `Topic` / `topics`. This is
+> deliberate: the rename is a label change only, so no migration, no FK churn,
+> and no RLS policy rewrite. Don't "fix" the mismatch.
 
 **Stack:** Capacitor + React + TypeScript + Tailwind · Supabase (Postgres,
 Auth, Edge Functions, pg_cron) · Claude API (server-side only) · WEB Bible
@@ -13,7 +18,7 @@ Auth, Edge Functions, pg_cron) · Claude API (server-side only) · WEB Bible
 - [x] **Step 1** — Supabase schema + RLS + WEB Bible import + seed script
 - [x] **Step 2** — Generation edge function with validation (deployed as `generate-entry`)
 - [x] **Step 3** — Today screen + note capture (Vite + React + Capacitor shell, magic-link auth, offline cache, on-demand generation)
-- [ ] Step 4 — Topics CRUD + topic detail + journal rollup
+- [ ] Step 4 — Threads CRUD + thread detail + journal rollup
 - [ ] Step 5 — pg_cron scheduling + local notifications
 - [ ] Step 6 — Synthesis (on-demand + conclusion flow)
 - [ ] Step 7 — Settings + challenge-frequency control

@@ -160,9 +160,9 @@ export default function Today() {
 
       {topics.length === 0 && (
         <div className="rounded-2xl border border-hairline bg-surface p-6">
-          <p className="font-display text-2xl">No topics yet</p>
+          <p className="font-display text-2xl">No threads yet</p>
           <p className="mt-2 text-muted">
-            Topics are what you sense God may be speaking about. Head to the Topics tab to start
+            Threads are what you sense God may be speaking about. Head to the Threads tab to start
             one — today's entry will appear here once it's generated.
           </p>
         </div>
@@ -186,9 +186,9 @@ export default function Today() {
 
       {selectedTopic && !entry && (
         <div className="animate-rise rounded-2xl border border-hairline bg-surface p-6">
-          <p className="font-display text-2xl">No entry yet for this topic</p>
+          <p className="font-display text-2xl">No entry yet for this thread</p>
           <p className="mt-2 text-muted">
-            Tonight's generation hasn't run for “{selectedTopic.title}” — or the topic is new.
+            Tonight's generation hasn't run for “{selectedTopic.title}” — or the thread is new.
             You can generate today's entry now.
           </p>
           <button

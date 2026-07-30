@@ -23,6 +23,15 @@ const SERVICE_KEY =
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
 const MODEL = Deno.env.get("ANTHROPIC_MODEL") ?? "claude-sonnet-4-6";
 
+// The topic's seed passage may be chosen again as a daily entry. Set this to a
+// positive number of days to suppress it for a topic's opening stretch (avoids
+// the "it just gave me back the verse I typed in" moment in week one).
+// 0 = never suppressed.
+const SEED_VERSE_COOLDOWN_DAYS = 0;
+
+const TOPIC_COLS =
+  "id, user_id, title, description, created_at, seed_verse_ref, seed_verse_text";
+
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -64,22 +73,26 @@ function fallbackTheme(topicText: string): string {
 
 // ------------------------------------------------------------ system prompt
 
-const SYSTEM_PROMPT = `You write daily devotional entries for a personal discernment journal. The user tracks topics they sense God may be speaking to them about, and your entries are material for their reflection and discernment — never verdicts.
+const SYSTEM_PROMPT = `You write daily devotional entries for a personal discernment journal. The user tracks "threads" — things they sense God may be speaking to them about — and your entries are material for their reflection and discernment, never verdicts.
+
+If you refer to what the user is tracking, call it a "thread", never a "topic".
 
 Non-negotiable guardrails:
 1. NEVER claim God is telling the user something, and never make predictive or directive claims about their life decisions ("God is saying...", "this means you should quit/stay/move" are all forbidden). Frame everything as invitation to reflect: "consider", "notice", "sit with".
-2. Scripture must be handled in context. Do not proof-text: never use a verse fragment against the meaning of its surrounding passage. Choose passages whose actual context genuinely relates to the topic.
+2. Scripture must be handled in context. Do not proof-text: never use a verse fragment against the meaning of its surrounding passage. Choose passages whose actual context genuinely relates to the thread.
 3. Illustrations must be either clearly framed as hypothetical/analogy ("imagine...", "a farmer who...") or verifiably true and commonly known. NEVER invent quotes, statistics, or historical anecdotes presented as fact. No invented named people.
-4. Broadly orthodox, non-denominational Christian posture. Avoid partisan politics and denominationally contentious claims (e.g. modes of baptism, predestination debates) unless the topic explicitly invites them.
+4. Broadly orthodox, non-denominational Christian posture. Avoid partisan politics and denominationally contentious claims (e.g. modes of baptism, predestination debates) unless the thread explicitly invites them.
 5. Challenge entries question the user's framing honestly but pastorally — hard questions, not harsh ones. Never mock, never shame.
 6. Use the World English Bible naming: "Psalms" (not "Psalm") as the book name in references.
 7. The passage text is shown to the reader verbatim (World English Bible) directly above your writing. Do NOT reproduce the passage as a full quotation in your thought or illustration — you will misremember the exact wording and contradict the text on screen (e.g. writing "the LORD" where the WEB reads "Yahweh", or adding words like "both"). Refer to the passage instead: describe what it says, and quote at most a short distinctive phrase of a few words. Never present a reconstructed full-verse quotation.
 
 You will be told whether to write an "affirming" or a "challenge" entry:
-- affirming: sits inside the user's sense of the topic and deepens it.
+- affirming: sits inside the user's sense of the thread and deepens it.
 - challenge: gently questions their framing, offers a scriptural counterpoint, or asks what they might be avoiding. It should still end in hope.
 
-Verse selection: choose ONE passage (1-3 consecutive verses) from the provided do-not-use lists' complement — i.e. any passage NOT in those lists. Prefer variety across the whole canon over famous verses.`;
+Verse selection: choose ONE passage (1-3 consecutive verses) from the provided do-not-use lists' complement — i.e. any passage NOT in those lists. Prefer variety across the whole canon over famous verses.
+
+If the thread includes an ORIGIN PASSAGE, treat it as background only: it tells you where the person started, not where they must stay. Do not orbit it. Most entries should make no mention of it at all, and today's passage should come from elsewhere in scripture unless there is a real reason to return. On a challenge entry, the origin passage is fair game to examine: ask whether it is being read in its own context, or whether the person has attached a meaning to it that the surrounding passage does not carry. Do this pastorally — you are not correcting them, you are helping them look again.`;
 
 // ------------------------------------------------------------ claude tool
 
@@ -102,7 +115,7 @@ const DEVOTIONAL_TOOL = {
           verse_end: { type: "integer", minimum: 1, description: ">= verse_start, span of 1-3 verses" },
         },
       },
-      thought: { type: "string", description: "80-150 word reflection on the passage and topic" },
+      thought: { type: "string", description: "80-150 word reflection on the passage and thread" },
       illustration: { type: "string", description: "100-180 word story/analogy/image, clearly illustrative" },
       ponder: {
         type: "array", minItems: 2, maxItems: 3,
@@ -220,18 +233,26 @@ function buildUserPrompt(topic: any, recent: any[], usedRefs: string[], notes: a
     ? notes.map((n) => `- ${n.created_at.slice(0, 10)}: ${String(n.body).slice(0, 300)}`).join("\n")
     : "(no notes yet)";
 
-  return `TOPIC: ${topic.title}
+  const originBlock = topic.seed_verse_ref
+    ? `ORIGIN PASSAGE (what prompted this thread — background, not today's text):
+${topic.seed_verse_ref} — "${String(topic.seed_verse_text ?? "").slice(0, 600)}"
+Do not build today's entry around this passage. Use it only to understand where the person started.`
+    : "ORIGIN PASSAGE: (none given)";
+
+  return `THREAD: ${topic.title}
 USER'S OWN WORDS ABOUT IT: ${topic.description || "(none provided)"}
+
+${originBlock}
 
 ENTRY TYPE FOR TODAY: ${entryType}
 
 LAST ENTRIES (for continuity — do not repeat their angle or verses):
 ${recentBlock}
 
-DO NOT USE any of these verse references (already used in this topic):
+DO NOT USE any of these verse references (already used in this thread):
 ${usedRefs.length ? usedRefs.join("; ") : "(none)"}
 
-ALSO AVOID these references (used recently across the user's other topics):
+ALSO AVOID these references (used recently across the user's other threads):
 ${blockedRecent.length ? blockedRecent.join("; ") : "(none)"}
 
 RECENT USER NOTES (their own reflections — weave awareness of these in gently, without quoting them back verbatim):
@@ -281,11 +302,23 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
   const entryType =
     lastType !== "challenge" && Math.random() < challengeFreq ? "challenge" : "affirming";
 
-  const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedRecent);
+  // the seed passage is allowed to resurface as a daily entry; optionally
+  // suppress it for the topic's opening stretch (see SEED_VERSE_COOLDOWN_DAYS)
+  const seedRef = topic.seed_verse_ref as string | null;
+  const topicAgeDays = topic.created_at
+    ? Math.floor((Date.now() - new Date(topic.created_at).getTime()) / 86400_000)
+    : Number.MAX_SAFE_INTEGER;
+  const seedBlocked =
+    Boolean(seedRef) && topicAgeDays < SEED_VERSE_COOLDOWN_DAYS;
+  const blockedForPrompt = seedBlocked
+    ? [...blockedRecent, seedRef as string]
+    : blockedRecent;
+
+  const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedForPrompt);
   const messages: unknown[] = [{ role: "user", content: userPrompt }];
 
   const isUsed = (ref: string) =>
-    usedRefs.includes(ref) || blockedRecent.includes(ref);
+    usedRefs.includes(ref) || blockedForPrompt.includes(ref);
 
   let payload: ReturnType<typeof parsePayload> | null = null;
   let verses: VerseRow[] | null = null;
@@ -433,13 +466,13 @@ Deno.serve(async (req) => {
   } catch { /* empty body = cron mode */ }
 
   // resolve target topics
-  let query = db.from("topics").select("id, user_id, title, description")
+  let query = db.from("topics").select(TOPIC_COLS)
     .eq("status", "active");
   if (body.topic_id) query = query.eq("id", body.topic_id);
   if (who.role === "user") query = query.eq("user_id", who.userId);
   const { data: topics, error } = await query;
   if (error) return json(500, { error: error.message });
-  if (!topics?.length) return json(404, { error: "No matching active topics" });
+  if (!topics?.length) return json(404, { error: "No matching active threads" });
 
   const results = [];
   for (const t of topics) {

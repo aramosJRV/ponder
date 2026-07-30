@@ -3,18 +3,19 @@ import {
   createTopic,
   fetchAllTopics,
   fetchTopicStats,
+  parseVerseRef,
   setFocusTopic,
   setTopicStatus,
   type TopicStats,
 } from "../lib/api";
-import type { Topic } from "../lib/types";
+import type { ResolvedVerseRef, Topic } from "../lib/types";
 import StatusChip from "../components/StatusChip";
 import ConclusionFlow from "../components/ConclusionFlow";
 
 interface Props {
   onOpenTopic: (id: string) => void;
   /** When true, open the New Topic sheet on mount (e.g. arriving from
-   *  onboarding's "Create my first topic"). */
+   *  onboarding's "Create my first thread"). */
   autoOpenCreate?: boolean;
   /** Called once the auto-open has been honored, so it fires only once. */
   onAutoOpenConsumed?: () => void;
@@ -39,7 +40,7 @@ export default function Topics({
       setStats(s);
       setError("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not load topics");
+      setError(e instanceof Error ? e.message : "Could not load threads");
     } finally {
       setLoading(false);
     }
@@ -68,7 +69,7 @@ export default function Topics({
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <span className="font-display text-2xl italic text-muted">Topics…</span>
+        <span className="font-display text-2xl italic text-muted">Threads…</span>
       </div>
     );
   }
@@ -78,13 +79,13 @@ export default function Topics({
       <header className="mb-6 flex items-center justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-moss">Listening to</p>
-          <h1 className="font-display text-3xl font-medium">Topics</h1>
+          <h1 className="font-display text-3xl font-medium">Threads</h1>
         </div>
         <button
           onClick={() => setShowCreate(true)}
           className="pressable min-h-[44px] rounded-xl bg-moss px-4 text-sm font-semibold text-white"
         >
-          + New topic
+          + New thread
         </button>
       </header>
 
@@ -204,15 +205,66 @@ function CreateTopicSheet({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
+  // seed verse: what the user typed, and the resolved passage (if any)
+  const [seedInput, setSeedInput] = useState("");
+  const [seed, setSeed] = useState<ResolvedVerseRef | null>(null);
+  const [seedState, setSeedState] = useState<"idle" | "checking" | "ok" | "bad">("idle");
+
+  // debounced lookup against the same SQL the DB trigger uses
+  useEffect(() => {
+    const raw = seedInput.trim();
+    if (!raw) {
+      setSeed(null);
+      setSeedState("idle");
+      return;
+    }
+    setSeedState("checking");
+    let cancelled = false;
+    const t = setTimeout(async () => {
+      try {
+        const hit = await parseVerseRef(raw);
+        if (cancelled) return;
+        setSeed(hit);
+        setSeedState(hit ? "ok" : "bad");
+      } catch {
+        if (cancelled) return;
+        setSeed(null);
+        setSeedState("bad");
+      }
+    }, 350);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [seedInput]);
+
+  const seedPending = seedInput.trim().length > 0 && seedState !== "ok";
+
   async function save(e: React.FormEvent) {
     e.preventDefault();
+    if (seedPending) {
+      setError("That verse reference doesn't resolve — fix or clear it.");
+      return;
+    }
     setSaving(true);
     setError("");
     try {
-      await createTopic({ title: title.trim(), description: description.trim(), focus });
+      await createTopic({
+        title: title.trim(),
+        description: description.trim(),
+        focus,
+        seed: seed
+          ? {
+              book_number: seed.book_number,
+              chapter: seed.chapter,
+              verse_start: seed.verse_start,
+              verse_end: seed.verse_end,
+            }
+          : null,
+      });
       onCreated();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not create topic");
+      setError(err instanceof Error ? err.message : "Could not create thread");
       setSaving(false);
     }
   }
@@ -224,7 +276,7 @@ function CreateTopicSheet({
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-lg animate-rise rounded-t-3xl bg-paper p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
       >
-        <h2 className="font-display text-3xl font-medium">New topic</h2>
+        <h2 className="font-display text-3xl font-medium">New thread</h2>
         <p className="mt-1 text-sm text-muted">
           What do you sense God may be speaking about?
         </p>
@@ -254,6 +306,41 @@ function CreateTopicSheet({
           className="mt-1.5 w-full resize-none rounded-xl border border-hairline bg-surface px-4 py-3 outline-none focus:border-moss"
         />
 
+        <label className="mt-4 block text-sm font-semibold text-muted" htmlFor="t-seed">
+          Verse that prompted this{" "}
+          <span className="font-normal text-muted/70">— optional</span>
+        </label>
+        <input
+          id="t-seed"
+          value={seedInput}
+          onChange={(e) => setSeedInput(e.target.value)}
+          placeholder="e.g. Psalm 46:10 or 1 Corinthians 13:4-7"
+          autoCapitalize="words"
+          autoCorrect="off"
+          spellCheck={false}
+          className={`mt-1.5 w-full rounded-xl border bg-surface px-4 py-3 outline-none ${
+            seedState === "bad"
+              ? "border-rust focus:border-rust"
+              : "border-hairline focus:border-moss"
+          }`}
+        />
+        {seedState === "checking" && (
+          <p className="mt-1.5 text-sm text-muted">Looking it up…</p>
+        )}
+        {seedState === "bad" && (
+          <p className="mt-1.5 text-sm text-rust">
+            Not found in the World English Bible. Try “Book chapter:verse”.
+          </p>
+        )}
+        {seedState === "ok" && seed && (
+          <blockquote className="mt-2 rounded-xl border-l-2 border-moss bg-surface px-4 py-3">
+            <p className="text-sm font-semibold text-moss">{seed.verse_ref}</p>
+            <p className="mt-1 text-[15px] italic leading-relaxed text-ink/85">
+              {seed.verse_text}
+            </p>
+          </blockquote>
+        )}
+
         <label className="mt-4 flex min-h-[44px] items-center gap-3">
           <input
             type="checkbox"
@@ -262,7 +349,7 @@ function CreateTopicSheet({
             className="h-5 w-5 accent-moss"
           />
           <span className="text-sm">
-            Make this the <span className="font-semibold">focus topic</span> (daily notification)
+            Make this the <span className="font-semibold">focus thread</span> (daily notification)
           </span>
         </label>
 
@@ -278,10 +365,10 @@ function CreateTopicSheet({
           </button>
           <button
             type="submit"
-            disabled={saving || !title.trim()}
+            disabled={saving || !title.trim() || seedPending}
             className="pressable min-h-[48px] flex-1 rounded-xl bg-moss font-semibold text-white disabled:opacity-50"
           >
-            {saving ? "Creating…" : "Create topic"}
+            {saving ? "Creating…" : "Create thread"}
           </button>
         </div>
       </form>

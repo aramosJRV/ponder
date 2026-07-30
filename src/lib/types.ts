@@ -17,6 +17,25 @@ export interface Topic {
   focus: boolean;
   created_at: string;
   concluded_at: string | null;
+  /** The passage that triggered the pondering. Optional; all-or-nothing. */
+  seed_book_number: number | null;
+  seed_chapter: number | null;
+  seed_verse_start: number | null;
+  seed_verse_end: number | null;
+  seed_verse_ref: string | null;
+  /** WEB text, written server-side by trigger — never client-supplied. */
+  seed_verse_text: string | null;
+}
+
+/** Result of the parse_verse_ref RPC — a reference that exists in the WEB. */
+export interface ResolvedVerseRef {
+  book_number: number;
+  book: string;
+  chapter: number;
+  verse_start: number;
+  verse_end: number;
+  verse_ref: string;
+  verse_text: string;
 }
 
 export interface DailyEntry {
@@ -62,5 +81,29 @@ export interface Synthesis {
   user_id: string;
   kind: SynthesisKind;
   content: SynthesisContent;
+  created_at: string;
+}
+
+// ---------------------------------------------------------------- reports
+
+export type ReportTarget = "daily_entry" | "synthesis";
+
+export type ReportReason =
+  | "offensive"
+  | "harmful_guidance"
+  | "scripture_error"
+  | "nonsense"
+  | "other";
+
+export interface ContentReport {
+  id: string;
+  user_id: string;
+  target: ReportTarget;
+  entry_id: string | null;
+  synthesis_id: string | null;
+  reason: ReportReason;
+  detail: string | null;
+  reported_content: unknown;
+  resolved_at: string | null;
   created_at: string;
 }

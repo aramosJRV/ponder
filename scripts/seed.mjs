@@ -30,6 +30,13 @@ const DEMO_TOPIC = {
   description:
     'I keep sensing an invitation to slow down and stop striving — that ' +
     'trust looks like stillness right now, not more effort.',
+  // The passage that triggered the pondering. Coordinates only: the
+  // topics_resolve_seed trigger derives seed_verse_ref/seed_verse_text
+  // from bible_verses, so the WEB text is never client-supplied.
+  seed_book_number: 2, // Exodus
+  seed_chapter: 14,
+  seed_verse_start: 14,
+  seed_verse_end: 14,
 };
 
 const SEED_ENTRY = {

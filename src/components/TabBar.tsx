@@ -29,7 +29,7 @@ function TodayIcon({ active }: IconProps) {
   );
 }
 
-// Topics — layered stack (multiple parallel topics)
+// Threads — layered stack (multiple parallel threads)
 function TopicsIcon({ active }: IconProps) {
   return (
     <svg {...svgBase} aria-hidden="true">
@@ -58,7 +58,7 @@ function SettingsIcon({ active }: IconProps) {
 
 const TABS: Array<{ id: Tab; label: string; Icon: (p: IconProps) => JSX.Element }> = [
   { id: "today", label: "Today", Icon: TodayIcon },
-  { id: "topics", label: "Topics", Icon: TopicsIcon },
+  { id: "topics", label: "Threads", Icon: TopicsIcon },
   { id: "settings", label: "Settings", Icon: SettingsIcon },
 ];
 

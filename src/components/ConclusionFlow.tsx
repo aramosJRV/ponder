@@ -14,7 +14,7 @@ type TimelineItem =
   | { kind: "note"; ts: number; note: Note };
 
 /**
- * Guided conclusion flow (spec step 6): shows the topic's full timeline of
+ * Guided conclusion flow (spec step 6): shows the thread's full timeline of
  * entries + notes, generates a looking-back synthesis, and captures a closing
  * note — then concludes (read-only thereafter).
  */
@@ -97,7 +97,7 @@ export default function ConclusionFlow({
       });
       onConcluded();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not conclude topic");
+      setError(e instanceof Error ? e.message : "Could not conclude thread");
       setSaving(false);
     }
   }
@@ -118,7 +118,7 @@ export default function ConclusionFlow({
           </p>
           <h1 className="font-display text-3xl font-medium leading-tight">{topic.title}</h1>
           <p className="mt-2 text-[15px] leading-relaxed text-muted">
-            Sit with the whole arc before you close it. Concluded topics become read-only but
+            Sit with the whole arc before you close it. Concluded threads become read-only but
             stay fully browsable.
           </p>
         </header>
@@ -131,7 +131,7 @@ export default function ConclusionFlow({
           {loading ? (
             <p className="text-muted">Gathering the timeline…</p>
           ) : timeline.length === 0 ? (
-            <p className="text-muted">No entries or notes on this topic yet.</p>
+            <p className="text-muted">No entries or notes on this thread yet.</p>
           ) : (
             <ol className="space-y-3 border-l border-hairline pl-4">
               {timeline.map((it) =>
@@ -176,7 +176,7 @@ export default function ConclusionFlow({
           ) : (
             <div className="rounded-2xl border border-hairline bg-surface p-5">
               <p className="text-[15px] leading-relaxed text-muted">
-                Generate a reflective read of the whole journey — recurring threads, tensions,
+                Generate a reflective read of the whole journey — what keeps returning, tensions,
                 and where it seems to have led.
               </p>
               <button
@@ -184,11 +184,11 @@ export default function ConclusionFlow({
                 disabled={synthesizing || !hasMaterial}
                 className="pressable mt-4 min-h-[44px] w-full rounded-xl bg-moss py-3 font-semibold text-white disabled:opacity-50"
               >
-                {synthesizing ? "Listening for the threads…" : "Generate looking-back reflection"}
+                {synthesizing ? "Listening for what returns…" : "Generate looking-back reflection"}
               </button>
               {!hasMaterial && (
                 <p className="mt-2 text-xs text-muted">
-                  Nothing to reflect on yet — this topic has no entries or notes.
+                  Nothing to reflect on yet — this thread has no entries or notes.
                 </p>
               )}
               {synthError && <p className="mt-3 text-sm text-rust">{synthError}</p>}
@@ -223,7 +223,7 @@ export default function ConclusionFlow({
               disabled={saving}
               className="pressable min-h-[48px] flex-1 rounded-xl bg-rust font-semibold text-white disabled:opacity-50"
             >
-              {saving ? "Concluding…" : "Conclude topic"}
+              {saving ? "Concluding…" : "Conclude thread"}
             </button>
           </div>
         </section>

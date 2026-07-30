@@ -1,9 +1,13 @@
 import { supabase, FUNCTIONS_URL } from "./supabase";
 import { assertEntitled } from "./entitlements";
 import type {
+  ContentReport,
   DailyEntry,
   Note,
   Profile,
+  ReportReason,
+  ReportTarget,
+  ResolvedVerseRef,
   Synthesis,
   SynthesisKind,
   Topic,
@@ -135,18 +139,46 @@ export async function fetchAllTopics(): Promise<Topic[]> {
   );
 }
 
+/**
+ * Resolve a typed reference ("1 Corinthians 13:4-7") against the WEB text.
+ * Returns null when it cannot be parsed or the passage does not exist.
+ * Same SQL the seed-verse trigger uses, so the preview can't disagree
+ * with what actually gets stored.
+ */
+export async function parseVerseRef(ref: string): Promise<ResolvedVerseRef | null> {
+  const trimmed = ref.trim();
+  if (!trimmed) return null;
+  const { data, error } = await supabase.rpc("parse_verse_ref", { p_ref: trimmed });
+  if (error) throw error;
+  const rows = (data ?? []) as ResolvedVerseRef[];
+  return rows[0] ?? null;
+}
+
 export async function createTopic(input: {
   title: string;
   description: string;
   focus: boolean;
+  /** Optional seed passage. Coordinates only — ref/text are derived server-side. */
+  seed?: Pick<
+    ResolvedVerseRef,
+    "book_number" | "chapter" | "verse_start" | "verse_end"
+  > | null;
 }): Promise<Topic> {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id;
   if (!userId) throw new Error("Not signed in");
   if (input.focus) await clearFocus();
+  const { seed, ...fields } = input;
   const { data, error } = await supabase
     .from("topics")
-    .insert({ user_id: userId, ...input })
+    .insert({
+      user_id: userId,
+      ...fields,
+      seed_book_number: seed?.book_number ?? null,
+      seed_chapter: seed?.chapter ?? null,
+      seed_verse_start: seed?.verse_start ?? null,
+      seed_verse_end: seed?.verse_end ?? null,
+    })
     .select()
     .single();
   if (error) throw error;
@@ -412,4 +444,70 @@ export async function generateEntryNow(topicId: string): Promise<void> {
   if (result?.status === "failed") {
     throw new Error(result.error ?? "Generation failed");
   }
+}
+
+// ---------------------------------------------------------------- reports
+
+/**
+ * File a report against AI-generated content.
+ *
+ * Google Play's Generative AI policy requires an in-app path for users to flag
+ * offensive output without leaving the app. Deliberately NOT gated by
+ * assertEntitled — safety reporting must never sit behind a paywall.
+ *
+ * Upserts on (user_id, item) so re-reporting the same item corrects the
+ * existing report rather than creating duplicates.
+ */
+export async function submitContentReport(args: {
+  target: ReportTarget;
+  entry?: DailyEntry;
+  synthesis?: Synthesis;
+  reason: ReportReason;
+  detail?: string;
+}): Promise<ContentReport> {
+  const { target, entry, synthesis, reason, detail } = args;
+
+  const { data: userData } = await supabase.auth.getUser();
+  const userId = userData.user?.id;
+  if (!userId) throw new Error("Not signed in");
+
+  if (target === "daily_entry" && !entry) throw new Error("Missing entry");
+  if (target === "synthesis" && !synthesis) throw new Error("Missing synthesis");
+
+  // Snapshot what the user actually saw — entries can be regenerated or
+  // removed, and a report without its content is not actionable.
+  const reported_content =
+    target === "daily_entry" && entry
+      ? {
+          verse_ref: entry.verse_ref,
+          verse_text: entry.verse_text,
+          thought: entry.thought,
+          illustration: entry.illustration,
+          ponder: entry.ponder,
+          prayer_prompts: entry.prayer_prompts,
+          entry_type: entry.entry_type,
+        }
+      : synthesis
+        ? { kind: synthesis.kind, content: synthesis.content }
+        : null;
+
+  const row = {
+    user_id: userId,
+    target,
+    entry_id: target === "daily_entry" ? (entry?.id ?? null) : null,
+    synthesis_id: target === "synthesis" ? (synthesis?.id ?? null) : null,
+    reason,
+    detail: detail?.trim() ? detail.trim() : null,
+    reported_content,
+  };
+
+  const { data, error } = await supabase
+    .from("content_reports")
+    .upsert(row, {
+      onConflict: target === "daily_entry" ? "user_id,entry_id" : "user_id,synthesis_id",
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as ContentReport;
 }
