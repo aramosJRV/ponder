@@ -18,10 +18,18 @@ Auth, Edge Functions, pg_cron) · Claude API (server-side only) · WEB Bible
 - [x] **Step 1** — Supabase schema + RLS + WEB Bible import + seed script
 - [x] **Step 2** — Generation edge function with validation (deployed as `generate-entry`)
 - [x] **Step 3** — Today screen + note capture (Vite + React + Capacitor shell, magic-link auth, offline cache, on-demand generation)
-- [ ] Step 4 — Threads CRUD + thread detail + journal rollup
-- [ ] Step 5 — pg_cron scheduling + local notifications
-- [ ] Step 6 — Synthesis (on-demand + conclusion flow)
-- [ ] Step 7 — Settings + challenge-frequency control
+- [x] **Step 4** — Threads CRUD + thread detail + journal rollup (`Topics.tsx`, `TopicDetail.tsx`)
+- [x] **Step 5** — pg_cron scheduling + local notifications (`20260713000001_pg_cron_daily_generation.sql`, `src/lib/notifications/`)
+- [x] **Step 6** — Synthesis (on-demand + conclusion flow) (`synthesize` edge fn, `SynthesisCard.tsx`, `ConclusionFlow.tsx`)
+- [x] **Step 7** — Settings + challenge-frequency control (`Settings.tsx`)
+
+### Remaining before store submission
+
+- [ ] Apply `content_reports` migrations to the hosted Supabase project
+- [ ] Host the privacy policy (`public/privacy.html`) at a public URL
+- [ ] Capture store screenshots (Apple 6.9" + 6.5"; Play ≥2 phone)
+- [ ] Signed builds — `.ipa` (Xcode) and `.aab` (Android Studio)
+- [ ] Create store records and paste metadata from `store/listing-metadata.md`
 
 ## Setup (step 1)
 

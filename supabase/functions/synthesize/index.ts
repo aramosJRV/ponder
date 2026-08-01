@@ -12,6 +12,10 @@
 //
 // This never quotes scripture text back (verse text lives in the DB); it works
 // from references + the user's own words, staying reflective, not directive.
+//
+// content.sources records what the synthesis was actually built from (entry
+// refs, counts, date span). It is computed server-side from the query results,
+// never requested from the model — so the footnote cannot be embellished.
 
 import { createClient, SupabaseClient } from "npm:@supabase/supabase-js@2";
 import * as jose from "npm:jose@5";
@@ -287,13 +291,27 @@ Deno.serve(async (req) => {
     return json(502, { error: `Synthesis failed: ${msg}` });
   }
 
+  // Footnote provenance. Computed here from what we actually sent the model —
+  // never asked of the model, so it cannot be embellished. Refs come straight
+  // off the stored entries, which were themselves validated at generation time.
+  const sourceRefs = [...new Set((entries ?? []).map((e) => String(e.verse_ref)))];
+  const dates = (entries ?? []).map((e) => String(e.date)).sort();
+  const sources = {
+    entry_refs: sourceRefs,
+    entry_count: entries?.length ?? 0,
+    note_count: notes?.length ?? 0,
+    first_entry_date: dates[0] ?? null,
+    last_entry_date: dates[dates.length - 1] ?? null,
+    model: MODEL,
+  };
+
   const { data: inserted, error: insErr } = await db
     .from("syntheses")
     .insert({
       topic_id: topic.id,
       user_id: topic.user_id,
       kind,
-      content,
+      content: { ...content, sources },
     })
     .select()
     .single();

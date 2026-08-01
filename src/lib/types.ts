@@ -38,6 +38,20 @@ export interface ResolvedVerseRef {
   verse_text: string;
 }
 
+/**
+ * A supporting passage cited in an entry's footnote. Written only after the
+ * reference resolved against the WEB table server-side, so every element here
+ * exists in scripture. Deliberately carries no text — text is read from
+ * bible_verses, never from a citation.
+ */
+export interface CrossRef {
+  ref: string; // display form, e.g. 'Romans 8:26'
+  book: string;
+  chapter: number;
+  verse_start: number;
+  verse_end: number;
+}
+
 export interface DailyEntry {
   id: string;
   topic_id: string;
@@ -55,6 +69,8 @@ export interface DailyEntry {
   prayer_prompts: string[];
   entry_type: EntryType;
   fallback_used: boolean;
+  /** Validated supporting references. Absent on entries generated before footnotes shipped. */
+  cross_refs?: CrossRef[] | null;
   created_at: string;
 }
 
@@ -69,10 +85,22 @@ export interface Note {
 
 export type SynthesisKind = "on_demand" | "conclusion";
 
+/** What a synthesis was built from. Computed server-side, not model output. */
+export interface SynthesisSources {
+  entry_refs: string[];
+  entry_count: number;
+  note_count: number;
+  first_entry_date: string | null;
+  last_entry_date: string | null;
+  model: string;
+}
+
 export interface SynthesisContent {
   threads: string[];
   tensions: string[];
   next_steps: string[];
+  /** Absent on syntheses generated before footnotes shipped. */
+  sources?: SynthesisSources | null;
 }
 
 export interface Synthesis {

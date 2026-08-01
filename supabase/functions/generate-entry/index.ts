@@ -11,6 +11,12 @@
 // Verse text is NEVER taken from the model: the model returns a reference,
 // we resolve it against bible_verses via resolve_verse_ref(); on failure we
 // retry once with the error, then fall back to a curated list.
+//
+// The model may also cite up to 3 supporting passages (cross_refs) for the
+// entry's footnote. Those go through the same resolve step but with no retry
+// and no fallback: unresolvable citations are dropped and logged, and the
+// entry is written without them. A missing citation is a cosmetic loss; a
+// fabricated one is not.
 
 import { createClient, SupabaseClient } from "npm:@supabase/supabase-js@2";
 import * as jose from "npm:jose@5";
@@ -84,7 +90,8 @@ Non-negotiable guardrails:
 4. Broadly orthodox, non-denominational Christian posture. Avoid partisan politics and denominationally contentious claims (e.g. modes of baptism, predestination debates) unless the thread explicitly invites them.
 5. Challenge entries question the user's framing honestly but pastorally — hard questions, not harsh ones. Never mock, never shame.
 6. Use the World English Bible naming: "Psalms" (not "Psalm") as the book name in references.
-7. The passage text is shown to the reader verbatim (World English Bible) directly above your writing. Do NOT reproduce the passage as a full quotation in your thought or illustration — you will misremember the exact wording and contradict the text on screen (e.g. writing "the LORD" where the WEB reads "Yahweh", or adding words like "both"). Refer to the passage instead: describe what it says, and quote at most a short distinctive phrase of a few words. Never present a reconstructed full-verse quotation.
+7. cross_refs is a citation list shown to the reader as a footnote, not a decoration. Include a passage there ONLY if it genuinely informed what you wrote — a passage that gave the main text its context, or one whose idea you actually used. An empty list is the correct answer most of the time. Never list a passage you have not thought about, never list one merely because it shares a keyword, and never list the main passage again. Every reference is checked against the World English Bible before the reader sees it, and anything that does not exist is silently discarded — so a half-remembered reference costs you the citation.
+8. The passage text is shown to the reader verbatim (World English Bible) directly above your writing. Do NOT reproduce the passage as a full quotation in your thought or illustration — you will misremember the exact wording and contradict the text on screen (e.g. writing "the LORD" where the WEB reads "Yahweh", or adding words like "both"). Refer to the passage instead: describe what it says, and quote at most a short distinctive phrase of a few words. Never present a reconstructed full-verse quotation.
 
 You will be told whether to write an "affirming" or a "challenge" entry:
 - affirming: sits inside the user's sense of the thread and deepens it.
@@ -126,6 +133,22 @@ const DEVOTIONAL_TOOL = {
         type: "array", minItems: 2, maxItems: 3,
         items: { type: "string" },
         description: "2-3 short prayer directions",
+      },
+      cross_refs: {
+        type: "array", minItems: 0, maxItems: 3,
+        description:
+          "OPTIONAL. Other passages you actually leaned on while writing — the ones that shaped the thought or gave the main passage its context. Omit or leave empty if there were none; do not pad this list.",
+        items: {
+          type: "object",
+          additionalProperties: false,
+          required: ["book", "chapter", "verse_start", "verse_end"],
+          properties: {
+            book: { type: "string", description: "WEB book name, e.g. 'Psalms', '1 Corinthians'" },
+            chapter: { type: "integer", minimum: 1 },
+            verse_start: { type: "integer", minimum: 1 },
+            verse_end: { type: "integer", minimum: 1, description: ">= verse_start, span of 1-3 verses" },
+          },
+        },
       },
     },
   },
@@ -217,7 +240,76 @@ function parsePayload(raw: Record<string, unknown>) {
   if (thought.length < 100 || illustration.length < 100 || !ponder || !prayer_prompts) {
     throw new Error("Malformed content fields in model output");
   }
-  return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts };
+  const cross_refs = parseCrossRefs(raw.cross_refs);
+  return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts, cross_refs };
+}
+
+type CrossRefInput = { book: string; chapter: number; verse_start: number; verse_end: number };
+
+// Shape-only pass. A bad cross-ref must never fail the entry — it is
+// dropped later if it doesn't resolve, so this only discards garbage.
+function parseCrossRefs(x: unknown): CrossRefInput[] {
+  if (!Array.isArray(x)) return [];
+  const out: CrossRefInput[] = [];
+  for (const item of x.slice(0, 3)) {
+    if (!item || typeof item !== "object") continue;
+    const r = item as Record<string, unknown>;
+    const book = String(r.book ?? "").trim();
+    const chapter = Number(r.chapter);
+    const verse_start = Number(r.verse_start);
+    let verse_end = Number(r.verse_end);
+    if (!book || !Number.isInteger(chapter) || !Number.isInteger(verse_start)) continue;
+    if (chapter < 1 || verse_start < 1) continue;
+    if (!Number.isInteger(verse_end) || verse_end < verse_start) verse_end = verse_start;
+    if (verse_end - verse_start > 2) verse_end = verse_start + 2;
+    out.push({ book, chapter, verse_start, verse_end });
+  }
+  return out;
+}
+
+type CrossRef = CrossRefInput & { ref: string };
+
+// Resolve each cited reference against the WEB table. Anything that
+// doesn't resolve — or duplicates the entry's own passage — is dropped
+// silently and logged. No retry: a bad citation isn't worth a second
+// model call, and the entry is still complete without it.
+async function validateCrossRefs(
+  db: SupabaseClient,
+  candidates: CrossRefInput[],
+  mainRef: string,
+  ctx: { topicId: string; userId: string; date: string },
+): Promise<CrossRef[]> {
+  const kept: CrossRef[] = [];
+  const dropped: Array<{ ref: string; reason: string }> = [];
+  const seen = new Set<string>([mainRef]);
+
+  for (const c of candidates) {
+    const ref = displayRef(c.book, c.chapter, c.verse_start, c.verse_end);
+    if (seen.has(ref)) {
+      dropped.push({ ref, reason: ref === mainRef ? "duplicates main passage" : "duplicate" });
+      continue;
+    }
+    seen.add(ref);
+    try {
+      const rows = await resolveVerse(db, c.book, c.chapter, c.verse_start, c.verse_end);
+      if (!rows) {
+        dropped.push({ ref, reason: "does not resolve in the World English Bible" });
+        continue;
+      }
+      kept.push({ ...c, ref });
+    } catch (e) {
+      dropped.push({ ref, reason: e instanceof Error ? e.message : String(e) });
+    }
+  }
+
+  if (dropped.length) {
+    await db.from("generation_failures").insert({
+      topic_id: ctx.topicId, user_id: ctx.userId, date: ctx.date,
+      stage: "cross_ref_dropped",
+      detail: { dropped, kept: kept.map((k) => k.ref), model: MODEL },
+    });
+  }
+  return kept;
 }
 
 // --------------------------------------------------------- prompt builder
@@ -379,11 +471,19 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
 
   const p = payload!;
   const verseText = verses.map((v) => v.text).join(" ");
+  const mainRef = displayRef(p.book, p.chapter, p.verse_start, p.verse_end);
+
+  // Footnote citations — validated separately, never allowed to fail the entry.
+  let crossRefs: CrossRef[] = [];
+  try {
+    crossRefs = await validateCrossRefs(db, p.cross_refs, mainRef, { topicId, userId, date });
+  } catch { /* citations are optional; an entry without them is still valid */ }
+
   const { error: insErr } = await db.from("daily_entries").insert({
     topic_id: topicId,
     user_id: userId,
     date,
-    verse_ref: displayRef(p.book, p.chapter, p.verse_start, p.verse_end),
+    verse_ref: mainRef,
     book_number: verses[0].book_number,
     chapter: p.chapter,
     verse_start: p.verse_start,
@@ -395,12 +495,17 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
     prayer_prompts: p.prayer_prompts,
     entry_type: entryType,
     fallback_used: fallbackUsed,
+    cross_refs: crossRefs,
   });
   if (insErr) {
     if (insErr.code === "23505") return { topic_id: topicId, status: "exists", date };
     return { topic_id: topicId, status: "failed", date, error: insErr.message };
   }
-  return { topic_id: topicId, status: "created", date, entry_type: entryType, fallback_used: fallbackUsed };
+  return {
+    topic_id: topicId, status: "created", date,
+    entry_type: entryType, fallback_used: fallbackUsed,
+    cross_refs: crossRefs.map((c) => c.ref),
+  };
 }
 
 // ------------------------------------------------------------------ auth

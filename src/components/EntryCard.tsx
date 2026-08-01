@@ -78,13 +78,61 @@ export default function EntryCard({ entry }: { entry: DailyEntry }) {
         </ul>
       </section>
 
-      <section className="mt-8 flex items-center justify-between gap-4 border-t border-hairline pt-4">
-        <p className="text-[13px] leading-snug text-muted">
-          Written by AI as material for reflection — not a word about your life.
-          Scripture is the World English Bible.
-        </p>
-        <ReportButton entry={entry} />
-      </section>
+      <Footnotes entry={entry} />
     </article>
+  );
+}
+
+/**
+ * Sources footnote. Every reference shown here was resolved against the
+ * World English Bible table server-side before the entry was stored — the
+ * model never supplies scripture text, only references that then had to
+ * prove they exist.
+ */
+function Footnotes({ entry }: { entry: DailyEntry }) {
+  const crossRefs = entry.cross_refs ?? [];
+  return (
+    <section className="mt-10 border-t border-hairline pt-4">
+      <h2 className="mb-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-muted">
+        Sources
+      </h2>
+
+      <ol className="space-y-1.5 text-[13px] leading-snug text-muted">
+        <li className="flex gap-2">
+          <span className="shrink-0 tabular-nums">1.</span>
+          <span>
+            Passage: <span className="text-ink/70">{entry.verse_ref}</span>, World
+            English Bible (public domain).
+          </span>
+        </li>
+
+        {crossRefs.length > 0 && (
+          <li className="flex gap-2">
+            <span className="shrink-0 tabular-nums">2.</span>
+            <span>
+              Also drawn on:{" "}
+              <span className="text-ink/70">
+                {crossRefs.map((c) => c.ref).join(" · ")}
+              </span>
+              , World English Bible.
+            </span>
+          </li>
+        )}
+
+        <li className="flex gap-2">
+          <span className="shrink-0 tabular-nums">
+            {crossRefs.length > 0 ? "3." : "2."}
+          </span>
+          <span>
+            Reflection, illustration, questions and prayers written by AI as
+            material for your discernment — not a word about your life.
+          </span>
+        </li>
+      </ol>
+
+      <div className="mt-4 flex justify-end">
+        <ReportButton entry={entry} />
+      </div>
+    </section>
   );
 }

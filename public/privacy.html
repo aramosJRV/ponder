@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <title>Ponder — Privacy Policy</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+      color: #1a1a1a; background: #fdfdfb;
+    }
+    @media (prefers-color-scheme: dark) { body { color: #e7e7e3; background: #14140f; } a { color: #9db8ff; } }
+    h1 { font-size: 1.7rem; margin-bottom: 0.25rem; }
+    h2 { font-size: 1.15rem; margin-top: 2rem; }
+    .meta { color: #777; font-size: 0.9rem; margin-bottom: 2rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.95rem; }
+    th, td { border: 1px solid #ccc4; padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: #0000000a; }
+    code { background: #0000000d; padding: 0.1rem 0.3rem; border-radius: 4px; }
+    footer { margin-top: 3rem; color: #888; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Ponder — Privacy Policy</h1>
+  <p class="meta">Last updated: 30 July 2026</p>
+
+  <p>Ponder (“the app”, “we”, “us”) is a personal daily devotional app published by
+  JRV Solutions, based in Victoria, Australia. This policy explains what information the
+  app collects, why, and the choices you have. We keep the app’s data footprint
+  deliberately small.</p>
+
+  <h2>Who is responsible for your data</h2>
+  <p>JRV Solutions is the data controller for information processed through Ponder.
+  If you have any questions about this policy or your data, contact us at
+  <a href="mailto:antonio.ramos.jr@gmail.com">antonio.ramos.jr@gmail.com</a>.</p>
+
+  <h2>What we collect and why</h2>
+  <table>
+    <thead>
+      <tr><th>Data</th><th>Why</th><th>Required?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Email address</td><td>Only if you choose to back up or restore your account. We send a one-time confirmation code to that address so your content can be recovered on a new device. Until you do this, your account stays anonymous.</td><td>Optional</td></tr>
+      <tr><td>Your written content — thread titles, notes, and journal entries</td><td>This is the core of the app. It is stored so your journal persists across sessions and devices, and so the app can generate reflection material relevant to what you have written.</td><td>Required to use the app</td></tr>
+      <tr><td>Anonymous account identifier</td><td>A random identifier that links your content to your account so it can be stored and retrieved. It is not tied to your real-world identity.</td><td>Required to use the app</td></tr>
+    </tbody>
+  </table>
+
+  <p>We do <strong>not</strong> collect your location, contacts, photos, health data,
+  financial information, or advertising identifiers. We do not use third-party
+  advertising or tracking SDKs.</p>
+
+  <h2>How your content is used to generate devotional material</h2>
+  <p>To prepare your daily entries and any on-demand syntheses, relevant parts of your
+  content — such as a thread’s title, recent notes, and the scripture references already
+  shown — are sent to a third-party artificial intelligence provider (Anthropic, which
+  operates the Claude API) purely to generate reflection text. This processing happens on
+  our servers, never directly from your device, and the resulting text is returned and
+  stored with your entry. Your content is not used by that provider to train its models.
+  Scripture text itself comes from the World English Bible, a public-domain translation
+  stored in our own database, and is never generated or altered by the AI.</p>
+
+  <h2>Where your data is stored</h2>
+  <p>Your account and content are stored using Supabase, a hosted database and
+  authentication provider, on infrastructure operated on our behalf. Data is encrypted in
+  transit. Access is restricted to your own account through row-level security.</p>
+
+  <h2>Sharing and selling</h2>
+  <p>We do not sell your personal information, and we do not share it with third parties
+  for advertising or marketing. Data is shared only with the service providers named above
+  (Supabase for storage and authentication, Anthropic for content generation) strictly to
+  operate the app’s features.</p>
+
+  <h2>Your choices and rights</h2>
+  <p>You can view and delete your threads, notes, and journal entries within the app. You
+  can request deletion of your entire account and all associated content by emailing
+  <a href="mailto:antonio.ramos.jr@gmail.com">antonio.ramos.jr@gmail.com</a>; we will action deletion
+  requests within a reasonable period. If you never provide an email address, your content
+  remains tied only to the anonymous identifier on your device.</p>
+
+  <h2>Children’s privacy</h2>
+  <p>Ponder is not directed at children under 13, and we do not knowingly collect personal
+  information from them.</p>
+
+  <h2>Reporting generated content</h2>
+  <p>Because devotional text is generated by AI, the app includes a reporting control on
+  every entry and synthesis. If content is offensive, inappropriate, or otherwise
+  concerning, you can report it from within the app. Reports are stored so we can review
+  and improve the experience.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>We may update this policy as the app evolves. Material changes will be reflected by the
+  “last updated” date above and, where appropriate, communicated in the app.</p>
+
+  <footer>© 2026 JRV Solutions. Ponder and the World English Bible text (public domain).</footer>
+</body>
+</html>

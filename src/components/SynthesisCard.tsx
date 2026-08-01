@@ -37,7 +37,71 @@ export default function SynthesisCard({
       )}
       <Section title="Next steps" items={content.next_steps} />
 
-      <div className="mt-4 border-t border-hairline pt-3">
+      <SynthesisFootnotes synthesis={synthesis} />
+    </div>
+  );
+}
+
+/**
+ * Sources footnote. Counts and references are recorded server-side from the
+ * rows actually fed to the model, so this describes the real input — the
+ * model is never asked what it drew on.
+ */
+function SynthesisFootnotes({ synthesis }: { synthesis: Synthesis }) {
+  const s = synthesis.content.sources;
+  const fmt = (d: string) =>
+    new Date(`${d}T00:00:00`).toLocaleDateString("en-AU", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  const span =
+    s?.first_entry_date && s.last_entry_date
+      ? s.first_entry_date === s.last_entry_date
+        ? fmt(s.first_entry_date)
+        : `${fmt(s.first_entry_date)} – ${fmt(s.last_entry_date)}`
+      : null;
+
+  return (
+    <div className="mt-5 border-t border-hairline pt-3">
+      {s && (
+        <div className="mb-3">
+          <h3 className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-muted">
+            Sources
+          </h3>
+          <ol className="space-y-1.5 text-[12.5px] leading-snug text-muted">
+            <li className="flex gap-2">
+              <span className="shrink-0 tabular-nums">1.</span>
+              <span>
+                Drawn from {s.entry_count}{" "}
+                {s.entry_count === 1 ? "entry" : "entries"}
+                {span ? ` (${span})` : ""} and {s.note_count} of your{" "}
+                {s.note_count === 1 ? "note" : "notes"}.
+              </span>
+            </li>
+            {s.entry_refs.length > 0 && (
+              <li className="flex gap-2">
+                <span className="shrink-0 tabular-nums">2.</span>
+                <span>
+                  Passages:{" "}
+                  <span className="text-ink/70">{s.entry_refs.join(" · ")}</span>
+                  , World English Bible.
+                </span>
+              </li>
+            )}
+            <li className="flex gap-2">
+              <span className="shrink-0 tabular-nums">
+                {s.entry_refs.length > 0 ? "3." : "2."}
+              </span>
+              <span>
+                Patterns identified by AI as material for your discernment — not
+                a verdict on the thread.
+              </span>
+            </li>
+          </ol>
+        </div>
+      )}
+      <div className="flex justify-end">
         <ReportButton synthesis={synthesis} />
       </div>
     </div>

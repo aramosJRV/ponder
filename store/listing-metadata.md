@@ -5,6 +5,19 @@ Android package: `com.jrvsolutions.ponder` — **deliberately different from iOS
 Pricing: Free (future IAP via RevenueCat)
 Developer: JRV Solutions
 
+## Live store records (created 2026-07-30)
+
+| | Apple | Google Play |
+|---|---|---|
+| Record | Apple ID `6796225096`, SKU `PONDER-DAILY-001` | app id `4975139910368956506` |
+| Status | 1.0 Prepare for Submission | Draft |
+| Entered | name, subtitle, promo text, description, keywords, copyright, categories (Lifestyle/Reference), price Free × 175 territories | app name, short + full description, icon 512, feature graphic, category Lifestyle, contact email |
+| Still blank | screenshots, support URL, App Privacy, age rating, App Review contact, build | screenshots, privacy policy URL, data safety, content rating, target audience, AAB |
+
+**Keywords trimmed to 95 chars** — the drafted 101-char string exceeded Apple's 100 limit. Dropped `daily`, which was also redundant with the app name. Consider also dropping `discern` (redundant with "Discernment" in the name) to free 8 chars for a higher-volume term such as `meditation`.
+
+Store assets live in `store/assets/` (`play-icon-512.png`, `play-feature-graphic.png`). The feature graphic's wordmark is set in **Lora**, not Cormorant Garamond — regenerate on a machine with the real brand font if exact typography matters.
+
 ---
 
 ## Apple App Store
