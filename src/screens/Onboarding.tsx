@@ -66,6 +66,8 @@ const SLIDES: Slide[] = [
     title: "Begin with one thing on your heart",
     body:
       "Name the first thing you sense God may be speaking about. You can add more threads anytime.",
+    footnote:
+      "Your threads and notes are kept on this phone. No sign-up needed. Add your email in Settings whenever you like \u2014 it\u2019s what lets you export your journal or move it to a new phone.",
     Mark: MarkSeed,
   },
 ];
@@ -90,13 +92,13 @@ export default function Onboarding({ onDone }: Props) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-paper">
+    <div className="flex w-full flex-col overflow-hidden overscroll-none bg-paper" style={{ height: "calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom))" }}>
       {/* Skip — always available, marks onboarding done without creating a thread */}
-      <div className="flex h-14 items-center justify-end px-5">
+      <div className="flex h-11 shrink-0 items-center justify-end px-5">
         {index < last && (
           <button
             onClick={() => onDone(false)}
-            className="pressable min-h-[44px] px-2 text-sm font-semibold text-muted"
+            className="pressable min-h-[40px] px-2 text-sm font-semibold text-muted"
           >
             Skip
           </button>
@@ -107,59 +109,61 @@ export default function Onboarding({ onDone }: Props) {
       <div
         ref={scroller}
         onScroll={onScroll}
-        className="flex flex-1 snap-x snap-mandatory overflow-x-auto scroll-smooth"
+        className="flex min-h-0 w-full flex-1 snap-x snap-mandatory overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth"
         style={{ scrollbarWidth: "none" }}
       >
         {SLIDES.map((s, i) => (
           <section
             key={i}
-            className="flex min-w-full snap-center flex-col items-center justify-center px-9 text-center"
+            className="flex h-full w-full min-w-full shrink-0 snap-center flex-col items-center justify-center overflow-hidden px-6 text-center"
           >
-            <div className="text-moss" aria-hidden="true">
-              <s.Mark />
-            </div>
+            <div className="w-full max-w-sm shrink">
+              <div className="flex justify-center text-moss" aria-hidden="true">
+                <s.Mark />
+              </div>
 
-            <p className="mt-8 text-xs font-semibold uppercase tracking-[0.28em] text-moss">
-              {s.eyebrow}
-            </p>
-            <h1 className="mt-2 font-display text-4xl font-medium leading-tight text-ink">
-              {s.title}
-            </h1>
-
-            {s.saying && (
-              <p className="mt-6 max-w-sm font-display text-2xl italic leading-snug text-moss-deep">
-                “{s.saying}”
+              <p className="mt-[3vh] text-[11px] font-semibold uppercase tracking-[0.24em] text-moss">
+                {s.eyebrow}
               </p>
-            )}
+              <h1 className="mt-1 font-display text-[clamp(1.375rem,5.5vw,2rem)] font-medium leading-tight text-ink">
+                {s.title}
+              </h1>
 
-            <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-muted">
-              {s.body}
-            </p>
-
-            {s.verse && (
-              <figure className="mt-6 max-w-xs border-t border-hairline pt-5">
-                <p className="font-display text-lg italic leading-snug text-ink/80">
-                  “{s.verse}”
+              {s.saying && (
+                <p className="mt-[1.6vh] font-display text-[clamp(1rem,4vw,1.3rem)] italic leading-snug text-moss-deep">
+                  “{s.saying}”
                 </p>
-                {s.verseRef && (
-                  <figcaption className="mt-2 text-xs font-semibold uppercase tracking-[0.22em] text-moss">
-                    {s.verseRef}
-                  </figcaption>
-                )}
-              </figure>
-            )}
+              )}
 
-            {s.footnote && (
-              <p className="mt-6 max-w-xs border-t border-hairline pt-5 font-display text-lg italic text-ink/70">
-                {s.footnote}
+              <p className="mt-[1.4vh] text-[clamp(13px,3.6vw,15px)] leading-relaxed text-muted">
+                {s.body}
               </p>
-            )}
+
+              {s.verse && (
+                <figure className="mx-auto mt-[1.8vh] max-w-xs border-t border-hairline pt-[1.6vh]">
+                  <p className="font-display text-[clamp(13px,3.6vw,16px)] italic leading-snug text-ink/80">
+                    “{s.verse}”
+                  </p>
+                  {s.verseRef && (
+                    <figcaption className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-moss">
+                      {s.verseRef}
+                    </figcaption>
+                  )}
+                </figure>
+              )}
+
+              {s.footnote && (
+                <p className="mx-auto mt-[1.8vh] max-w-xs border-t border-hairline pt-[1.6vh] font-display text-[clamp(13px,3.6vw,16px)] italic leading-snug text-ink/70">
+                  {s.footnote}
+                </p>
+              )}
+            </div>
           </section>
         ))}
       </div>
 
       {/* Progress dots */}
-      <div className="flex items-center justify-center gap-2 py-6">
+      <div className="flex shrink-0 items-center justify-center gap-2 py-2.5">
         {SLIDES.map((_, i) => (
           <button
             key={i}
@@ -177,25 +181,25 @@ export default function Onboarding({ onDone }: Props) {
       </div>
 
       {/* Controls */}
-      <div className="px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div className="shrink-0 px-6 pb-3">
         {index < last ? (
           <button
             onClick={() => goTo(index + 1)}
-            className="pressable min-h-[52px] w-full rounded-2xl bg-moss text-base font-semibold text-white"
+            className="pressable min-h-[50px] w-full rounded-2xl bg-moss text-base font-semibold text-white"
           >
             {index === 0 ? "Begin" : "Next"}
           </button>
         ) : (
-          <div className="animate-rise space-y-3">
+          <div className="animate-rise space-y-2.5">
             <button
               onClick={() => onDone(true)}
-              className="pressable min-h-[52px] w-full rounded-2xl bg-moss text-base font-semibold text-white"
+              className="pressable min-h-[50px] w-full rounded-2xl bg-moss text-base font-semibold text-white"
             >
               Create my first thread
             </button>
             <button
               onClick={() => onDone(false)}
-              className="pressable min-h-[48px] w-full rounded-2xl border border-hairline bg-surface text-base font-semibold text-ink"
+              className="pressable min-h-[46px] w-full rounded-2xl border border-hairline bg-surface text-base font-semibold text-ink"
             >
               I’ll explore first
             </button>
@@ -220,7 +224,7 @@ const stroke = {
 
 function frame(children: JSX.Element) {
   return (
-    <svg width={64} height={64} viewBox="0 0 48 48" aria-hidden="true">
+    <svg viewBox="0 0 48 48" aria-hidden="true" className="h-[clamp(40px,7vh,64px)] w-[clamp(40px,7vh,64px)]">
       {children}
     </svg>
   );

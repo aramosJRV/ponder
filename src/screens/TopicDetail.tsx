@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  deleteNote,
+  deleteTopic,
   fetchAllTopics,
   fetchSyntheses,
   fetchTopicEntries,
@@ -11,6 +13,7 @@ import type { DailyEntry, Note, Synthesis, Topic } from "../lib/types";
 import EntryCard from "../components/EntryCard";
 import StatusChip from "../components/StatusChip";
 import SynthesisCard from "../components/SynthesisCard";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 type DetailTab = "entries" | "journal" | "synthesis";
 
@@ -30,6 +33,36 @@ export default function TopicDetail({ topicId, onBack }: Props) {
   const [error, setError] = useState("");
   const [synthesizing, setSynthesizing] = useState(false);
   const [synthError, setSynthError] = useState("");
+
+  // Destructive actions. `pendingDelete` doubles as the open/closed state for
+  // the confirm sheet — null means closed.
+  const [pendingDelete, setPendingDelete] = useState<
+    { kind: "thread" } | { kind: "note"; id: string } | null
+  >(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
+  async function confirmDelete() {
+    if (!pendingDelete) return;
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      if (pendingDelete.kind === "thread") {
+        await deleteTopic(topicId);
+        setPendingDelete(null);
+        // The thread no longer exists, so there is nothing to render here.
+        onBack();
+        return;
+      }
+      await deleteNote(pendingDelete.id);
+      setNotes((cur) => cur.filter((n) => n.id !== pendingDelete.id));
+      setPendingDelete(null);
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Could not delete");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   useEffect(() => {
     (async () => {
@@ -221,6 +254,12 @@ export default function TopicDetail({ topicId, onBack }: Props) {
                     <p className="mt-1.5 whitespace-pre-wrap text-[15px] leading-relaxed">
                       {n.body}
                     </p>
+                    <button
+                      onClick={() => setPendingDelete({ kind: "note", id: n.id })}
+                      className="pressable mt-1.5 min-h-[36px] text-xs font-semibold text-muted"
+                    >
+                      Delete note
+                    </button>
                   </li>
                 );
               })}
@@ -267,6 +306,38 @@ export default function TopicDetail({ topicId, onBack }: Props) {
           )}
         </div>
       )}
+
+      {/* Delete thread — always reachable, including for concluded threads. */}
+      <section className="mt-10 border-t border-hairline pt-6">
+        <button
+          onClick={() => setPendingDelete({ kind: "thread" })}
+          className="pressable min-h-[48px] w-full rounded-xl border border-rust/40 bg-rust-soft text-sm font-semibold text-rust"
+        >
+          Delete this thread
+        </button>
+        <p className="mt-2 text-xs leading-relaxed text-muted">
+          Removes the thread and every entry, note and synthesis attached to it. This cannot be
+          undone — export your journal from Settings first if you want to keep it.
+        </p>
+      </section>
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title={pendingDelete?.kind === "thread" ? "Delete this thread?" : "Delete this note?"}
+        body={
+          pendingDelete?.kind === "thread"
+            ? `“${topic.title}” and all of its entries, notes and syntheses will be permanently deleted.`
+            : "This note will be permanently deleted. The entry it was written on stays."
+        }
+        confirmLabel={pendingDelete?.kind === "thread" ? "Delete thread" : "Delete note"}
+        busy={deleting}
+        error={deleteError}
+        onConfirm={() => void confirmDelete()}
+        onCancel={() => {
+          setPendingDelete(null);
+          setDeleteError("");
+        }}
+      />
     </div>
   );
 }

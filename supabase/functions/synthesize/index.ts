@@ -196,6 +196,25 @@ async function verifyPlatformJwt(token: string): Promise<string | null> {
 
 const SERVICE_ROLES = new Set(["service_role", "postgres", "supabase_admin"]);
 
+// ---------------------------------------------------------- entitlement
+//
+// Synthesis is the most expensive single call in the app — it ships every
+// entry and every note for a thread, so a long-running thread can be tens of
+// thousands of input tokens per press of the button. It is also user-
+// triggered and unmetered, which makes it the obvious thing to abuse.
+//
+// Fails CLOSED on RPC error, same as generate-entry.
+async function isEntitled(db: SupabaseClient, userId: string): Promise<boolean> {
+  const { data, error } = await db.rpc("has_active_entitlement", {
+    p_user_id: userId,
+  });
+  if (error) {
+    console.error(`entitlement check failed for ${userId}: ${error.message}`);
+    return false;
+  }
+  return data === true;
+}
+
 async function authorize(
   req: Request,
   db: SupabaseClient,
@@ -245,6 +264,14 @@ Deno.serve(async (req) => {
   }
   if (!body.topic_id) return json(400, { error: "topic_id is required" });
   const kind = body.kind === "conclusion" ? "conclusion" : "on_demand";
+
+  // Billing gate — before the topic lookup, and long before the model call.
+  if (who.role === "user" && !(await isEntitled(db, who.userId))) {
+    return json(402, {
+      error: "subscription_required",
+      message: "An active Ponder subscription is required to run a synthesis.",
+    });
+  }
 
   // Load the topic (scoped to the user when a user token is used).
   let topicQuery = db

@@ -25,7 +25,7 @@
 </head>
 <body>
   <h1>Ponder — Privacy Policy</h1>
-  <p class="meta">Last updated: 30 July 2026</p>
+  <p class="meta">Last updated: 16 August 2026</p>
 
   <p>Ponder (“the app”, “we”, “us”) is a personal daily devotional app published by
   JRV Solutions, based in Victoria, Australia. This policy explains what information the
@@ -46,6 +46,7 @@
       <tr><td>Email address</td><td>Only if you choose to back up or restore your account. We send a one-time confirmation code to that address so your content can be recovered on a new device. Until you do this, your account stays anonymous.</td><td>Optional</td></tr>
       <tr><td>Your written content — thread titles, notes, and journal entries</td><td>This is the core of the app. It is stored so your journal persists across sessions and devices, and so the app can generate reflection material relevant to what you have written.</td><td>Required to use the app</td></tr>
       <tr><td>Anonymous account identifier</td><td>A random identifier that links your content to your account so it can be stored and retrieved. It is not tied to your real-world identity.</td><td>Required to use the app</td></tr>
+      <tr><td>Purchase history</td><td>Whether you have an active trial or subscription, when it started, and when it expires. We use this only to unlock the app’s content for paying subscribers. It is linked to your account identifier.</td><td>Required if you subscribe</td></tr>
     </tbody>
   </table>
 
@@ -63,6 +64,18 @@
   Scripture text itself comes from the World English Bible, a public-domain translation
   stored in our own database, and is never generated or altered by the AI.</p>
 
+  <h2>Subscriptions and payments</h2>
+  <p>Ponder is a paid subscription with a free trial. <strong>We never see or handle your
+  payment details.</strong> All payments are processed by Apple or Google under their own
+  terms and privacy policies; card numbers and billing information go to them, not to us.</p>
+  <p>To know whether your subscription is active, we use RevenueCat, a subscription
+  management service. RevenueCat receives your anonymous account identifier and the
+  purchase receipt issued by the app store, and tells our servers whether your entitlement
+  is currently valid. We store only that result — active or not, and an expiry date.
+  Cancelling does not remove your journal; your written content stays in your account and
+  can be exported from within the app at any time, including after your subscription
+  ends.</p>
+
   <h2>Where your data is stored</h2>
   <p>Your account and content are stored using Supabase, a hosted database and
   authentication provider, on infrastructure operated on our behalf. Data is encrypted in
@@ -71,12 +84,15 @@
   <h2>Sharing and selling</h2>
   <p>We do not sell your personal information, and we do not share it with third parties
   for advertising or marketing. Data is shared only with the service providers named above
-  (Supabase for storage and authentication, Anthropic for content generation) strictly to
+  — Supabase for storage and authentication, Anthropic for content generation, and
+  RevenueCat together with Apple or Google for subscription processing — strictly to
   operate the app’s features.</p>
 
   <h2>Your choices and rights</h2>
-  <p>You can view and delete your threads, notes, and journal entries within the app. You
-  can request deletion of your entire account and all associated content by emailing
+  <p>You can export everything you have written from within the app at any time
+  (Settings &rarr; “Export my journal”). To have specific threads or notes removed, or to
+  delete your account and all associated content, see
+  <a href="/delete-account.html">how to delete your account and data</a>, or email
   <a href="mailto:antonio.ramos.jr@gmail.com">antonio.ramos.jr@gmail.com</a>; we will action deletion
   requests within a reasonable period. If you never provide an email address, your content
   remains tied only to the anonymous identifier on your device.</p>

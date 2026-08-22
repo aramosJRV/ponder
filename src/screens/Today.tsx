@@ -4,10 +4,9 @@ import {
   fetchActiveTopics,
   fetchEntriesForDate,
   fetchNotesForEntries,
-  fetchProfile,
   generateEntryNow,
 } from "../lib/api";
-import { getNotifier, scheduleDailyVerse } from "../lib/notifications";
+import { refreshDailyReminder } from "../lib/notifications";
 import { loadTodayCache, saveTodayCache } from "../lib/cache";
 import { formatLongDate, todayLocal } from "../lib/dates";
 import type { DailyEntry, Note, Topic } from "../lib/types";
@@ -41,27 +40,10 @@ export default function Today() {
       saveTodayCache({ date, topics: t, entries: e, notes: n });
       setSelectedTopicId((cur) => cur ?? t.find((x) => x.focus)?.id ?? t[0]?.id ?? null);
 
-      // Schedule the daily verse reminder for the focus/rotating topic. Native
-      // only (no-ops on web) and fire-and-forget so it never blocks the screen.
-      // fetchActiveTopics orders focus first, so t[0] is the notification topic.
-      const notifyTopic = t[0] ?? null;
-      const notifyEntry = notifyTopic
-        ? e.find((x) => x.topic_id === notifyTopic.id) ?? null
-        : null;
-      if (getNotifier().isSupported() && notifyTopic && notifyEntry) {
-        void (async () => {
-          try {
-            const profile = await fetchProfile();
-            await scheduleDailyVerse({
-              topic: notifyTopic,
-              entry: notifyEntry,
-              notificationHour: profile?.notification_hour ?? 4,
-            });
-          } catch {
-            /* notifications are best-effort */
-          }
-        })();
-      }
+      // (Re)schedule the daily verse reminder. Native only (no-ops on web) and
+      // fire-and-forget so it never blocks the screen. Settings calls the same
+      // helper after a save, so the two paths can't drift.
+      void refreshDailyReminder();
     } catch {
       const cached = loadTodayCache(date);
       if (cached) {

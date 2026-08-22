@@ -15,3 +15,15 @@ verify_jwt = false
 [functions.synthesize]
 # Same reasoning as generate-entry: auth checked inside the function.
 verify_jwt = false
+
+[functions.rc-webhook]
+# Called by RevenueCat, which has no Supabase JWT. Auth is the shared
+# Authorization header configured in the RevenueCat dashboard, compared
+# against the RC_WEBHOOK_SECRET function secret inside the function.
+verify_jwt = false
+
+[functions.delete-account]
+# Auth checked inside the function, which deliberately accepts ONLY a real
+# end-user JWT (service keys are rejected). Left off for consistency with the
+# other functions; the in-function check is the actual gate.
+verify_jwt = false

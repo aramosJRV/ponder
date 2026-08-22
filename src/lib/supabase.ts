@@ -33,15 +33,36 @@ export const FUNCTIONS_URL = `${url}/functions/v1`;
  * Returns the session, or throws if anonymous sign-in fails (e.g. the provider
  * is disabled in the Supabase dashboard) so the caller can show a retry state.
  */
-export async function ensureSession(): Promise<Session> {
-  const { data } = await supabase.auth.getSession();
-  if (data.session) return data.session;
+/**
+ * In-flight guard. React StrictMode runs App's boot effect twice in dev, and a
+ * foreground event can race a cold start in production. Without this, two
+ * callers both observe "no session", both call signInAnonymously(), and the
+ * device ends up with two accounts — one of which silently wins the persisted
+ * session while the other is orphaned along with anything written to it.
+ */
+let sessionPromise: Promise<Session> | null = null;
 
-  const { data: created, error } = await supabase.auth.signInAnonymously();
-  if (error || !created.session) {
-    throw error ?? new Error("Could not start a session");
+export async function ensureSession(): Promise<Session> {
+  if (sessionPromise) return sessionPromise;
+
+  sessionPromise = (async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) return data.session;
+
+    const { data: created, error } = await supabase.auth.signInAnonymously();
+    if (error || !created.session) {
+      throw error ?? new Error("Could not start a session");
+    }
+    return created.session;
+  })();
+
+  try {
+    return await sessionPromise;
+  } catch (e) {
+    // Let the next caller retry rather than caching the failure forever.
+    sessionPromise = null;
+    throw e;
   }
-  return created.session;
 }
 
 /** True when the current user is anonymous (not yet backed up with an email). */

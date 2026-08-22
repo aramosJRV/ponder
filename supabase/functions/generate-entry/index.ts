@@ -27,7 +27,36 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY =
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? Deno.env.get("SB_SECRET_KEY")!;
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
-const MODEL = Deno.env.get("ANTHROPIC_MODEL") ?? "claude-sonnet-4-6";
+
+// ------------------------------------------------------------ model routing
+//
+// Entry generation is the app's only recurring cost and it runs 365x per
+// thread per year, so the model choice IS the unit economics.
+//
+//   Sonnet 4.6  $3 / $15 per Mtok  ≈ $0.0165 per entry  ≈ $6.02 / thread / year
+//   Haiku 4.5   $1 /  $5 per Mtok  ≈ $0.0055 per entry  ≈ $2.01 / thread / year
+//
+// Challenge entries are the ones that have to be genuinely good — they
+// question the user's framing of something they believe God is saying, which
+// is the hardest thing this app does and the easiest to do badly. Those stay
+// on Sonnet. Affirming entries (~75%) go to Haiku.
+//
+// If a Haiku attempt fails validation, the retry escalates to Sonnet rather
+// than asking Haiku again: a model that just produced an unusable verse
+// reference is not the model to ask for a correction.
+const MODEL_CHALLENGE =
+  Deno.env.get("ANTHROPIC_MODEL_CHALLENGE") ?? "claude-sonnet-4-6";
+const MODEL_AFFIRMING =
+  Deno.env.get("ANTHROPIC_MODEL_AFFIRMING") ?? "claude-haiku-4-5-20251001";
+
+/** Set ANTHROPIC_MODEL to pin both paths to one model (e.g. to A/B quality). */
+const MODEL_OVERRIDE = Deno.env.get("ANTHROPIC_MODEL");
+
+function modelFor(entryType: string, attempt: number): string {
+  if (MODEL_OVERRIDE) return MODEL_OVERRIDE;
+  if (attempt > 1) return MODEL_CHALLENGE; // escalate on retry
+  return entryType === "challenge" ? MODEL_CHALLENGE : MODEL_AFFIRMING;
+}
 
 // The topic's seed passage may be chosen again as a daily entry. Set this to a
 // positive number of days to suppress it for a topic's opening stretch (avoids
@@ -186,7 +215,10 @@ function displayRef(book: string, chapter: number, start: number, end: number) {
   return start === end ? `${b} ${chapter}:${start}` : `${b} ${chapter}:${start}-${end}`;
 }
 
-async function callClaude(messages: unknown[]): Promise<Record<string, unknown>> {
+async function callClaude(
+  messages: unknown[],
+  model: string,
+): Promise<Record<string, unknown>> {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -195,9 +227,25 @@ async function callClaude(messages: unknown[]): Promise<Record<string, unknown>>
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      model: MODEL,
+      model,
       max_tokens: 2048,
-      system: SYSTEM_PROMPT,
+      // The system prompt is identical for every entry, so it is cached.
+      // Cache reads are 90% cheaper, and the nightly cron generates for many
+      // threads in quick succession — well inside the 5-minute cache window.
+      //
+      // Caveat worth knowing: caching has a minimum cacheable prefix (1024
+      // tokens for Sonnet, 2048 for Haiku). This system prompt clears the
+      // Sonnet threshold but not the Haiku one, so today the saving lands on
+      // challenge entries only and the marker is simply ignored on Haiku
+      // calls. It costs nothing to leave in place and starts paying off if
+      // the prompt grows.
+      system: [
+        {
+          type: "text",
+          text: SYSTEM_PROMPT,
+          cache_control: { type: "ephemeral" },
+        },
+      ],
       tools: [DEVOTIONAL_TOOL],
       tool_choice: { type: "tool", name: "record_devotional" },
       messages,
@@ -277,7 +325,7 @@ async function validateCrossRefs(
   db: SupabaseClient,
   candidates: CrossRefInput[],
   mainRef: string,
-  ctx: { topicId: string; userId: string; date: string },
+  ctx: { topicId: string; userId: string; date: string; model: string },
 ): Promise<CrossRef[]> {
   const kept: CrossRef[] = [];
   const dropped: Array<{ ref: string; reason: string }> = [];
@@ -306,7 +354,7 @@ async function validateCrossRefs(
     await db.from("generation_failures").insert({
       topic_id: ctx.topicId, user_id: ctx.userId, date: ctx.date,
       stage: "cross_ref_dropped",
-      detail: { dropped, kept: kept.map((k) => k.ref), model: MODEL },
+      detail: { dropped, kept: kept.map((k) => k.ref), model: ctx.model },
     });
   }
   return kept;
@@ -354,9 +402,36 @@ Write today's ${entryType} entry now. Choose the passage first, ensuring its ful
 }
 
 // ------------------------------------------------------------- generation
+//
+// Generation is split into three reusable pieces so the synchronous
+// on-demand path and the asynchronous batch path cannot drift apart:
+//
+//   buildContext()   gather history, pick the entry type, build the prompt
+//   finalizeEntry()  validate the model's verse reference and insert the row
+//   generateForTopic() = buildContext + call Claude + finalizeEntry
+//
+// The batch path calls buildContext() at submit time and finalizeEntry() at
+// collect time, hours apart and in a different invocation. Everything that
+// must survive that gap is written to generation_batch_items.
 
+interface EntryContext {
+  topicId: string;
+  userId: string;
+  date: string;
+  entryType: string;
+  /** Initial messages array — the batch path sends this verbatim. */
+  messages: unknown[];
+  /** Verse references the model must not choose. */
+  blocked: string[];
+}
+
+/** Gather everything needed to ask for one entry. Null when it already exists. */
 // deno-lint-ignore no-explicit-any
-async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: string) {
+async function buildContext(
+  db: SupabaseClient,
+  topic: any,
+  forceDate?: string,
+): Promise<EntryContext | null> {
   const topicId = topic.id as string;
   const userId = topic.user_id as string;
 
@@ -368,7 +443,7 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
   // already generated?
   const { data: existing } = await db.from("daily_entries")
     .select("id").eq("topic_id", topicId).eq("date", date).maybeSingle();
-  if (existing) return { topic_id: topicId, status: "exists", date };
+  if (existing) return null;
 
   // context: last 7 entries, all used refs (topic), notes (5), recent cross-topic refs (60d)
   const { data: recent } = await db.from("daily_entries")
@@ -407,59 +482,59 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
     : blockedRecent;
 
   const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedForPrompt);
-  const messages: unknown[] = [{ role: "user", content: userPrompt }];
 
-  const isUsed = (ref: string) =>
-    usedRefs.includes(ref) || blockedForPrompt.includes(ref);
+  return {
+    topicId,
+    userId,
+    date,
+    entryType,
+    messages: [{ role: "user", content: userPrompt }],
+    blocked: [...new Set([...usedRefs, ...blockedForPrompt])],
+  };
+}
 
-  let payload: ReturnType<typeof parsePayload> | null = null;
-  let verses: VerseRow[] | null = null;
+/**
+ * Validate a model payload and write the entry.
+ *
+ * Shared by both paths, so the guarantee that verse text always comes from
+ * the WEB table — never from the model — holds identically whether the entry
+ * was generated synchronously or in a batch.
+ */
+async function finalizeEntry(
+  db: SupabaseClient,
+  // deno-lint-ignore no-explicit-any
+  topic: any,
+  ctx: EntryContext,
+  payloadIn: ReturnType<typeof parsePayload>,
+  modelUsed: string,
+) {
+  const { topicId, userId, date, entryType } = ctx;
+  const isUsed = (ref: string) => ctx.blocked.includes(ref);
+
+  let payload = payloadIn;
   let fallbackUsed = false;
+  let verses: VerseRow[] | null = null;
 
-  // attempt 1 + retry once with error feedback
-  for (let attempt = 1; attempt <= 2 && !verses; attempt++) {
-    try {
-      const raw = await callClaude(messages);
-      payload = parsePayload(raw);
-      const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
-      if (isUsed(ref)) throw new Error(`Reference ${ref} is on the do-not-use list`);
-      verses = await resolveVerse(db, payload.book, payload.chapter, payload.verse_start, payload.verse_end);
-      if (!verses) throw new Error(
-        `Reference ${payload.book} ${payload.chapter}:${payload.verse_start}-${payload.verse_end} does not resolve in the World English Bible`,
-      );
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      await db.from("generation_failures").insert({
-        topic_id: topicId, user_id: userId, date,
-        stage: attempt === 1 ? "attempt_1" : "attempt_2",
-        detail: { error: msg, model: MODEL },
-      });
-      verses = null;
-      if (attempt === 1) {
-        messages.push(
-          { role: "assistant", content: "I attempted to record the devotional but the verse reference was rejected." },
-          { role: "user", content: `Your previous verse choice failed validation: ${msg}. Choose a DIFFERENT passage that exists in the World English Bible and is not on the do-not-use lists, and call record_devotional again with the full entry.` },
-        );
-      }
-    }
+  const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
+  if (!isUsed(ref)) {
+    verses = await resolveVerse(
+      db, payload.book, payload.chapter, payload.verse_start, payload.verse_end,
+    );
   }
 
-  // fallback: curated list, keep model content if we have it
+  // fallback: curated list, keep the model's writing if we have it
   if (!verses) {
-    if (!payload) {
-      return { topic_id: topicId, status: "failed", date, error: "model output unusable after retry" };
-    }
     const theme = fallbackTheme(`${topic.title} ${topic.description ?? ""}`);
     for (const [book, ch, s, e] of [...FALLBACKS[theme], ...FALLBACKS.default]) {
-      const ref = displayRef(book, ch, s, e);
-      if (isUsed(ref)) continue;
+      const fbRef = displayRef(book, ch, s, e);
+      if (isUsed(fbRef)) continue;
       verses = await resolveVerse(db, book, ch, s, e);
       if (verses) {
         payload = { ...payload, book, chapter: ch, verse_start: s, verse_end: e };
         fallbackUsed = true;
         await db.from("generation_failures").insert({
           topic_id: topicId, user_id: userId, date, stage: "fallback_used",
-          detail: { fallback_ref: ref, theme },
+          detail: { fallback_ref: fbRef, theme, model: modelUsed },
         });
         break;
       }
@@ -469,14 +544,16 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
     }
   }
 
-  const p = payload!;
+  const p = payload;
   const verseText = verses.map((v) => v.text).join(" ");
   const mainRef = displayRef(p.book, p.chapter, p.verse_start, p.verse_end);
 
   // Footnote citations — validated separately, never allowed to fail the entry.
   let crossRefs: CrossRef[] = [];
   try {
-    crossRefs = await validateCrossRefs(db, p.cross_refs, mainRef, { topicId, userId, date });
+    crossRefs = await validateCrossRefs(db, p.cross_refs, mainRef, {
+      topicId, userId, date, model: modelUsed,
+    });
   } catch { /* citations are optional; an entry without them is still valid */ }
 
   const { error: insErr } = await db.from("daily_entries").insert({
@@ -504,8 +581,358 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
   return {
     topic_id: topicId, status: "created", date,
     entry_type: entryType, fallback_used: fallbackUsed,
+    model: modelUsed,
     cross_refs: crossRefs.map((c) => c.ref),
   };
+}
+
+/** Synchronous generation — the on-demand path. Someone is waiting. */
+// deno-lint-ignore no-explicit-any
+async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: string) {
+  const topicId = topic.id as string;
+  const userId = topic.user_id as string;
+
+  const ctx = await buildContext(db, topic, forceDate);
+  if (!ctx) {
+    const { data: profile } = await db.from("profiles")
+      .select("timezone").eq("id", userId).single();
+    return {
+      topic_id: topicId, status: "exists",
+      date: forceDate ?? localDate(profile?.timezone ?? "UTC"),
+    };
+  }
+
+  const { date, entryType, messages } = ctx;
+  const isUsed = (ref: string) => ctx.blocked.includes(ref);
+
+  let payload: ReturnType<typeof parsePayload> | null = null;
+  let verses: VerseRow[] | null = null;
+  let modelUsed = modelFor(entryType, 1);
+
+  // attempt 1 + retry once with error feedback (retry escalates to Sonnet)
+  for (let attempt = 1; attempt <= 2 && !verses; attempt++) {
+    modelUsed = modelFor(entryType, attempt);
+    try {
+      const raw = await callClaude(messages, modelUsed);
+      payload = parsePayload(raw);
+      const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
+      if (isUsed(ref)) throw new Error(`Reference ${ref} is on the do-not-use list`);
+      verses = await resolveVerse(db, payload.book, payload.chapter, payload.verse_start, payload.verse_end);
+      if (!verses) throw new Error(
+        `Reference ${payload.book} ${payload.chapter}:${payload.verse_start}-${payload.verse_end} does not resolve in the World English Bible`,
+      );
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      await db.from("generation_failures").insert({
+        topic_id: topicId, user_id: userId, date,
+        stage: attempt === 1 ? "attempt_1" : "attempt_2",
+        detail: { error: msg, model: modelUsed, entry_type: entryType },
+      });
+      verses = null;
+      if (attempt === 1) {
+        messages.push(
+          { role: "assistant", content: "I attempted to record the devotional but the verse reference was rejected." },
+          { role: "user", content: `Your previous verse choice failed validation: ${msg}. Choose a DIFFERENT passage that exists in the World English Bible and is not on the do-not-use lists, and call record_devotional again with the full entry.` },
+        );
+      }
+    }
+  }
+
+  if (!payload) {
+    return { topic_id: topicId, status: "failed", date, error: "model output unusable after retry" };
+  }
+  // finalizeEntry re-resolves and applies the curated fallback if needed, so
+  // an exhausted retry loop still produces an entry rather than a gap.
+  return await finalizeEntry(db, topic, ctx, payload, modelUsed);
+}
+
+// -------------------------------------------------------------- batching
+//
+// The Message Batches API is half price and the nightly job has no latency
+// requirement, which is the whole reason this exists: at US$9.99/yr, three
+// active threads cost $9.03/yr synchronously against ~$8.49 of net revenue,
+// and $4.52 batched. Batching is what makes the 3-thread cap affordable.
+//
+// Flow: run_daily_generation() (pg_cron, 2h before each user's notification
+// hour) POSTs mode=batch_submit. run_batch_collection() (every 10 min) POSTs
+// mode=batch_collect until nothing is outstanding.
+
+const BATCH_API = "https://api.anthropic.com/v1/messages/batches";
+
+function anthropicHeaders() {
+  return {
+    "x-api-key": ANTHROPIC_API_KEY,
+    "anthropic-version": "2023-06-01",
+    "content-type": "application/json",
+  };
+}
+
+/** Request body for one entry, matching the synchronous callClaude shape. */
+function batchParams(messages: unknown[], model: string) {
+  return {
+    model,
+    max_tokens: 2048,
+    system: [
+      { type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } },
+    ],
+    tools: [DEVOTIONAL_TOOL],
+    tool_choice: { type: "tool", name: "record_devotional" },
+    messages,
+  };
+}
+
+/**
+ * Build and submit one batch covering every due topic.
+ *
+ * custom_id is `${topicId}_${date}` — deterministic, so a result can always
+ * be traced back even if the bookkeeping row were lost.
+ *
+ * The separator is an underscore, not a colon: Anthropic validates custom_id
+ * against ^[a-zA-Z0-9_-]{1,64}$ and rejects the WHOLE batch with a 400 if any
+ * id fails. A colon silently broke every nightly submit until 2026-08-22.
+ */
+async function submitBatch(
+  db: SupabaseClient,
+  // deno-lint-ignore no-explicit-any
+  topics: any[],
+  forceDate?: string,
+) {
+  const requests: unknown[] = [];
+  const items: Record<string, unknown>[] = [];
+  let skipped = 0;
+
+  for (const topic of topics) {
+    let ctx: EntryContext | null = null;
+    try {
+      ctx = await buildContext(db, topic, forceDate);
+    } catch (e) {
+      console.error(`buildContext failed for ${topic.id}: ${e}`);
+      continue;
+    }
+    if (!ctx) { skipped++; continue; } // already has today's entry
+
+    const customId = `${ctx.topicId}_${ctx.date}`;
+    requests.push({
+      custom_id: customId,
+      params: batchParams(ctx.messages, modelFor(ctx.entryType, 1)),
+    });
+    items.push({
+      custom_id: customId,
+      topic_id: ctx.topicId,
+      user_id: ctx.userId,
+      date: ctx.date,
+      entry_type: ctx.entryType,
+      // The do-not-use list is captured at submit time and replayed at
+      // collect time. Re-deriving it later would be subtly wrong: an
+      // on-demand entry created in between would change the answer and could
+      // reject a passage the model was legitimately told it could use.
+      detail: { blocked: ctx.blocked },
+    });
+  }
+
+  if (!requests.length) {
+    return { submitted: 0, skipped, batch_id: null };
+  }
+
+  const res = await fetch(BATCH_API, {
+    method: "POST",
+    headers: anthropicHeaders(),
+    body: JSON.stringify({ requests }),
+  });
+  if (!res.ok) {
+    throw new Error(`Batch submit ${res.status}: ${(await res.text()).slice(0, 500)}`);
+  }
+  const batch = await res.json();
+
+  const { data: row, error } = await db.from("generation_batches").insert({
+    provider_batch_id: batch.id,
+    request_count: requests.length,
+    detail: { processing_status: batch.processing_status },
+  }).select("id").single();
+  if (error) throw new Error(`recording batch failed: ${error.message}`);
+
+  const { error: itemErr } = await db.from("generation_batch_items")
+    .insert(items.map((i) => ({ ...i, batch_id: row.id })));
+  if (itemErr) throw new Error(`recording batch items failed: ${itemErr.message}`);
+
+  return { submitted: requests.length, skipped, batch_id: batch.id };
+}
+
+/** Pull one JSONL results stream into custom_id -> tool payload (or error). */
+async function fetchBatchResults(resultsUrl: string) {
+  const res = await fetch(resultsUrl, { headers: anthropicHeaders() });
+  if (!res.ok) {
+    throw new Error(`Batch results ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  }
+  const text = await res.text();
+  const out = new Map<string, { ok: true; input: Record<string, unknown> } | { ok: false; error: string }>();
+
+  for (const line of text.split("\n")) {
+    if (!line.trim()) continue;
+    try {
+      const row = JSON.parse(line);
+      const id = String(row.custom_id ?? "");
+      if (!id) continue;
+      if (row.result?.type !== "succeeded") {
+        out.set(id, { ok: false, error: row.result?.type ?? "unknown result type" });
+        continue;
+      }
+      const block = (row.result.message?.content ?? [])
+        .find((b: { type: string }) => b.type === "tool_use");
+      if (!block?.input) {
+        out.set(id, { ok: false, error: "no tool_use block" });
+        continue;
+      }
+      out.set(id, { ok: true, input: block.input });
+    } catch {
+      /* a malformed line loses one entry, not the batch */
+    }
+  }
+  return out;
+}
+
+/**
+ * Collect every finished batch and write the entries.
+ *
+ * Anything that fails validation is repaired with a single SYNCHRONOUS
+ * Sonnet call. That is deliberately the expensive model on the rare path:
+ * repairs are a small fraction of entries, and a batch failure otherwise
+ * means the user simply has no entry that day.
+ */
+async function collectBatches(db: SupabaseClient) {
+  const { data: open, error } = await db.from("generation_batches")
+    .select("id, provider_batch_id, request_count")
+    .eq("status", "submitted")
+    .order("submitted_at", { ascending: true })
+    .limit(5);
+  if (error) throw new Error(error.message);
+  if (!open?.length) return { collected: 0, batches: [] };
+
+  const summaries = [];
+
+  for (const batch of open) {
+    const statusRes = await fetch(`${BATCH_API}/${batch.provider_batch_id}`, {
+      headers: anthropicHeaders(),
+    });
+    if (!statusRes.ok) {
+      summaries.push({ batch: batch.provider_batch_id, status: `poll ${statusRes.status}` });
+      continue;
+    }
+    const info = await statusRes.json();
+
+    if (info.processing_status !== "ended") {
+      summaries.push({ batch: batch.provider_batch_id, status: info.processing_status });
+      continue; // still running — the next tick will pick it up
+    }
+    if (!info.results_url) {
+      await db.from("generation_batches").update({
+        status: "failed", collected_at: new Date().toISOString(),
+        detail: { reason: "ended with no results_url", info },
+      }).eq("id", batch.id);
+      summaries.push({ batch: batch.provider_batch_id, status: "failed" });
+      continue;
+    }
+
+    const results = await fetchBatchResults(info.results_url);
+
+    const { data: items } = await db.from("generation_batch_items")
+      .select("custom_id, topic_id, user_id, date, entry_type, detail")
+      .eq("batch_id", batch.id)
+      .eq("status", "pending");
+
+    let inserted = 0;
+
+    for (const item of items ?? []) {
+      const { data: topic } = await db.from("topics")
+        .select(TOPIC_COLS).eq("id", item.topic_id).maybeSingle();
+      // Thread deleted, concluded or paused between submit and collect.
+      if (!topic) {
+        await markItem(db, batch.id, item.custom_id, "failed", { reason: "thread gone" });
+        continue;
+      }
+
+      const ctx: EntryContext = {
+        topicId: item.topic_id as string,
+        userId: item.user_id as string,
+        date: item.date as string,
+        entryType: item.entry_type as string,
+        messages: [],
+        blocked: ((item.detail as { blocked?: string[] })?.blocked) ?? [],
+      };
+
+      const result = results.get(item.custom_id as string);
+      let payload: ReturnType<typeof parsePayload> | null = null;
+      let modelUsed = modelFor(ctx.entryType, 1);
+
+      if (result?.ok) {
+        try {
+          payload = parsePayload(result.input);
+        } catch (e) {
+          await db.from("generation_failures").insert({
+            topic_id: ctx.topicId, user_id: ctx.userId, date: ctx.date,
+            stage: "batch_parse",
+            detail: { error: String(e), model: modelUsed },
+          });
+        }
+      } else {
+        await db.from("generation_failures").insert({
+          topic_id: ctx.topicId, user_id: ctx.userId, date: ctx.date,
+          stage: "batch_result",
+          detail: { error: result?.ok === false ? result.error : "missing result" },
+        });
+      }
+
+      // Repair path: one synchronous Sonnet attempt.
+      if (!payload) {
+        try {
+          const repaired = await buildContext(db, topic, ctx.date);
+          if (!repaired) {
+            await markItem(db, batch.id, item.custom_id, "exists", {});
+            continue;
+          }
+          modelUsed = MODEL_CHALLENGE;
+          payload = parsePayload(await callClaude(repaired.messages, modelUsed));
+          ctx.blocked = repaired.blocked;
+        } catch (e) {
+          await markItem(db, batch.id, item.custom_id, "failed", { error: String(e) });
+          continue;
+        }
+      }
+
+      const outcome = await finalizeEntry(db, topic, ctx, payload, modelUsed);
+      if (outcome.status === "created") inserted++;
+      await markItem(
+        db, batch.id, item.custom_id,
+        outcome.status === "created" ? "inserted"
+          : outcome.status === "exists" ? "exists" : "failed",
+        outcome,
+      );
+    }
+
+    await db.from("generation_batches").update({
+      status: "collected",
+      collected_at: new Date().toISOString(),
+      inserted_count: inserted,
+      detail: { request_counts: info.request_counts },
+    }).eq("id", batch.id);
+
+    summaries.push({ batch: batch.provider_batch_id, status: "collected", inserted });
+  }
+
+  return { collected: summaries.length, batches: summaries };
+}
+
+function markItem(
+  db: SupabaseClient,
+  batchId: string,
+  customId: string,
+  status: string,
+  detail: unknown,
+) {
+  return db.from("generation_batch_items")
+    .update({ status, detail })
+    .eq("batch_id", batchId)
+    .eq("custom_id", customId);
 }
 
 // ------------------------------------------------------------------ auth
@@ -526,6 +953,42 @@ async function verifyPlatformJwt(token: string): Promise<string | null> {
 }
 
 const SERVICE_ROLES = new Set(["service_role", "postgres", "supabase_admin"]);
+
+// ---------------------------------------------------------- entitlement
+//
+// The billing gate. Every path in this function that can reach the Anthropic
+// API passes through here, because the client-side check in
+// src/lib/entitlements.ts is a UI affordance, not a security boundary — this
+// endpoint is reachable with nothing but a user's JWT.
+//
+// Fails CLOSED: an RPC error means we do not generate. A transient database
+// error costs the user one day's entry; the alternative is an open endpoint
+// that bills tokens to whoever asks.
+
+async function isEntitled(db: SupabaseClient, userId: string): Promise<boolean> {
+  const { data, error } = await db.rpc("has_active_entitlement", {
+    p_user_id: userId,
+  });
+  if (error) {
+    console.error(`entitlement check failed for ${userId}: ${error.message}`);
+    return false;
+  }
+  return data === true;
+}
+
+/** Batch variant for the cron path — one round trip per distinct user. */
+async function entitledUserSet(
+  db: SupabaseClient,
+  userIds: string[],
+): Promise<Set<string>> {
+  const out = new Set<string>();
+  await Promise.all(
+    [...new Set(userIds)].map(async (id) => {
+      if (await isEntitled(db, id)) out.add(id);
+    }),
+  );
+  return out;
+}
 
 async function authorize(req: Request, db: SupabaseClient): Promise<
   { role: "service" } | { role: "user"; userId: string } | null
@@ -565,19 +1028,90 @@ Deno.serve(async (req) => {
   const who = await authorize(req, db);
   if (!who) return json(401, { error: "Unauthorized" });
 
-  let body: { topic_id?: string; force_date?: string } = {};
+  let body: {
+    topic_id?: string;
+    force_date?: string;
+    user_ids?: string[];
+    mode?: "batch_submit" | "batch_collect";
+  } = {};
   try {
     body = await req.json();
-  } catch { /* empty body = cron mode */ }
+  } catch { /* empty body = legacy synchronous cron mode */ }
+
+  // Collection touches no user data of its own — it drains whatever is
+  // outstanding — so it short-circuits before topic resolution.
+  if (body.mode === "batch_collect") {
+    if (who.role !== "service") return json(403, { error: "service key required" });
+    try {
+      return json(200, await collectBatches(db));
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error(`batch_collect failed: ${msg}`);
+      return json(500, { error: msg });
+    }
+  }
+
+  // Billing gate, user path: refuse before any topic lookup or model call.
+  // 402 (not 403) so the client can distinguish "you need to subscribe" from
+  // "this isn't yours" and route to the paywall.
+  if (who.role === "user" && !(await isEntitled(db, who.userId))) {
+    return json(402, {
+      error: "subscription_required",
+      message: "An active Ponder subscription is required to generate entries.",
+    });
+  }
 
   // resolve target topics
   let query = db.from("topics").select(TOPIC_COLS)
     .eq("status", "active");
   if (body.topic_id) query = query.eq("id", body.topic_id);
   if (who.role === "user") query = query.eq("user_id", who.userId);
-  const { data: topics, error } = await query;
+  // Cron path: run_daily_generation() passes the exact set of due + entitled
+  // users. Scoping here is what stops one user's notification hour from
+  // triggering generation for everybody else.
+  if (who.role === "service" && body.user_ids?.length) {
+    query = query.in("user_id", body.user_ids);
+  }
+  const { data: allTopics, error } = await query;
   if (error) return json(500, { error: error.message });
-  if (!topics?.length) return json(404, { error: "No matching active threads" });
+  if (!allTopics?.length) return json(404, { error: "No matching active threads" });
+
+  // Billing gate, service path. run_daily_generation() already filters on
+  // entitlement, but this function is also callable directly with a service
+  // key (manual runs, backfills), and an unentitled user must never be
+  // generated for by accident. Re-checking here is the cheap belt to that
+  // brace — it is one indexed lookup against thousands of tokens.
+  let topics = allTopics;
+  let skippedUnentitled = 0;
+  if (who.role === "service") {
+    const entitled = await entitledUserSet(
+      db,
+      allTopics.map((t) => t.user_id as string),
+    );
+    topics = allTopics.filter((t) => entitled.has(t.user_id as string));
+    skippedUnentitled = allTopics.length - topics.length;
+    if (!topics.length) {
+      return json(200, { results: [], skipped_unentitled: skippedUnentitled });
+    }
+  }
+
+  // Batch path — the nightly job. One API call for every due thread at half
+  // price, collected later by run_batch_collection().
+  if (body.mode === "batch_submit") {
+    if (who.role !== "service") return json(403, { error: "service key required" });
+    try {
+      return json(200, {
+        ...(await submitBatch(db, topics, body.force_date)),
+        skipped_unentitled: skippedUnentitled,
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error(`batch_submit failed: ${msg}`);
+      // Deliberately not fatal to the day: the caller can fall back to a
+      // synchronous run, and the next hourly tick will try again.
+      return json(500, { error: msg });
+    }
+  }
 
   const results = [];
   for (const t of topics) {
@@ -591,5 +1125,5 @@ Deno.serve(async (req) => {
       results.push({ topic_id: t.id, status: "failed", error: msg });
     }
   }
-  return json(200, { results });
+  return json(200, { results, skipped_unentitled: skippedUnentitled });
 });

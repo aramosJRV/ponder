@@ -1,5 +1,10 @@
 import { supabase, FUNCTIONS_URL } from "./supabase";
-import { assertEntitled } from "./entitlements";
+import { deviceTimezone } from "./dates";
+import {
+  assertEntitled,
+  refreshEntitlement,
+  SubscriptionRequiredError,
+} from "./entitlements";
 import type {
   ContentReport,
   DailyEntry,
@@ -42,16 +47,6 @@ export async function updateProfile(
   return data as Profile;
 }
 
-/** The device's IANA timezone (e.g. 'Australia/Melbourne'), or null if unknown. */
-function deviceTimezone(): string | null {
-  try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    return tz && tz.length ? tz : null;
-  } catch {
-    return null;
-  }
-}
-
 /**
  * With no onboarding screen, a new profile starts at the 'UTC' default — wrong
  * for notifications and nightly generation. On first launch, if the profile is
@@ -66,6 +61,27 @@ export async function ensureDeviceTimezone(): Promise<void> {
     const profile = await fetchProfile();
     if (!profile || profile.timezone !== "UTC") return;
     await updateProfile({ timezone: tz });
+  } catch {
+    /* non-fatal */
+  }
+}
+
+/**
+ * Record that the app was opened.
+ *
+ * Drives idle auto-pause: threads belonging to a user who hasn't opened
+ * Ponder for 14 days are paused by a nightly job. That exists because cost is
+ * driven by threads being *active*, not by anyone reading them — a lapsed
+ * subscriber with three live threads costs real money generating entries
+ * nobody sees, and comes back to a wall of unread days.
+ *
+ * Best-effort and fire-and-forget: never block app start on it, and never
+ * surface a failure. Worst case we pause a thread for someone who was here —
+ * which is one tap to undo and destroys nothing.
+ */
+export async function recordAppOpen(): Promise<void> {
+  try {
+    await supabase.rpc("touch_last_opened");
   } catch {
     /* non-fatal */
   }
@@ -181,8 +197,32 @@ export async function createTopic(input: {
     })
     .select()
     .single();
-  if (error) throw error;
+  if (error) throw asThreadLimitError(error);
   return data as Topic;
+}
+
+/** Number of threads that may be active at once. Mirrors the Postgres
+ * max_active_topics() trigger — the database is the enforcer, this constant
+ * only drives copy and pre-emptive UI disabling. */
+export const MAX_ACTIVE_THREADS = 3;
+
+export class ThreadLimitError extends Error {
+  constructor() {
+    super(
+      `You can have ${MAX_ACTIVE_THREADS} threads running at once. Pause or conclude one to start another.`,
+    );
+    this.name = "ThreadLimitError";
+  }
+}
+
+/**
+ * Recognise the cap trigger's exception so the UI can explain it rather than
+ * showing a raw Postgres message. Matched on the message text because a
+ * plpgsql `raise` surfaces through PostgREST as a generic check_violation.
+ */
+function asThreadLimitError(error: { message?: string; code?: string }): Error {
+  if (error?.message?.includes("Thread limit reached")) return new ThreadLimitError();
+  return error as Error;
 }
 
 async function clearFocus(): Promise<void> {
@@ -216,7 +256,18 @@ export async function setTopicStatus(
     .from("topics")
     .update({ status })
     .eq("id", topicId);
+  if (error) throw asThreadLimitError(error);
+}
+
+/** How many threads are currently active — used to disable "New thread"
+ * before the user has typed anything, rather than failing at submit. */
+export async function countActiveTopics(): Promise<number> {
+  const { count, error } = await supabase
+    .from("topics")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "active");
   if (error) throw error;
+  return count ?? 0;
 }
 
 /** Conclude a topic, optionally capturing a closing reflection.
@@ -380,6 +431,66 @@ export async function confirmRestore(email: string, token: string): Promise<void
   if (error) throw error;
 }
 
+// --------------------------------------------------------------- deletion
+
+/**
+ * Delete a single note.
+ *
+ * RLS ("notes_delete_own") already restricts this to the caller's own rows, so
+ * no extra ownership check is needed here.
+ */
+export async function deleteNote(noteId: string): Promise<void> {
+  const { error } = await supabase.from("notes").delete().eq("id", noteId);
+  if (error) throw error;
+}
+
+/**
+ * Delete a thread and everything attached to it.
+ *
+ * Only the `topics` row is deleted; daily_entries, notes and syntheses all
+ * reference topics with `on delete cascade`, so Postgres removes them. That
+ * cascade runs with the FK's privileges, not the caller's — which is why this
+ * works even though daily_entries and syntheses have no client delete policy.
+ *
+ * Deliberately NOT gated by assertEntitled: a lapsed subscriber must still be
+ * able to remove their own data.
+ */
+export async function deleteTopic(topicId: string): Promise<void> {
+  const { error } = await supabase.from("topics").delete().eq("id", topicId);
+  if (error) throw error;
+}
+
+/**
+ * Permanently delete the account and all its data, then clear the local
+ * session. Required by App Store guideline 5.1.1(v).
+ *
+ * The edge function does the work with the service role (only it can remove the
+ * auth.users row). We sign out afterwards so the app boots into a clean state
+ * and `ensureSession` mints a fresh anonymous account on next launch.
+ */
+export async function deleteAccount(): Promise<void> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const token = sessionData.session?.access_token;
+  if (!token) throw new Error("Not signed in");
+
+  const res = await fetch(`${FUNCTIONS_URL}/delete-account`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: "{}",
+  });
+  const payload = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(payload.error ?? `Could not delete account (${res.status})`);
+  }
+
+  // The auth row is gone, so the local token is already dead — this just clears
+  // the persisted session. `scope: "local"` avoids a doomed server round-trip.
+  await supabase.auth.signOut({ scope: "local" });
+}
+
 // -------------------------------------------------------------- synthesis
 
 export async function fetchSyntheses(topicId: string): Promise<Synthesis[]> {
@@ -413,10 +524,24 @@ export async function generateSynthesis(
     body: JSON.stringify({ topic_id: topicId, kind }),
   });
   const payload = await res.json().catch(() => ({}));
+  if (res.status === 402) throw await subscriptionRequired(payload);
   if (!res.ok) {
     throw new Error(payload.error ?? `Synthesis failed (${res.status})`);
   }
   return payload.synthesis as Synthesis;
+}
+
+/**
+ * Turn a server 402 into a typed error and re-sync local entitlement state.
+ *
+ * A 402 means the client's view of the subscription and the server's have
+ * diverged — an expiry we hadn't noticed, a refund, or a webhook that hasn't
+ * landed yet. Refreshing here is what makes the app fall back to the paywall
+ * on its own rather than repeatedly firing calls that will keep failing.
+ */
+async function subscriptionRequired(payload: { message?: string }) {
+  await refreshEntitlement();
+  return new SubscriptionRequiredError(payload?.message);
 }
 
 /** On-demand generation for a topic missing today's entry (new topic created
@@ -437,6 +562,7 @@ export async function generateEntryNow(topicId: string): Promise<void> {
     body: JSON.stringify({ topic_id: topicId }),
   });
   const payload = await res.json().catch(() => ({}));
+  if (res.status === 402) throw await subscriptionRequired(payload);
   if (!res.ok) {
     throw new Error(payload.error ?? `Generation failed (${res.status})`);
   }
@@ -510,4 +636,88 @@ export async function submitContentReport(args: {
     .single();
   if (error) throw error;
   return data as ContentReport;
+}
+
+// ----------------------------------------------------------------- export
+
+/**
+ * Export the whole journal as Markdown.
+ *
+ * Deliberately NOT entitlement-gated, and deliberately reachable from the
+ * paywall itself. Ponder is a hard paywall after the trial, which is a
+ * defensible call for generated content — but the notes are the user's own
+ * writing, and locking a person out of words they wrote is a different thing
+ * from locking them out of a feature. This is the escape hatch: no
+ * subscription, no network round-trip beyond their own rows, no negotiation.
+ *
+ * It also happens to be the cheapest possible answer to an App Review
+ * question about data access, and to a support email that would otherwise be
+ * a manual database dump.
+ */
+export async function exportJournalMarkdown(): Promise<string> {
+  const [topics, entries, notes] = await Promise.all([
+    supabase.from("topics").select("*").order("created_at", { ascending: true }),
+    supabase.from("daily_entries").select("*").order("date", { ascending: true }),
+    supabase.from("notes").select("*").order("created_at", { ascending: true }),
+  ]);
+  if (topics.error) throw topics.error;
+  if (entries.error) throw entries.error;
+  if (notes.error) throw notes.error;
+
+  const allTopics = (topics.data ?? []) as Topic[];
+  const allEntries = (entries.data ?? []) as DailyEntry[];
+  const allNotes = (notes.data ?? []) as Note[];
+
+  const notesByEntry = new Map<string, Note[]>();
+  for (const n of allNotes) {
+    const list = notesByEntry.get(n.entry_id) ?? [];
+    list.push(n);
+    notesByEntry.set(n.entry_id, list);
+  }
+
+  const out: string[] = [
+    "# Ponder journal",
+    "",
+    `Exported ${new Date().toISOString().slice(0, 10)}`,
+    "",
+  ];
+
+  for (const t of allTopics) {
+    out.push(`## ${t.title}`, "");
+    if (t.description) out.push(t.description, "");
+    out.push(
+      `*${t.status}${t.concluded_at ? ` — concluded ${t.concluded_at.slice(0, 10)}` : ""}*`,
+      "",
+    );
+    if (t.seed_verse_ref) out.push(`Origin passage: ${t.seed_verse_ref}`, "");
+
+    for (const e of allEntries.filter((e) => e.topic_id === t.id)) {
+      out.push(
+        `### ${e.date} — ${e.verse_ref}${e.entry_type === "challenge" ? " (challenge)" : ""}`,
+        "",
+        `> ${e.verse_text}`,
+        "",
+        e.thought,
+        "",
+        e.illustration,
+        "",
+        "**Ponder**",
+        ...e.ponder.map((q) => `- ${q}`),
+        "",
+        "**Pray**",
+        ...e.prayer_prompts.map((p) => `- ${p}`),
+        "",
+      );
+      const entryNotes = notesByEntry.get(e.id) ?? [];
+      if (entryNotes.length) {
+        out.push("**Your notes**", "");
+        for (const n of entryNotes) {
+          out.push(`- *${n.created_at.slice(0, 10)}* — ${n.body}`);
+        }
+        out.push("");
+      }
+    }
+  }
+
+  return out.join("\n");
 }

@@ -16,3 +16,16 @@ android/local.properties
 
 # Local Netlify folder
 .netlify
+deploy-*.zip
+
+# Secrets — .env alone is not enough; backups and per-env variants leak the
+# service role key. Keep this broad.
+.env.*
+!.env.example
+.env.bak*
+
+# Build scratch / caches
+.tmpstage/
+__pycache__/
+*.py[cod]
+vite.config.ts.timestamp-*.mjs

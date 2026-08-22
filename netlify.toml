@@ -1,0 +1,18 @@
+# This Netlify site hosts the privacy policy ONLY — not the Ponder app.
+#
+# Apple and Play both require a publicly reachable privacy policy URL, and the
+# paywall links to it via VITE_PRIVACY_URL. Publishing `public/` (rather than
+# building the app and publishing `dist/`) keeps a half-configured web build of
+# Ponder from being served at a public URL where App Review might find it.
+#
+# If you ever do want the web app hosted here, that is a deliberate change:
+# add `command = "npm run build"` and set publish to "dist", and set the
+# VITE_* environment variables in Netlify first.
+
+[build]
+  publish = "public"
+
+[[redirects]]
+  from = "/"
+  to = "/privacy.html"
+  status = 302

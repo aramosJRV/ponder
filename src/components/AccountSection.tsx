@@ -3,9 +3,13 @@ import { supabase } from "../lib/supabase";
 import {
   confirmEmailBackup,
   confirmRestore,
+  deleteAccount,
+  exportJournalMarkdown,
   startEmailBackup,
   startRestore,
 } from "../lib/api";
+import ConfirmDialog from "./ConfirmDialog";
+import { userMessage } from "../lib/errors";
 
 type Mode = "loading" | "anon" | "backed_up";
 type Flow =
@@ -34,6 +38,41 @@ export default function AccountSection() {
   const [error, setError] = useState("");
   const [okMsg, setOkMsg] = useState("");
 
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
+  /**
+   * Delete the account, then reload.
+   *
+   * The reload is what makes this safe: App's boot effect runs `ensureSession`,
+   * finds no persisted session and mints a fresh anonymous account. Without it
+   * the UI would keep rendering against a user id the server no longer knows.
+   */
+  async function runDelete() {
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      await deleteAccount();
+      window.location.reload();
+    } catch (e) {
+      setDeleteError(e instanceof Error ? e.message : "Could not delete account");
+      setDeleting(false);
+    }
+  }
+
+  /** Download the journal before deleting — same export used in Settings. */
+  async function exportBeforeDelete() {
+    const md = await exportJournalMarkdown();
+    const blob = new Blob([md], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ponder-journal-${new Date().toISOString().slice(0, 10)}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   async function refresh() {
     const { data } = await supabase.auth.getUser();
     const anon = Boolean(data.user?.is_anonymous);
@@ -60,7 +99,7 @@ export default function AccountSection() {
       await fn();
       done?.();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong");
+      setError(userMessage(e));
     } finally {
       setBusy(false);
     }
@@ -219,6 +258,51 @@ export default function AccountSection() {
           submitLabel="Restore my journal"
         />
       )}
+
+      {/* Delete account. Shown in every state — Apple 5.1.1(v) requires the
+          path to be reachable in-app, and an anonymous user has data worth
+          deleting just as a backed-up one does. Hidden only mid-flow so it
+          can't be tapped by accident while entering a code. */}
+      {flow.kind === "idle" && (
+        <div className="mt-6 border-t border-hairline pt-5">
+          <button
+            onClick={() => {
+              setDeleteError("");
+              setConfirmingDelete(true);
+            }}
+            className="pressable min-h-[48px] w-full rounded-xl border border-rust/40 bg-rust-soft font-semibold text-rust"
+          >
+            Delete my account
+          </button>
+          <p className="mt-2 text-xs leading-relaxed text-muted">
+            Permanently deletes your account and every thread, entry, note and synthesis. This
+            cannot be undone.
+            {mode === "anon" &&
+              " Your account is anonymous, so there is no way to recover it afterwards."}
+          </p>
+          <button
+            onClick={() => void exportBeforeDelete()}
+            className="pressable mt-2 min-h-[36px] text-xs font-semibold text-moss"
+          >
+            Export my journal first
+          </button>
+        </div>
+      )}
+
+      <ConfirmDialog
+        open={confirmingDelete}
+        title="Delete your account?"
+        body="Every thread, entry, note and synthesis will be permanently deleted, along with your account itself. This cannot be undone and we cannot restore it. Deleting your account does not cancel a subscription — cancel that in your App Store or Play Store account settings."
+        confirmLabel="Delete my account"
+        requireTyped="DELETE"
+        busy={deleting}
+        error={deleteError}
+        onConfirm={() => void runDelete()}
+        onCancel={() => {
+          setConfirmingDelete(false);
+          setDeleteError("");
+        }}
+      />
     </section>
   );
 }
