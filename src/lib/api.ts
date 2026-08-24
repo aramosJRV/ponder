@@ -1,9 +1,10 @@
 import { supabase, FUNCTIONS_URL } from "./supabase";
 import { deviceTimezone } from "./dates";
 import {
-  assertEntitled,
   refreshEntitlement,
-  SubscriptionRequiredError,
+  maxActiveThreads,
+  GenerationDelayedError,
+  SynthesisQuotaError,
 } from "./entitlements";
 import type {
   ContentReport,
@@ -18,7 +19,8 @@ import type {
   Topic,
 } from "./types";
 
-const PROFILE_COLS = "id, timezone, notification_hour, challenge_frequency";
+const PROFILE_COLS =
+  "id, timezone, notification_hour, challenge_frequency, content_level";
 
 /** The signed-in user's profile (timezone, notification hour, challenge freq).
  * Row is created by a signup trigger; returns null if not signed in / missing. */
@@ -32,7 +34,9 @@ export async function fetchProfile(): Promise<Profile | null> {
 }
 
 export async function updateProfile(
-  patch: Partial<Pick<Profile, "timezone" | "notification_hour" | "challenge_frequency">>,
+  patch: Partial<
+    Pick<Profile, "timezone" | "notification_hour" | "challenge_frequency" | "content_level">
+  >,
 ): Promise<Profile> {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id;
@@ -201,15 +205,20 @@ export async function createTopic(input: {
   return data as Topic;
 }
 
-/** Number of threads that may be active at once. Mirrors the Postgres
- * max_active_topics() trigger — the database is the enforcer, this constant
- * only drives copy and pre-emptive UI disabling. */
-export const MAX_ACTIVE_THREADS = 3;
+/** Threads that may be active at once for the CURRENT user. Mirrors the
+ * Postgres max_active_topics(uuid) trigger — the database is the enforcer,
+ * this only drives copy and pre-emptive UI disabling.
+ *
+ * One number for everybody — contributing to Ponder unlocks nothing, so
+ * there is no tier for this to vary by. */
+export function maxActiveThreadsForUser(): number {
+  return maxActiveThreads();
+}
 
 export class ThreadLimitError extends Error {
-  constructor() {
+  constructor(max: number = maxActiveThreads()) {
     super(
-      `You can have ${MAX_ACTIVE_THREADS} threads running at once. Pause or conclude one to start another.`,
+      `You can have ${max} threads running at once. Pause or conclude one to start another.`,
     );
     this.name = "ThreadLimitError";
   }
@@ -452,8 +461,8 @@ export async function deleteNote(noteId: string): Promise<void> {
  * cascade runs with the FK's privileges, not the caller's — which is why this
  * works even though daily_entries and syntheses have no client delete policy.
  *
- * Deliberately NOT gated by assertEntitled: a lapsed subscriber must still be
- * able to remove their own data.
+ * Nothing gates this. It was never gated by the old paywall either — access
+ * to the user's own writing is not a thing to sell.
  */
 export async function deleteTopic(topicId: string): Promise<void> {
   const { error } = await supabase.from("topics").delete().eq("id", topicId);
@@ -510,7 +519,6 @@ export async function generateSynthesis(
   topicId: string,
   kind: SynthesisKind = "on_demand",
 ): Promise<Synthesis> {
-  assertEntitled("synthesis");
   const { data: sessionData } = await supabase.auth.getSession();
   const token = sessionData.session?.access_token;
   if (!token) throw new Error("Not signed in");
@@ -524,31 +532,45 @@ export async function generateSynthesis(
     body: JSON.stringify({ topic_id: topicId, kind }),
   });
   const payload = await res.json().catch(() => ({}));
-  if (res.status === 402) throw await subscriptionRequired(payload);
+  if (res.status === 429) throw await quotaRefused(payload);
   if (!res.ok) {
-    throw new Error(payload.error ?? `Synthesis failed (${res.status})`);
+    throw new Error(payload.message ?? payload.error ?? `Synthesis failed (${res.status})`);
   }
   return payload.synthesis as Synthesis;
 }
 
 /**
- * Turn a server 402 into a typed error and re-sync local entitlement state.
+ * Turn a server 429 into a typed error.
  *
- * A 402 means the client's view of the subscription and the server's have
- * diverged — an expiry we hadn't noticed, a refund, or a webhook that hasn't
- * landed yet. Refreshing here is what makes the app fall back to the paywall
- * on its own rather than repeatedly firing calls that will keep failing.
+ * Two quite different things arrive as 429 and the reason code separates
+ * them. `spend_tripwire` means the server's runaway guard fired — an
+ * operational fault, nothing the user did and nothing they can fix, so it is
+ * surfaced as a delay. The synthesis reasons are per-thread and per-tier;
+ * conflating them would have the app tell a user to support Ponder to fix
+ * something supporting cannot fix.
+ *
+ * The entitlement is re-synced on the tier-dependent reasons only, in case a
+ * entitlement status was stale locally.
  */
-async function subscriptionRequired(payload: { message?: string }) {
+async function quotaRefused(payload: {
+  error?: string;
+  message?: string;
+  next_available_at?: string;
+}): Promise<Error> {
+  const reason = payload?.error ?? "unknown";
+  if (reason === "spend_tripwire") return new GenerationDelayedError();
   await refreshEntitlement();
-  return new SubscriptionRequiredError(payload?.message);
+  return new SynthesisQuotaError(
+    payload?.message ?? "Synthesis isn't available right now.",
+    reason,
+    payload?.next_available_at ?? null,
+  );
 }
 
 /** On-demand generation for a topic missing today's entry (new topic created
  * mid-day, or cron hasn't run). Invokes the edge function with the user JWT —
  * the function restricts user tokens to their own topics. */
 export async function generateEntryNow(topicId: string): Promise<void> {
-  assertEntitled("entry_generation");
   const { data: sessionData } = await supabase.auth.getSession();
   const token = sessionData.session?.access_token;
   if (!token) throw new Error("Not signed in");
@@ -562,14 +584,14 @@ export async function generateEntryNow(topicId: string): Promise<void> {
     body: JSON.stringify({ topic_id: topicId }),
   });
   const payload = await res.json().catch(() => ({}));
-  if (res.status === 402) throw await subscriptionRequired(payload);
-  if (!res.ok) {
-    throw new Error(payload.error ?? `Generation failed (${res.status})`);
-  }
+  if (res.status === 429) throw await quotaRefused(payload);
+  // Any server-side failure here is operational, not something the user did.
+  // The raw reason ("model output unusable after retry", a 502 upstream) is
+  // useless to them and alarming, so all of them become the same "running
+  // late" message. The real reason is already in generation_failures.
+  if (!res.ok) throw new GenerationDelayedError();
   const result = payload.results?.[0];
-  if (result?.status === "failed") {
-    throw new Error(result.error ?? "Generation failed");
-  }
+  if (result?.status === "failed") throw new GenerationDelayedError();
 }
 
 // ---------------------------------------------------------------- reports
@@ -578,8 +600,8 @@ export async function generateEntryNow(topicId: string): Promise<void> {
  * File a report against AI-generated content.
  *
  * Google Play's Generative AI policy requires an in-app path for users to flag
- * offensive output without leaving the app. Deliberately NOT gated by
- * assertEntitled — safety reporting must never sit behind a paywall.
+ * offensive output without leaving the app. Never gated — safety reporting
+ * must never sit behind anything.
  *
  * Upserts on (user_id, item) so re-reporting the same item corrects the
  * existing report rather than creating duplicates.

@@ -15,7 +15,13 @@ import type { PermissionStatus, ReminderState } from "../lib/notifications";
 import AccountSection from "../components/AccountSection";
 import SubscriptionSection from "../components/SubscriptionSection";
 import { deviceTimezone } from "../lib/dates";
-import type { Profile, Topic } from "../lib/types";
+import {
+  CONTENT_LEVELS,
+  DEFAULT_CONTENT_LEVEL,
+  getContentLevel,
+  setContentLevel,
+} from "../lib/contentLevel";
+import type { ContentLevel, Profile, Topic } from "../lib/types";
 
 const FALLBACK_TZS = [
   "UTC",
@@ -50,6 +56,9 @@ export default function Settings() {
   const [hour, setHour] = useState(DEFAULT_NOTIFICATION_HOUR);
   const [timezone, setTimezone] = useState("UTC");
   const [challenge, setChallenge] = useState(0.25);
+  // Seeded from localStorage so the control is right before the fetch lands;
+  // the profile row overwrites it on load and is the source of truth.
+  const [contentLevel, setLevel] = useState<ContentLevel>(getContentLevel);
   const [saveState, setSaveState] = useState<SaveState>("idle");
 
   const [focusBusy, setFocusBusy] = useState(false);
@@ -80,6 +89,9 @@ export default function Settings() {
         setHour(p.notification_hour);
         setTimezone(p.timezone);
         setChallenge(p.challenge_frequency);
+        setLevel(p.content_level ?? DEFAULT_CONTENT_LEVEL);
+        // Reconcile the render-path mirror EntryCard reads.
+        setContentLevel(p.content_level ?? DEFAULT_CONTENT_LEVEL);
       }
       setTopics(t);
       setError("");
@@ -107,7 +119,8 @@ export default function Settings() {
     !!profile &&
     (hour !== profile.notification_hour ||
       timezone !== profile.timezone ||
-      Math.abs(challenge - profile.challenge_frequency) > 1e-9);
+      Math.abs(challenge - profile.challenge_frequency) > 1e-9 ||
+      contentLevel !== profile.content_level);
 
   const saveProfile = useCallback(async () => {
     setSaveState("saving");
@@ -117,6 +130,7 @@ export default function Settings() {
         notification_hour: hour,
         timezone,
         challenge_frequency: challenge,
+        content_level: contentLevel,
       });
       setProfile(updated);
       setSaveState("saved");
@@ -129,7 +143,7 @@ export default function Settings() {
       setSaveState("idle");
       setError(e instanceof Error ? e.message : "Could not save");
     }
-  }, [hour, timezone, challenge, syncReminder]);
+  }, [hour, timezone, challenge, contentLevel, syncReminder]);
 
   // Auto-save: no Save button to hunt for, and no ambiguity about which
   // section a button belongs to.
@@ -258,6 +272,53 @@ export default function Settings() {
           testBusy={testBusy}
           testMsg={testMsg}
         />
+      </section>
+
+      {/* Content level */}
+      <section className="mt-5 rounded-2xl border border-hairline bg-surface p-5">
+        <h2 className="font-display text-xl">How much to read</h2>
+        <p className="mt-1 text-sm text-muted">
+          How much of an entry is open when you land on it. Nothing is taken away — whatever
+          you fold up is one tap away on the day you have time for it.
+        </p>
+
+        <div
+          role="radiogroup"
+          aria-label="How much to read"
+          className="mt-4 grid grid-cols-3 gap-2"
+        >
+          {CONTENT_LEVELS.map((opt) => {
+            const active = contentLevel === opt.value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => {
+                  setLevel(opt.value);
+                  // Write the mirror immediately: the reader should see the
+                  // change on Today without waiting for the debounced save.
+                  setContentLevel(opt.value);
+                }}
+                className={`rounded-xl border px-3 py-3 text-left transition-colors ${
+                  active
+                    ? "border-moss bg-moss-soft"
+                    : "border-hairline bg-paper hover:border-moss"
+                }`}
+              >
+                <span
+                  className={`block text-[15px] font-semibold ${active ? "text-moss" : ""}`}
+                >
+                  {opt.label}
+                </span>
+                <span className="mt-0.5 block text-xs leading-snug text-muted">
+                  {opt.detail}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </section>
 
       {/* Challenge frequency */}

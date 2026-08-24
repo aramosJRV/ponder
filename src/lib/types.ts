@@ -1,10 +1,20 @@
 export type TopicStatus = "active" | "paused" | "concluded";
 
+/**
+ * How much of an entry is shown by default.
+ * 1 = passage + questions · 2 = + thought · 3 = full (illustration, prayer, song)
+ *
+ * Display only. Every entry is always generated and stored in full; the level
+ * decides what is open when the card first renders, not what exists.
+ */
+export type ContentLevel = 1 | 2 | 3;
+
 export interface Profile {
   id: string;
   timezone: string;
   notification_hour: number; // 0–23, local hour to fire the daily reminder
   challenge_frequency: number; // 0.00–0.50
+  content_level: ContentLevel;
 }
 export type EntryType = "affirming" | "challenge";
 
@@ -71,6 +81,13 @@ export interface DailyEntry {
   fallback_used: boolean;
   /** Validated supporting references. Absent on entries generated before footnotes shipped. */
   cross_refs?: CrossRef[] | null;
+  /**
+   * Verified Spotify track, or null. Every field came from a Spotify API
+   * response, never from model output. Always null on challenge entries
+   * (they arrive deliberately quieter) and on entries generated before this
+   * shipped, so the UI must treat absence as normal.
+   */
+  song?: Song | null;
   created_at: string;
 }
 
@@ -134,4 +151,19 @@ export interface ContentReport {
   reported_content: unknown;
   resolved_at: string | null;
   created_at: string;
+}
+
+/**
+ * A Spotify track attached to an entry.
+ *
+ * `name` and `artist` are Spotify's own strings and must be rendered
+ * verbatim — Spotify's branding guidelines require it, and it is also the
+ * point: the model's spelling never reaches the screen.
+ */
+export interface Song {
+  track_id: string;
+  name: string;
+  artist: string;
+  url: string;
+  art?: string | null;
 }
