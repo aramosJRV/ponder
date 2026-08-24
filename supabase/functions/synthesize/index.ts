@@ -96,7 +96,61 @@ const SYNTHESIS_TOOL = {
 
 // ---------------------------------------------------------------- claude
 
-async function callClaude(userPrompt: string): Promise<{
+// USD per million tokens. Synthesis is Sonnet-only: it is the one call in
+// the app that reads a whole thread's history, and a cheap model reading
+// everything badly is worse than not offering the feature.
+const PRICING: Record<string, { in: number; out: number }> = {
+  "claude-sonnet-4-6": { in: 3, out: 15 },
+  "claude-haiku-4-5-20251001": { in: 1, out: 5 },
+};
+const FALLBACK_PRICE = { in: 3, out: 15 };
+
+interface Usage {
+  input_tokens?: number;
+  output_tokens?: number;
+  cache_read_input_tokens?: number;
+  cache_creation_input_tokens?: number;
+}
+
+function usdCost(model: string, u: Usage): number {
+  const p = PRICING[model] ?? FALLBACK_PRICE;
+  return (
+    ((u.input_tokens ?? 0) * p.in +
+      (u.cache_read_input_tokens ?? 0) * p.in * 0.1 +
+      (u.cache_creation_input_tokens ?? 0) * p.in * 1.25 +
+      (u.output_tokens ?? 0) * p.out) /
+    1_000_000
+  );
+}
+
+/** Best-effort ledger write — never fails the synthesis that already ran. */
+async function recordSpend(
+  db: SupabaseClient,
+  usage: Usage,
+  userId: string | null,
+  detail: Record<string, unknown>,
+): Promise<void> {
+  try {
+    await db.rpc("record_spend", {
+      p_kind: "synthesis",
+      p_model: MODEL,
+      p_input_tokens: usage.input_tokens ?? 0,
+      p_output_tokens: usage.output_tokens ?? 0,
+      p_cache_read_tokens: usage.cache_read_input_tokens ?? 0,
+      p_cache_write_tokens: usage.cache_creation_input_tokens ?? 0,
+      p_usd_cost: usdCost(MODEL, usage),
+      p_user_id: userId,
+      p_detail: detail,
+    });
+  } catch (e) {
+    console.error(`record_spend failed (synthesis): ${e}`);
+  }
+}
+
+async function callClaude(
+  userPrompt: string,
+  ledger?: { db: SupabaseClient; userId: string | null; detail: Record<string, unknown> },
+): Promise<{
   threads: string[];
   tensions: string[];
   next_steps: string[];
@@ -122,6 +176,9 @@ async function callClaude(userPrompt: string): Promise<{
     throw new Error(`Anthropic API ${res.status}: ${body.slice(0, 500)}`);
   }
   const data = await res.json();
+  if (ledger) {
+    await recordSpend(ledger.db, (data.usage ?? {}) as Usage, ledger.userId, ledger.detail);
+  }
   const toolUse = (data.content ?? []).find(
     (b: { type: string }) => b.type === "tool_use",
   );
@@ -196,23 +253,57 @@ async function verifyPlatformJwt(token: string): Promise<string | null> {
 
 const SERVICE_ROLES = new Set(["service_role", "postgres", "supabase_admin"]);
 
-// ---------------------------------------------------------- entitlement
+// ---------------------------------------------------------------- quota
 //
 // Synthesis is the most expensive single call in the app — it ships every
 // entry and every note for a thread, so a long-running thread can be tens of
 // thousands of input tokens per press of the button. It is also user-
-// triggered and unmetered, which makes it the obvious thing to abuse.
+// triggered, which on a free app makes it the one thing that can run away.
+//
+// public.synthesis_allowed() holds the whole policy (see migration
+// 20260823000002): supporters unlimited, free tier one per thread per 30 days
+// once the thread has 5+ notes. Keeping it in SQL means the client and the
+// server cannot disagree.
+//
+// Deliberately NOT gated on the spend tripwire: synthesis is user-triggered,
+// so it is rate-limited by a human pressing a button, and gating it would
+// make the user experience change because of money.
 //
 // Fails CLOSED on RPC error, same as generate-entry.
-async function isEntitled(db: SupabaseClient, userId: string): Promise<boolean> {
-  const { data, error } = await db.rpc("has_active_entitlement", {
-    p_user_id: userId,
+interface QuotaVerdict {
+  allowed: boolean;
+  reason: string;
+  notes?: number;
+  needed?: number;
+  next_available_at?: string;
+}
+
+async function synthesisQuota(
+  db: SupabaseClient,
+  topicId: string,
+  kind: string,
+): Promise<QuotaVerdict> {
+  const { data, error } = await db.rpc("synthesis_allowed", {
+    p_topic_id: topicId,
+    p_kind: kind,
   });
   if (error) {
-    console.error(`entitlement check failed for ${userId}: ${error.message}`);
-    return false;
+    console.error(`synthesis_allowed check failed for ${topicId}: ${error.message}`);
+    return { allowed: false, reason: "check_failed" };
   }
-  return data === true;
+  return (data ?? { allowed: false, reason: "check_failed" }) as QuotaVerdict;
+}
+
+/** Human copy for each refusal. The reason code is what the client branches on. */
+function quotaMessage(v: QuotaVerdict): string {
+  switch (v.reason) {
+    case "too_few_notes":
+      return `A synthesis needs something to work with. Add ${Math.max(1, (v.needed ?? 5) - (v.notes ?? 0))} more note${(v.needed ?? 5) - (v.notes ?? 0) === 1 ? "" : "s"} to this thread first.`;
+    case "rate_limited":
+      return "You've already run a synthesis on this thread this month. Supporters can run them any time.";
+    default:
+      return "Synthesis isn't available right now.";
+  }
 }
 
 async function authorize(
@@ -265,14 +356,6 @@ Deno.serve(async (req) => {
   if (!body.topic_id) return json(400, { error: "topic_id is required" });
   const kind = body.kind === "conclusion" ? "conclusion" : "on_demand";
 
-  // Billing gate — before the topic lookup, and long before the model call.
-  if (who.role === "user" && !(await isEntitled(db, who.userId))) {
-    return json(402, {
-      error: "subscription_required",
-      message: "An active Ponder subscription is required to run a synthesis.",
-    });
-  }
-
   // Load the topic (scoped to the user when a user token is used).
   let topicQuery = db
     .from("topics")
@@ -282,6 +365,23 @@ Deno.serve(async (req) => {
   const { data: topic, error: topicErr } = await topicQuery.maybeSingle();
   if (topicErr) return json(500, { error: topicErr.message });
   if (!topic) return json(404, { error: "Thread not found" });
+
+  // Quota gate. Deliberately AFTER the topic lookup: that query is what
+  // establishes the caller owns this thread, so a user token can never probe
+  // someone else's quota. Long before the model call either way.
+  //
+  // Everyone checks, service path included, because the spend ceiling binds
+  // everyone. A conclusion synthesis passes everything except that ceiling —
+  // see synthesis_allowed() in migration 20260823000002.
+  const quota = await synthesisQuota(db, topic.id, kind);
+  if (!quota.allowed) {
+    return json(429, {
+      error: quota.reason,
+      message: quotaMessage(quota),
+      ...(quota.next_available_at ? { next_available_at: quota.next_available_at } : {}),
+      ...(quota.notes !== undefined ? { notes: quota.notes, needed: quota.needed } : {}),
+    });
+  }
 
   const [{ data: entries }, { data: notes }] = await Promise.all([
     db
@@ -306,6 +406,16 @@ Deno.serve(async (req) => {
   try {
     content = await callClaude(
       buildPrompt(topic, entries ?? [], notes ?? [], kind),
+      {
+        db,
+        userId: topic.user_id as string,
+        detail: {
+          topic_id: topic.id,
+          kind,
+          entry_count: entries?.length ?? 0,
+          note_count: notes?.length ?? 0,
+        },
+      },
     );
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);

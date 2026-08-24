@@ -22,6 +22,21 @@ import type {
 const PROFILE_COLS =
   "id, timezone, notification_hour, challenge_frequency, content_level";
 
+/**
+ * Topic columns the client is allowed to see.
+ *
+ * Explicit, not "*", and it must stay that way. `topics` also carries
+ * theme_id / theme_confidence / theme_classified_at — server-side routing
+ * metadata about how an entry gets produced. None of that is the reader's
+ * business: a user opening devtools should see their thread and nothing that
+ * hints their day was anything other than written for them. Adding a column
+ * to the table must not silently add it to this response.
+ */
+// One string literal, not a concatenation: supabase-js infers the row type
+// from the literal, and `+` collapses it to `string` and breaks the typing.
+// eslint-disable-next-line max-len
+const TOPIC_COLS = "id, user_id, title, description, status, focus, created_at, concluded_at, seed_book_number, seed_chapter, seed_verse_start, seed_verse_end, seed_verse_ref, seed_verse_text";
+
 /** The signed-in user's profile (timezone, notification hour, challenge freq).
  * Row is created by a signup trigger; returns null if not signed in / missing. */
 export async function fetchProfile(): Promise<Profile | null> {
@@ -94,7 +109,7 @@ export async function recordAppOpen(): Promise<void> {
 export async function fetchActiveTopics(): Promise<Topic[]> {
   const { data, error } = await supabase
     .from("topics")
-    .select("*")
+    .select(TOPIC_COLS)
     .eq("status", "active")
     .order("focus", { ascending: false })
     .order("created_at", { ascending: true });
@@ -145,7 +160,7 @@ export async function addNote(entry: DailyEntry, body: string): Promise<Note> {
 export async function fetchAllTopics(): Promise<Topic[]> {
   const { data, error } = await supabase
     .from("topics")
-    .select("*")
+    .select(TOPIC_COLS)
     .order("status", { ascending: true }) // active < concluded < paused alphabetically? no — see sort below
     .order("created_at", { ascending: true });
   if (error) throw error;
@@ -199,7 +214,7 @@ export async function createTopic(input: {
       seed_verse_start: seed?.verse_start ?? null,
       seed_verse_end: seed?.verse_end ?? null,
     })
-    .select()
+    .select(TOPIC_COLS)
     .single();
   if (error) throw asThreadLimitError(error);
   return data as Topic;
@@ -678,7 +693,7 @@ export async function submitContentReport(args: {
  */
 export async function exportJournalMarkdown(): Promise<string> {
   const [topics, entries, notes] = await Promise.all([
-    supabase.from("topics").select("*").order("created_at", { ascending: true }),
+    supabase.from("topics").select(TOPIC_COLS).order("created_at", { ascending: true }),
     supabase.from("daily_entries").select("*").order("date", { ascending: true }),
     supabase.from("notes").select("*").order("created_at", { ascending: true }),
   ]);

@@ -6,6 +6,7 @@ import {
   fetchNotesForEntries,
   generateEntryNow,
 } from "../lib/api";
+import { GenerationDelayedError } from "../lib/entitlements";
 import { refreshDailyReminder } from "../lib/notifications";
 import { loadTodayCache, saveTodayCache } from "../lib/cache";
 import { formatLongDate, todayLocal } from "../lib/dates";
@@ -86,7 +87,13 @@ export default function Today() {
       await generateEntryNow(selectedTopicId);
       await load();
     } catch (e) {
-      setGenError(e instanceof Error ? e.message : "Generation failed");
+      // GenerationDelayedError already carries user-safe wording; anything
+      // else gets the same treatment rather than leaking an upstream message.
+      setGenError(
+        e instanceof GenerationDelayedError
+          ? e.message
+          : "Today's entry is running late. Try again in a little while.",
+      );
     } finally {
       setGenerating(false);
     }
@@ -168,10 +175,13 @@ export default function Today() {
 
       {selectedTopic && !entry && (
         <div className="animate-rise rounded-2xl border border-hairline bg-surface p-6">
-          <p className="font-display text-2xl">No entry yet for this thread</p>
+          <p className="font-display text-2xl">
+            {genError ? "Still coming" : "No entry yet for this thread"}
+          </p>
           <p className="mt-2 text-muted">
-            Tonight's generation hasn't run for “{selectedTopic.title}” — or the thread is new.
-            You can generate today's entry now.
+            {genError
+              ? `Today's entry for “${selectedTopic.title}” hasn't landed yet. Nothing is lost — try again shortly.`
+              : `Tonight's generation hasn't run for “${selectedTopic.title}” — or the thread is new. You can generate today's entry now.`}
           </p>
           <button
             onClick={() => void generate()}
@@ -180,7 +190,7 @@ export default function Today() {
           >
             {generating ? "Listening for a word…" : "Generate today's entry"}
           </button>
-          {genError && <p className="mt-3 text-sm text-rust">{genError}</p>}
+          {genError && <p className="mt-3 text-sm text-muted">{genError}</p>}
         </div>
       )}
     </div>

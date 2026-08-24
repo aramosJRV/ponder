@@ -61,8 +61,15 @@ export default function AccountSection() {
     }
   }
 
-  /** Download the journal before deleting — same export used in Settings. */
-  async function exportBeforeDelete() {
+  /**
+   * Download the whole journal as markdown.
+   *
+   * Lives in Account, not next to the support ask: exporting your own writing
+   * is a data-portability control, and putting it beside a request for money
+   * implies the two are related. They are not — this works for everyone,
+   * always, and it always has.
+   */
+  async function exportJournal() {
     const md = await exportJournalMarkdown();
     const blob = new Blob([md], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
@@ -259,6 +266,22 @@ export default function AccountSection() {
         />
       )}
 
+      {/* Export. Always available, in every account state — it is the user's
+          own writing, so nothing gates it and nothing ever should. */}
+      {flow.kind === "idle" && (
+        <div className="mt-6 border-t border-hairline pt-5">
+          <button
+            onClick={() => void exportJournal()}
+            className="pressable min-h-[48px] w-full rounded-xl border border-hairline bg-surface font-semibold text-muted"
+          >
+            Export my journal
+          </button>
+          <p className="mt-2 text-xs leading-relaxed text-muted">
+            Every thread, entry and note as a markdown file you keep.
+          </p>
+        </div>
+      )}
+
       {/* Delete account. Shown in every state — Apple 5.1.1(v) requires the
           path to be reachable in-app, and an anonymous user has data worth
           deleting just as a backed-up one does. Hidden only mid-flow so it
@@ -281,7 +304,7 @@ export default function AccountSection() {
               " Your account is anonymous, so there is no way to recover it afterwards."}
           </p>
           <button
-            onClick={() => void exportBeforeDelete()}
+            onClick={() => void exportJournal()}
             className="pressable mt-2 min-h-[36px] text-xs font-semibold text-moss"
           >
             Export my journal first
@@ -292,7 +315,7 @@ export default function AccountSection() {
       <ConfirmDialog
         open={confirmingDelete}
         title="Delete your account?"
-        body="Every thread, entry, note and synthesis will be permanently deleted, along with your account itself. This cannot be undone and we cannot restore it. Deleting your account does not cancel a subscription — cancel that in your App Store or Play Store account settings."
+        body="Every thread, entry, note and synthesis will be permanently deleted, along with your account itself. This cannot be undone and we cannot restore it."
         confirmLabel="Delete my account"
         requireTyped="DELETE"
         busy={deleting}

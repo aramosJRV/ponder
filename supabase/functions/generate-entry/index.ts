@@ -17,9 +17,16 @@
 // and no fallback: unresolvable citations are dropped and logged, and the
 // entry is written without them. A missing citation is a cosmetic loss; a
 // fabricated one is not.
+//
+// Affirming entries may also carry one song. The model proposes a title and
+// artist only — never a URL or track id — and spotify.ts must find a real
+// track whose name and artist actually match before anything is stored. Same
+// rule as scripture: model output never becomes something the reader taps.
+// Challenge entries never get a song, by design.
 
 import { createClient, SupabaseClient } from "npm:@supabase/supabase-js@2";
 import * as jose from "npm:jose@5";
+import { resolveSong, type Song, spotifyConfigured } from "./spotify.ts";
 
 // ---------------------------------------------------------------- config
 
@@ -58,6 +65,235 @@ function modelFor(entryType: string, attempt: number): string {
   return entryType === "challenge" ? MODEL_CHALLENGE : MODEL_AFFIRMING;
 }
 
+// ---------------------------------------------------------------- spend
+//
+// Ponder is free, so the model bill is no longer bounded by what users pay.
+// It is bounded here instead: every Anthropic call records what it actually
+// cost, read from the response's `usage` block and never estimated, and
+// public.generation_allowed() refuses to start new work once the month's
+// ceiling is reached. See migration 20260823000002.
+//
+// USD per million tokens.
+const PRICING: Record<string, { in: number; out: number }> = {
+  "claude-sonnet-4-6": { in: 3, out: 15 },
+  "claude-haiku-4-5-20251001": { in: 1, out: 5 },
+};
+
+// An unknown model is priced as the expensive one. Guessing low here would
+// let a model swap quietly blow through the ceiling.
+const FALLBACK_PRICE = { in: 3, out: 15 };
+
+interface Usage {
+  input_tokens?: number;
+  output_tokens?: number;
+  cache_read_input_tokens?: number;
+  cache_creation_input_tokens?: number;
+}
+
+/** Cache reads bill at 10% of input, cache writes at 125%. Batch is half. */
+function usdCost(model: string, u: Usage, batch = false): number {
+  const p = PRICING[model] ?? FALLBACK_PRICE;
+  const cost =
+    ((u.input_tokens ?? 0) * p.in +
+      (u.cache_read_input_tokens ?? 0) * p.in * 0.1 +
+      (u.cache_creation_input_tokens ?? 0) * p.in * 1.25 +
+      (u.output_tokens ?? 0) * p.out) /
+    1_000_000;
+  return batch ? cost / 2 : cost;
+}
+
+/**
+ * Write one ledger row. Best-effort by design: a failed ledger write must
+ * never fail the generation that already happened and already cost money.
+ * A missing row understates spend, which the reconciliation query catches;
+ * a thrown error would lose the user their entry.
+ */
+async function recordSpend(
+  db: SupabaseClient,
+  kind: string,
+  model: string,
+  usage: Usage,
+  opts: { batch?: boolean; userId?: string | null; detail?: Record<string, unknown> } = {},
+): Promise<void> {
+  try {
+    await db.rpc("record_spend", {
+      p_kind: kind,
+      p_model: model,
+      p_input_tokens: usage.input_tokens ?? 0,
+      p_output_tokens: usage.output_tokens ?? 0,
+      p_cache_read_tokens: usage.cache_read_input_tokens ?? 0,
+      p_cache_write_tokens: usage.cache_creation_input_tokens ?? 0,
+      p_usd_cost: usdCost(model, usage, opts.batch ?? false),
+      p_user_id: opts.userId ?? null,
+      p_detail: opts.detail ?? {},
+    });
+  } catch (e) {
+    console.error(`record_spend failed (${kind}/${model}): ${e}`);
+  }
+}
+
+/**
+ * The runaway tripwire. CRON AND BATCH PATHS ONLY — never the user path.
+ *
+ * These thresholds are not a budget; they sit far above real usage, so a
+ * false return means something in this file is misbehaving. Fails CLOSED on
+ * RPC error: if we cannot tell what we have spent, we do not start a batch.
+ * The pool covers the user-facing consequence either way.
+ */
+async function generationAllowed(db: SupabaseClient): Promise<boolean> {
+  const { data, error } = await db.rpc("generation_allowed");
+  if (error) {
+    console.error(`generation_allowed check failed: ${error.message}`);
+    return false;
+  }
+  return data === true;
+}
+
+// ----------------------------------------------------------------- pool
+//
+// The shared entry library (migration 20260823000003). Ponder is free and the
+// user experience must not change because generation failed — and generation
+// can fail for reasons no amount of credit fixes: an Anthropic outage, a rate
+// limit, a bug in this file. The pool is what covers those.
+//
+// It is tried FIRST, not last, when a thread has a confident theme: a pooled
+// entry costs nothing, was verse-validated at build time, and is
+// indistinguishable to the reader from a freshly written one.
+
+/** Cached for the lifetime of this function instance — themes change rarely. */
+let THEME_CACHE: Array<{ id: string; slug: string; title: string; description: string }> | null = null;
+
+async function loadThemes(db: SupabaseClient) {
+  if (THEME_CACHE) return THEME_CACHE;
+  const { data, error } = await db.from("entry_themes")
+    .select("id, slug, title, description").eq("active", true).order("slug");
+  if (error) { console.warn(`loadThemes: ${error.message}`); return []; }
+  THEME_CACHE = data ?? [];
+  return THEME_CACHE;
+}
+
+const CLASSIFY_TOOL = {
+  name: "record_theme",
+  description: "Record which theme best matches this thread.",
+  input_schema: {
+    type: "object",
+    properties: {
+      slug: { type: "string", description: "The slug of the best-matching theme, or the empty string if none fits well." },
+      confidence: { type: "number", description: "0 to 1. How well the chosen theme actually covers this thread." },
+    },
+    required: ["slug", "confidence"],
+  },
+} as const;
+
+/**
+ * Give a thread a theme, once, so the pool can serve it.
+ *
+ * Runs lazily here rather than at thread creation on purpose: it is one place
+ * instead of two, it needs no client change, and it self-heals — threads that
+ * existed before the pool, or whose classification failed, get picked up on
+ * their next generation.
+ *
+ * Being honest about a poor match matters more than assigning something. A
+ * thread classified into a theme it doesn't really belong to gets pooled
+ * entries that miss, which the user CAN feel; a thread left unclassified just
+ * costs a few cents a month in per-user generation. The prompt is written to
+ * push toward the empty string, and select_pool_entry() ignores anything
+ * under pool_confidence_floor().
+ */
+// deno-lint-ignore no-explicit-any
+async function ensureTheme(db: SupabaseClient, topic: any): Promise<void> {
+  if (topic.theme_classified_at) return;   // already tried, don't pay twice
+
+  const themes = await loadThemes(db);
+  if (!themes.length) return;
+
+  const list = themes.map((t) => `- ${t.slug}: ${t.title} — ${t.description}`).join("\n");
+  const thread = `Title: ${topic.title}\nDescription: ${topic.description ?? "(none)"}`;
+
+  let slug = "";
+  let confidence = 0;
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: anthropicHeaders(),
+      body: JSON.stringify({
+        model: MODEL_AFFIRMING,   // cheapest model; this is a matching task
+        max_tokens: 256,
+        system:
+          "You match a personal spiritual-discernment thread to one theme from a fixed list. " +
+          "Answer with the slug of the theme whose description genuinely covers what this person is " +
+          "sitting with. If no theme is a real match, return an empty slug — that is a correct and " +
+          "expected answer, and far better than forcing a loose fit. Confidence should reflect how " +
+          "well the theme covers the WHOLE thread, not just a keyword in it.",
+        tools: [CLASSIFY_TOOL],
+        tool_choice: { type: "tool", name: "record_theme" },
+        messages: [{ role: "user", content: `Themes:\n${list}\n\nThread:\n${thread}` }],
+      }),
+    });
+    if (!res.ok) throw new Error(`Anthropic API ${res.status}`);
+    const data = await res.json();
+    await recordSpend(db, "classify", MODEL_AFFIRMING, (data.usage ?? {}) as Usage, {
+      userId: topic.user_id, detail: { topic_id: topic.id },
+    });
+    const block = (data.content ?? []).find((b: { type: string }) => b.type === "tool_use");
+    slug = String(block?.input?.slug ?? "").trim();
+    confidence = Number(block?.input?.confidence ?? 0);
+  } catch (e) {
+    console.warn(`ensureTheme failed for ${topic.id}: ${e}`);
+    return;   // leave unclassified; it will retry next time
+  }
+
+  const match = themes.find((t) => t.slug === slug);
+  const patch = {
+    theme_id: match?.id ?? null,
+    theme_confidence: match ? confidence : 0,
+    theme_classified_at: new Date().toISOString(),
+  };
+  const { error } = await db.from("topics").update(patch).eq("id", topic.id);
+  if (error) { console.warn(`ensureTheme update: ${error.message}`); return; }
+
+  // Keep the in-memory copy consistent so the caller can use it immediately.
+  topic.theme_id = patch.theme_id;
+  topic.theme_confidence = patch.theme_confidence;
+  topic.theme_classified_at = patch.theme_classified_at;
+}
+
+/**
+ * Serve today from the pool if it can. Returns true when a daily_entries row
+ * now exists because of the pool.
+ *
+ * Best-effort throughout: any error here falls through to live generation
+ * rather than failing the day.
+ */
+async function tryPool(
+  db: SupabaseClient,
+  topicId: string,
+  date: string,
+  entryType: string,
+): Promise<boolean> {
+  try {
+    const { data: poolId, error } = await db.rpc("select_pool_entry", {
+      p_topic_id: topicId,
+      p_entry_type: entryType,
+    });
+    if (error) { console.warn(`select_pool_entry: ${error.message}`); return false; }
+    if (!poolId) return false;   // no theme, low confidence, or pool exhausted
+
+    const { data: newId, error: serveErr } = await db.rpc("serve_pool_entry", {
+      p_topic_id: topicId,
+      p_date: date,
+      p_pool_id: poolId,
+    });
+    if (serveErr) { console.warn(`serve_pool_entry: ${serveErr.message}`); return false; }
+    // null means the day was already filled by someone else — also a success
+    // from the caller's point of view: the user has an entry.
+    return newId !== null;
+  } catch (e) {
+    console.warn(`tryPool failed for ${topicId}: ${e}`);
+    return false;
+  }
+}
+
 // The topic's seed passage may be chosen again as a daily entry. Set this to a
 // positive number of days to suppress it for a topic's opening stretch (avoids
 // the "it just gave me back the verse I typed in" moment in week one).
@@ -65,7 +301,10 @@ function modelFor(entryType: string, attempt: number): string {
 const SEED_VERSE_COOLDOWN_DAYS = 0;
 
 const TOPIC_COLS =
-  "id, user_id, title, description, created_at, seed_verse_ref, seed_verse_text";
+  "id, user_id, title, description, created_at, seed_verse_ref, seed_verse_text, " +
+  // ensureTheme() needs these to know whether it has already run for this
+  // thread, and tryPool() reads the result straight after.
+  "theme_id, theme_confidence, theme_classified_at";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -121,6 +360,7 @@ Non-negotiable guardrails:
 6. Use the World English Bible naming: "Psalms" (not "Psalm") as the book name in references.
 7. cross_refs is a citation list shown to the reader as a footnote, not a decoration. Include a passage there ONLY if it genuinely informed what you wrote — a passage that gave the main text its context, or one whose idea you actually used. An empty list is the correct answer most of the time. Never list a passage you have not thought about, never list one merely because it shares a keyword, and never list the main passage again. Every reference is checked against the World English Bible before the reader sees it, and anything that does not exist is silently discarded — so a half-remembered reference costs you the citation.
 8. The passage text is shown to the reader verbatim (World English Bible) directly above your writing. Do NOT reproduce the passage as a full quotation in your thought or illustration — you will misremember the exact wording and contradict the text on screen (e.g. writing "the LORD" where the WEB reads "Yahweh", or adding words like "both"). Refer to the passage instead: describe what it says, and quote at most a short distinctive phrase of a few words. Never present a reconstructed full-verse quotation.
+9. song is OPTIONAL and applies to AFFIRMING entries only — never include a song on a challenge entry. It is looked up on Spotify before the reader sees it, and a song that cannot be found, or whose artist you have misremembered, is silently discarded, so accuracy beats ambition. Name a song you are confident actually exists under that exact title by that exact artist. Hymns and older worship songs need a specific recording artist, not "Traditional". Stay within Christian worship, hymnody and contemporary Christian music — this is a devotional journal, not a general playlist. Do not default to whatever is most popular: the same handful of songs across every entry is a failure.
 
 You will be told whether to write an "affirming" or a "challenge" entry:
 - affirming: sits inside the user's sense of the thread and deepens it.
@@ -179,6 +419,17 @@ const DEVOTIONAL_TOOL = {
           },
         },
       },
+      song: {
+        type: "object",
+        additionalProperties: false,
+        required: ["title", "artist"],
+        description:
+          "OPTIONAL, affirming entries only. One worship song, hymn or CCM track that genuinely fits today's passage and posture. Omit entirely on challenge entries, and omit whenever nothing real comes to mind — an omitted song costs nothing, an invented one costs the reader's trust.",
+        properties: {
+          title: { type: "string", description: "Exact song title as released" },
+          artist: { type: "string", description: "Primary recording artist of a real recording" },
+        },
+      },
     },
   },
 };
@@ -215,9 +466,48 @@ function displayRef(book: string, chapter: number, start: number, end: number) {
   return start === end ? `${b} ${chapter}:${start}` : `${b} ${chapter}:${start}-${end}`;
 }
 
+/** 429 and 5xx are transient. 400/401/403 are our bug and retrying wastes money. */
+function isTransient(status: number): boolean {
+  return status === 429 || status === 408 || status >= 500;
+}
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * One Anthropic call, with backoff on transient failures.
+ *
+ * Three attempts at 1s / 4s. Ponder's users are not sitting watching a
+ * spinner for most of these — the nightly path has hours of slack — and an
+ * outage or a rate limit is exactly the case where the pool is the safety
+ * net rather than the retry. Retrying harder than this just moves a failure
+ * later; the fallback chain is what actually protects the user.
+ */
 async function callClaude(
   messages: unknown[],
   model: string,
+  ledger?: { db: SupabaseClient; kind: string; userId?: string | null; detail?: Record<string, unknown> },
+): Promise<Record<string, unknown>> {
+  let lastErr = "";
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      return await callClaudeOnce(messages, model, ledger);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      lastErr = msg;
+      const status = Number(/Anthropic API (\d{3})/.exec(msg)?.[1] ?? 0);
+      // A non-transient status, or the last attempt: give up now.
+      if (attempt === 3 || (status && !isTransient(status))) throw e;
+      console.warn(`callClaude attempt ${attempt} failed (${msg}) — retrying`);
+      await sleep(attempt === 1 ? 1000 : 4000);
+    }
+  }
+  throw new Error(lastErr || "callClaude exhausted retries");
+}
+
+async function callClaudeOnce(
+  messages: unknown[],
+  model: string,
+  ledger?: { db: SupabaseClient; kind: string; userId?: string | null; detail?: Record<string, unknown> },
 ): Promise<Record<string, unknown>> {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -256,10 +546,25 @@ async function callClaude(
     throw new Error(`Anthropic API ${res.status}: ${body.slice(0, 500)}`);
   }
   const data = await res.json();
+  // Record before validating the payload: the tokens were spent either way,
+  // and a run of unusable responses is exactly what the ledger should show.
+  if (ledger) {
+    await recordSpend(ledger.db, ledger.kind, model, (data.usage ?? {}) as Usage, {
+      userId: ledger.userId,
+      detail: ledger.detail,
+    });
+  }
   const toolUse = (data.content ?? []).find((b: { type: string }) => b.type === "tool_use");
   if (!toolUse?.input) throw new Error("No tool_use block in model response");
   return toolUse.input as Record<string, unknown>;
 }
+
+// Minimum lengths, in CHARACTERS not words. The tool schema asks for an
+// 80-150 word thought and a 100-180 word illustration, which is roughly
+// 450-900 and 550-1100 characters — so these floors only catch a model that
+// returned something drastically short, not one that ran a little under.
+const MIN_THOUGHT_CHARS = 100;
+const MIN_ILLUSTRATION_CHARS = 100;
 
 // defensive extraction of the model payload
 function parsePayload(raw: Record<string, unknown>) {
@@ -279,17 +584,71 @@ function parsePayload(raw: Record<string, unknown>) {
 
   const thought = String(raw.thought ?? "").trim();
   const illustration = String(raw.illustration ?? "").trim();
-  const ponder = strArr(raw.ponder, 2, 3);
-  const prayer_prompts = strArr(raw.prayer_prompts, 2, 3);
+  // Tolerance, not target. The tool schema still asks for minItems: 2, and
+  // almost every response obliges — but when a model returns one question
+  // instead of two, throwing the whole entry away is the wrong trade. It
+  // costs another paid generation, and a reflection with one good question
+  // is a fine day; no entry at all is not.
+  //
+  // Measured 2026-08-23 against production: successful entries run 626-755
+  // chars of thought and 464-682 of illustration, with 2-3 ponder items. The
+  // ~40% that failed had normal output-token counts (506-638 against a 2048
+  // cap), so they were NOT truncated and NOT empty — the most likely cause
+  // left is an array arriving with a single item. This absorbs that.
+  const ponder = strArr(raw.ponder, 1, 3);
+  const prayer_prompts = strArr(raw.prayer_prompts, 1, 3);
 
   if (!book || !Number.isInteger(chapter) || !Number.isInteger(verse_start)) {
-    throw new Error("Malformed verse reference in model output");
+    throw new Error(
+      `Malformed verse reference in model output (book=${JSON.stringify(book)} ` +
+      `chapter=${v?.chapter} verse_start=${v?.verse_start})`,
+    );
   }
-  if (thought.length < 100 || illustration.length < 100 || !ponder || !prayer_prompts) {
-    throw new Error("Malformed content fields in model output");
+  // Name the field and the measurement. This check previously threw one
+  // identical message for four different causes, which made a sustained ~40%
+  // failure rate impossible to diagnose from generation_failures alone.
+  const contentProblems: string[] = [];
+  if (thought.length < MIN_THOUGHT_CHARS) {
+    contentProblems.push(`thought ${thought.length} chars (min ${MIN_THOUGHT_CHARS})`);
+  }
+  if (illustration.length < MIN_ILLUSTRATION_CHARS) {
+    contentProblems.push(`illustration ${illustration.length} chars (min ${MIN_ILLUSTRATION_CHARS})`);
+  }
+  if (!ponder) {
+    contentProblems.push(
+      `ponder ${Array.isArray(raw.ponder) ? `${(raw.ponder as unknown[]).length} items` : typeof raw.ponder}`,
+    );
+  }
+  if (!prayer_prompts) {
+    contentProblems.push(
+      `prayer_prompts ${Array.isArray(raw.prayer_prompts) ? `${(raw.prayer_prompts as unknown[]).length} items` : typeof raw.prayer_prompts}`,
+    );
+  }
+  if (contentProblems.length) {
+    // Carry the shape of what actually arrived. Without this the next
+    // occurrence is as undiagnosable as the last one was.
+    const shape = Object.keys(raw)
+      .map((k) => `${k}:${Array.isArray(raw[k]) ? `[${(raw[k] as unknown[]).length}]` : typeof raw[k]}`)
+      .join(",");
+    throw new Error(
+      `Malformed content fields in model output: ${contentProblems.join("; ")} | shape ${shape}`,
+    );
   }
   const cross_refs = parseCrossRefs(raw.cross_refs);
-  return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts, cross_refs };
+  const song = parseSong(raw.song);
+  return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts, cross_refs, song };
+}
+
+// Shape-only pass, same posture as parseCrossRefs. A bad song must never
+// fail the entry — it is dropped later if Spotify can't confirm it.
+function parseSong(x: unknown): { title: string; artist: string } | null {
+  if (!x || typeof x !== "object" || Array.isArray(x)) return null;
+  const o = x as Record<string, unknown>;
+  const title = String(o.title ?? "").trim();
+  const artist = String(o.artist ?? "").trim();
+  if (!title || !artist) return null;
+  if (title.length > 200 || artist.length > 200) return null;
+  return { title, artist };
 }
 
 type CrossRefInput = { book: string; chapter: number; verse_start: number; verse_end: number };
@@ -363,7 +722,7 @@ async function validateCrossRefs(
 // --------------------------------------------------------- prompt builder
 
 // deno-lint-ignore no-explicit-any
-function buildUserPrompt(topic: any, recent: any[], usedRefs: string[], notes: any[], entryType: string, blockedRecent: string[]) {
+function buildUserPrompt(topic: any, recent: any[], usedRefs: string[], notes: any[], entryType: string, blockedRecent: string[], usedSongs: string[]) {
   const recentBlock = recent.length
     ? recent.map((e) =>
         `- ${e.date} [${e.entry_type}] ${e.verse_ref}: ${String(e.thought).slice(0, 160)}...`,
@@ -378,6 +737,14 @@ function buildUserPrompt(topic: any, recent: any[], usedRefs: string[], notes: a
 ${topic.seed_verse_ref} — "${String(topic.seed_verse_text ?? "").slice(0, 600)}"
 Do not build today's entry around this passage. Use it only to understand where the person started.`
     : "ORIGIN PASSAGE: (none given)";
+
+  // The prompt-side repeat guard. The server-side track-id block in
+  // finalizeEntry is only a backstop — this is what actually keeps the
+  // songs varied, and it matters more now that the brief is worship-only.
+  const songBlock = entryType === "challenge"
+    ? `SONG: do not include a song today. Challenge entries carry no song.`
+    : `SONGS ALREADY USED IN THIS THREAD (do not repeat any of these):
+${usedSongs.length ? usedSongs.map((t) => `- ${t}`).join("\n") : "(none yet)"}`;
 
   return `THREAD: ${topic.title}
 USER'S OWN WORDS ABOUT IT: ${topic.description || "(none provided)"}
@@ -394,6 +761,8 @@ ${usedRefs.length ? usedRefs.join("; ") : "(none)"}
 
 ALSO AVOID these references (used recently across the user's other threads):
 ${blockedRecent.length ? blockedRecent.join("; ") : "(none)"}
+
+${songBlock}
 
 RECENT USER NOTES (their own reflections — weave awareness of these in gently, without quoting them back verbatim):
 ${notesBlock}
@@ -459,6 +828,16 @@ async function buildContext(
     .select("verse_ref").eq("user_id", userId).neq("topic_id", topicId).gte("date", cutoff);
   const blockedRecent = [...new Set((crossTopic ?? []).map((e) => e.verse_ref as string))];
 
+  // Songs this thread has already used, for the prompt-side do-not-repeat
+  // list. Newest first, capped — the model does not need the full history.
+  const { data: songRows } = await db.from("daily_entries")
+    .select("song").eq("topic_id", topicId).not("song", "is", null)
+    .order("date", { ascending: false }).limit(40);
+  const usedSongs = (songRows ?? [])
+    // deno-lint-ignore no-explicit-any
+    .map((r: any) => r.song?.name && r.song?.artist ? `${r.song.name} — ${r.song.artist}` : null)
+    .filter(Boolean) as string[];
+
   const { data: notes } = await db.from("notes")
     .select("body, created_at").eq("topic_id", topicId)
     .order("created_at", { ascending: false }).limit(5);
@@ -481,7 +860,7 @@ async function buildContext(
     ? [...blockedRecent, seedRef as string]
     : blockedRecent;
 
-  const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedForPrompt);
+  const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedForPrompt, usedSongs);
 
   return {
     topicId,
@@ -556,6 +935,29 @@ async function finalizeEntry(
     });
   } catch { /* citations are optional; an entry without them is still valid */ }
 
+  // Song of the day — affirming entries only, resolved against Spotify,
+  // never allowed to fail the entry. A challenge entry is meant to arrive
+  // quieter; the absence is the signal, not an omission.
+  let song: Song | null = null;
+  try {
+    if (p.song && entryType !== "challenge" && spotifyConfigured()) {
+      const { data: used } = await db.from("daily_entries")
+        .select("song").eq("topic_id", topicId).not("song", "is", null)
+        .order("date", { ascending: false }).limit(200);
+      const blockedTracks = new Set<string>(
+        // deno-lint-ignore no-explicit-any
+        (used ?? []).map((r: any) => r.song?.track_id).filter(Boolean),
+      );
+      song = await resolveSong(p.song, blockedTracks);
+      if (!song) {
+        await db.from("generation_failures").insert({
+          topic_id: topicId, user_id: userId, date, stage: "song_dropped",
+          detail: { asked: p.song, model: modelUsed },
+        });
+      }
+    }
+  } catch { /* a song is decoration; an entry without one is still an entry */ }
+
   const { error: insErr } = await db.from("daily_entries").insert({
     topic_id: topicId,
     user_id: userId,
@@ -573,6 +975,7 @@ async function finalizeEntry(
     entry_type: entryType,
     fallback_used: fallbackUsed,
     cross_refs: crossRefs,
+    song,
   });
   if (insErr) {
     if (insErr.code === "23505") return { topic_id: topicId, status: "exists", date };
@@ -583,6 +986,7 @@ async function finalizeEntry(
     entry_type: entryType, fallback_used: fallbackUsed,
     model: modelUsed,
     cross_refs: crossRefs.map((c) => c.ref),
+    song: song?.track_id ?? null,
   };
 }
 
@@ -605,15 +1009,28 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
   const { date, entryType, messages } = ctx;
   const isUsed = (ref: string) => ctx.blocked.includes(ref);
 
+  // Pool first. Free, instant, already validated. Only threads whose theme
+  // the classifier was confident about are eligible — see select_pool_entry().
+  await ensureTheme(db, topic);
+  if (await tryPool(db, topicId, date, entryType)) {
+    return { topic_id: topicId, status: "created", date, source: "pool" };
+  }
+
   let payload: ReturnType<typeof parsePayload> | null = null;
   let verses: VerseRow[] | null = null;
   let modelUsed = modelFor(entryType, 1);
 
-  // attempt 1 + retry once with error feedback (retry escalates to Sonnet)
+  // attempt 1 + retry once with error feedback (retry escalates to Sonnet).
+  // callClaude already backs off internally on 429/5xx, so reaching the catch
+  // below means either a validation failure or a genuine outage — both end at
+  // the pool fallback under the loop.
   for (let attempt = 1; attempt <= 2 && !verses; attempt++) {
     modelUsed = modelFor(entryType, attempt);
     try {
-      const raw = await callClaude(messages, modelUsed);
+      const raw = await callClaude(messages, modelUsed, {
+        db, kind: "entry", userId: ctx.userId,
+        detail: { topic_id: ctx.topicId, date: ctx.date, attempt, path: "sync" },
+      });
       payload = parsePayload(raw);
       const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
       if (isUsed(ref)) throw new Error(`Reference ${ref} is on the do-not-use list`);
@@ -639,11 +1056,192 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
   }
 
   if (!payload) {
+    // The model path is exhausted. Try the pool once more with the opposite
+    // entry type before giving up: a challenge entry when an affirming one
+    // was wanted is a far better day than no entry at all.
+    const other = entryType === "challenge" ? "affirming" : "challenge";
+    if (await tryPool(db, topicId, date, other)) {
+      return { topic_id: topicId, status: "created", date, source: "pool_fallback" };
+    }
     return { topic_id: topicId, status: "failed", date, error: "model output unusable after retry" };
   }
   // finalizeEntry re-resolves and applies the curated fallback if needed, so
   // an exhausted retry loop still produces an entry rather than a gap.
   return await finalizeEntry(db, topic, ctx, payload, modelUsed);
+}
+
+// -------------------------------------------------------- pool building
+//
+// Writes entries into the shared library. This is the ONLY place model money
+// is spent at scale once the pool is warm: the nightly job serves themed
+// threads from here for free, so the bill scales with the number of THEMES,
+// not the number of users.
+//
+// Synchronous and deliberately small per invocation. Edge functions have a
+// wall-clock limit, and a top-up that quietly times out half way is worse
+// than one that does ten and says so. Call it repeatedly, or let the pg_cron
+// top-up job do it.
+
+const POOL_BUILD_MAX = 10;
+
+/** How deep each theme should be kept, per entry type. */
+const POOL_TARGET_AFFIRMING = 120;
+const POOL_TARGET_CHALLENGE = 40;
+
+function poolPrompt(
+  theme: { title: string; description: string },
+  entryType: string,
+  dayIndex: number,
+  avoidRefs: string[],
+): string {
+  return `THEME: ${theme.title}
+WHAT SOMEONE ON THIS THREAD IS SITTING WITH: ${theme.description}
+
+ENTRY TYPE FOR TODAY: ${entryType}
+
+WHERE THEY ARE IN IT: roughly day ${dayIndex} of this thread. ${
+    dayIndex <= 14
+      ? "Early days — they are still naming the thing. Do not assume months of history."
+      : dayIndex <= 90
+        ? "Some weeks in. They have sat with this a while and the first energy has gone."
+        : "A long haul. Assume tiredness, and the particular ache of a thing that has not resolved."
+  }
+
+DO NOT USE any of these verse references (already in the library for this theme):
+${avoidRefs.length ? avoidRefs.join("; ") : "(none)"}
+
+IMPORTANT — this entry will be read by someone whose own words you have not seen. Write for the theme itself, honestly and concretely, but do NOT invent specifics about their circumstances (no assumed spouse, job, diagnosis, city, or age) and do not address them as though you know facts about them. Second person is fine; assumed biography is not.
+
+Write this ${entryType} entry now. Choose the passage first, ensuring its full context genuinely supports your use of it, then write the entry around it. Call record_devotional exactly once.`;
+}
+
+/**
+ * Generate and store up to POOL_BUILD_MAX pool entries.
+ *
+ * Picks the shallowest theme/type when not told which, so repeated calls fill
+ * the library evenly instead of over-serving whichever theme was asked for
+ * first.
+ */
+async function buildPool(
+  db: SupabaseClient,
+  opts: { themeSlug?: string; entryType?: string; count?: number },
+) {
+  const want = Math.min(opts.count ?? POOL_BUILD_MAX, POOL_BUILD_MAX);
+  const themes = await loadThemes(db);
+  if (!themes.length) return { built: 0, reason: "no themes" };
+
+  // Current depth per (theme, type).
+  const { data: depth } = await db.rpc("pool_depth");
+  const have = new Map<string, number>();
+  for (const row of (depth ?? []) as Array<Record<string, unknown>>) {
+    have.set(`${row.slug}:${row.entry_type}`, Number(row.available));
+  }
+
+  // Candidate slots, shallowest first.
+  type Slot = { theme: typeof themes[number]; entryType: string; deficit: number };
+  const slots: Slot[] = [];
+  for (const theme of themes) {
+    if (opts.themeSlug && theme.slug !== opts.themeSlug) continue;
+    for (const [entryType, target] of [
+      ["affirming", POOL_TARGET_AFFIRMING],
+      ["challenge", POOL_TARGET_CHALLENGE],
+    ] as const) {
+      if (opts.entryType && entryType !== opts.entryType) continue;
+      const deficit = target - (have.get(`${theme.slug}:${entryType}`) ?? 0);
+      if (deficit > 0) slots.push({ theme, entryType, deficit });
+    }
+  }
+  if (!slots.length) return { built: 0, reason: "pool is at target depth" };
+
+  // Sort by how FAR BEHIND target a slot is proportionally, not by absolute
+  // deficit. Absolute deficit always favoured affirming (target 120) over
+  // challenge (target 40), so the first several hundred builds would have been
+  // affirming-only — and every challenge entry would have fallen through to
+  // live per-user generation, quietly defeating the point of the pool.
+  const shortfall = (s: Slot) => {
+    const target = s.entryType === "affirming" ? POOL_TARGET_AFFIRMING : POOL_TARGET_CHALLENGE;
+    return s.deficit / target;
+  };
+  slots.sort((a, b) => shortfall(b) - shortfall(a));
+
+  const results: Array<Record<string, unknown>> = [];
+  let built = 0;
+
+  for (let i = 0; i < want; i++) {
+    const slot = slots[i % slots.length];
+
+    // Verses already in the library for this theme, so the pool spreads
+    // across the canon instead of circling the same twenty passages.
+    const { data: existing } = await db.from("entry_pool")
+      .select("verse_ref, day_index")
+      .eq("theme_id", slot.theme.id)
+      .eq("retired", false);
+    const avoid = [...new Set((existing ?? []).map((r) => String(r.verse_ref)))];
+
+    // Spread day_index across a year rather than clustering at 0.
+    const dayIndex = (( (existing?.length ?? 0) * 37) % 365);
+
+    const model = modelFor(slot.entryType, 1);
+    try {
+      const raw = await callClaude(
+        [{ role: "user", content: poolPrompt(slot.theme, slot.entryType, dayIndex, avoid) }],
+        model,
+        { db, kind: "pool_build", detail: { theme: slot.theme.slug, entry_type: slot.entryType } },
+      );
+      const payload = parsePayload(raw);
+
+      // Validate the verse HERE, once, so it is never validated per user.
+      // This is the quiet win of the pool: a bad reference never reaches
+      // anybody, and the retry cost is paid once instead of per reader.
+      const verses = await resolveVerse(
+        db, payload.book, payload.chapter, payload.verse_start, payload.verse_end,
+      );
+      if (!verses) {
+        await db.from("generation_failures").insert({
+          stage: "pool_verse_resolution",
+          detail: { theme: slot.theme.slug, ref: `${payload.book} ${payload.chapter}:${payload.verse_start}`, model },
+        });
+        results.push({ theme: slot.theme.slug, status: "verse_failed" });
+        continue;
+      }
+
+      const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
+      const { error } = await db.from("entry_pool").insert({
+        theme_id: slot.theme.id,
+        day_index: dayIndex,
+        entry_type: slot.entryType,
+        verse_ref: ref,
+        book_number: verses[0].book_number,
+        chapter: payload.chapter,
+        verse_start: payload.verse_start,
+        verse_end: payload.verse_end,
+        verse_text: verses.map((v) => v.text).join(" "),
+        thought: payload.thought,
+        illustration: payload.illustration,
+        ponder: payload.ponder,
+        prayer_prompts: payload.prayer_prompts,
+        model,
+      });
+      if (error) {
+        results.push({ theme: slot.theme.slug, status: "insert_failed", error: error.message });
+        continue;
+      }
+      built++;
+      results.push({ theme: slot.theme.slug, entry_type: slot.entryType, ref, status: "built" });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      await db.from("generation_failures").insert({
+        stage: "pool_build",
+        detail: { theme: slot.theme.slug, error: msg, model },
+      });
+      results.push({ theme: slot.theme.slug, status: "failed", error: msg });
+      // An outage will fail every remaining slot too — stop rather than
+      // hammering it and burning the retry budget.
+      if (/Anthropic API (5\d\d|429)/.test(msg)) break;
+    }
+  }
+
+  return { built, results };
 }
 
 // -------------------------------------------------------------- batching
@@ -700,6 +1298,7 @@ async function submitBatch(
   const requests: unknown[] = [];
   const items: Record<string, unknown>[] = [];
   let skipped = 0;
+  let pooled = 0;
 
   for (const topic of topics) {
     let ctx: EntryContext | null = null;
@@ -710,6 +1309,16 @@ async function submitBatch(
       continue;
     }
     if (!ctx) { skipped++; continue; } // already has today's entry
+
+    // Pool first, before anything is put in the batch. This is where the
+    // money is actually saved: a themed thread never reaches the model at
+    // all, so the nightly bill scales with the number of THEMES, not the
+    // number of users.
+    await ensureTheme(db, topic);
+    if (await tryPool(db, ctx.topicId, ctx.date, ctx.entryType)) {
+      pooled++;
+      continue;
+    }
 
     const customId = `${ctx.topicId}_${ctx.date}`;
     requests.push({
@@ -731,7 +1340,7 @@ async function submitBatch(
   }
 
   if (!requests.length) {
-    return { submitted: 0, skipped, batch_id: null };
+    return { submitted: 0, skipped, pooled, batch_id: null };
   }
 
   const res = await fetch(BATCH_API, {
@@ -755,10 +1364,17 @@ async function submitBatch(
     .insert(items.map((i) => ({ ...i, batch_id: row.id })));
   if (itemErr) throw new Error(`recording batch items failed: ${itemErr.message}`);
 
-  return { submitted: requests.length, skipped, batch_id: batch.id };
+  return { submitted: requests.length, skipped, pooled, batch_id: batch.id };
 }
 
-/** Pull one JSONL results stream into custom_id -> tool payload (or error). */
+/**
+ * Pull one JSONL results stream into custom_id -> tool payload (or error).
+ *
+ * Also totals the `usage` block of every succeeded row, per model, so the
+ * batch's cost can be ledgered in one write rather than one per entry. A
+ * failed row still burned input tokens, but Anthropic does not bill for it,
+ * so only succeeded rows are counted.
+ */
 async function fetchBatchResults(resultsUrl: string) {
   const res = await fetch(resultsUrl, { headers: anthropicHeaders() });
   if (!res.ok) {
@@ -766,6 +1382,7 @@ async function fetchBatchResults(resultsUrl: string) {
   }
   const text = await res.text();
   const out = new Map<string, { ok: true; input: Record<string, unknown> } | { ok: false; error: string }>();
+  const usageByModel = new Map<string, Usage & { rows: number }>();
 
   for (const line of text.split("\n")) {
     if (!line.trim()) continue;
@@ -777,7 +1394,20 @@ async function fetchBatchResults(resultsUrl: string) {
         out.set(id, { ok: false, error: row.result?.type ?? "unknown result type" });
         continue;
       }
-      const block = (row.result.message?.content ?? [])
+
+      const msg = row.result.message ?? {};
+      const model = String(msg.model ?? "unknown");
+      const u = (msg.usage ?? {}) as Usage;
+      const acc = usageByModel.get(model) ??
+        { input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0, rows: 0 };
+      acc.input_tokens = (acc.input_tokens ?? 0) + (u.input_tokens ?? 0);
+      acc.output_tokens = (acc.output_tokens ?? 0) + (u.output_tokens ?? 0);
+      acc.cache_read_input_tokens = (acc.cache_read_input_tokens ?? 0) + (u.cache_read_input_tokens ?? 0);
+      acc.cache_creation_input_tokens = (acc.cache_creation_input_tokens ?? 0) + (u.cache_creation_input_tokens ?? 0);
+      acc.rows += 1;
+      usageByModel.set(model, acc);
+
+      const block = (msg.content ?? [])
         .find((b: { type: string }) => b.type === "tool_use");
       if (!block?.input) {
         out.set(id, { ok: false, error: "no tool_use block" });
@@ -788,7 +1418,7 @@ async function fetchBatchResults(resultsUrl: string) {
       /* a malformed line loses one entry, not the batch */
     }
   }
-  return out;
+  return { byId: out, usageByModel };
 }
 
 /**
@@ -833,7 +1463,15 @@ async function collectBatches(db: SupabaseClient) {
       continue;
     }
 
-    const results = await fetchBatchResults(info.results_url);
+    const { byId: results, usageByModel } = await fetchBatchResults(info.results_url);
+
+    // One ledger row per model per batch. Half price — this is the Batch API.
+    for (const [model, u] of usageByModel) {
+      await recordSpend(db, "entry", model, u, {
+        batch: true,
+        detail: { batch: batch.provider_batch_id, rows: u.rows, path: "batch" },
+      });
+    }
 
     const { data: items } = await db.from("generation_batch_items")
       .select("custom_id, topic_id, user_id, date, entry_type, detail")
@@ -882,7 +1520,17 @@ async function collectBatches(db: SupabaseClient) {
         });
       }
 
-      // Repair path: one synchronous Sonnet attempt.
+      // Repair path. Pool first — a free, already-validated entry beats
+      // spending Sonnet money to rescue a batch row.
+      if (!payload) {
+        if (await tryPool(db, ctx.topicId, ctx.date, ctx.entryType)) {
+          inserted++;
+          await markItem(db, batch.id, item.custom_id, "inserted", { source: "pool" });
+          continue;
+        }
+      }
+
+      // Still nothing: one synchronous Sonnet attempt.
       if (!payload) {
         try {
           const repaired = await buildContext(db, topic, ctx.date);
@@ -891,7 +1539,12 @@ async function collectBatches(db: SupabaseClient) {
             continue;
           }
           modelUsed = MODEL_CHALLENGE;
-          payload = parsePayload(await callClaude(repaired.messages, modelUsed));
+          payload = parsePayload(
+            await callClaude(repaired.messages, modelUsed, {
+              db, kind: "entry", userId: ctx.userId,
+              detail: { topic_id: ctx.topicId, date: ctx.date, path: "batch_repair" },
+            }),
+          );
           ctx.blocked = repaired.blocked;
         } catch (e) {
           await markItem(db, batch.id, item.custom_id, "failed", { error: String(e) });
@@ -954,41 +1607,17 @@ async function verifyPlatformJwt(token: string): Promise<string | null> {
 
 const SERVICE_ROLES = new Set(["service_role", "postgres", "supabase_admin"]);
 
-// ---------------------------------------------------------- entitlement
+// ------------------------------------------------------------ the gate
 //
-// The billing gate. Every path in this function that can reach the Anthropic
-// API passes through here, because the client-side check in
-// src/lib/entitlements.ts is a UI affordance, not a security boundary — this
-// endpoint is reachable with nothing but a user's JWT.
+// There is no billing gate any more — Ponder is free. What guards this
+// endpoint now is the monthly spend ceiling, checked in generationAllowed()
+// above. Every path that can reach the Anthropic API passes through it,
+// because the client-side check in src/lib/entitlements.ts is a UI
+// affordance, not a security boundary — this endpoint is reachable with
+// nothing but a user's JWT.
 //
-// Fails CLOSED: an RPC error means we do not generate. A transient database
-// error costs the user one day's entry; the alternative is an open endpoint
-// that bills tokens to whoever asks.
-
-async function isEntitled(db: SupabaseClient, userId: string): Promise<boolean> {
-  const { data, error } = await db.rpc("has_active_entitlement", {
-    p_user_id: userId,
-  });
-  if (error) {
-    console.error(`entitlement check failed for ${userId}: ${error.message}`);
-    return false;
-  }
-  return data === true;
-}
-
-/** Batch variant for the cron path — one round trip per distinct user. */
-async function entitledUserSet(
-  db: SupabaseClient,
-  userIds: string[],
-): Promise<Set<string>> {
-  const out = new Set<string>();
-  await Promise.all(
-    [...new Set(userIds)].map(async (id) => {
-      if (await isEntitled(db, id)) out.add(id);
-    }),
-  );
-  return out;
-}
+// has_active_entitlement() still exists and still answers truthfully; it just
+// no longer decides whether anyone may use the app. It decides how much.
 
 async function authorize(req: Request, db: SupabaseClient): Promise<
   { role: "service" } | { role: "user"; userId: string } | null
@@ -1032,11 +1661,35 @@ Deno.serve(async (req) => {
     topic_id?: string;
     force_date?: string;
     user_ids?: string[];
-    mode?: "batch_submit" | "batch_collect";
+    mode?: "batch_submit" | "batch_collect" | "pool_build";
+    theme_slug?: string;
+    entry_type?: string;
+    count?: number;
   } = {};
   try {
     body = await req.json();
   } catch { /* empty body = legacy synchronous cron mode */ }
+
+  // Pool building touches no user data at all — it writes to the shared
+  // library — so it short-circuits before any topic resolution. Service key
+  // only: this is the one path that spends money without a user asking.
+  if (body.mode === "pool_build") {
+    if (who.role !== "service") return json(403, { error: "service key required" });
+    if (!(await generationAllowed(db))) {
+      return json(429, { error: "spend_tripwire", built: 0 });
+    }
+    try {
+      return json(200, await buildPool(db, {
+        themeSlug: body.theme_slug,
+        entryType: body.entry_type,
+        count: body.count,
+      }));
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error(`pool_build failed: ${msg}`);
+      return json(500, { error: msg });
+    }
+  }
 
   // Collection touches no user data of its own — it drains whatever is
   // outstanding — so it short-circuits before topic resolution.
@@ -1051,24 +1704,20 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Billing gate, user path: refuse before any topic lookup or model call.
-  // 402 (not 403) so the client can distinguish "you need to subscribe" from
-  // "this isn't yours" and route to the paywall.
-  if (who.role === "user" && !(await isEntitled(db, who.userId))) {
-    return json(402, {
-      error: "subscription_required",
-      message: "An active Ponder subscription is required to generate entries.",
-    });
-  }
+  // NO spend gate on the user path, deliberately. The tripwire exists to stop
+  // a runaway automated loop, not to ration people — a person tapping a
+  // button is rate-limited by being a person, and the user experience must
+  // never change because of money. If generation fails, the pool covers it;
+  // if the pool cannot, the client shows "running late", not a refusal.
 
   // resolve target topics
   let query = db.from("topics").select(TOPIC_COLS)
     .eq("status", "active");
   if (body.topic_id) query = query.eq("id", body.topic_id);
   if (who.role === "user") query = query.eq("user_id", who.userId);
-  // Cron path: run_daily_generation() passes the exact set of due + entitled
-  // users. Scoping here is what stops one user's notification hour from
-  // triggering generation for everybody else.
+  // Cron path: run_daily_generation() passes the exact set of due users.
+  // Scoping here is what stops one user's notification hour from triggering
+  // generation for everybody else.
   if (who.role === "service" && body.user_ids?.length) {
     query = query.in("user_id", body.user_ids);
   }
@@ -1076,34 +1725,22 @@ Deno.serve(async (req) => {
   if (error) return json(500, { error: error.message });
   if (!allTopics?.length) return json(404, { error: "No matching active threads" });
 
-  // Billing gate, service path. run_daily_generation() already filters on
-  // entitlement, but this function is also callable directly with a service
-  // key (manual runs, backfills), and an unentitled user must never be
-  // generated for by accident. Re-checking here is the cheap belt to that
-  // brace — it is one indexed lookup against thousands of tokens.
-  let topics = allTopics;
-  let skippedUnentitled = 0;
-  if (who.role === "service") {
-    const entitled = await entitledUserSet(
-      db,
-      allTopics.map((t) => t.user_id as string),
-    );
-    topics = allTopics.filter((t) => entitled.has(t.user_id as string));
-    skippedUnentitled = allTopics.length - topics.length;
-    if (!topics.length) {
-      return json(200, { results: [], skipped_unentitled: skippedUnentitled });
-    }
+  // Tripwire, service path only. run_daily_generation() already refuses to
+  // submit when it has fired, but this function is also callable directly
+  // with a service key (manual runs, backfills) — exactly the calls that
+  // would compound a runaway. One indexed lookup against thousands of tokens.
+  if (who.role === "service" && !(await generationAllowed(db))) {
+    return json(429, { error: "spend_tripwire", results: [] });
   }
+
+  const topics = allTopics;
 
   // Batch path — the nightly job. One API call for every due thread at half
   // price, collected later by run_batch_collection().
   if (body.mode === "batch_submit") {
     if (who.role !== "service") return json(403, { error: "service key required" });
     try {
-      return json(200, {
-        ...(await submitBatch(db, topics, body.force_date)),
-        skipped_unentitled: skippedUnentitled,
-      });
+      return json(200, await submitBatch(db, topics, body.force_date));
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       console.error(`batch_submit failed: ${msg}`);
@@ -1125,5 +1762,19 @@ Deno.serve(async (req) => {
       results.push({ topic_id: t.id, status: "failed", error: msg });
     }
   }
-  return json(200, { results, skipped_unentitled: skippedUnentitled });
+  // The user path never sees how the entry was produced. `source` says
+  // "pool" or "pool_fallback" on a copied entry, and that word has no
+  // business on the wire to a reader — Ponder must look like it wrote today
+  // for them, in devtools as much as on screen. The service path keeps it:
+  // the cron logs are where provenance is actually needed.
+  return json(200, {
+    results: who.role === "user" ? results.map(stripProvenance) : results,
+  });
 });
+
+/** Drop server-side provenance from a per-topic result before it goes to a user. */
+function stripProvenance(r: unknown): unknown {
+  if (!r || typeof r !== "object") return r;
+  const { source: _source, error: _error, ...rest } = r as Record<string, unknown>;
+  return rest;
+}

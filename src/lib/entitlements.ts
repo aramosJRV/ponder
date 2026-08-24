@@ -1,13 +1,14 @@
-// Billing boundary — client side.
+// Client-side app limits.
 //
-// This is a UI affordance, NOT a security boundary. It exists so users aren't
-// offered actions their subscription can't perform, and so the paywall can be
-// reached from anywhere. Real enforcement lives in the edge functions
-// (has_active_entitlement) and in the nightly cron, both of which return 402
-// or silently skip regardless of what this file believes.
+// Ponder is free and there are no tiers. Nothing in this file gates access to
+// anything, and nothing here varies by whether a user has contributed —
+// contributing unlocks nothing, by design.
 //
-// The state is cached in memory and mirrored to localStorage so a cold start
-// with no network doesn't flash a paywall at a paying subscriber.
+// What remains is one constant for the thread cap, plus the RevenueCat
+// entitlement state, which is still tracked because the SDK reports it and the
+// webhook still writes it. No code path reads it to decide what a user may do.
+// The app's actual rules are enforced in the edge functions
+// (synthesis_allowed), which refuse regardless of what this file believes.
 
 import {
   readEntitlement,
@@ -16,24 +17,51 @@ import {
   type EntitlementState,
 } from "./billing";
 
-export type GatedFeature = "entry_generation" | "synthesis";
+/**
+ * Threads that may be active at once. ONE number for everybody — contributing
+ * to Ponder unlocks nothing, so there is no tier to vary this by.
+ * Mirrors max_active_topics() in the database, which is the real enforcer.
+ */
+export const MAX_THREADS = 3;
 
 const CACHE_KEY = "ponder.entitlement.v1";
 /** How long a cached "yes" is trusted offline before we insist on a refresh. */
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
-export class EntitlementError extends Error {
-  constructor(public feature: GatedFeature) {
-    super("Your Ponder subscription has ended.");
-    this.name = "EntitlementError";
+/**
+ * Thrown when today's entry could not be produced right now — an upstream
+ * outage, a rate limit, or a generation failure the pool could not cover.
+ *
+ * Three rules for the copy, all deliberate:
+ *
+ *  1. Never worded as a paywall. Nothing the user can buy changes this.
+ *  2. Never mentions running costs, credit, or capacity. What Ponder costs to
+ *     run is the operator's business, not the reader's.
+ *  3. Late, not broken. This is a delay with a retry behind it, and the
+ *     wording should leave the user expecting their entry rather than
+ *     wondering whether the app has stopped working.
+ *
+ * Everything already written stays readable throughout.
+ */
+export class GenerationDelayedError extends Error {
+  constructor(message?: string) {
+    super(
+      message ??
+        "Today's entry is running late. Everything you've written is still here — try again in a little while.",
+    );
+    this.name = "GenerationDelayedError";
   }
 }
 
-/** Thrown by api.ts when the server returns 402 — the authoritative answer. */
-export class SubscriptionRequiredError extends Error {
-  constructor(message?: string) {
-    super(message ?? "An active subscription is required.");
-    this.name = "SubscriptionRequiredError";
+/** Thrown when a free-tier synthesis is refused — too few notes, or too soon. */
+export class SynthesisQuotaError extends Error {
+  constructor(
+    message: string,
+    public reason: string,
+    public nextAvailableAt: string | null = null,
+  ) {
+    super(message);
+    this.name = "SynthesisQuotaError";
   }
 }
 
@@ -134,30 +162,19 @@ export function resetEntitlement(): void {
 // ------------------------------------------------------------------ gates
 
 /**
- * Whether the current user may use a gated feature.
+ * Threads this user may run at once. The database is the real enforcer.
  *
- * Browser dev has no StoreKit, so billing falls back to the server row alone.
- * VITE_BILLING_BYPASS exists for local UI work; it is compiled out of release
- * builds because import.meta.env values are inlined at build time, and it has
- * no effect on the server gate either way.
+ * A function rather than a bare constant so call sites don't have to change
+ * if this ever varies again — but it does not vary today, and it must not
+ * vary by whether someone has contributed.
+ *
+ * Note what is NOT in this file any more: shouldShowPaywall(), isSupporter(),
+ * isEntitled(). There is no wall and no tier. Support unlocks nothing, so
+ * there is nothing for the client to gate on. The RevenueCat entitlement
+ * plumbing below still exists and still answers truthfully; nothing reads it.
  */
-export function isEntitled(_feature: GatedFeature): boolean {
-  if (import.meta.env.DEV && import.meta.env.VITE_BILLING_BYPASS === "1") {
-    return true;
-  }
-  return entitlement().entitled;
-}
-
-export function assertEntitled(feature: GatedFeature): void {
-  if (!isEntitled(feature)) throw new EntitlementError(feature);
-}
-
-/** True when the app should show the paywall instead of its normal content. */
-export function shouldShowPaywall(): boolean {
-  if (import.meta.env.DEV && import.meta.env.VITE_BILLING_BYPASS === "1") {
-    return false;
-  }
-  return loaded && !current.entitled;
+export function maxActiveThreads(): number {
+  return MAX_THREADS;
 }
 
 export { billingAvailable };

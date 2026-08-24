@@ -12,9 +12,24 @@
 // They converge within seconds. syncEntitlement() below bridges the gap after
 // a purchase so the first generate call doesn't come back 402.
 //
-// Products are NOT hardcoded here. Prices, the 7-day trial and the product id
-// all live in the RevenueCat "default" offering, so changing the price later
-// is a dashboard edit and not an app release.
+// Products are NOT hardcoded here. Prices and product ids live in the
+// RevenueCat offerings, so changing them later is a dashboard edit and not an
+// app release.
+//
+// ONE offering is used: "tips" — one-off consumables that grant nothing at
+// all. Repeatable by design. The moment a tip buys a feature it stops being a
+// tip and becomes a price, so nothing is ever attached to them.
+//
+// The old "default" annual subscription offering is no longer read by any
+// screen. Remove that product from the stores when convenient; loadOffering()
+// is kept below only so an existing subscriber is not stranded mid-term.
+//
+// Both go through store billing rather than an external link because they
+// have to: Apple restricts non-IAP fundraising to approved nonprofits
+// (3.2.1(vi)), the person-to-person gift exemption (3.2.1(vii)) explicitly
+// excludes anything tied to digital content, and external purchase links are
+// permitted only in the US storefront. Play's exemption covers tax-exempt
+// donations only. A Ko-fi button here would be a rejection.
 
 import { Capacitor } from "@capacitor/core";
 import {
@@ -78,8 +93,8 @@ export function billingAvailable(): boolean {
  * Using our own id rather than RevenueCat's anonymous one is what lets the
  * webhook map an event straight onto a row in public.subscriptions. It also
  * means restoring on a new device attaches the purchase to whichever account
- * is signed in — which is exactly why the paywall requires an email-backed
- * account first (see Paywall.tsx).
+ * is signed in — see the note on restore() below about backing the account
+ * with an email first.
  *
  * Safe to call repeatedly; re-logs in only when the user actually changes.
  */
@@ -193,10 +208,13 @@ export interface Offering {
   raw: PurchasesOffering;
 }
 
+/** RevenueCat offering identifier for the one-off tip consumables. */
+export const TIPS_OFFERING_ID = "tips";
+
 /**
  * Load the current offering. The annual package is looked up by RevenueCat's
  * standard $rc_annual identifier, falling back to packageType, so renaming
- * the package in the dashboard doesn't break the paywall.
+ * the package in the dashboard doesn't break the support screen.
  */
 export async function loadOffering(): Promise<Offering | null> {
   if (!billingAvailable()) return null;
@@ -209,6 +227,29 @@ export async function loadOffering(): Promise<Offering | null> {
     current.availablePackages[0] ??
     null;
   return { packages: current.availablePackages, annual, raw: current };
+}
+
+/**
+ * Load the one-off tip packages, cheapest first.
+ *
+ * Returns [] rather than throwing when the offering does not exist — the tips
+ * offering is configured in the RevenueCat dashboard, and the app must ship
+ * and behave correctly before and after that happens. The support screen
+ * simply omits the tip row when this is empty.
+ */
+export async function loadTipPackages(): Promise<PurchasesPackage[]> {
+  if (!billingAvailable()) return [];
+  try {
+    const { all } = await Purchases.getOfferings();
+    const offering = all?.[TIPS_OFFERING_ID];
+    if (!offering) return [];
+    return [...offering.availablePackages].sort(
+      (a, b) => (a.product.price ?? 0) - (b.product.price ?? 0),
+    );
+  } catch (e) {
+    console.warn("tip offering load failed", e);
+    return [];
+  }
 }
 
 // --------------------------------------------------------------- purchasing
@@ -233,13 +274,30 @@ export async function purchase(pkg: PurchasesPackage): Promise<EntitlementState>
 }
 
 /**
+ * Buy a one-off tip.
+ *
+ * Unlike purchase(), this does NOT wait for a server entitlement: a
+ * consumable grants nothing, so there is no entitlement to wait for and
+ * blocking on a webhook that will never change anything would just hang the
+ * button. Cancellation is a silent no-op, same as any purchase.
+ */
+export async function purchaseTip(pkg: PurchasesPackage): Promise<void> {
+  await Purchases.purchasePackage({ aPackage: pkg }).catch((e: unknown) => {
+    const err = e as { userCancelled?: boolean; message?: string };
+    if (err?.userCancelled) throw new PurchaseCancelledError();
+    throw new Error(err?.message ?? "Purchase failed");
+  });
+}
+
+/**
  * Restore purchases made on this store account.
  *
  * Note what this does and does not recover: it recovers the SUBSCRIPTION, not
  * the journal. Threads and notes live against the Supabase account, so a user
- * who reinstalls without an email backup restores their entitlement onto an
- * empty account. That is why Paywall.tsx requires the email step before it
- * will let a purchase start.
+ * who reinstalls without an email backup restores their support status onto
+ * an empty account. Settings offers the email backup step for exactly this
+ * reason — it is no longer forced before a purchase, because nothing is
+ * being bought that the user needs in order to use the app.
  */
 export async function restore(): Promise<EntitlementState> {
   const { customerInfo } = await Purchases.restorePurchases();

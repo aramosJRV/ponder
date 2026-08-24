@@ -1,134 +1,42 @@
-import { useEffect, useState } from "react";
-import { restore, managementUrl } from "../lib/billing";
-import {
-  entitlement,
-  refreshEntitlement,
-  onEntitlementChange,
-  type EntitlementState,
-} from "../lib/entitlements";
-import { exportJournalMarkdown } from "../lib/api";
-
-function formatDate(iso: string | null): string {
-  if (!iso) return "—";
-  try {
-    return new Date(iso).toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return iso.slice(0, 10);
-  }
-}
+import { useState } from "react";
+import Support from "../screens/Support";
 
 /**
- * Subscription status for Settings.
+ * The support entry point in Settings.
  *
- * Cancellation is deliberately a deep link out to the store rather than an
- * in-app flow: neither Apple nor Google allows an app to cancel a
- * subscription it sold, and pretending otherwise produces a dead button and a
- * support email.
+ * This used to be the subscription panel. There is no subscription any more
+ * and no tier to report — every user has the same app — so there is no status
+ * line, no renewal date, and no "manage subscription" link.
+ *
+ * "Restore purchases" is gone too, deliberately: support is a one-off
+ * consumable that grants nothing, so there is nothing a restore could give
+ * back. Offering the button would imply otherwise.
+ *
+ * And nothing else lives here. Export moved to Account, where it belongs:
+ * putting a data control next to a request for money implies the two are
+ * connected, and the whole point is that they are not. This section does one
+ * thing and asks for nothing else.
  */
 export default function SubscriptionSection() {
-  const [state, setState] = useState<EntitlementState>(entitlement());
-  const [manageUrl, setManageUrl] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState("");
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const unsub = onEntitlementChange(setState);
-    void refreshEntitlement().then(setState);
-    void managementUrl().then(setManageUrl);
-    return unsub;
-  }, []);
-
-  async function run(fn: () => Promise<void>) {
-    setBusy(true);
-    setError("");
-    setMsg("");
-    try {
-      await fn();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  const statusLine = !state.entitled
-    ? "No active subscription"
-    : state.inTrial
-      ? `Free trial — ends ${formatDate(state.expiresAt)}`
-      : state.willRenew
-        ? `Active — renews ${formatDate(state.expiresAt)}`
-        : `Active — ends ${formatDate(state.expiresAt)}, will not renew`;
+  const [showSupport, setShowSupport] = useState(false);
 
   return (
     <section className="mt-8 rounded-2xl border border-hairline bg-surface p-5">
-      <h2 className="font-display text-xl">Subscription</h2>
-      <p className="mt-1 text-sm text-muted">{statusLine}</p>
-
-      {state.billingIssue && (
-        <p className="mt-3 rounded-xl bg-rust-soft px-4 py-2.5 text-sm font-semibold text-rust">
-          There’s a problem with your payment method. Update it in your store
-          account to keep your subscription active.
-        </p>
+      {showSupport && (
+        <Support context="settings" onClose={() => setShowSupport(false)} />
       )}
 
-      {msg && <p className="mt-3 text-sm font-semibold text-moss">{msg}</p>}
-      {error && (
-        <p className="mt-3 rounded-xl bg-rust-soft px-4 py-2.5 text-sm font-semibold text-rust">
-          {error}
-        </p>
-      )}
-
-      {manageUrl && (
-        <a
-          href={manageUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="pressable mt-4 flex min-h-[48px] w-full items-center justify-center rounded-xl border border-hairline bg-surface font-semibold text-muted"
-        >
-          Manage subscription
-        </a>
-      )}
+      <h2 className="font-display text-xl">Ponder is free</h2>
+      <p className="mt-1 text-sm leading-relaxed text-muted">
+        All of it, always. If you'd like to chip in towards keeping it running,
+        you can — it doesn't change anything in the app.
+      </p>
 
       <button
-        onClick={() =>
-          void run(async () => {
-            const result = await restore();
-            setMsg(
-              result.entitled
-                ? "Subscription restored."
-                : "No previous subscription found for this store account.",
-            );
-          })
-        }
-        disabled={busy}
-        className="pressable mt-3 min-h-[48px] w-full rounded-xl border border-hairline bg-surface font-semibold text-muted disabled:opacity-50"
+        onClick={() => setShowSupport(true)}
+        className="pressable mt-4 min-h-[48px] w-full rounded-xl border border-hairline bg-paper font-semibold text-ink"
       >
-        Restore purchases
-      </button>
-
-      <button
-        onClick={() =>
-          void run(async () => {
-            const md = await exportJournalMarkdown();
-            const blob = new Blob([md], { type: "text/markdown" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `ponder-journal-${new Date().toISOString().slice(0, 10)}.md`;
-            a.click();
-            URL.revokeObjectURL(url);
-            setMsg("Journal exported.");
-          })
-        }
-        disabled={busy}
-        className="pressable mt-3 min-h-[48px] w-full rounded-xl border border-hairline bg-surface font-semibold text-muted disabled:opacity-50"
-      >
-        Export my journal
+        Chip in
       </button>
     </section>
   );

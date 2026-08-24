@@ -6,7 +6,7 @@ import {
   parseVerseRef,
   setFocusTopic,
   setTopicStatus,
-  MAX_ACTIVE_THREADS,
+  maxActiveThreadsForUser,
   type TopicStats,
 } from "../lib/api";
 import type { ResolvedVerseRef, Topic } from "../lib/types";
@@ -78,7 +78,8 @@ export default function Topics({
   // The database enforces the cap; this just avoids letting someone fill in
   // the whole create sheet only to be rejected on submit.
   const activeCount = topics.filter((t) => t.status === "active").length;
-  const atCap = activeCount >= MAX_ACTIVE_THREADS;
+  const threadCap = maxActiveThreadsForUser();
+  const atCap = activeCount >= threadCap;
 
   return (
     <div className="mx-auto min-h-screen max-w-lg px-6 pb-28 pt-6">
@@ -98,8 +99,8 @@ export default function Topics({
 
       {atCap && (
         <p className="mb-4 rounded-xl border border-hairline bg-surface px-4 py-2.5 text-sm text-muted">
-          You’re running {MAX_ACTIVE_THREADS} threads — the most Ponder keeps
-          going at once. Pause or conclude one to start another.
+          You’re running {threadCap} threads — the most Ponder keeps going at
+          once. Pause or conclude one to start another.
         </p>
       )}
 

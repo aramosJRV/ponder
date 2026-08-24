@@ -8,11 +8,8 @@ import {
   refreshEntitlement,
   onEntitlementChange,
   resetEntitlement,
-  shouldShowPaywall,
-  entitlementLoaded,
 } from "./lib/entitlements";
 import Onboarding from "./screens/Onboarding";
-import Paywall from "./screens/Paywall";
 import Today from "./screens/Today";
 import Topics from "./screens/Topics";
 import TopicDetail from "./screens/TopicDetail";
@@ -47,7 +44,11 @@ export default function App() {
 
       // Billing must be configured with the Supabase user id BEFORE the
       // entitlement is read, otherwise RevenueCat answers for an anonymous
-      // RC identity and a paying user briefly sees the paywall.
+      // RC identity rather than this user's.
+      //
+      // Nothing is gated on the result — there are no tiers — but the SDK
+      // wants identifying before any purchase, so doing it at boot keeps the
+      // support screen instant when someone opens it.
       lastUserId = s.user.id;
       await configureBilling(s.user.id);
       await refreshEntitlement();
@@ -93,7 +94,7 @@ export default function App() {
       // Only react when the ACCOUNT actually changes. supabase-js fires
       // SIGNED_IN for the anonymous sign-in that start() is already handling,
       // and again on every token refresh — resetting the entitlement on those
-      // would blank the cache mid-boot and flash the paywall at a subscriber.
+      // would blank the cache mid-boot for no reason.
       const nextUserId = s?.user?.id ?? null;
       if (nextUserId === lastUserId) return;
       lastUserId = nextUserId;
@@ -144,18 +145,11 @@ export default function App() {
     );
   }
 
-  // First run: show the walkthrough before the app itself. Deliberately ahead
-  // of the paywall — asking for a card before explaining what the app does
-  // converts badly and reviews worse.
+  // First run: show the walkthrough, then straight into the app. There is no
+  // paywall behind it any more — Ponder is free, and support is offered from
+  // inside the app at moments that have earned it, not at the door.
   if (onboarded === false) {
     return <Onboarding onDone={(create) => void finishOnboarding(create)} />;
-  }
-
-  // Everything past here costs Claude tokens per day, so it sits behind the
-  // subscription. The server enforces this independently; this only decides
-  // what to render.
-  if (entitlementLoaded() && shouldShowPaywall()) {
-    return <Paywall onEntitled={() => setEntitlementTick((n) => n + 1)} />;
   }
 
   function changeTab(next: Tab) {
