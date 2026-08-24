@@ -1,6 +1,13 @@
 # Spec — Song of the day (Spotify)
 
-Status: proposed, not implemented. Written 22 Aug 2026 against `Ponder@1.0.4`.
+Status: **code written 22 Aug 2026**, not yet deployed. Decisions closed §10.
+
+Landed: `supabase/migrations/20260823000001_entry_song.sql`,
+`supabase/functions/generate-entry/spotify.ts`, edits to `generate-entry/index.ts`,
+`src/lib/types.ts`, `src/components/EntryCard.tsx`. `npx tsc --noEmit` clean.
+
+Outstanding: register the Spotify app, set the secrets (§4), apply the
+migration, redeploy the function, replace the placeholder Spotify logo (§6.2).
 
 ---
 
@@ -27,11 +34,20 @@ The real cost of entry-level is **repetition** — an LLM asked for "a worship
 song about stillness" converges on the same 30 CCM tracks forever. Handled by
 a do-not-repeat list in the prompt (§5.3) plus a server-side drop (§5.5).
 
-**Challenge entries get a song too**, but with a tone instruction (lament /
-honest questioning, not resolution). Suppressing music on challenge entries
-would visually mark them as the lesser entry, which is backwards — they're the
-point of the app. Alternative if you disagree: `if (entryType === 'challenge')
-skip` is a one-line change in `finalizeEntry`.
+**Challenge entries get no song.** Decided against the spec's original
+recommendation. The argument for the original — that a music-less entry looks
+like the thinner entry — cuts the other way too: the absence *is* the signal.
+A challenge morning that arrives quieter than the others reinforces the change
+of posture rather than diluting it, and it removes the whole problem of asking
+a model to pick a song that questions rather than resolves.
+
+Cost of being wrong: low. It's one condition in `finalizeEntry` plus a prompt
+line, reversible in a single deploy. Worth revisiting if challenge entries
+start feeling punitive rather than searching.
+
+**Worship/Christian music only.** Currently this happens by default — it's
+what the model reaches for unprompted. Made explicit in guardrail 9 so it
+stays a decision rather than an accident that drifts when the model changes.
 
 ---
 
@@ -110,8 +126,29 @@ in the dashboard (Project Settings → Edge Functions → Secrets):
 | `SPOTIFY_CLIENT_SECRET` | same |
 | `SPOTIFY_MARKET` | `AU` (optional, defaults to `AU` in code) |
 
-Register the app at <https://developer.spotify.com/dashboard>. Redirect URI is
-irrelevant — Client Credentials flow only, no user login, no OAuth screen.
+Register the app at <https://developer.spotify.com/dashboard> (log in first —
+the Create app button only appears once authenticated). Redirect URI is
+irrelevant: Client Credentials flow only, no user login, no OAuth screen.
+
+**Feb 2026 developer-access changes — read this before planning around it.**
+Spotify [tightened developer access](https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security)
+on 6 Feb 2026:
+
+- **The app owner must hold an active Spotify Premium subscription.** If it
+  lapses, the app stops working — songs silently stop appearing. This is now a
+  standing operational dependency on Antonio's personal Premium account.
+- One Client ID per developer; 5 authorised users per app (raised to 25 in
+  July 2026). That cap is on *authenticated* users, i.e. OAuth. Client
+  Credentials has no user, so server-side search should not be metered against
+  it — **verify this in practice before assuming it.**
+- `GET /search` is confirmed still available in Development Mode.
+
+**The ceiling, stated plainly:** extended quota mode now requires a registered
+*organisation* (not an individual), a launched service, and **250,000 monthly
+active users**. Ponder will not qualify. It is permanently a Development Mode
+app. For one user, or a small paid user base, that is fine. It means this
+feature cannot scale with the product and must never become a headline
+feature — if Ponder ever gets traction, the song row is the part that breaks.
 
 **If either secret is absent the feature no-ops silently.** That's deliberate:
 it means this can ship to the repo before the Spotify app exists, and the
@@ -299,17 +336,31 @@ song: {
 ### 5.3 System prompt — guardrail 9
 
 ```
-9. song is OPTIONAL and is looked up on Spotify before the reader sees it — a
-   song that cannot be found, or whose artist you have misremembered, is
-   silently discarded, so accuracy beats ambition. Name a song you are
-   confident actually exists under that exact title by that exact artist.
-   Hymns and older worship songs need a specific recording artist, not
-   "Traditional". Match the posture of the entry: on an affirming entry the
-   song may rest in what the passage says; on a challenge entry prefer lament,
-   honest questioning or unresolved longing over a song that resolves the
-   tension the entry is trying to hold open. Do not default to whatever is
-   most popular — the same handful of songs across every entry is a failure.
+9. song is OPTIONAL and applies to AFFIRMING entries only — never include a
+   song on a challenge entry. It is looked up on Spotify before the reader
+   sees it, and a song that cannot be found, or whose artist you have
+   misremembered, is silently discarded, so accuracy beats ambition. Name a
+   song you are confident actually exists under that exact title by that
+   exact artist. Hymns and older worship songs need a specific recording
+   artist, not "Traditional". Stay within Christian worship, hymnody and
+   contemporary Christian music — this is a devotional journal, not a general
+   playlist. Do not default to whatever is most popular: the same handful of
+   songs across every entry is a failure.
 ```
+
+Three layers enforce the challenge-entry rule, cheapest first:
+
+1. **Guardrail 9** above — the model shouldn't offer one.
+2. **`buildUserPrompt`** already branches on `entryType`; on `challenge`, add
+   an explicit `Do not include a song today.` line. Belt and braces, and it
+   costs nothing because the function already has the value.
+3. **`finalizeEntry`** — the hard guarantee (§5.5). Even if the model ignores
+   both, no song is stored.
+
+Deliberately *not* done: making the tool schema conditional on `entryType`.
+That would mean threading the entry type through `callClaude()` and
+`batchParams()`, and those signatures are shared by both generation paths.
+Not worth the blast radius to save a handful of schema tokens.
 
 ### 5.4 `buildUserPrompt` — repeat avoidance
 
@@ -348,9 +399,10 @@ paths go through `finalizeEntry`, so this is the single insertion point.**
 
 ```ts
 // Song of the day — resolved against Spotify, never allowed to fail the entry.
+// Affirming entries only: a challenge entry is meant to arrive quieter.
 let song: Song | null = null;
 try {
-  if (p.song && spotifyConfigured()) {
+  if (p.song && entryType !== "challenge" && spotifyConfigured()) {
     const { data: used } = await db.from("daily_entries")
       .select("song")
       .eq("topic_id", topicId)
@@ -401,7 +453,10 @@ song?: Song | null;
 
 ### 6.2 `EntryCard.tsx`
 
-New section between Prayer and `<Footnotes>`:
+New section between Prayer and `<Footnotes>` — placement confirmed. It reads
+as the closing gesture of the entry rather than competing with the verse for
+attention, and `entry.song` is null on ~1 in 4 entries, so a slot up near the
+hero would leave a visible hole on challenge days.
 
 ```tsx
 {entry.song && <SongRow song={entry.song} />}
@@ -493,7 +548,9 @@ around this feature.
 | Model names a real song, wrong artist | Artist fuzzy-match may still pass | Bounded by `ARTIST_MIN`; worst case a cover version, not a wrong song |
 | Spotify 429 during batch collect | Songs missing for that night's entries | Search returns `[]`, entry still created |
 | Secrets missing/rotated | Feature silently off | `spotifyConfigured()` gate |
-| Same 30 CCM songs forever | Feature becomes noise | §5.4 prompt block list — **this is the one that needs watching** |
+| Owner's Spotify Premium lapses | Whole app's API access dies | Nothing to mitigate — Dev Mode requires it. Songs stop; entries keep generating |
+| Dev-mode rate limit at scale | Songs missing across many users' entries | No path to extended quota (250k MAU gate). Accept, or drop the feature if the user base grows |
+| Same 30 CCM songs forever | Feature becomes noise | §5.4 prompt block list — **this is the one that needs watching.** Narrowed to worship music by decision, so the pool is smaller and the risk is higher, not lower |
 | Track pulled from Spotify later | Dead link on an old entry | Accepted. Not worth a re-validation job for a personal app. |
 | `preview_url` | Null on apps registered after Nov 2024 | **Don't build on it.** Docs still list the field; it's dead for new apps. Link only — which also keeps you clear of playback-related terms. |
 
@@ -524,17 +581,15 @@ $4.52/yr batch figure.
 
 ---
 
-## 10. Open decisions for you
+## 10. Decisions — closed 22 Aug 2026
 
-1. **Challenge entries** — song with a lament instruction (specced), or no
-   song at all?
-2. **Placement** — after Prayer (specced), or up near the verse where it'd get
-   noticed more?
-3. **Apple Music too?** Same pattern, different resolver. Apple's API needs a
-   signed JWT (ES256, developer key) rather than a client secret — more setup,
-   and you'd want to key off the user's platform. Not worth it until someone
-   asks.
-4. **Whose song?** The spec assumes Christian/worship music because the model
-   will produce that by default. If you want it to reach outside that — Arvo
-   Pärt, Nick Cave, Sufjan — say so explicitly in the prompt, because it won't
-   go there on its own.
+| # | Decision | Outcome |
+|---|---|---|
+| 1 | Challenge entries | **No song.** Absence is the signal. Enforced at three layers (§5.3) |
+| 2 | Placement | **After Prayer**, before the footnote (§6.2) |
+| 3 | Apple Music | **No.** Spotify only. Apple's API needs an ES256-signed JWT and platform detection — revisit only if someone asks |
+| 4 | Music scope | **Christian worship / hymnody / CCM only.** Now explicit in guardrail 9 rather than left to model default |
+
+Nothing outstanding. Next step is implementation (§9), which needs the
+Spotify app registered and the two secrets set (§4) before anything else can
+be tested.
