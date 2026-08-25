@@ -4,6 +4,7 @@ import { supabase, ensureSession } from "./lib/supabase";
 import { ensureDeviceTimezone, recordAppOpen } from "./lib/api";
 import { hasOnboarded, markOnboarded } from "./lib/onboarding";
 import { configureBilling } from "./lib/billing";
+import { errorCopy, logError, type ErrorKind } from "./lib/errors";
 import {
   refreshEntitlement,
   onEntitlementChange,
@@ -24,6 +25,7 @@ let lastUserId: string | null = null;
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [boot, setBoot] = useState<Boot>("starting");
+  const [bootFailure, setBootFailure] = useState<{ kind: ErrorKind; code: string } | null>(null);
   const [tab, setTab] = useState<Tab>("today");
   const [openTopicId, setOpenTopicId] = useState<string | null>(null);
   const [onboarded, setOnboarded] = useState<boolean | null>(null);
@@ -58,7 +60,11 @@ export default function App() {
       void ensureDeviceTimezone();
       // Feeds idle auto-pause. Fire-and-forget.
       void recordAppOpen();
-    } catch {
+    } catch (e) {
+      // Same rule as Today.load(): say WHY. "Couldn't start your session" read
+      // as a network fault for every cause it had.
+      const failed = logError("App.start", e);
+      setBootFailure({ kind: failed.kind, code: failed.code });
       setBoot("error");
     }
   }
@@ -129,12 +135,17 @@ export default function App() {
   }
 
   if (boot === "error" || !session) {
+    const copy = errorCopy(bootFailure?.kind ?? "unknown");
     return (
       <div className="flex min-h-screen flex-col items-center justify-center px-8 text-center">
         <span className="font-display text-2xl italic text-muted">Ponder</span>
-        <p className="mt-4 max-w-xs text-muted">
-          Couldn’t start your session. Check your connection and try again.
-        </p>
+        <p className="mt-4 font-display text-2xl">{copy.title}</p>
+        <p className="mt-2 max-w-xs text-muted">{copy.body}</p>
+        {bootFailure && bootFailure.kind !== "offline" && (
+          <p className="mt-3 font-mono text-xs uppercase tracking-wider text-muted">
+            code {bootFailure.code}
+          </p>
+        )}
         <button
           onClick={() => void start()}
           className="pressable mt-6 rounded-xl bg-moss px-6 py-3 font-semibold text-white"

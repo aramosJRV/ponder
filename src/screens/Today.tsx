@@ -9,6 +9,7 @@ import {
 import { GenerationDelayedError } from "../lib/entitlements";
 import { refreshDailyReminder } from "../lib/notifications";
 import { loadTodayCache, saveTodayCache } from "../lib/cache";
+import { errorCopy, logError, type ErrorKind } from "../lib/errors";
 import { formatLongDate, todayLocal } from "../lib/dates";
 import type { DailyEntry, Note, Topic } from "../lib/types";
 import TopicSwitcher from "../components/TopicSwitcher";
@@ -20,6 +21,7 @@ type LoadState = "loading" | "ready" | "error";
 export default function Today() {
   const date = todayLocal();
   const [state, setState] = useState<LoadState>("loading");
+  const [failure, setFailure] = useState<{ kind: ErrorKind; code: string } | null>(null);
   const [offline, setOffline] = useState(false);
   const [topics, setTopics] = useState<Topic[]>([]);
   const [entries, setEntries] = useState<DailyEntry[]>([]);
@@ -45,7 +47,12 @@ export default function Today() {
       // fire-and-forget so it never blocks the screen. Settings calls the same
       // helper after a save, so the two paths can't drift.
       void refreshDailyReminder();
-    } catch {
+    } catch (e) {
+      // Never a bare catch here again: one message for four causes is exactly
+      // what hid the 25 Aug column-grant outage behind "couldn't reach the
+      // server". Classify first, then fall back.
+      const failed = logError("Today.load", e);
+      setFailure({ kind: failed.kind, code: failed.code });
       const cached = loadTodayCache(date);
       if (cached) {
         setTopics(cached.topics);
@@ -108,12 +115,17 @@ export default function Today() {
   }
 
   if (state === "error") {
+    const copy = errorCopy(failure?.kind ?? "unknown");
     return (
       <div className="flex min-h-screen flex-col items-center justify-center px-8 text-center">
-        <p className="font-display text-3xl">Nothing to show yet</p>
-        <p className="mt-2 max-w-xs text-muted">
-          Couldn't reach the server and there's no synced copy of today on this device.
-        </p>
+        <p className="font-display text-3xl">{copy.title}</p>
+        <p className="mt-2 max-w-xs text-muted">{copy.body}</p>
+        {failure && failure.kind !== "offline" && (
+          // A tester's screenshot should be enough to diagnose this.
+          <p className="mt-3 font-mono text-xs uppercase tracking-wider text-muted">
+            code {failure.code}
+          </p>
+        )}
         <button
           onClick={() => void load()}
           className="pressable mt-6 min-h-[44px] rounded-xl bg-moss px-6 font-semibold text-white"
