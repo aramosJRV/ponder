@@ -23,14 +23,19 @@ const PROFILE_COLS =
   "id, timezone, notification_hour, challenge_frequency, content_level";
 
 /**
- * Topic columns the client is allowed to see.
+ * Topic columns the client asks for.
  *
- * Explicit, not "*", and it must stay that way. `topics` also carries
- * theme_id / theme_confidence / theme_classified_at — server-side routing
- * metadata about how an entry gets produced. None of that is the reader's
- * business: a user opening devtools should see their thread and nothing that
- * hints their day was anything other than written for them. Adding a column
- * to the table must not silently add it to this response.
+ * Explicit, not "*", and it should stay that way — a column added to the
+ * table must not silently widen this response.
+ *
+ * It is no longer what keeps the pool invisible, though, and must never be
+ * relied on for that again. The theme/confidence routing metadata used to sit
+ * on this table and was hidden with a column-level REVOKE; that 403'd every
+ * build already on a device, because Postgres refuses `SELECT *` when any
+ * column is ungranted. Migration 20260825000001 moved the classification into
+ * the service-only topic_themes table and gave `topics` back to the client
+ * whole. Privacy belongs in the schema, not in a grant list that only the
+ * newest client knows how to work around.
  */
 // One string literal, not a concatenation: supabase-js infers the row type
 // from the literal, and `+` collapses it to `string` and breaks the typing.

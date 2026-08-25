@@ -202,7 +202,17 @@ const CLASSIFY_TOOL = {
  */
 // deno-lint-ignore no-explicit-any
 async function ensureTheme(db: SupabaseClient, topic: any): Promise<void> {
-  if (topic.theme_classified_at) return;   // already tried, don't pay twice
+  // The classification lives in topic_themes, not on the thread row — see
+  // migration 20260825000001. A row with a null theme_id still counts as
+  // "already tried": the classifier honestly matched nothing, and paying for
+  // that same answer every night is the thing this guard exists to stop.
+  const { data: existing, error: readErr } = await db
+    .from("topic_themes")
+    .select("classified_at")
+    .eq("topic_id", topic.id)
+    .maybeSingle();
+  if (readErr) { console.warn(`ensureTheme read: ${readErr.message}`); return; }
+  if (existing) return;   // already tried, don't pay twice
 
   const themes = await loadThemes(db);
   if (!themes.length) return;
@@ -244,18 +254,20 @@ async function ensureTheme(db: SupabaseClient, topic: any): Promise<void> {
   }
 
   const match = themes.find((t) => t.slug === slug);
-  const patch = {
+  // upsert, not insert: two generations racing the same unclassified thread
+  // would otherwise leave the loser logging a duplicate-key warning for a
+  // result that is already correct.
+  const { error } = await db.from("topic_themes").upsert({
+    topic_id: topic.id,
     theme_id: match?.id ?? null,
-    theme_confidence: match ? confidence : 0,
-    theme_classified_at: new Date().toISOString(),
-  };
-  const { error } = await db.from("topics").update(patch).eq("id", topic.id);
-  if (error) { console.warn(`ensureTheme update: ${error.message}`); return; }
+    confidence: match ? confidence : 0,
+    classified_at: new Date().toISOString(),
+  }, { onConflict: "topic_id" });
+  if (error) { console.warn(`ensureTheme upsert: ${error.message}`); return; }
 
-  // Keep the in-memory copy consistent so the caller can use it immediately.
-  topic.theme_id = patch.theme_id;
-  topic.theme_confidence = patch.theme_confidence;
-  topic.theme_classified_at = patch.theme_classified_at;
+  // No in-memory write-back: nothing downstream reads the classification off
+  // the thread object. tryPool() goes through select_pool_entry(), which
+  // reads topic_themes itself.
 }
 
 /**
@@ -300,11 +312,11 @@ async function tryPool(
 // 0 = never suppressed.
 const SEED_VERSE_COOLDOWN_DAYS = 0;
 
+// No theme columns: the classification moved to the service-only
+// topic_themes table in 20260825000001. ensureTheme() reads it there, and
+// tryPool() goes through select_pool_entry(), which joins it server-side.
 const TOPIC_COLS =
-  "id, user_id, title, description, created_at, seed_verse_ref, seed_verse_text, " +
-  // ensureTheme() needs these to know whether it has already run for this
-  // thread, and tryPool() reads the result straight after.
-  "theme_id, theme_confidence, theme_classified_at";
+  "id, user_id, title, description, created_at, seed_verse_ref, seed_verse_text";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
