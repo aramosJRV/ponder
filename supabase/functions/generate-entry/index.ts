@@ -1096,9 +1096,20 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
 
 const POOL_BUILD_MAX = 10;
 
-/** How deep each theme should be kept, per entry type. */
-const POOL_TARGET_AFFIRMING = 120;
-const POOL_TARGET_CHALLENGE = 40;
+/** How deep each theme should be kept, per entry type.
+ *
+ * Throttled 2026-08-26 for the ~30-person test cohort: 120/40 (6,400 rows
+ * across 40 themes, ~$65 to fill) was sized for a large, long-running public
+ * userbase. select_pool_entry() reuses an entry across any number of
+ * concurrent users/topics — depth only needs to outlast one THREAD's own
+ * repeat window, not scale with user count (see 20260823000003_entry_pool.sql
+ * and 20260825000001_topic_themes_side_table.sql). 30/10 covers ~40 days of
+ * affirming + ~40 days of challenge per theme before any one thread falls
+ * back to live generation (graceful, not a failure) — plenty for a test
+ * phase, ~$13 more to reach from the current 258 rows already built.
+ * Raise back toward 120/40 ahead of a real public launch. */
+const POOL_TARGET_AFFIRMING = 30;
+const POOL_TARGET_CHALLENGE = 10;
 
 function poolPrompt(
   theme: { title: string; description: string },
@@ -1111,13 +1122,13 @@ WHAT SOMEONE ON THIS THREAD IS SITTING WITH: ${theme.description}
 
 ENTRY TYPE FOR TODAY: ${entryType}
 
-WHERE THEY ARE IN IT: roughly day ${dayIndex} of this thread. ${
+WHERE THEY ARE IN IT: ${
     dayIndex <= 14
       ? "Early days — they are still naming the thing. Do not assume months of history."
       : dayIndex <= 90
         ? "Some weeks in. They have sat with this a while and the first energy has gone."
         : "A long haul. Assume tiredness, and the particular ache of a thing that has not resolved."
-  }
+  } This is a rough internal marker for tone only — never state or imply a specific number of days, weeks, or months in the entry text itself, since this framing does not correspond to any real reader's actual timeline.
 
 DO NOT USE any of these verse references (already in the library for this theme):
 ${avoidRefs.length ? avoidRefs.join("; ") : "(none)"}
