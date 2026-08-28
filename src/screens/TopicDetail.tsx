@@ -195,7 +195,7 @@ export default function TopicDetail({ topicId, onBack }: Props) {
       {tab === "entries" && (
         <ul className="space-y-3">
           {entries.length === 0 && (
-            <p className="text-muted">No entries yet — the first one arrives with tonight's generation.</p>
+            <p className="text-muted">No entries yet — the first one arrives with today's generation.</p>
           )}
           {entries.map((e) => {
             const noteCount = notes.filter((n) => n.entry_id === e.id).length;

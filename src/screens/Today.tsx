@@ -193,7 +193,7 @@ export default function Today() {
           <p className="mt-2 text-muted">
             {genError
               ? `Today's entry for “${selectedTopic.title}” hasn't landed yet. Nothing is lost — try again shortly.`
-              : `Tonight's generation hasn't run for “${selectedTopic.title}” — or the thread is new. You can generate today's entry now.`}
+              : `Today's generation hasn't landed yet for “${selectedTopic.title}” — or the thread is new. You can generate it now.`}
           </p>
           <button
             onClick={() => void generate()}
