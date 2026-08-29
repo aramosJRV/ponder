@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { supabase } from "../lib/supabase";
 import {
   fetchActiveTopics,
   fetchEntriesForDate,
@@ -138,17 +137,9 @@ export default function Today() {
 
   return (
     <div className="mx-auto min-h-screen max-w-lg px-6 pb-28 pt-6">
-      <header className="mb-6 flex items-start justify-between">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-moss">Today</p>
-          <h1 className="font-display text-3xl font-medium">{formatLongDate(date)}</h1>
-        </div>
-        <button
-          onClick={() => void supabase.auth.signOut()}
-          className="pressable min-h-[44px] text-sm font-semibold text-muted"
-        >
-          Sign out
-        </button>
+      <header className="mb-6">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-moss">Today</p>
+        <h1 className="font-display text-3xl font-medium">{formatLongDate(date)}</h1>
       </header>
 
       {offline && (

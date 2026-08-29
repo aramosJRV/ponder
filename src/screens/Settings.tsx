@@ -46,7 +46,13 @@ function hourLabel(h: number): string {
 
 type SaveState = "idle" | "saving" | "saved";
 
-export default function Settings() {
+export default function Settings({
+  autoOpenRestore,
+  onAutoOpenConsumed,
+}: {
+  autoOpenRestore?: boolean;
+  onAutoOpenConsumed?: () => void;
+} = {}) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState(true);
@@ -374,7 +380,10 @@ export default function Settings() {
 
       <SubscriptionSection />
 
-      <AccountSection />
+      <AccountSection
+        autoOpenRestore={autoOpenRestore}
+        onAutoOpenConsumed={onAutoOpenConsumed}
+      />
     </div>
   );
 }

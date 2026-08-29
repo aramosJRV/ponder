@@ -3,6 +3,7 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase, ensureSession } from "./lib/supabase";
 import { ensureDeviceTimezone, recordAppOpen } from "./lib/api";
 import { hasOnboarded, markOnboarded } from "./lib/onboarding";
+import { consumeSignedOutFlag } from "./lib/signOutFlag";
 import { configureBilling } from "./lib/billing";
 import { errorCopy, logError, type ErrorKind } from "./lib/errors";
 import {
@@ -30,6 +31,9 @@ export default function App() {
   const [openTopicId, setOpenTopicId] = useState<string | null>(null);
   const [onboarded, setOnboarded] = useState<boolean | null>(null);
   const [autoCreateTopic, setAutoCreateTopic] = useState(false);
+  // Set when this boot follows a sign-out, so Settings jumps straight to
+  // Restore instead of leaving the user looking at an empty journal.
+  const [autoOpenRestore, setAutoOpenRestore] = useState(false);
   // Bumped whenever entitlement changes, purely to force a re-render — the
   // entitlement itself is read synchronously from lib/entitlements.
   const [, setEntitlementTick] = useState(0);
@@ -41,6 +45,16 @@ export default function App() {
       // launches restore the persisted one.
       const s = await ensureSession();
       setSession(s);
+
+      // A sign-out (see AccountSection) flags this so the very next boot —
+      // which just minted the fresh anonymous session above — routes straight
+      // into Settings > Restore instead of a blank Today/Topics view that
+      // looks like the journal is gone.
+      if (await consumeSignedOutFlag()) {
+        setTab("settings");
+        setAutoOpenRestore(true);
+      }
+
       // Has this device seen the first-run walkthrough yet?
       setOnboarded(await hasOnboarded());
 
@@ -107,6 +121,11 @@ export default function App() {
 
       if (!nextUserId) {
         resetEntitlement();
+        // Re-run boot now rather than leaving the user parked on the
+        // boot-error screen until they notice and tap "Try again" —
+        // ensureSession() mints a fresh session immediately (sessionPromise
+        // is cleared on SIGNED_OUT, see lib/supabase.ts).
+        void start();
         return;
       }
       // A restore-by-email swaps the account underneath us. The old account's
@@ -184,7 +203,12 @@ export default function App() {
           />
         ))}
 
-      {tab === "settings" && <Settings />}
+      {tab === "settings" && (
+        <Settings
+          autoOpenRestore={autoOpenRestore}
+          onAutoOpenConsumed={() => setAutoOpenRestore(false)}
+        />
+      )}
 
       <TabBar tab={tab} onChange={changeTab} />
     </>

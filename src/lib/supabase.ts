@@ -65,6 +65,17 @@ export async function ensureSession(): Promise<Session> {
   }
 }
 
+// A successful ensureSession() call leaves `sessionPromise` cached forever —
+// only the error path above ever clears it. That's fine until sign-out: the
+// next ensureSession() call would otherwise hand back that same, now-dead
+// session object instead of re-checking storage, leaving the app stuck on
+// the boot-error screen until the process is killed and relaunched. Reset it
+// on SIGNED_OUT so the very next call mints a fresh anonymous session (or
+// picks up a restored one) immediately.
+supabase.auth.onAuthStateChange((event) => {
+  if (event === "SIGNED_OUT") sessionPromise = null;
+});
+
 /** True when the current user is anonymous (not yet backed up with an email). */
 export async function isAnonymousUser(): Promise<boolean> {
   const { data } = await supabase.auth.getUser();

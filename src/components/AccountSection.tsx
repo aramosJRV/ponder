@@ -8,6 +8,8 @@ import {
   startEmailBackup,
   startRestore,
 } from "../lib/api";
+import { saveJournalExport } from "../lib/exportSave";
+import { markSignedOut } from "../lib/signOutFlag";
 import ConfirmDialog from "./ConfirmDialog";
 import { userMessage } from "../lib/errors";
 
@@ -27,7 +29,14 @@ type Flow =
  * sign-out is deliberately hidden until the account is backed up — signing out
  * of an anonymous account would orphan every topic and note permanently.
  */
-export default function AccountSection() {
+export default function AccountSection({
+  autoOpenRestore,
+  onAutoOpenConsumed,
+}: {
+  /** Set when this boot followed a sign-out — jump straight to Restore. */
+  autoOpenRestore?: boolean;
+  onAutoOpenConsumed?: () => void;
+}) {
   const [mode, setMode] = useState<Mode>("loading");
   const [email, setEmail] = useState<string | null>(null);
 
@@ -41,6 +50,9 @@ export default function AccountSection() {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState("");
 
   /**
    * Delete the account, then reload.
@@ -70,14 +82,27 @@ export default function AccountSection() {
    * always, and it always has.
    */
   async function exportJournal() {
-    const md = await exportJournalMarkdown();
-    const blob = new Blob([md], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `ponder-journal-${new Date().toISOString().slice(0, 10)}.md`;
-    a.click();
-    URL.revokeObjectURL(url);
+    setExporting(true);
+    setExportError("");
+    try {
+      const md = await exportJournalMarkdown();
+      await saveJournalExport(md);
+    } catch (e) {
+      setExportError(userMessage(e));
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  /**
+   * Flip the "just signed out" flag before signing out, not after — if
+   * signOut() itself throws we still want the next boot to route into
+   * Restore. An unnecessary restore prompt is a much smaller problem than a
+   * stuck one.
+   */
+  async function signOutAndFlagForRestore() {
+    await markSignedOut();
+    await supabase.auth.signOut();
   }
 
   async function refresh() {
@@ -90,6 +115,16 @@ export default function AccountSection() {
   useEffect(() => {
     void refresh();
   }, []);
+
+  // Came here right after a sign-out: skip the "encourage backup" pitch and
+  // go straight to Restore. Only fires once — the parent clears the flag.
+  useEffect(() => {
+    if (mode === "anon" && autoOpenRestore && flow.kind === "idle") {
+      setFlow({ kind: "restore_email" });
+      onAutoOpenConsumed?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, autoOpenRestore]);
 
   function resetFlow() {
     setFlow({ kind: "idle" });
@@ -166,7 +201,7 @@ export default function AccountSection() {
             on another device with a code sent to this address.
           </p>
           <button
-            onClick={() => void supabase.auth.signOut()}
+            onClick={() => void signOutAndFlagForRestore()}
             className="pressable mt-4 min-h-[48px] w-full rounded-xl border border-hairline bg-surface font-semibold text-muted"
           >
             Sign out
@@ -272,10 +307,16 @@ export default function AccountSection() {
         <div className="mt-6 border-t border-hairline pt-5">
           <button
             onClick={() => void exportJournal()}
-            className="pressable min-h-[48px] w-full rounded-xl border border-hairline bg-surface font-semibold text-muted"
+            disabled={exporting}
+            className="pressable min-h-[48px] w-full rounded-xl border border-hairline bg-surface font-semibold text-muted disabled:opacity-50"
           >
-            Export my journal
+            {exporting ? "Exporting…" : "Export my journal"}
           </button>
+          {exportError && (
+            <p className="mt-2 rounded-xl bg-rust-soft px-4 py-2.5 text-sm font-semibold text-rust">
+              {exportError}
+            </p>
+          )}
           <p className="mt-2 text-xs leading-relaxed text-muted">
             Every thread, entry and note as a markdown file you keep.
           </p>
@@ -305,9 +346,10 @@ export default function AccountSection() {
           </p>
           <button
             onClick={() => void exportJournal()}
-            className="pressable mt-2 min-h-[36px] text-xs font-semibold text-moss"
+            disabled={exporting}
+            className="pressable mt-2 min-h-[36px] text-xs font-semibold text-moss disabled:opacity-50"
           >
-            Export my journal first
+            {exporting ? "Exporting…" : "Export my journal first"}
           </button>
         </div>
       )}
