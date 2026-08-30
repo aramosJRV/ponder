@@ -15,6 +15,8 @@ import type { PermissionStatus, ReminderState } from "../lib/notifications";
 import AccountSection from "../components/AccountSection";
 import SubscriptionSection from "../components/SubscriptionSection";
 import { deviceTimezone } from "../lib/dates";
+import { TIMEZONE_GROUPS, zoneOptionLabel } from "../lib/timezones";
+import type { TimezoneGroup } from "../lib/timezones";
 import {
   CONTENT_LEVELS,
   DEFAULT_CONTENT_LEVEL,
@@ -22,18 +24,6 @@ import {
   setContentLevel,
 } from "../lib/contentLevel";
 import type { ContentLevel, Profile, Topic } from "../lib/types";
-
-const FALLBACK_TZS = [
-  "UTC",
-  "Australia/Melbourne",
-  "Australia/Sydney",
-  "Australia/Brisbane",
-  "Australia/Perth",
-  "Pacific/Auckland",
-  "America/New_York",
-  "America/Los_Angeles",
-  "Europe/London",
-];
 
 /** Settings auto-save. Long enough that dragging the slider is one write. */
 const SAVE_DEBOUNCE_MS = 700;
@@ -77,15 +67,39 @@ export default function Settings({
 
   const savedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const tzList = useMemo<string[]>(() => {
-    try {
-      // deno-lint-ignore no-explicit-any
-      const list = (Intl as any).supportedValuesOf?.("timeZone");
-      return Array.isArray(list) && list.length ? list : FALLBACK_TZS;
-    } catch {
-      return FALLBACK_TZS;
+  // A short, curated list beats the ~420 IDs Intl.supportedValuesOf returns.
+  // The device zone is pinned at the top; a saved zone outside the list is
+  // preserved in its own group so we never silently change someone's setting.
+  const tzGroups = useMemo<TimezoneGroup[]>(() => {
+    const device = deviceTimezone();
+    const pinned = new Set<string>();
+    const groups: TimezoneGroup[] = [];
+
+    if (device) {
+      pinned.add(device);
+      groups.push({
+        region: "Your device",
+        zones: [{ id: device, label: `${zoneOptionLabel(device)} — detected` }],
+      });
     }
-  }, []);
+
+    const curated = TIMEZONE_GROUPS.map((g) => ({
+      region: g.region,
+      zones: g.zones
+        .filter((z) => !pinned.has(z.id))
+        .map((z) => ({ id: z.id, label: zoneOptionLabel(z.id) })),
+    })).filter((g) => g.zones.length > 0);
+
+    const known = new Set([...pinned, ...curated.flatMap((g) => g.zones.map((z) => z.id))]);
+    if (timezone && !known.has(timezone)) {
+      groups.push({
+        region: "Saved",
+        zones: [{ id: timezone, label: zoneOptionLabel(timezone) }],
+      });
+    }
+
+    return [...groups, ...curated];
+  }, [timezone]);
 
   async function load() {
     try {
@@ -258,11 +272,14 @@ export default function Settings({
           onChange={(e) => setTimezone(e.target.value)}
           className="mt-1.5 w-full rounded-xl border border-hairline bg-paper px-4 py-3 outline-none focus:border-moss"
         >
-          {!tzList.includes(timezone) && <option value={timezone}>{timezone}</option>}
-          {tzList.map((tz) => (
-            <option key={tz} value={tz}>
-              {tz}
-            </option>
+          {tzGroups.map((group) => (
+            <optgroup key={group.region} label={group.region}>
+              {group.zones.map((tz) => (
+                <option key={tz.id} value={tz.id}>
+                  {tz.label}
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
         <p className="mt-2 text-xs text-muted">

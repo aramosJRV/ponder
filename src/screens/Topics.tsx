@@ -305,7 +305,7 @@ function CreateTopicSheet({
           maxLength={120}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="e.g. Patience with my father"
+          placeholder="e.g. My identity in Christ"
           className="mt-1.5 w-full rounded-xl border border-hairline bg-surface px-4 py-3 outline-none focus:border-moss"
         />
 
