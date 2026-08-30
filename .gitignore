@@ -29,3 +29,7 @@ deploy-*.zip
 __pycache__/
 *.py[cod]
 vite.config.ts.timestamp-*.mjs
+
+_presync_backups/
+store-assets/
+testing/

@@ -8,6 +8,17 @@ const config: CapacitorConfig = {
   appId: "com.jrvsolutions.ponder",
   appName: "Ponder",
   webDir: "dist",
+  // Android 15+ (targetSdk 35+) forces the WebView edge-to-edge under the
+  // status bar / nav bar at the OS level. Capacitor's own inset-margin fix
+  // (CapacitorWebView.edgeToEdgeHandler) is opt-in and defaults to
+  // "disable" — without this, nothing pushes content below the status bar
+  // and headers render underneath it. "auto" only applies the margin when
+  // the OS is actually enforcing edge-to-edge (API 35+, no theme opt-out),
+  // so it's safe on older Android too. iOS is unaffected — it already
+  // handles this via CSS env(safe-area-inset-*) on body.
+  android: {
+    adjustMarginsForEdgeToEdge: "auto",
+  },
 };
 
 export default config;
