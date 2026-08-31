@@ -12,6 +12,7 @@ import {
 import type { ResolvedVerseRef, Topic } from "../lib/types";
 import StatusChip from "../components/StatusChip";
 import ConclusionFlow from "../components/ConclusionFlow";
+import { useKeyboardInset, scrollFieldIntoView } from "../lib/useKeyboardInset";
 
 interface Props {
   onOpenTopic: (id: string) => void;
@@ -225,6 +226,11 @@ function CreateTopicSheet({
   const [seed, setSeed] = useState<ResolvedVerseRef | null>(null);
   const [seedState, setSeedState] = useState<"idle" | "checking" | "ok" | "bad">("idle");
 
+  // How much of the viewport the on-screen keyboard is covering. Without this
+  // the sheet stays pinned to the bottom of the window and the fields the user
+  // is typing into sit underneath the keyboard.
+  const kbInset = useKeyboardInset();
+
   // debounced lookup against the same SQL the DB trigger uses
   useEffect(() => {
     const raw = seedInput.trim();
@@ -285,11 +291,16 @@ function CreateTopicSheet({
   }
 
   return (
-    <div className="fixed inset-0 z-30 flex items-end justify-center bg-ink/40" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-30 flex items-end justify-center bg-ink/40"
+      style={{ paddingBottom: kbInset }}
+      onClick={onClose}
+    >
       <form
         onSubmit={save}
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-lg animate-rise rounded-t-3xl bg-paper p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+        style={{ maxHeight: `calc(100dvh - ${kbInset}px - 2rem)` }}
+        className="w-full max-w-lg animate-rise overflow-y-auto overscroll-contain rounded-t-3xl bg-paper p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
       >
         <h2 className="font-display text-3xl font-medium">New thread</h2>
         <p className="mt-1 text-sm text-muted">
@@ -305,6 +316,7 @@ function CreateTopicSheet({
           maxLength={120}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          onFocus={scrollFieldIntoView}
           placeholder="e.g. My identity in Christ"
           className="mt-1.5 w-full rounded-xl border border-hairline bg-surface px-4 py-3 outline-none focus:border-moss"
         />
@@ -317,6 +329,7 @@ function CreateTopicSheet({
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          onFocus={scrollFieldIntoView}
           placeholder="What you're noticing, what prompted this, what you're asking…"
           className="mt-1.5 w-full resize-none rounded-xl border border-hairline bg-surface px-4 py-3 outline-none focus:border-moss"
         />
@@ -329,6 +342,7 @@ function CreateTopicSheet({
           id="t-seed"
           value={seedInput}
           onChange={(e) => setSeedInput(e.target.value)}
+          onFocus={scrollFieldIntoView}
           placeholder="e.g. Psalm 46:10 or 1 Corinthians 13:4-7"
           autoCapitalize="words"
           autoCorrect="off"

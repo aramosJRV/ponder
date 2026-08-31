@@ -1,6 +1,6 @@
 {
   "name": "ponder",
-  "version": "1.0.4",
+  "version": "1.0.8",
   "private": true,
   "type": "module",
   "description": "Personal daily devotional app — topic-based, discernment-oriented",

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { DailyEntry, ReportReason, Synthesis } from "../lib/types";
 import { submitContentReport } from "../lib/api";
+import { useKeyboardInset, scrollFieldIntoView } from "../lib/useKeyboardInset";
 
 const REASONS: { value: ReportReason; label: string; hint: string }[] = [
   {
@@ -44,6 +45,7 @@ export default function ReportButton(props: Props) {
   const [saving, setSaving] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
+  const kbInset = useKeyboardInset();
 
   // Close on Escape — the sheet traps attention, so give an obvious way out.
   useEffect(() => {
@@ -104,13 +106,15 @@ export default function ReportButton(props: Props) {
       {open && (
         <div
           className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 sm:items-center"
+          style={{ paddingBottom: kbInset }}
           role="dialog"
           aria-modal="true"
           aria-label="Report this content"
           onClick={close}
         >
           <div
-            className="max-h-[88vh] w-full overflow-y-auto rounded-t-2xl bg-paper p-6 sm:max-w-md sm:rounded-2xl"
+            style={{ maxHeight: `calc(100dvh - ${kbInset}px - 2rem)` }}
+            className="w-full overflow-y-auto overscroll-contain rounded-t-2xl bg-paper p-6 sm:max-w-md sm:rounded-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {done ? (
@@ -173,6 +177,7 @@ export default function ReportButton(props: Props) {
                 <textarea
                   value={detail}
                   onChange={(e) => setDetail(e.target.value.slice(0, 2000))}
+                  onFocus={scrollFieldIntoView}
                   rows={3}
                   placeholder="Anything else we should know? (optional)"
                   className="mt-4 w-full resize-none rounded-xl border border-hairline bg-surface px-4 py-3 text-[15px] leading-relaxed outline-none focus:border-moss"
