@@ -64,7 +64,7 @@ const TABS: Array<{ id: Tab; label: string; Icon: (p: IconProps) => JSX.Element 
 
 export default function TabBar({ tab, onChange }: Props) {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-hairline bg-paper/95 backdrop-blur">
+    <nav className="hide-when-keyboard fixed inset-x-0 bottom-0 z-20 border-t border-hairline bg-paper/95 backdrop-blur">
       <div className="mx-auto flex max-w-lg">
         {TABS.map((t) => {
           const active = tab === t.id;

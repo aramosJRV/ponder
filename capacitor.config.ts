@@ -19,6 +19,17 @@ const config: CapacitorConfig = {
   android: {
     adjustMarginsForEdgeToEdge: "auto",
   },
+  plugins: {
+    // iOS: resize the WKWebView itself so 100dvh / position:fixed shrink with
+    // the keyboard. Android ignores `resize` — there the fix is
+    // windowSoftInputMode="adjustResize" in AndroidManifest.xml plus the --kb
+    // inset from lib/keyboardInset.ts, which is written to survive either
+    // behaviour without double-counting.
+    Keyboard: {
+      resize: "native",
+      resizeOnFullScreen: true,
+    },
+  },
 };
 
 export default config;

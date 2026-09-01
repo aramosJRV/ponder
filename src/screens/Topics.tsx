@@ -12,7 +12,7 @@ import {
 import type { ResolvedVerseRef, Topic } from "../lib/types";
 import StatusChip from "../components/StatusChip";
 import ConclusionFlow from "../components/ConclusionFlow";
-import { useKeyboardInset, scrollFieldIntoView } from "../lib/useKeyboardInset";
+import { useKeyboardInset } from "../lib/keyboardInset";
 
 interface Props {
   onOpenTopic: (id: string) => void;
@@ -316,7 +316,6 @@ function CreateTopicSheet({
           maxLength={120}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          onFocus={scrollFieldIntoView}
           placeholder="e.g. My identity in Christ"
           className="mt-1.5 w-full rounded-xl border border-hairline bg-surface px-4 py-3 outline-none focus:border-moss"
         />
@@ -329,7 +328,6 @@ function CreateTopicSheet({
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          onFocus={scrollFieldIntoView}
           placeholder="What you're noticing, what prompted this, what you're asking…"
           className="mt-1.5 w-full resize-none rounded-xl border border-hairline bg-surface px-4 py-3 outline-none focus:border-moss"
         />
@@ -342,7 +340,6 @@ function CreateTopicSheet({
           id="t-seed"
           value={seedInput}
           onChange={(e) => setSeedInput(e.target.value)}
-          onFocus={scrollFieldIntoView}
           placeholder="e.g. Psalm 46:10 or 1 Corinthians 13:4-7"
           autoCapitalize="words"
           autoCorrect="off"

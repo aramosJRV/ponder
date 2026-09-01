@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { DailyEntry, ReportReason, Synthesis } from "../lib/types";
 import { submitContentReport } from "../lib/api";
-import { useKeyboardInset, scrollFieldIntoView } from "../lib/useKeyboardInset";
+import { useKeyboardInset } from "../lib/keyboardInset";
 
 const REASONS: { value: ReportReason; label: string; hint: string }[] = [
   {
@@ -177,7 +177,6 @@ export default function ReportButton(props: Props) {
                 <textarea
                   value={detail}
                   onChange={(e) => setDetail(e.target.value.slice(0, 2000))}
-                  onFocus={scrollFieldIntoView}
                   rows={3}
                   placeholder="Anything else we should know? (optional)"
                   className="mt-4 w-full resize-none rounded-xl border border-hairline bg-surface px-4 py-3 text-[15px] leading-relaxed outline-none focus:border-moss"

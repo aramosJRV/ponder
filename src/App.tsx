@@ -4,6 +4,7 @@ import { supabase, ensureSession } from "./lib/supabase";
 import { ensureDeviceTimezone, recordAppOpen } from "./lib/api";
 import { hasOnboarded, markOnboarded } from "./lib/onboarding";
 import { consumeSignedOutFlag } from "./lib/signOutFlag";
+import { startKeyboardTracking } from "./lib/keyboardInset";
 import { configureBilling } from "./lib/billing";
 import { errorCopy, logError, type ErrorKind } from "./lib/errors";
 import {
@@ -94,6 +95,11 @@ export default function App() {
 
   useEffect(() => {
     void start();
+
+    // Publishes --kb (keyboard overlap) for the whole app. Must run before any
+    // sheet opens — nothing in the web layer can see the Android keyboard
+    // without it. See lib/keyboardInset.ts.
+    startKeyboardTracking();
 
     const unsubEntitlement = onEntitlementChange(() =>
       setEntitlementTick((n) => n + 1),

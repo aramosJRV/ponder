@@ -17,7 +17,17 @@ body {
    html and body doubled them and pushed full-height screens off-screen. */
 body {
   padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
+  /* --kb is the on-screen keyboard overlap, set by lib/keyboardInset.ts. On
+     Android the WebView is not resized when the keyboard opens, so without
+     this the last of any scrollable screen (e.g. the note composer) can never
+     be scrolled above the keyboard. */
+  padding-bottom: calc(env(safe-area-inset-bottom) + var(--kb, 0px));
+}
+
+/* The tab bar is fixed to the bottom, so while the keyboard is up it is both
+   invisible and stealing space. Get it out of the way. */
+.kb-open .hide-when-keyboard {
+  display: none;
 }
 
 /* tap feedback on anything marked pressable */
