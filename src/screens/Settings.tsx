@@ -23,7 +23,13 @@ import {
   getContentLevel,
   setContentLevel,
 } from "../lib/contentLevel";
-import type { ContentLevel, Profile, Topic } from "../lib/types";
+import {
+  DEFAULT_TRANSLATION,
+  TRANSLATIONS,
+  getTranslation,
+  setTranslation,
+} from "../lib/translations";
+import type { ContentLevel, Profile, Topic, Translation } from "../lib/types";
 
 /** Settings auto-save. Long enough that dragging the slider is one write. */
 const SAVE_DEBOUNCE_MS = 700;
@@ -55,6 +61,7 @@ export default function Settings({
   // Seeded from localStorage so the control is right before the fetch lands;
   // the profile row overwrites it on load and is the source of truth.
   const [contentLevel, setLevel] = useState<ContentLevel>(getContentLevel);
+  const [translation, setTr] = useState<Translation>(getTranslation);
   const [saveState, setSaveState] = useState<SaveState>("idle");
 
   const [focusBusy, setFocusBusy] = useState(false);
@@ -110,8 +117,10 @@ export default function Settings({
         setTimezone(p.timezone);
         setChallenge(p.challenge_frequency);
         setLevel(p.content_level ?? DEFAULT_CONTENT_LEVEL);
-        // Reconcile the render-path mirror EntryCard reads.
+        setTr(p.translation ?? DEFAULT_TRANSLATION);
+        // Reconcile the render-path mirrors EntryCard reads.
         setContentLevel(p.content_level ?? DEFAULT_CONTENT_LEVEL);
+        setTranslation(p.translation ?? DEFAULT_TRANSLATION);
       }
       setTopics(t);
       setError("");
@@ -140,7 +149,8 @@ export default function Settings({
     (hour !== profile.notification_hour ||
       timezone !== profile.timezone ||
       Math.abs(challenge - profile.challenge_frequency) > 1e-9 ||
-      contentLevel !== profile.content_level);
+      contentLevel !== profile.content_level ||
+      translation !== profile.translation);
 
   const saveProfile = useCallback(async () => {
     setSaveState("saving");
@@ -151,6 +161,7 @@ export default function Settings({
         timezone,
         challenge_frequency: challenge,
         content_level: contentLevel,
+        translation,
       });
       setProfile(updated);
       setSaveState("saved");
@@ -163,7 +174,7 @@ export default function Settings({
       setSaveState("idle");
       setError(e instanceof Error ? e.message : "Could not save");
     }
-  }, [hour, timezone, challenge, contentLevel, syncReminder]);
+  }, [hour, timezone, challenge, contentLevel, translation, syncReminder]);
 
   // Auto-save: no Save button to hunt for, and no ambiguity about which
   // section a button belongs to.
@@ -342,6 +353,69 @@ export default function Settings({
             );
           })}
         </div>
+      </section>
+
+      {/* Bible version */}
+      <section className="mt-5 rounded-2xl border border-hairline bg-surface p-5">
+        <h2 className="font-display text-xl">Bible version</h2>
+        <p className="mt-1 text-sm text-muted">
+          Used for your daily reminder and every entry you open. You can still switch
+          version on any passage as you read — that stays on the passage and does not
+          change this.
+        </p>
+
+        <div
+          role="radiogroup"
+          aria-label="Bible version"
+          className="mt-4 flex flex-col gap-2"
+        >
+          {TRANSLATIONS.map((opt) => {
+            const active = translation === opt.value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => {
+                  setTr(opt.value);
+                  // Write the mirror immediately: Today should re-render in the
+                  // new version without waiting for the debounced save.
+                  setTranslation(opt.value);
+                }}
+                className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition-colors ${
+                  active
+                    ? "border-moss bg-moss-soft"
+                    : "border-hairline bg-paper hover:border-moss"
+                }`}
+              >
+                <span>
+                  <span
+                    className={`block text-[15px] font-semibold ${active ? "text-moss" : ""}`}
+                  >
+                    {opt.name}
+                  </span>
+                  <span className="mt-0.5 block text-xs leading-snug text-muted">
+                    {opt.blurb}
+                  </span>
+                </span>
+                <span
+                  className={`shrink-0 text-[11px] font-bold uppercase tracking-[0.16em] ${
+                    active ? "text-moss" : "text-muted"
+                  }`}
+                >
+                  {opt.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <p className="mt-3 text-xs leading-snug text-muted">
+          These three are public domain, which is what lets Ponder store them on your
+          device and read them to you offline. Licensed versions such as the NIV, ESV
+          and The Message cannot be included.
+        </p>
       </section>
 
       {/* Challenge frequency */}

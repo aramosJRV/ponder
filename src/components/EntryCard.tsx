@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
-import type { ContentLevel, DailyEntry, Song } from "../lib/types";
+import type { ContentLevel, DailyEntry, Song, Translation } from "../lib/types";
 import { useContentLevel } from "../lib/contentLevel";
+import {
+  DEFAULT_TRANSLATION,
+  TRANSLATIONS,
+  translationName,
+  usePassage,
+  useTranslation,
+} from "../lib/translations";
+import type { PassageState } from "../lib/translations";
 import ReportButton from "./ReportButton";
 
 /**
@@ -26,6 +34,30 @@ export default function EntryCard({ entry }: { entry: DailyEntry }) {
   // carries the previous card's expanded state across.
   useEffect(() => setExpanded(false), [entry.id]);
 
+  // Which version this card is showing right now. Seeded from the standing
+  // preference and reset by it — tapping KJV on today's passage is a reading
+  // gesture, not a settings change, so it must not follow the reader to the
+  // next entry or to tomorrow's notification.
+  const preferred = useTranslation();
+  const [translation, setTranslation] = useState<Translation>(preferred);
+  const [offline, setOffline] = useState(false);
+  useEffect(() => {
+    setTranslation(preferred);
+    setOffline(false);
+  }, [entry.id, preferred]);
+
+  const passage = usePassage(entry, translation);
+
+  // A version we cannot reach is not a version the reader can sit with.
+  // Fall back to the text the entry already carries and say why, rather
+  // than leaving a selected tab over an empty hero.
+  useEffect(() => {
+    if (passage.status === "unavailable" && translation !== DEFAULT_TRANSLATION) {
+      setTranslation(DEFAULT_TRANSLATION);
+      setOffline(true);
+    }
+  }, [passage.status, translation]);
+
   const shown: ContentLevel = expanded ? 3 : level;
   const challenge = entry.entry_type === "challenge";
   const showSong = shown >= 3 && !!entry.song;
@@ -41,21 +73,17 @@ export default function EntryCard({ entry }: { entry: DailyEntry }) {
         </div>
       )}
 
-      {/* Verse — the typographic hero, bleeding on warm ground */}
-      <section
-        className={`-mx-6 px-6 py-8 ${challenge ? "bg-rust-soft" : "bg-moss-soft"}`}
-      >
-        <p className="font-display text-[28px] font-medium leading-snug">
-          “{entry.verse_text}”
-        </p>
-        <p
-          className={`mt-4 text-sm font-bold uppercase tracking-[0.18em] ${
-            challenge ? "text-rust" : "text-moss"
-          }`}
-        >
-          {entry.verse_ref} · WEB
-        </p>
-      </section>
+      <VerseHero
+        entry={entry}
+        challenge={challenge}
+        translation={translation}
+        passage={passage}
+        offline={offline}
+        onSelect={(t) => {
+          setOffline(false);
+          setTranslation(t);
+        }}
+      />
 
       {shown >= 2 && (
         <section className="mt-8">
@@ -121,8 +149,112 @@ export default function EntryCard({ entry }: { entry: DailyEntry }) {
         />
       )}
 
-      <Footnotes entry={entry} shown={shown} showSong={showSong} />
+      <Footnotes
+        entry={entry}
+        shown={shown}
+        showSong={showSong}
+        translation={translation}
+      />
     </article>
+  );
+}
+
+/**
+ * The passage — the typographic hero, bleeding on warm ground.
+ *
+ * The version tabs live inside it rather than in a toolbar because the
+ * choice is about THIS passage and nothing else on the card changes with
+ * it. They take the entry's posture colour so the strip never visually
+ * contradicts the "harder question today" badge above it.
+ *
+ * Three states other than plain text, and each one is a real thing that
+ * happens rather than defensive padding:
+ *   loading      — dim the previous text instead of blanking the hero, so
+ *                  a tap does not collapse the page and reflow everything
+ *                  under it.
+ *   absent       — the passage genuinely is not in that translation.
+ *   (unavailable is handled by the parent, which reverts to the WEB.)
+ */
+function VerseHero({
+  entry,
+  challenge,
+  translation,
+  passage,
+  offline,
+  onSelect,
+}: {
+  entry: DailyEntry;
+  challenge: boolean;
+  translation: Translation;
+  passage: PassageState;
+  offline: boolean;
+  onSelect: (t: Translation) => void;
+}) {
+  const accent = challenge ? "text-rust" : "text-moss";
+  // "unavailable" is a single frame: the parent reverts to the WEB the moment
+  // it sees that status. Render the text the entry already carries rather
+  // than flashing an empty hero on the way there.
+  const text = "text" in passage ? passage.text : entry.verse_text;
+  return (
+    <section className={`-mx-6 px-6 py-8 ${challenge ? "bg-rust-soft" : "bg-moss-soft"}`}>
+      {passage.status === "absent" ? (
+        <p className="font-display text-[22px] font-medium leading-snug text-ink/60">
+          This passage isn’t in the {translationName(translation)}.
+        </p>
+      ) : (
+        <p
+          aria-busy={passage.status === "loading"}
+          className={`font-display text-[28px] font-medium leading-snug transition-opacity duration-200 ${
+            passage.status === "loading" ? "opacity-40" : "opacity-100"
+          }`}
+        >
+          “{text}”
+        </p>
+      )}
+
+      <p
+        className={`mt-4 text-sm font-bold uppercase tracking-[0.18em] ${accent}`}
+      >
+        {entry.verse_ref} · {translation}
+      </p>
+
+      <div
+        role="radiogroup"
+        aria-label="Bible version"
+        className={`mt-4 flex gap-1 border-t pt-3 ${
+          challenge ? "border-rust/20" : "border-moss/20"
+        }`}
+      >
+        {TRANSLATIONS.map((t) => {
+          const on = t.value === translation;
+          return (
+            <button
+              key={t.value}
+              type="button"
+              role="radio"
+              aria-checked={on}
+              aria-label={t.name}
+              onClick={() => onSelect(t.value)}
+              className={`pressable rounded-full px-3.5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] transition-colors ${
+                on
+                  ? challenge
+                    ? "bg-rust text-paper"
+                    : "bg-moss text-paper"
+                  : `text-muted ${challenge ? "hover:text-rust" : "hover:text-moss"}`
+              }`}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {offline && (
+        <p className="mt-3 text-xs leading-snug text-muted">
+          Couldn’t reach that version. Showing the {translationName(DEFAULT_TRANSLATION)}.
+        </p>
+      )}
+    </section>
   );
 }
 
@@ -234,18 +366,24 @@ function SpotifyIcon() {
 
 /**
  * Sources footnote. Every reference shown here was resolved against the
- * World English Bible table server-side before the entry was stored — the
- * model never supplies scripture text, only references that then had to
- * prove they exist.
+ * bible_verses table server-side before the entry was stored — the model
+ * never supplies scripture text, only references that then had to prove
+ * they exist.
+ *
+ * The passage line names whichever version is on screen. It has to: the
+ * whole point of a citation is that it says where the words in front of
+ * you came from, and a tab switch changes the words.
  */
 function Footnotes({
   entry,
   shown,
   showSong,
+  translation,
 }: {
   entry: DailyEntry;
   shown: ContentLevel;
   showSong: boolean;
+  translation: Translation;
 }) {
   // Cross references belong to the thought and the illustration; with those
   // folded away there is nothing on screen that drew on them.
@@ -260,8 +398,8 @@ function Footnotes({
         <li className="flex gap-2">
           <span className="shrink-0 tabular-nums">1.</span>
           <span>
-            Passage: <span className="text-ink/70">{entry.verse_ref}</span>, World
-            English Bible (public domain).
+            Passage: <span className="text-ink/70">{entry.verse_ref}</span>,{" "}
+            {translationName(translation)} (public domain).
           </span>
         </li>
 
@@ -273,7 +411,7 @@ function Footnotes({
               <span className="text-ink/70">
                 {crossRefs.map((c) => c.ref).join(" · ")}
               </span>
-              , World English Bible.
+              . References only — no text from them is shown.
             </span>
           </li>
         )}

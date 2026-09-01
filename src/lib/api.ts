@@ -17,10 +17,11 @@ import type {
   Synthesis,
   SynthesisKind,
   Topic,
+  Translation,
 } from "./types";
 
 const PROFILE_COLS =
-  "id, timezone, notification_hour, challenge_frequency, content_level";
+  "id, timezone, notification_hour, challenge_frequency, content_level, translation";
 
 /**
  * Topic columns the client asks for.
@@ -55,7 +56,14 @@ export async function fetchProfile(): Promise<Profile | null> {
 
 export async function updateProfile(
   patch: Partial<
-    Pick<Profile, "timezone" | "notification_hour" | "challenge_frequency" | "content_level">
+    Pick<
+      Profile,
+      | "timezone"
+      | "notification_hour"
+      | "challenge_frequency"
+      | "content_level"
+      | "translation"
+    >
   >,
 ): Promise<Profile> {
   const { data: userData } = await supabase.auth.getUser();
@@ -192,6 +200,39 @@ export async function parseVerseRef(ref: string): Promise<ResolvedVerseRef | nul
   if (error) throw error;
   const rows = (data ?? []) as ResolvedVerseRef[];
   return rows[0] ?? null;
+}
+
+/**
+ * Full text of a passage in one translation, or null when that translation
+ * does not contain the whole span.
+ *
+ * This is what the entry card's version tabs call. It takes coordinates
+ * rather than the display ref because daily_entries already stores them, so
+ * there is nothing to re-parse and no way for the label to drift from what
+ * is fetched.
+ *
+ * A null result is a real answer, not a failure: Romans 14:24-26 has no KJV
+ * row (the KJV puts that doxology at 16:25-27) and fifteen references have
+ * no BSB row. Failures throw — the caller must be able to tell "not in this
+ * translation" from "could not reach the server", because one is permanent
+ * and the other clears when the plane lands.
+ *
+ * WEB is never fetched through here: the entry carries its own WEB text, so
+ * the default tab costs nothing and works offline.
+ */
+export async function fetchPassageText(
+  coords: Pick<DailyEntry, "book_number" | "chapter" | "verse_start" | "verse_end">,
+  translation: Translation,
+): Promise<string | null> {
+  const { data, error } = await supabase.rpc("passage_text", {
+    p_book_number: coords.book_number,
+    p_chapter: coords.chapter,
+    p_verse_start: coords.verse_start,
+    p_verse_end: coords.verse_end,
+    p_translation: translation,
+  });
+  if (error) throw error;
+  return (data as string | null) ?? null;
 }
 
 export async function createTopic(input: {

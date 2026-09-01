@@ -3,7 +3,13 @@
 // concrete implementation, so an FCM/push notifier can replace
 // CapacitorNotifier here without touching screens.
 
-import { fetchActiveTopics, fetchEntriesForDate, fetchProfile } from "../api";
+import {
+  fetchActiveTopics,
+  fetchEntriesForDate,
+  fetchPassageText,
+  fetchProfile,
+} from "../api";
+import { DEFAULT_TRANSLATION } from "../translations";
 import { deviceTimezone, nextOccurrenceInZone, todayLocal } from "../dates";
 import type { DailyEntry, Topic } from "../types";
 import { CapacitorNotifier } from "./capacitor";
@@ -52,6 +58,9 @@ export async function scheduleDailyVerse(input: {
   notificationHour: number;
   /** The profile timezone the hour is expressed in. Defaults to the device's. */
   timezone?: string | null;
+  /** Passage text in the reader's preferred version. Falls back to the WEB
+   *  text the entry carries when it is null. */
+  verseText?: string | null;
 }): Promise<void> {
   const notifier = getNotifier();
   if (!notifier.isSupported()) return;
@@ -62,7 +71,7 @@ export async function scheduleDailyVerse(input: {
   // generated yet we still schedule — with a generic body — so the user gets a
   // nudge instead of silence. Content is refreshed on the next app open.
   const body = input.entry
-    ? `${input.entry.verse_ref} — ${firstLine(input.entry.verse_text)}`
+    ? `${input.entry.verse_ref} — ${firstLine(input.verseText || input.entry.verse_text)}`
     : "Your verse for today is ready to open.";
 
   await notifier.scheduleDaily({
@@ -127,7 +136,29 @@ export async function refreshDailyReminder(): Promise<ReminderState> {
     }
     const hour = profile?.notification_hour ?? DEFAULT_NOTIFICATION_HOUR;
     const timezone = profile?.timezone || deviceTimezone() || "UTC";
-    await scheduleDailyVerse({ topic, entry, notificationHour: hour, timezone });
+
+    // The reminder has to say what the screen will say. daily_entries stores
+    // the WEB, so a reader who prefers another version needs the passage
+    // resolved before the alarm is armed — otherwise the notification quotes
+    // one translation and the card they open quotes another. Best-effort:
+    // a reminder in the WEB beats no reminder at all.
+    let verseText: string | null = null;
+    const translation = profile?.translation ?? DEFAULT_TRANSLATION;
+    if (entry && translation !== DEFAULT_TRANSLATION) {
+      try {
+        verseText = await fetchPassageText(entry, translation);
+      } catch {
+        /* keep the text the entry carries */
+      }
+    }
+
+    await scheduleDailyVerse({
+      topic,
+      entry,
+      notificationHour: hour,
+      timezone,
+      verseText,
+    });
 
     const at = nextOccurrenceInZone(hour, timezone);
     const deviceLocal = `${String(at.getHours()).padStart(2, "0")}:${String(

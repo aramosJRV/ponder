@@ -1,5 +1,10 @@
 // Loads the full World English Bible into bible_books + bible_verses.
-// Idempotent: skips if bible_verses is already populated (use --force to reload).
+// Idempotent: skips if the WEB is already populated (use --force to reload).
+//
+// Scoped to translation 'WEB' throughout. It used to count and delete every
+// row in bible_verses, which since 20260901000001 would mean "skip because
+// the KJV is loaded" and, with --force, "delete the BSB and KJV too".
+// BSB and KJV come from scripts/import-translation.mjs.
 //
 // Usage:
 //   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... node scripts/import-web-bible.mjs [--force]
@@ -27,10 +32,11 @@ const EXPECTED_MIN_VERSES = 31000;
 async function main() {
   const { count } = await supabase
     .from('bible_verses')
-    .select('*', { count: 'exact', head: true });
+    .select('*', { count: 'exact', head: true })
+    .eq('translation', 'WEB');
 
   if (count && count > 0 && !force) {
-    console.log(`bible_verses already has ${count} rows — skipping (use --force to reload).`);
+    console.log(`WEB already has ${count} rows — skipping (use --force to reload).`);
     return;
   }
 
@@ -42,8 +48,8 @@ async function main() {
   if (verses.length < EXPECTED_MIN_VERSES) throw new Error(`Suspiciously low verse count: ${verses.length}`);
 
   if (force && count > 0) {
-    console.log('--force: clearing existing bible data...');
-    await supabase.from('bible_verses').delete().neq('id', 0);
+    console.log('--force: clearing existing WEB rows...');
+    await supabase.from('bible_verses').delete().eq('translation', 'WEB');
   }
 
   const { error: bookErr } = await supabase
@@ -55,7 +61,9 @@ async function main() {
   const BATCH = 1000;
   for (let i = 0; i < verses.length; i += BATCH) {
     const batch = verses.slice(i, i + BATCH);
-    const { error } = await supabase.from('bible_verses').insert(batch);
+    const { error } = await supabase
+      .from('bible_verses')
+      .insert(batch.map((v) => ({ ...v, translation: 'WEB' })));
     if (error) throw new Error(`Insert failed at row ${i}: ${error.message}`);
     process.stdout.write(`\r${Math.min(i + BATCH, verses.length)}/${verses.length} verses`);
   }

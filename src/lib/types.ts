@@ -9,12 +9,27 @@ export type TopicStatus = "active" | "paused" | "concluded";
  */
 export type ContentLevel = 1 | 2 | 3;
 
+/**
+ * Public-domain Bible translations. Mirrors the bible_translations table.
+ *
+ * There is no NIV / ESV / MSG / NLT / NASB / CSB member and there cannot be
+ * one: those are copyright-protected and cannot be stored in bible_verses,
+ * copied into daily_entries.verse_text, shared through entry_pool or put in
+ * a notification payload without a commercial licence. Adding a member here
+ * without a licence and a row in bible_translations does not make the text
+ * appear — it makes a tab that resolves to nothing.
+ */
+export type Translation = "WEB" | "BSB" | "KJV";
+
 export interface Profile {
   id: string;
   timezone: string;
   notification_hour: number; // 0–23, local hour to fire the daily reminder
   challenge_frequency: number; // 0.00–0.50
   content_level: ContentLevel;
+  /** Standing preference. What new entries and the notification body are
+   *  rendered in. Per-passage tab switching does NOT write here. */
+  translation: Translation;
 }
 export type EntryType = "affirming" | "challenge";
 
@@ -37,7 +52,8 @@ export interface Topic {
   seed_verse_text: string | null;
 }
 
-/** Result of the parse_verse_ref RPC — a reference that exists in the WEB. */
+/** Result of the parse_verse_ref RPC — a reference that exists in the
+ *  translation it was validated against (the WEB unless one was named). */
 export interface ResolvedVerseRef {
   book_number: number;
   book: string;
