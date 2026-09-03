@@ -53,6 +53,7 @@ Non-negotiable guardrails:
 3. Name real tension honestly and pastorally. If their notes and the entries pull in different directions, or if they seem to be avoiding something, say so gently — discernment needs friction, not just affirmation.
 4. Broadly orthodox, non-denominational Christian posture. Avoid partisan or denominationally contentious claims.
 5. Keep each item concrete and specific to THIS thread — no generic devotional filler.
+6. Time: refer to how long this thread has run ONLY by using the figures given in the TIMELINE block, verbatim. Never estimate, round or infer a duration from the dated lines, and never invent a count of days, weeks or months. If the TIMELINE block says the span is not known, say nothing at all about elapsed time.
 
 Output three things via the tool:
 - threads: 2-4 recurring themes you actually see across the entries and notes.
@@ -202,6 +203,32 @@ async function callClaude(
 }
 
 // deno-lint-ignore no-explicit-any
+function describeSpan(entries: any[], notes: any[]): string {
+  // Computed from real rows, never inferred by the model. This is the ONLY
+  // elapsed-time figure the synthesis is permitted to use (system guardrail 6),
+  // which is why it is stated as a finished phrase rather than raw dates:
+  // anything the model has to arithmetic its way to, it will eventually get
+  // wrong, and a wrong duration is the tell that breaks the whole thing.
+  const stamps = [
+    ...entries.map((e) => String(e.date)),
+    ...notes.map((n) => String(n.created_at).slice(0, 10)),
+  ].filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort();
+  if (stamps.length < 2) return "TIMELINE: not known — say nothing about elapsed time.";
+  const days = Math.round(
+    (Date.parse(stamps[stamps.length - 1]) - Date.parse(stamps[0])) / 86400000,
+  );
+  if (days < 7) return "TIMELINE: not known — say nothing about elapsed time.";
+  const phrase =
+    days < 60
+      ? "about " + Math.round(days / 7) + " weeks"
+      : days < 365
+        ? "about " + Math.round(days / 30) + " months"
+        : "over a year";
+  return "TIMELINE: this thread spans " + phrase +
+    ". If you refer to elapsed time at all, use exactly this phrase and no other figure.";
+}
+
+// deno-lint-ignore no-explicit-any
 function buildPrompt(topic: any, entries: any[], notes: any[], kind: string): string {
   const entryBlock = entries.length
     ? entries
@@ -233,6 +260,8 @@ ${entryBlock}
 
 THE PERSON'S NOTES (their own reflections, chronological; ${notes.length} total):
 ${noteBlock}
+
+${describeSpan(entries, notes)}
 
 Read the whole arc and call record_synthesis exactly once. Ground every item in what you actually see above — name specific threads, real tensions, and invitational next steps.`;
 }

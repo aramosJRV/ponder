@@ -373,6 +373,7 @@ Non-negotiable guardrails:
 7. cross_refs is a citation list shown to the reader as a footnote, not a decoration. Include a passage there ONLY if it genuinely informed what you wrote — a passage that gave the main text its context, or one whose idea you actually used. An empty list is the correct answer most of the time. Never list a passage you have not thought about, never list one merely because it shares a keyword, and never list the main passage again. Every reference is checked against the World English Bible before the reader sees it, and anything that does not exist is silently discarded — so a half-remembered reference costs you the citation.
 8. The passage text is shown to the reader verbatim (World English Bible) directly above your writing. Do NOT reproduce the passage as a full quotation in your thought or illustration — you will misremember the exact wording and contradict the text on screen (e.g. writing "the LORD" where the WEB reads "Yahweh", or adding words like "both"). Refer to the passage instead: describe what it says, and quote at most a short distinctive phrase of a few words. Never present a reconstructed full-verse quotation.
 9. song is OPTIONAL and applies to AFFIRMING entries only — never include a song on a challenge entry. It is looked up on Spotify before the reader sees it, and a song that cannot be found, or whose artist you have misremembered, is silently discarded, so accuracy beats ambition. Name a song you are confident actually exists under that exact title by that exact artist. Hymns and older worship songs need a specific recording artist, not "Traditional". Stay within Christian worship, hymnody and contemporary Christian music — this is a devotional journal, not a general playlist. Do not default to whatever is most popular: the same handful of songs across every entry is a failure.
+10. NEVER state or imply how long the person has been on this thread, or how long anything in their life has been going on. No counts ("day 40", "after three months", "a year of this"), no vague duration framing ("a while now", "lately", "all this time", "in these early days", "as the weeks have worn on", "you have been carrying this since..."), and no anniversary or season-of-the-journey language. This applies to every field you write — thought, illustration, ponder and prayer_prompts. Any dates you are shown below are for ordering only; they are not a timeline you may describe, and they do not tell you when the thread began or how long the person has sat with it. You do not know the reader's elapsed time, and guessing it is wrong far more often than it is right — it reads as a stranger pretending to know them. Write to today: this passage, this thread, what is in front of them now.
 
 You will be told whether to write an "affirming" or a "challenge" entry:
 - affirming: sits inside the user's sense of the thread and deepens it.
@@ -765,7 +766,7 @@ ${originBlock}
 
 ENTRY TYPE FOR TODAY: ${entryType}
 
-LAST ENTRIES (for continuity — do not repeat their angle or verses):
+LAST ENTRIES (for continuity — do not repeat their angle or verses. The dates order these lines and nothing more: they do not tell you when this thread began or how long it has run, and must never be turned into a statement about elapsed time):
 ${recentBlock}
 
 DO NOT USE any of these verse references (already used in this thread):
@@ -776,10 +777,10 @@ ${blockedRecent.length ? blockedRecent.join("; ") : "(none)"}
 
 ${songBlock}
 
-RECENT USER NOTES (their own reflections — weave awareness of these in gently, without quoting them back verbatim):
+RECENT USER NOTES (their own reflections — weave awareness of these in gently, without quoting them back verbatim. Dates order these lines only; do not date, count or measure anything back to them):
 ${notesBlock}
 
-Write today's ${entryType} entry now. Choose the passage first, ensuring its full context genuinely supports your use of it, then write the entry around it. Call record_devotional exactly once.`;
+Write today's ${entryType} entry now, for today alone — say nothing about how long they have been on this thread (see guardrail 10). Choose the passage first, ensuring its full context genuinely supports your use of it, then write the entry around it. Call record_devotional exactly once.`;
 }
 
 // ------------------------------------------------------------- generation
@@ -1122,13 +1123,13 @@ WHAT SOMEONE ON THIS THREAD IS SITTING WITH: ${theme.description}
 
 ENTRY TYPE FOR TODAY: ${entryType}
 
-WHERE THEY ARE IN IT: ${
+POSTURE FOR THIS ENTRY: ${
     dayIndex <= 14
-      ? "Early days — they are still naming the thing. Do not assume months of history."
+      ? "Unsettled — still naming the thing, its shape not yet clear."
       : dayIndex <= 90
-        ? "Some weeks in. They have sat with this a while and the first energy has gone."
-        : "A long haul. Assume tiredness, and the particular ache of a thing that has not resolved."
-  } This is a rough internal marker for tone only — never state or imply a specific number of days, weeks, or months in the entry text itself, since this framing does not correspond to any real reader's actual timeline.
+        ? "Familiar — the first energy has gone and the question has become ordinary."
+        : "Weary — the particular ache of something that has not resolved."
+  } This is an internal tone marker and nothing else. It is not a timeline: it is derived from a counter over the shared library and has no relation to any real reader's history. Obey guardrail 10 absolutely — no counts, no "a while now", no "early days", no elapsed-time framing of any kind in the text you write.
 
 DO NOT USE any of these verse references (already in the library for this theme):
 ${avoidRefs.length ? avoidRefs.join("; ") : "(none)"}
