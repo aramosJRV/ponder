@@ -4,6 +4,9 @@ interface Props {
   /** Called when onboarding finishes. `createFirstTopic` is true when the
    *  user tapped the primary CTA and wants to open the New Thread sheet. */
   onDone: (createFirstTopic: boolean) => void;
+  /** Replay from Settings rather than first run: no thread is created and the
+   *  onboarding flag is untouched — the last slide just closes the walkthrough. */
+  replay?: boolean;
 }
 
 type Slide = {
@@ -72,7 +75,7 @@ const SLIDES: Slide[] = [
   },
 ];
 
-export default function Onboarding({ onDone }: Props) {
+export default function Onboarding({ onDone, replay = false }: Props) {
   const scroller = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const last = SLIDES.length - 1;
@@ -95,12 +98,12 @@ export default function Onboarding({ onDone }: Props) {
     <div className="flex w-full flex-col overflow-hidden overscroll-none bg-paper" style={{ height: "calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom))" }}>
       {/* Skip — always available, marks onboarding done without creating a thread */}
       <div className="flex h-11 shrink-0 items-center justify-end px-5">
-        {index < last && (
+        {(replay || index < last) && (
           <button
             onClick={() => onDone(false)}
             className="pressable min-h-[40px] px-2 text-sm font-semibold text-muted"
           >
-            Skip
+            {replay ? "Close" : "Skip"}
           </button>
         )}
       </div>
@@ -188,6 +191,13 @@ export default function Onboarding({ onDone }: Props) {
             className="pressable min-h-[50px] w-full rounded-2xl bg-moss text-base font-semibold text-white"
           >
             {index === 0 ? "Begin" : "Next"}
+          </button>
+        ) : replay ? (
+          <button
+            onClick={() => onDone(false)}
+            className="pressable min-h-[50px] w-full rounded-2xl bg-moss text-base font-semibold text-white"
+          >
+            Done
           </button>
         ) : (
           <div className="animate-rise space-y-2.5">

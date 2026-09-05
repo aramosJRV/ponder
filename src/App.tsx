@@ -35,6 +35,9 @@ export default function App() {
   // Set when this boot follows a sign-out, so Settings jumps straight to
   // Restore instead of leaving the user looking at an empty journal.
   const [autoOpenRestore, setAutoOpenRestore] = useState(false);
+  // Walkthrough replayed from Settings > How to use. Separate from `onboarded`
+  // so replaying never touches the first-run flag.
+  const [showIntro, setShowIntro] = useState(false);
   // Bumped whenever entitlement changes, purely to force a re-render — the
   // entitlement itself is read synchronously from lib/entitlements.
   const [, setEntitlementTick] = useState(0);
@@ -188,6 +191,11 @@ export default function App() {
     return <Onboarding onDone={(create) => void finishOnboarding(create)} />;
   }
 
+  // Replay from Settings — full screen, tab bar included, and no flag written.
+  if (showIntro) {
+    return <Onboarding replay onDone={() => setShowIntro(false)} />;
+  }
+
   function changeTab(next: Tab) {
     // Tapping a tab always returns to that tab's root view.
     setOpenTopicId(null);
@@ -213,6 +221,7 @@ export default function App() {
         <Settings
           autoOpenRestore={autoOpenRestore}
           onAutoOpenConsumed={() => setAutoOpenRestore(false)}
+          onShowIntro={() => setShowIntro(true)}
         />
       )}
 

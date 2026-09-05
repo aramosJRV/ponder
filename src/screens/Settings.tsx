@@ -45,9 +45,13 @@ type SaveState = "idle" | "saving" | "saved";
 export default function Settings({
   autoOpenRestore,
   onAutoOpenConsumed,
+  onShowIntro,
 }: {
   autoOpenRestore?: boolean;
   onAutoOpenConsumed?: () => void;
+  /** Replays the first-run walkthrough. Owned by App so it can render over
+   *  the whole screen, tab bar included. */
+  onShowIntro?: () => void;
 } = {}) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -68,8 +72,6 @@ export default function Settings({
 
   // notification permission
   const [permission, setPermission] = useState<PermissionStatus>("unsupported");
-  const [testMsg, setTestMsg] = useState("");
-  const [testBusy, setTestBusy] = useState(false);
   const [reminder, setReminder] = useState<ReminderState | null>(null);
 
   const savedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -190,28 +192,6 @@ export default function Settings({
     if (granted) void syncReminder();
   }
 
-  async function sendTest() {
-    setTestBusy(true);
-    setTestMsg("");
-    try {
-      await getNotifier().sendTest(10);
-      // Report what the OS actually has queued — if this says 0, the alarm was
-      // never registered and the problem is scheduling, not display.
-      const pending = await getNotifier().pendingIds();
-      setTestMsg(
-        `Test scheduled — arrives in about 10 seconds. (${pending.length} pending: ${
-          pending.join(", ") || "none"
-        })`,
-      );
-      setPermission(await getNotifier().permissionStatus());
-    } catch (e) {
-      setTestMsg(e instanceof Error ? e.message : "Could not send test");
-    } finally {
-      setTestBusy(false);
-      setTimeout(() => setTestMsg(""), 8000);
-    }
-  }
-
   async function chooseFocus(topicId: string | null) {
     setFocusBusy(true);
     setError("");
@@ -302,9 +282,6 @@ export default function Settings({
         <NotificationStatus
           permission={permission}
           onEnable={() => void enableNotifications()}
-          onTest={() => void sendTest()}
-          testBusy={testBusy}
-          testMsg={testMsg}
         />
       </section>
 
@@ -469,6 +446,23 @@ export default function Settings({
         </div>
       </section>
 
+      {/* How to use / about */}
+      {onShowIntro && (
+        <section className="mt-5 rounded-2xl border border-hairline bg-surface p-5">
+          <h2 className="font-display text-xl">About Ponder</h2>
+          <p className="mt-1 text-sm text-muted">
+            A short introduction to threads, daily entries and notes — the same one you
+            saw when you first opened Ponder.
+          </p>
+          <button
+            onClick={onShowIntro}
+            className="pressable mt-4 min-h-[48px] w-full rounded-xl border border-hairline bg-paper font-semibold text-ink"
+          >
+            What Ponder is about
+          </button>
+        </section>
+      )}
+
       <SubscriptionSection />
 
       <AccountSection
@@ -534,16 +528,14 @@ function ReminderStatus({ state }: { state: ReminderState | null }) {
 function NotificationStatus({
   permission,
   onEnable,
-  onTest,
-  testBusy,
-  testMsg,
 }: {
   permission: PermissionStatus;
   onEnable: () => void;
-  onTest: () => void;
-  testBusy: boolean;
-  testMsg: string;
 }) {
+  // Granted says nothing: ReminderStatus above already reports when the next
+  // reminder fires, so a separate "Notifications on" line adds noise.
+  if (permission === "granted") return null;
+
   if (permission === "unsupported") {
     return (
       <p className="mt-4 rounded-xl bg-paper px-4 py-2.5 text-xs text-muted">
@@ -554,19 +546,6 @@ function NotificationStatus({
 
   return (
     <div className="mt-4 border-t border-hairline pt-4">
-      {permission === "granted" && (
-        <div className="flex items-center justify-between gap-3">
-          <span className="text-sm font-semibold text-moss">Notifications on</span>
-          <button
-            onClick={onTest}
-            disabled={testBusy}
-            className="pressable min-h-[40px] rounded-xl border border-hairline px-4 text-sm font-semibold disabled:opacity-50"
-          >
-            {testBusy ? "Sending…" : "Send test"}
-          </button>
-        </div>
-      )}
-
       {permission === "prompt" && (
         <button
           onClick={onEnable}
@@ -582,8 +561,6 @@ function NotificationStatus({
           Ponder → Notifications, then reopen this screen.
         </p>
       )}
-
-      {testMsg && <p className="mt-2 text-xs text-muted">{testMsg}</p>}
     </div>
   );
 }
