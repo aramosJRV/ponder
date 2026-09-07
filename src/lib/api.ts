@@ -10,6 +10,7 @@ import type {
   ContentReport,
   DailyEntry,
   Note,
+  PassageContextRow,
   Profile,
   ReportReason,
   ReportTarget,
@@ -233,6 +234,39 @@ export async function fetchPassageText(
   });
   if (error) throw error;
   return (data as string | null) ?? null;
+}
+
+/**
+ * The full literary unit (pericope) around a verse, one row per verse.
+ *
+ * Takes the VERSE, not a range: the server owns the extent. That is
+ * deliberate and is the read-time half of the rule this feature is built on —
+ * the context around a verse is the same for every reader, on every thread,
+ * on every day. A client that could pass its own range could narrow the
+ * passage to the part that agrees with the thread, which is the proof-texting
+ * this feature exists to avoid.
+ *
+ * Rows come back on the WEB skeleton with the requested translation LEFT
+ * JOINed on, so a verse absent from that translation arrives with
+ * `verse_text` null rather than vanishing from the passage. Unlike
+ * fetchPassageText(), which returns null for the whole span, one missing
+ * verse must not blank a fifteen-verse context.
+ *
+ * Every row repeats the range bounds, so the sheet header needs no second
+ * call. Always a network read: daily_entries carries only its own verse.
+ */
+export async function fetchPassageContext(
+  coords: Pick<DailyEntry, "book_number" | "chapter" | "verse_start">,
+  translation: Translation,
+): Promise<PassageContextRow[]> {
+  const { data, error } = await supabase.rpc("passage_context", {
+    p_book_number: coords.book_number,
+    p_chapter: coords.chapter,
+    p_verse: coords.verse_start,
+    p_translation: translation,
+  });
+  if (error) throw error;
+  return (data ?? []) as PassageContextRow[];
 }
 
 export async function createTopic(input: {

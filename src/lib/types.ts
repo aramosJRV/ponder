@@ -78,6 +78,27 @@ export interface CrossRef {
   verse_end: number;
 }
 
+/**
+ * One verse of a passage-context read (the `passage_context` RPC).
+ *
+ * The range bounds repeat on every row — the sheet header needs them and a
+ * second round trip for four integers is not worth it.
+ *
+ * `verse_text` is null when that verse is absent from the requested
+ * translation. That is a real answer, not a failure: the WEB is the skeleton
+ * and the chosen translation is joined onto it, so the gap is shown rather
+ * than silently closed up.
+ */
+export interface PassageContextRow {
+  start_chapter: number;
+  start_verse: number;
+  end_chapter: number;
+  end_verse: number;
+  chapter: number;
+  verse: number;
+  verse_text: string | null;
+}
+
 export interface DailyEntry {
   id: string;
   topic_id: string;

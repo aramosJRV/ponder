@@ -9,6 +9,7 @@ import {
   useTranslation,
 } from "../lib/translations";
 import type { PassageState } from "../lib/translations";
+import PassageContextSheet from "./PassageContextSheet";
 import ReportButton from "./ReportButton";
 
 /**
@@ -29,10 +30,14 @@ import ReportButton from "./ReportButton";
 export default function EntryCard({ entry }: { entry: DailyEntry }) {
   const level = useContentLevel();
   const [expanded, setExpanded] = useState(false);
+  const [contextOpen, setContextOpen] = useState(false);
 
   // A new entry starts folded again — otherwise switching threads on Today
   // carries the previous card's expanded state across.
-  useEffect(() => setExpanded(false), [entry.id]);
+  useEffect(() => {
+    setExpanded(false);
+    setContextOpen(false);
+  }, [entry.id]);
 
   // Which version this card is showing right now. Seeded from the standing
   // preference and reset by it — tapping KJV on today's passage is a reading
@@ -83,6 +88,14 @@ export default function EntryCard({ entry }: { entry: DailyEntry }) {
           setOffline(false);
           setTranslation(t);
         }}
+        onReadContext={() => setContextOpen(true)}
+      />
+
+      <PassageContextSheet
+        entry={entry}
+        translation={translation}
+        open={contextOpen}
+        onClose={() => setContextOpen(false)}
       />
 
       {shown >= 2 && (
@@ -182,6 +195,7 @@ function VerseHero({
   passage,
   offline,
   onSelect,
+  onReadContext,
 }: {
   entry: DailyEntry;
   challenge: boolean;
@@ -189,6 +203,7 @@ function VerseHero({
   passage: PassageState;
   offline: boolean;
   onSelect: (t: Translation) => void;
+  onReadContext: () => void;
 }) {
   const accent = challenge ? "text-rust" : "text-moss";
   // "unavailable" is a single frame: the parent reverts to the WEB the moment
@@ -217,6 +232,21 @@ function VerseHero({
       >
         {entry.verse_ref} · {translation}
       </p>
+
+      {/* Not "read the full chapter". The unit offered is the pericope the
+          verse actually sits in — often tighter than a chapter, and sometimes
+          crossing one. */}
+      <button
+        type="button"
+        onClick={onReadContext}
+        className={`pressable mt-3 inline-flex min-h-[40px] items-center rounded-full border px-4 text-[13px] font-semibold transition-colors ${
+          challenge
+            ? "border-rust/30 text-rust hover:bg-rust/10"
+            : "border-moss/30 text-moss hover:bg-moss/10"
+        }`}
+      >
+        Read the full context
+      </button>
 
       <div
         role="radiogroup"

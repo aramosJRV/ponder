@@ -1,6 +1,6 @@
 node_modules/
 .env
-data/
+data/*
 dist/
 .DS_Store
 supabase/.temp/
@@ -33,3 +33,6 @@ vite.config.ts.timestamp-*.mjs
 _presync_backups/
 store-assets/
 testing/
+
+# the pericope table is the one unreproducible input in data/ — keep it
+!data/pericopes.csv

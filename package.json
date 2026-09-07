@@ -3,7 +3,7 @@
   "version": "1.0.11",
   "private": true,
   "type": "module",
-  "description": "Personal daily devotional app \u2014 topic-based, discernment-oriented",
+  "description": "Personal daily devotional app — topic-based, discernment-oriented",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -13,12 +13,14 @@
     "fetch:bsb": "node scripts/fetch-translation-csv.mjs BSB",
     "fetch:kjv": "node scripts/fetch-translation-csv.mjs KJV",
     "seed": "node scripts/seed.mjs",
-    "setup": "npm run import:bibles && npm run seed",
+    "setup": "npm run import:bibles && npm run import:pericopes && npm run seed",
     "import:bsb": "node scripts/import-translation.mjs BSB",
     "import:kjv": "node scripts/import-translation.mjs KJV",
     "import:bibles": "npm run import:bible && npm run fetch:bsb && npm run import:bsb && npm run fetch:kjv && npm run import:kjv",
     "test:migration": "node scripts/test-migration.mjs",
-    "test:translations": "node scripts/test-translations.mjs"
+    "test:translations": "node scripts/test-translations.mjs",
+    "test:pericopes": "node scripts/test-pericopes.mjs",
+    "import:pericopes": "node scripts/import-pericopes.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^7.6.8",
