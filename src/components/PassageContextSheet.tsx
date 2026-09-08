@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { errorCopy } from "../lib/errors";
 import { bookLabel, rangeLabel, usePassageContext } from "../lib/passageContext";
 import { translationName } from "../lib/translations";
@@ -19,6 +20,17 @@ import type { DailyEntry, Translation } from "../lib/types";
  * verses that suit the thread. That was the original idea for this feature
  * and it was rejected: context selected for topical relevance cuts exactly
  * the verses that would challenge the reader's framing.
+ *
+ * RENDERED THROUGH A PORTAL — this is not optional. EntryCard's <article>
+ * carries `animate-rise`, whose Tailwind definition is
+ * `rise 420ms ... both`. Fill-mode `both` keeps the final keyframe applied
+ * forever, and that keyframe is `transform: translateY(0)` — a transform,
+ * not `none`. An element with any transform becomes the containing block for
+ * `position: fixed` descendants, so rendering this sheet inside the article
+ * made `fixed inset-0` resolve to the CARD's box instead of the viewport.
+ * With `items-end` the sheet then sat at the bottom of a long article, well
+ * below the fold, and looked like the button did nothing. Portalling to
+ * document.body puts it back outside the transform. Do not inline it again.
  */
 export default function PassageContextSheet({
   entry,
@@ -78,7 +90,7 @@ export default function PassageContextSheet({
   const book = bookLabel(entry.verse_ref);
   const heading = state.status === "ready" ? rangeLabel(book, state.rows[0]) : book;
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40"
       onClick={onClose}
@@ -126,7 +138,8 @@ export default function PassageContextSheet({
           </button>
         </footer>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
