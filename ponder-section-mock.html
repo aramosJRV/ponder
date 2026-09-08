@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ponder — "To ponder" redesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAF6EF; --surface:#FFFFFF; --ink:#1F1B16; --muted:#6E6659;
+  --moss:#3D5A44; --moss-soft:rgba(61,90,68,.10); --moss-line:rgba(61,90,68,.22);
+  --rust:#A4552E; --rust-soft:rgba(164,85,46,.10);
+  --hairline:#E7DFD2;
+  --display:'Cormorant Garamond',Georgia,serif;
+  --body:'Source Sans 3',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#2A2723;color:var(--ink);font-family:var(--body);padding:40px 20px 80px}
+h1,h2,h3{font-family:var(--display);font-weight:600}
+.page-title{color:#FAF6EF;text-align:center;font-size:38px;margin:0 0 6px}
+.page-sub{color:#a99f8f;text-align:center;font-size:15px;margin:0 0 48px;font-family:var(--body)}
+.row{display:flex;gap:32px;flex-wrap:wrap;justify-content:center;align-items:flex-start;max-width:1500px;margin:0 auto}
+.slot{width:390px}
+.slot-label{color:#FAF6EF;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin:0 0 4px}
+.slot-note{color:#a99f8f;font-size:13px;line-height:1.45;margin:0 0 14px;min-height:38px}
+.section-head{color:#FAF6EF;font-size:26px;margin:64px auto 22px;max-width:1500px;border-bottom:1px solid #4a453e;padding-bottom:10px}
+
+/* ---------- phone frame ---------- */
+.phone{width:390px;height:800px;background:var(--paper);border-radius:44px;overflow:hidden;
+  box-shadow:0 0 0 10px #16140f,0 24px 60px rgba(0,0,0,.5);position:relative;display:flex;flex-direction:column}
+.statusbar{height:50px;flex:0 0 50px;display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 26px 6px;font-size:13px;font-weight:700;letter-spacing:.02em}
+.scroll{flex:1;overflow-y:auto;padding:0 24px 40px;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{width:0}
+
+/* ---------- entry card bits (existing app language) ---------- */
+.hero{margin:0 -24px;padding:26px 24px 24px;background:var(--moss-soft)}
+.hero p.verse{font-family:var(--display);font-size:28px;font-weight:500;line-height:1.22;margin:0}
+.hero .ref{margin:14px 0 0;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--moss)}
+.hl{background:linear-gradient(transparent 62%, rgba(61,90,68,.28) 62%);padding:0 2px;border-radius:2px}
+.sec-h{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:34px 0 10px}
+.thought{font-size:17px;line-height:1.62;margin:0}
+
+/* ---------- the ponder module ---------- */
+.ponder-head{display:flex;align-items:baseline;justify-content:space-between;margin:36px 0 12px}
+.ponder-head h2{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0;font-family:var(--body)}
+.pips{display:flex;gap:6px;align-items:center}
+.pip{width:7px;height:7px;border-radius:50%;background:var(--hairline);transition:background .3s,transform .3s}
+.pip.on{background:var(--moss)}
+.pip.done{background:var(--moss-line)}
+.pip.cur{transform:scale(1.45)}
+
+/* gate */
+.gate{border:1px dashed var(--moss-line);background:var(--moss-soft);border-radius:18px;padding:30px 24px 26px;text-align:center}
+.gate .q{font-family:var(--display);font-size:27px;font-weight:500;font-style:italic;margin:0 0 10px;line-height:1.2}
+.gate .sub{font-size:14.5px;line-height:1.55;color:var(--muted);margin:0 auto 22px;max-width:270px}
+.btn{appearance:none;border:0;cursor:pointer;font-family:var(--body);transition:transform .12s ease,opacity .12s ease}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--moss);color:var(--paper);border-radius:14px;min-height:48px;padding:0 30px;
+  font-size:15px;font-weight:700;letter-spacing:.03em}
+.link{background:none;border:0;color:var(--muted);font-size:13px;text-decoration:underline;
+  text-underline-offset:3px;cursor:pointer;font-family:var(--body);padding:10px}
+.gate .link{margin-top:14px;display:block;width:100%}
+
+/* stack */
+.stack{position:relative;padding-bottom:34px}
+.stack .behind{position:absolute;height:34px;border-radius:18px;background:var(--surface);
+  border:1px solid var(--hairline);border-bottom:0;font-family:var(--body);cursor:pointer;
+  display:flex;align-items:flex-start;justify-content:center;padding-top:9px;
+  font-size:12.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--moss);
+  transition:transform .16s ease,bottom .16s ease}
+.stack .behind:active{transform:translateY(3px)}
+.stack .behind.b1{bottom:-1px;left:10px;right:10px;z-index:2}
+.stack .behind.b2{bottom:-11px;left:22px;right:22px;opacity:.55;z-index:1;pointer-events:none;color:transparent}
+.stack .behind.locked{pointer-events:none;opacity:.45}
+.qcard{position:relative;background:var(--surface);border:1px solid var(--hairline);border-radius:18px;
+  padding:22px 22px 18px;box-shadow:0 2px 10px rgba(31,27,22,.04)}
+.qcard.enter{animation:rise 420ms cubic-bezier(.22,1,.36,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.badge{display:inline-flex;align-items:center;gap:7px;border-radius:999px;background:var(--moss-soft);
+  padding:5px 12px;margin-bottom:14px}
+.badge span{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--moss)}
+.badge i{width:6px;height:6px;border-radius:50%;background:var(--moss);display:block}
+.phrase{font-family:var(--display);font-size:23px;font-style:italic;color:var(--moss);margin:0 0 10px;line-height:1.25}
+.qtext{font-size:18.5px;line-height:1.55;margin:0}
+.qmeta{margin:16px 0 0;font-size:12px;color:var(--muted);letter-spacing:.04em}
+.qfoot{margin-top:18px;padding-top:14px;border-top:1px solid var(--hairline);display:flex;
+  align-items:center;justify-content:space-between;gap:10px}
+.ghost{background:none;border:0;color:var(--moss);font-size:14px;font-weight:600;cursor:pointer;
+  font-family:var(--body);display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0}
+.next{background:none;border:1px solid var(--moss-line);color:var(--moss);border-radius:999px;min-height:40px;
+  padding:0 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--body)}
+.next:active{transform:scale(.96)}
+.qfoot.solo{justify-content:flex-start}
+
+/* note composer inside a card */
+.note-open{margin-top:16px;animation:rise 300ms cubic-bezier(.22,1,.36,1) both}
+textarea.note{width:100%;resize:none;border:1px solid var(--hairline);background:var(--paper);border-radius:14px;
+  padding:13px 14px;font-family:var(--body);font-size:15px;line-height:1.55;outline:none;color:var(--ink)}
+textarea.note:focus{border-color:var(--moss)}
+.note-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.btn-save{background:var(--ink);color:var(--paper);border-radius:12px;min-height:44px;padding:0 20px;
+  font-size:14px;font-weight:700}
+.saved{background:var(--moss-soft);border-left:2px solid var(--moss);border-radius:0 12px 12px 0;
+  padding:12px 14px;margin-top:14px}
+.saved p{margin:0;font-size:14.5px;line-height:1.55;white-space:pre-wrap}
+.saved .t{margin-top:6px;font-size:11.5px;color:var(--muted)}
+
+/* answered chip list / close */
+.close{border:1px solid var(--hairline);background:var(--surface);border-radius:18px;padding:22px}
+.close .q{font-family:var(--display);font-size:24px;font-style:italic;margin:0 0 8px}
+.close .sub{font-size:14.5px;color:var(--muted);line-height:1.55;margin:0 0 16px}
+.revisit{display:flex;flex-direction:column;gap:8px}
+.rev{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--paper);border:1px solid var(--hairline);
+  border-radius:12px;padding:11px 13px;cursor:pointer;font-family:var(--body);width:100%}
+.rev b{font-family:var(--display);font-size:17px;color:var(--moss);line-height:1.25;flex:0 0 auto}
+.rev span{font-size:14px;line-height:1.45;color:var(--ink)}
+.rev em{display:block;font-style:normal;font-size:12px;color:var(--muted);margin-top:3px}
+
+/* journal mock */
+.jrow{border-bottom:1px solid var(--hairline);padding:16px 0}
+.jq{font-size:13px;color:var(--moss);font-weight:600;margin:0 0 5px;line-height:1.4}
+.ja{font-size:15px;line-height:1.55;margin:0}
+.jd{font-size:11.5px;color:var(--muted);margin:6px 0 0;letter-spacing:.04em;text-transform:uppercase;font-weight:700}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);border:1px solid var(--hairline);border-radius:999px;padding:2px 8px;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<h1 class="page-title">“To ponder” — redesign</h1>
+<p class="page-sub">Ponder · entry card · one question at a time, verse-anchored opener, per-question notes</p>
+
+<h2 class="section-head">1 · Live flow — tap through it</h2>
+<div class="row">
+  <div class="slot">
+    <p class="slot-label">Interactive</p>
+    <p class="slot-note">Tap <b>Begin</b>, then tap the card peeking underneath to bring the next question forward. No timer — the reveal is your tap. Note writes against that one question.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll" id="scroll">
+        <div class="hero">
+          <p class="verse">“Be still, and know that I am God.”</p>
+          <p class="ref">Psalms 46:10 · WEB</p>
+        </div>
+        <h3 class="sec-h">Thought</h3>
+        <p class="thought">The command is not to feel calm. It is to stop — to drop the hands that have been holding the thing together — and to let the knowing arrive after the stopping, not before it.</p>
+
+        <div class="ponder-head">
+          <h2>To ponder</h2>
+          <div class="pips" id="pips"></div>
+        </div>
+        <div id="mount"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slot">
+    <p class="slot-label">State A · the gate</p>
+    <p class="slot-note">Questions are genuinely not rendered yet. One tap, no modal. The escape hatch under it keeps the existing “folds, never hides” rule intact.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll">
+        <div class="hero">
+          <p class="verse">“Be still, and know that I am God.”</p>
+          <p class="ref">Psalms 46:10 · WEB</p>
+        </div>
+        <h3 class="sec-h">Thought</h3>
+        <p class="thought">The command is not to feel calm. It is to stop — to drop the hands that have been holding the thing together — and to let the knowing arrive after the stopping, not before it.</p>
+        <div class="ponder-head">
+          <h2>To ponder</h2>
+          <div class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i></div>
+        </div>
+        <div class="gate">
+          <p class="q">Ready to ponder?</p>
+          <p class="sub">Three questions, one at a time.<br>Stay with each until it’s finished with you.</p>
+          <button class="btn btn-primary">Begin</button>
+          <button class="link">Show all three instead</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slot">
+    <p class="slot-label">State B · verse-anchored Q1</p>
+    <p class="slot-note">Q1 always points at a real phrase from today’s passage — validated server-side as a substring of the WEB text. The strip below the card is the reveal target.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll">
+        <div class="hero">
+          <p class="verse">“<span class="hl">Be still</span>, and know that I am God.”</p>
+          <p class="ref">Psalms 46:10 · WEB</p>
+        </div>
+        <div class="ponder-head">
+          <h2>To ponder</h2>
+          <div class="pips"><i class="pip on cur"></i><i class="pip"></i><i class="pip"></i></div>
+        </div>
+        <div class="stack">
+          <div class="behind b2"></div><div class="behind b1">Next question</div>
+          <div class="qcard">
+            <div class="badge"><i></i><span>In today’s verse</span></div>
+            <p class="phrase">“Be still”</p>
+            <p class="qtext">What would being still actually cost you this week — and is that the part you’ve been avoiding?</p>
+            <p class="qmeta">1 of 3</p>
+            <div class="qfoot solo">
+              <button class="ghost">＋&nbsp; Write a note</button>
+            </div>
+          </div>
+        </div>
+        <p style="text-align:center"><button class="link">Show all three</button></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-head">2 · Notes per question</h2>
+<div class="row">
+  <div class="slot">
+    <p class="slot-label">State C · composing</p>
+    <p class="slot-note">Composer opens inside the card, not at the bottom of the screen. The question stays visible above what you’re writing.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll">
+        <div class="ponder-head" style="margin-top:20px"><h2>To ponder</h2>
+          <div class="pips"><i class="pip on cur"></i><i class="pip"></i><i class="pip"></i></div></div>
+        <div class="stack">
+          <div class="behind b2"></div><div class="behind b1">Next question</div>
+          <div class="qcard">
+            <div class="badge"><i></i><span>In today’s verse</span></div>
+            <p class="phrase">“Be still”</p>
+            <p class="qtext">What would being still actually cost you this week — and is that the part you’ve been avoiding?</p>
+            <div class="note-open">
+              <textarea class="note" rows="4">The 6am block. If I stop filling it I have to sit with the Aurora deci</textarea>
+              <div class="note-actions">
+                <button class="link">Cancel</button>
+                <button class="btn btn-save">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slot">
+    <p class="slot-label">State D · saved, moving on</p>
+    <p class="slot-note">Saved note stays under its question and travels with it into the journal. One card left, so the strip reads “Last question”.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll">
+        <div class="ponder-head" style="margin-top:20px"><h2>To ponder</h2>
+          <div class="pips"><i class="pip done"></i><i class="pip on cur"></i><i class="pip"></i></div></div>
+        <div class="stack">
+          <div class="behind b1">Next question</div>
+          <div class="qcard">
+            <p class="qtext">Where in your week have you mistaken motion for faithfulness?</p>
+            <p class="qmeta">2 of 3</p>
+            <div class="qfoot solo">
+              <button class="ghost">＋&nbsp; Write a note</button>
+            </div>
+          </div>
+        </div>
+        <p style="text-align:center;margin:14px 0 0"><button class="link">← Back to question 1</button></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slot">
+    <p class="slot-label">State E · the close</p>
+    <p class="slot-note">No streak, no “well done”. A quiet stop, with everything you wrote in reach. General note composer sits below, unchanged.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll">
+        <div class="ponder-head" style="margin-top:20px"><h2>To ponder</h2>
+          <div class="pips"><i class="pip done"></i><i class="pip done"></i><i class="pip done"></i></div></div>
+        <div class="close">
+          <p class="q">That’s the three.</p>
+          <p class="sub">Stay as long as you like. Nothing here expires.</p>
+          <div class="revisit">
+            <button class="rev"><b>1</b><span>What would being still actually cost you…<em>Your note · 1 saved</em></span></button>
+            <button class="rev"><b>2</b><span>Where have you mistaken motion for faithfulness?<em>No note</em></span></button>
+            <button class="rev"><b>3</b><span>Who would notice first if you stopped?<em>Your note · 1 saved</em></span></button>
+          </div>
+        </div>
+        <h3 class="sec-h">Anything else</h3>
+        <textarea class="note" rows="3" placeholder="What are you noticing? What stirred as you read?"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-head">3 · Where the notes land</h2>
+<div class="row">
+  <div class="slot">
+    <p class="slot-label">Thread journal</p>
+    <p class="slot-note">The payoff. Notes stop being loose paragraphs — each one carries the question it answered, so a pattern is visible without reading everything.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll">
+        <h3 class="sec-h" style="margin-top:22px">Journal · Waiting on the Aurora role</h3>
+        <div class="jrow">
+          <span class="tag">In the verse · “Be still”</span>
+          <p class="jq">What would being still actually cost you this week?</p>
+          <p class="ja">The 6am block. If I stop filling it I have to sit with the Aurora decision instead of outrunning it.</p>
+          <p class="jd">8 Sep · Psalms 46:10</p>
+        </div>
+        <div class="jrow">
+          <p class="jq">Who would notice first if you stopped?</p>
+          <p class="ja">Probably Bec. Which tells me something I don’t love.</p>
+          <p class="jd">8 Sep · Psalms 46:10</p>
+        </div>
+        <div class="jrow">
+          <span class="tag">In the verse · “wait for it”</span>
+          <p class="jq">What does “wait” mean to you today, as opposed to last time you read it?</p>
+          <p class="ja">Last time it meant do nothing. Today it reads like keep working but stop demanding the answer by Friday.</p>
+          <p class="jd">6 Sep · Habakkuk 2:3</p>
+        </div>
+        <div class="jrow">
+          <p class="ja">Long day. Didn’t get to the questions but the illustration stuck.</p>
+          <p class="jd">5 Sep · Isaiah 30:15 · General note</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slot">
+    <p class="slot-label">Brief level · the conflict</p>
+    <p class="slot-note">At content level “Brief” the questions are the <i>only</i> body content. Gating them leaves a passage and a locked box — so Brief opens straight on Q1, gate skipped.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll">
+        <div class="hero">
+          <p class="verse">“<span class="hl">Be still</span>, and know that I am God.”</p>
+          <p class="ref">Psalms 46:10 · WEB</p>
+        </div>
+        <div class="ponder-head">
+          <h2>To ponder</h2>
+          <div class="pips"><i class="pip on cur"></i><i class="pip"></i><i class="pip"></i></div>
+        </div>
+        <div class="stack">
+          <div class="behind b2"></div><div class="behind b1">Next question</div>
+          <div class="qcard">
+            <div class="badge"><i></i><span>In today’s verse</span></div>
+            <p class="phrase">“Be still”</p>
+            <p class="qtext">What would being still actually cost you this week — and is that the part you’ve been avoiding?</p>
+            <p class="qmeta">1 of 3</p>
+            <div class="qfoot solo"><button class="ghost">＋&nbsp; Write a note</button></div>
+          </div>
+        </div>
+        <div style="margin-top:26px;border:1px solid var(--hairline);border-radius:14px;padding:14px 16px">
+          <span style="display:block;font-size:14.5px;line-height:1.45">There’s a thought, an illustration and a prayer with this one</span>
+          <span style="display:block;margin-top:3px;font-size:14.5px;font-weight:700;color:var(--moss)">Read it all</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slot">
+    <p class="slot-label">Challenge entry · rust</p>
+    <p class="slot-note">Posture colour carries through the module, same as the hero and badge do today. No separate treatment to maintain.</p>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▮▮▮ ▰</span></div>
+      <div class="scroll">
+        <div class="hero" style="background:var(--rust-soft)">
+          <p class="verse">“Woe to those who are wise in their own eyes.”</p>
+          <p class="ref" style="color:var(--rust)">Isaiah 5:21 · WEB</p>
+        </div>
+        <div class="ponder-head">
+          <h2>To ponder</h2>
+          <div class="pips"><i class="pip on cur" style="background:var(--rust)"></i><i class="pip"></i><i class="pip"></i></div>
+        </div>
+        <div class="stack">
+          <div class="behind b2"></div><div class="behind b1" style="color:var(--rust)">Next question</div>
+          <div class="qcard">
+            <div class="badge" style="background:var(--rust-soft)"><i style="background:var(--rust)"></i><span style="color:var(--rust)">In today’s verse</span></div>
+            <p class="phrase" style="color:var(--rust)">“in their own eyes”</p>
+            <p class="qtext">Whose eyes, other than your own, have you actually let near this decision?</p>
+            <p class="qmeta">1 of 3</p>
+            <div class="qfoot">
+              <button class="ghost" style="color:var(--rust)">＋&nbsp; Write a note</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const QS = [
+  {badge:"In today’s verse", phrase:"“Be still”", text:"What would being still actually cost you this week — and is that the part you’ve been avoiding?"},
+  {text:"Where in your week have you mistaken motion for faithfulness?"},
+  {text:"Who would notice first if you stopped — and what does that tell you?"}
+];
+const notes = {};
+let idx = -1, showAll = false, timer = null;
+const mount = document.getElementById("mount");
+const pips  = document.getElementById("pips");
+
+function drawPips(){
+  pips.innerHTML = "";
+  QS.forEach((_,i)=>{
+    const p = document.createElement("i");
+    p.className = "pip" + (idx===-1||showAll ? "" : i<idx ? " done" : i===idx ? " on cur" : "");
+    pips.appendChild(p);
+  });
+}
+
+function render(){
+  drawPips();
+  clearTimeout(timer);
+  if (showAll){ return renderAll(); }
+  if (idx === -1) return renderGate();
+  if (idx >= QS.length) return renderClose();
+  renderQ();
+}
+
+function renderGate(){
+  mount.innerHTML = `
+    <div class="gate">
+      <p class="q">Ready to ponder?</p>
+      <p class="sub">Three questions, one at a time.<br>Stay with each until it’s finished with you.</p>
+      <button class="btn btn-primary" id="begin">Begin</button>
+      <button class="link" id="all">Show all three instead</button>
+    </div>`;
+  document.getElementById("begin").onclick = ()=>{ idx=0; render(); };
+  document.getElementById("all").onclick   = ()=>{ showAll=true; render(); };
+}
+
+function renderQ(){
+  const q = QS[idx];
+  const left = QS.length - idx - 1;
+  const label = left === 1 ? "Last question" : "Next question";
+  const behind = left>=2 ? `<button class="behind b2"></button><button class="behind b1" id="reveal">${label}</button>`
+               : left===1 ? `<button class="behind b1" id="reveal">${label}</button>`
+               : `<button class="behind b1" id="reveal">That&rsquo;s the three</button>`;
+  const saved = notes[idx] ? `<div class="saved"><p>${notes[idx]}</p><p class="t">Saved &middot; just now</p></div>` : "";
+  mount.innerHTML = `
+    <div class="stack">
+      ${behind}
+      <div class="qcard enter">
+        ${q.badge ? `<div class="badge"><i></i><span>${q.badge}</span></div>` : ""}
+        ${q.phrase ? `<p class="phrase">${q.phrase}</p>` : ""}
+        <p class="qtext">${q.text}</p>
+        <p class="qmeta">${idx+1} of ${QS.length}</p>
+        ${saved}
+        <div class="qfoot solo">
+          <button class="ghost" id="note">&#65291;&nbsp; ${notes[idx] ? "Add another note" : "Write a note"}</button>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;margin:16px 0 0">
+      ${idx>0 ? `<button class="link" id="back">&larr; Question ${idx}</button>` : `<button class="link" id="all">Show all three</button>`}
+    </p>`;
+
+  // The reveal is the reader's tap, not a timer. The only guard is the card's
+  // own 420ms entrance: while it is animating in, the stack below is inert,
+  // so a double-tap can't chain two questions past you.
+  const reveal = document.getElementById("reveal");
+  reveal.classList.add("locked");
+  setTimeout(()=>reveal.classList.remove("locked"), 420);
+  reveal.onclick = ()=>{ idx++; render(); };
+
+  document.getElementById("note").onclick = openNote;
+  const b = document.getElementById("back"); if (b) b.onclick = ()=>{ idx--; render(); };
+  const a = document.getElementById("all");  if (a) a.onclick  = ()=>{ showAll=true; render(); };
+}
+
+function openNote(){
+  const card = mount.querySelector(".qcard");
+  const foot = card.querySelector(".qfoot");
+  if (card.querySelector(".note-open")) return;
+  const box = document.createElement("div");
+  box.className = "note-open";
+  box.innerHTML = `
+    <textarea class="note" rows="4" placeholder="What comes to mind?"></textarea>
+    <div class="note-actions"><button class="link" id="cancel">Cancel</button>
+    <button class="btn btn-save" id="save">Save</button></div>`;
+  card.insertBefore(box, foot);
+  const ta = box.querySelector("textarea"); ta.focus();
+  box.querySelector("#cancel").onclick = ()=>box.remove();
+  box.querySelector("#save").onclick = ()=>{
+    const v = ta.value.trim(); if(!v) return;
+    notes[idx] = v; render();
+  };
+}
+
+function renderClose(){
+  const rows = QS.map((q,i)=>`
+    <button class="rev" data-i="${i}"><b>${i+1}</b><span>${q.text}
+      <em>${notes[i] ? "Your note · 1 saved" : "No note"}</em></span></button>`).join("");
+  mount.innerHTML = `
+    <div class="close">
+      <p class="q">That’s the three.</p>
+      <p class="sub">Stay as long as you like. Nothing here expires.</p>
+      <div class="revisit">${rows}</div>
+    </div>
+    <h3 class="sec-h">Anything else</h3>
+    <textarea class="note" rows="3" placeholder="What are you noticing? What stirred as you read?"></textarea>`;
+  mount.querySelectorAll(".rev").forEach(b=>b.onclick=()=>{ idx=+b.dataset.i; render(); });
+}
+
+function renderAll(){
+  mount.innerHTML = `<ol style="margin:0;padding-left:0;list-style:none">` + QS.map((q,i)=>`
+    <li style="display:flex;gap:12px;margin-bottom:14px">
+      <span style="font-family:var(--display);font-size:20px;font-weight:600;color:var(--moss);line-height:1.3">${i+1}</span>
+      <span style="font-size:16px;line-height:1.6">${q.phrase?`<i style="color:var(--moss)">${q.phrase} — </i>`:""}${q.text}</span>
+    </li>`).join("") + `</ol>
+    <p style="text-align:center"><button class="link" id="one">Take them one at a time</button></p>`;
+  document.getElementById("one").onclick = ()=>{ showAll=false; idx=0; render(); };
+}
+
+render();
+</script>
+</body>
+</html>

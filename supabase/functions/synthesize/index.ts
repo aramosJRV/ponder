@@ -228,6 +228,53 @@ function describeSpan(entries: any[], notes: any[]): string {
     ". If you refer to elapsed time at all, use exactly this phrase and no other figure.";
 }
 
+/**
+ * A note's ponder_index resolved back to the question text.
+ * null index = a general note on the day, which is every note written before
+ * 8 Sep 2026 and anything typed into the composer at the foot of the card.
+ */
+// deno-lint-ignore no-explicit-any
+function questionFor(entry: any, index: number | null | undefined): string | null {
+  if (!entry || index === null || index === undefined) return null;
+  if (index === 0) {
+    const q = entry.verse_question?.question;
+    return q ? String(q) : null;
+  }
+  const q = Array.isArray(entry.ponder) ? entry.ponder[index - 1] : null;
+  return q ? String(q) : null;
+}
+
+/**
+ * Bound what a synthesis sends.
+ *
+ * This prompt has always sent every note on the thread, which was tolerable
+ * while a busy day produced one note. Per-question notes take that to as many
+ * as four, so a long-running thread now reaches an unaffordable prompt roughly
+ * four times sooner. Keep the most RECENT notes: a synthesis is asked what is
+ * emerging, and the recent end of the journal is where that lives.
+ *
+ * The trade is real and deliberate — on a very long thread the earliest notes
+ * stop reaching the model. Nothing is said about the omission in the prompt,
+ * because a line about older material is exactly the kind of thing the model
+ * turns into "you have been carrying this for months", which entries are
+ * forbidden to claim.
+ */
+const NOTE_CHAR_BUDGET = 60_000;
+const NOTE_COUNT_CAP = 200;
+
+// deno-lint-ignore no-explicit-any
+function capNotes(notes: any[]): any[] {
+  const kept: any[] = [];
+  let chars = 0;
+  for (let i = notes.length - 1; i >= 0; i--) {
+    const len = String(notes[i].body ?? "").length;
+    if (kept.length >= NOTE_COUNT_CAP || chars + len > NOTE_CHAR_BUDGET) break;
+    chars += len;
+    kept.push(notes[i]);
+  }
+  return kept.reverse();
+}
+
 // deno-lint-ignore no-explicit-any
 function buildPrompt(topic: any, entries: any[], notes: any[], kind: string): string {
   const entryBlock = entries.length
@@ -238,9 +285,20 @@ function buildPrompt(topic: any, entries: any[], notes: any[], kind: string): st
         )
         .join("\n")
     : "(no entries yet)";
+  // A note that carries the question it answered is worth far more to this
+  // prompt than a loose paragraph — the model stops guessing what the person
+  // was responding to. That is the whole reason notes.ponder_index exists.
+  const byId = new Map(entries.map((e) => [e.id, e]));
   const noteBlock = notes.length
     ? notes
-        .map((n) => `- ${String(n.created_at).slice(0, 10)}: ${String(n.body).slice(0, 400)}`)
+        .map((n) => {
+          const day = String(n.created_at).slice(0, 10);
+          const body = String(n.body).slice(0, 400);
+          const asked = questionFor(byId.get(n.entry_id), n.ponder_index);
+          return asked
+            ? `- ${day}\n    asked: ${asked}\n    they wrote: ${body}`
+            : `- ${day}: ${body}`;
+        })
         .join("\n")
     : "(no notes written yet)";
 
@@ -415,12 +473,15 @@ Deno.serve(async (req) => {
   const [{ data: entries }, { data: notes }] = await Promise.all([
     db
       .from("daily_entries")
-      .select("date, verse_ref, thought, entry_type")
+      // id/ponder/verse_question are here only to resolve a note's
+      // ponder_index back into the question it answers. They are never shown
+      // to the model as content in their own right.
+      .select("id, date, verse_ref, thought, entry_type, ponder, verse_question")
       .eq("topic_id", topic.id)
       .order("date", { ascending: true }),
     db
       .from("notes")
-      .select("body, created_at")
+      .select("body, created_at, entry_id, ponder_index")
       .eq("topic_id", topic.id)
       .order("created_at", { ascending: true }),
   ]);
@@ -431,10 +492,15 @@ Deno.serve(async (req) => {
     });
   }
 
+  // Everything below works from `sent`, not from `notes`. The footnote's job
+  // is to say what this synthesis was actually built from, so a capped run
+  // must report the capped number — not the number on the thread.
+  const sent = capNotes(notes ?? []);
+
   let content;
   try {
     content = await callClaude(
-      buildPrompt(topic, entries ?? [], notes ?? [], kind),
+      buildPrompt(topic, entries ?? [], sent, kind),
       {
         db,
         userId: topic.user_id as string,
@@ -442,7 +508,8 @@ Deno.serve(async (req) => {
           topic_id: topic.id,
           kind,
           entry_count: entries?.length ?? 0,
-          note_count: notes?.length ?? 0,
+          note_count: sent.length,
+          notes_on_thread: notes?.length ?? 0,
         },
       },
     );
@@ -465,7 +532,9 @@ Deno.serve(async (req) => {
   const sources = {
     entry_refs: sourceRefs,
     entry_count: entries?.length ?? 0,
-    note_count: notes?.length ?? 0,
+    // What was sent, not what exists — see capNotes. The footnote says
+    // "built from N notes", and it has to be true of this synthesis.
+    note_count: sent.length,
     first_entry_date: dates[0] ?? null,
     last_entry_date: dates[dates.length - 1] ?? null,
     model: MODEL,

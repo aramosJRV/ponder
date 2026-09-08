@@ -112,6 +112,20 @@ export interface DailyEntry {
   verse_text: string;
   thought: string;
   illustration: string;
+  /**
+   * The opening ponder question, anchored in today's passage.
+   *
+   * `phrase` is present only when generate-entry confirmed it is a substring
+   * of `verse_text` read from bible_verses — so it is always safe to
+   * highlight in the hero. Question without phrase means the model's
+   * nomination missed and was discarded; render the question plainly.
+   *
+   * Null on every entry generated before 8 Sep 2026, and on every entry that
+   * was already sitting in the pool at that point. There is no backfill, so
+   * the client must treat absence as normal for months, not as an error:
+   * fall back to ponder[0] as question 1 and show no badge.
+   */
+  verse_question?: VerseQuestion | null;
   ponder: string[];
   prayer_prompts: string[];
   entry_type: EntryType;
@@ -128,12 +142,26 @@ export interface DailyEntry {
   created_at: string;
 }
 
+/** The anchored opening question. `phrase` verified server-side. */
+export interface VerseQuestion {
+  question: string;
+  phrase?: string | null;
+}
+
 export interface Note {
   id: string;
   entry_id: string;
   topic_id: string;
   user_id: string;
   body: string;
+  /**
+   * Which ponder question this note answers.
+   *   null  general note on the entry — every note written before 8 Sep 2026,
+   *         and anything typed into the composer at the foot of the card.
+   *   0     the verse-anchored question (entry.verse_question)
+   *   1..4  ponder[n-1] (daily_entries.ponder allows up to 4)
+   */
+  ponder_index?: number | null;
   created_at: string;
 }
 

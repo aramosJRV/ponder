@@ -151,7 +151,16 @@ export async function fetchNotesForEntries(entryIds: string[]): Promise<Note[]> 
   return data as Note[];
 }
 
-export async function addNote(entry: DailyEntry, body: string): Promise<Note> {
+/**
+ * `ponderIndex` omitted (or null) writes a general note on the entry, which is
+ * what the composer at the foot of the card does and what every note written
+ * before 8 Sep 2026 is. 0 is the verse-anchored question, 1..4 are ponder[n-1].
+ */
+export async function addNote(
+  entry: DailyEntry,
+  body: string,
+  ponderIndex: number | null = null,
+): Promise<Note> {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id;
   if (!userId) throw new Error("Not signed in");
@@ -162,6 +171,7 @@ export async function addNote(entry: DailyEntry, body: string): Promise<Note> {
       topic_id: entry.topic_id,
       user_id: userId,
       body,
+      ponder_index: ponderIndex,
     })
     .select()
     .single();

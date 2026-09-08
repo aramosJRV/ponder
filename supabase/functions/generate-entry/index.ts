@@ -590,6 +590,12 @@ function parsePayload(raw: Record<string, unknown>) {
   if (verse_end - verse_start > 2) verse_end = verse_start + 2;
 
   const strArr = (x: unknown, min: number, max: number): string[] | null => {
+    // A bare string where an array was asked for is the same trade as the
+    // 1-item array below: the schema says array, the model occasionally sends
+    // one question as a string (observed 8 Sep 2026, alongside a stray "item"
+    // key), and throwing the entry away costs a paid generation and somebody's
+    // day to gain nothing. One good question is a fine day.
+    if (typeof x === "string") x = [x];
     if (!Array.isArray(x)) return null;
     const arr = x.map((s) => String(s).trim()).filter(Boolean).slice(0, max);
     return arr.length >= min ? arr : null;
@@ -650,6 +656,148 @@ function parsePayload(raw: Record<string, unknown>) {
   const cross_refs = parseCrossRefs(raw.cross_refs);
   const song = parseSong(raw.song);
   return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts, cross_refs, song };
+}
+
+/**
+ * The verse-anchored opening question — written in a SECOND pass, after the
+ * passage has been resolved out of bible_verses.
+ *
+ * Why a second call rather than another field on the main tool: in the main
+ * call the model CHOOSES a reference and the server looks the text up
+ * afterwards, so the passage is never in front of it. Asking it there for a
+ * verbatim phrase means asking it to quote scripture from memory, and
+ * measured on 8 Sep 2026 that failed 3 times out of 3 — "knows what you
+ * need" for the WEB's "knows that you need", "the laborer\u2019s appetite" for
+ * "the appetite of the laboring man". Worse than a dropped highlight: the
+ * misquote sat inside the question body, which is precisely what guardrail 8
+ * exists to prevent. Here the real text is supplied, so quoting is copying.
+ *
+ * Cost is bounded and does not scale with readers: entries are built into the
+ * shared pool, so this is roughly one short call per pool entry, not one per
+ * user per day.
+ *
+ * Every failure path returns null and the entry ships without an anchored
+ * question — the client falls back to ponder[0]. An opening question is worth
+ * a small call; it is not worth losing the day's entry over.
+ */
+const VERSE_QUESTION_TOOL = {
+  name: "record_verse_question",
+  description: "Record the opening question, anchored in a phrase of the passage.",
+  input_schema: {
+    type: "object",
+    additionalProperties: false,
+    required: ["phrase", "question"],
+    properties: {
+      phrase: {
+        type: "string",
+        description:
+          "Two to five words COPIED CHARACTER FOR CHARACTER from the passage text given to you. Not a paraphrase, not modernised, no ellipsis.",
+      },
+      question: {
+        type: "string",
+        description:
+          "One question that turns on those exact words. It must be meaningless if the phrase were removed.",
+      },
+    },
+  },
+};
+
+const VERSE_QUESTION_SYSTEM =
+  "You write the opening question of a daily devotional entry. The reader is tracking a thread — " +
+  "something they sense God may be speaking to them about — and this question is the first thing " +
+  "they are asked to sit with.\n\n" +
+  "You are given the passage text. Choose a short phrase from it — two to five words — and copy it " +
+  "CHARACTER FOR CHARACTER, exactly as it appears above, including its spelling and punctuation. Do " +
+  "not modernise it, do not paraphrase it, do not tidy it. Then write one question that turns on " +
+  "those specific words.\n\n" +
+  "Good shapes: what stands out in this phrase today; what one word in it means to them now as " +
+  "opposed to the last time they met it; which part of it they are least sure they understand; " +
+  "which part they would rather skip past. A question that would work equally well against any " +
+  "passage is the wrong question.\n\n" +
+  "Never tell the reader what God is saying to them, and never make a directive claim about their " +
+  "life. Invite: consider, notice, sit with. Never state or imply how long they have been on this " +
+  "thread. Quote nothing beyond the phrase itself.";
+
+async function writeVerseQuestion(
+  db: SupabaseClient,
+  verseRef: string,
+  verseText: string,
+  entryType: string,
+  model: string,
+  ledgerDetail: Record<string, unknown>,
+): Promise<{ question: string; phrase?: string } | null> {
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: anthropicHeaders(),
+      body: JSON.stringify({
+        model,
+        max_tokens: 400,
+        system: VERSE_QUESTION_SYSTEM,
+        tools: [VERSE_QUESTION_TOOL],
+        tool_choice: { type: "tool", name: "record_verse_question" },
+        messages: [{
+          role: "user",
+          content:
+            `PASSAGE (${verseRef}, World English Bible):\n"${verseText}"\n\n` +
+            `POSTURE: ${entryType}\n\n` +
+            "Choose your phrase from the passage above and write the question.",
+        }],
+      }),
+    });
+    if (!res.ok) throw new Error(`Anthropic API ${res.status}`);
+    const data = await res.json();
+    await recordSpend(db, "verse_question", model, (data.usage ?? {}) as Usage, {
+      detail: ledgerDetail,
+    });
+    const toolUse = (data.content ?? []).find((b: { type: string }) => b.type === "tool_use");
+    const out = toolUse?.input as Record<string, unknown> | undefined;
+    const question = String(out?.question ?? "").trim();
+    if (!question) return null;
+    return anchorVerseQuestion(
+      { question, phrase: String(out?.phrase ?? "").trim() },
+      verseText,
+    );
+  } catch (e) {
+    console.warn(`writeVerseQuestion: ${e instanceof Error ? e.message : String(e)}`);
+    return null;
+  }
+}
+
+/**
+ * Bind the question to scripture, or drop the binding.
+ *
+ * Even with the text in front of it a model can still straighten an
+ * apostrophe, so a normalised second pass follows the exact match. When the
+ * exact match lands, the phrase is stored AS SCRIPTURE SPELLS IT — sliced out
+ * of verseText, not as the model retyped it — because the client highlights
+ * by a plain indexOf against whichever translation is on screen.
+ *
+ * A phrase that fails both passes leaves the QUESTION standing: it loses the
+ * pull-quote and the highlight, which is cosmetic, not wrong.
+ */
+function anchorVerseQuestion(
+  vq: { question: string; phrase: string },
+  verseText: string,
+): { question: string; phrase?: string } {
+  const norm = (t: string) =>
+    t.toLowerCase()
+      .replace(/[\u2018\u2019\u02bc]/g, "'")
+      .replace(/[\u201c\u201d]/g, '"')
+      .replace(/[\u2013\u2014]/g, "-")
+      .replace(/\s+/g, " ")
+      .trim();
+  const phrase = vq.phrase.replace(/^["'\u201c\u2018]+|["'\u201d\u2019.,;:]+$/g, "").trim();
+  if (!phrase) return { question: vq.question };
+
+  const at = verseText.toLowerCase().indexOf(phrase.toLowerCase());
+  if (at >= 0) {
+    return { question: vq.question, phrase: verseText.slice(at, at + phrase.length) };
+  }
+  if (norm(verseText).includes(norm(phrase))) {
+    return { question: vq.question, phrase };
+  }
+  return { question: vq.question };
 }
 
 // Shape-only pass, same posture as parseCrossRefs. A bad song must never
@@ -989,6 +1137,10 @@ async function finalizeEntry(
     fallback_used: fallbackUsed,
     cross_refs: crossRefs,
     song,
+    verse_question: await writeVerseQuestion(
+      db, mainRef, verseText, entryType, MODEL_AFFIRMING,
+      { topic_id: topicId, path: "live" },
+    ),
   });
   if (insErr) {
     if (insErr.code === "23505") return { topic_id: topicId, status: "exists", date };
@@ -1244,6 +1396,13 @@ async function buildPool(
         illustration: payload.illustration,
         ponder: payload.ponder,
         prayer_prompts: payload.prayer_prompts,
+        // Same second pass as the live path. Miss this and every pooled entry
+        // silently lands with a null anchored question, so the feature looks
+        // broken for exactly the users who never hit live generation.
+        verse_question: await writeVerseQuestion(
+          db, ref, verses.map((v) => v.text).join(" "), slot.entryType, MODEL_AFFIRMING,
+          { theme: slot.theme.slug, path: "pool" },
+        ),
         model,
       });
       if (error) {

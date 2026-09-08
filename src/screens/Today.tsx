@@ -166,10 +166,20 @@ export default function Today() {
             <span className="font-semibold text-ink">{selectedTopic.title}</span>
             {selectedTopic.focus && " · focus"}
           </p>
-          <EntryCard entry={entry} />
-          <NoteComposer
+          <EntryCard
             entry={entry}
             notes={entryNotes}
+            offline={offline}
+            onNoteAdded={(n) => setNotes((cur) => [...cur, n])}
+          />
+          {/* The general composer stays. A note that belongs to the whole day
+              rather than to one question is still the common case, and it is
+              where every note written before 8 Sep 2026 lives. It shows only
+              the general notes now — per-question ones appear against their
+              question inside the card. */}
+          <NoteComposer
+            entry={entry}
+            notes={entryNotes.filter((n) => n.ponder_index == null)}
             offline={offline}
             onAdded={(n) => setNotes((cur) => [...cur, n])}
           />

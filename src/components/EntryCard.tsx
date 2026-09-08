@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ContentLevel, DailyEntry, Song, Translation } from "../lib/types";
+import type { ContentLevel, DailyEntry, Note, Song, Translation } from "../lib/types";
 import { useContentLevel } from "../lib/contentLevel";
 import {
   DEFAULT_TRANSLATION,
@@ -10,6 +10,7 @@ import {
 } from "../lib/translations";
 import type { PassageState } from "../lib/translations";
 import PassageContextSheet from "./PassageContextSheet";
+import PonderFlow from "./PonderFlow";
 import ReportButton from "./ReportButton";
 
 /**
@@ -27,7 +28,21 @@ import ReportButton from "./ReportButton";
  *   2  + thought
  *   3  + illustration, prayer, song
  */
-export default function EntryCard({ entry }: { entry: DailyEntry }) {
+export default function EntryCard({
+  entry,
+  notes = [],
+  // Named apart from the card's own `offline` flag, which is about a
+  // translation that could not be fetched, not about the network.
+  offline: notesOffline = false,
+  onNoteAdded,
+}: {
+  entry: DailyEntry;
+  /** Notes on this entry. Per-question ones are shown against their question. */
+  notes?: Note[];
+  offline?: boolean;
+  /** Omit to render the ponder flow read-only (the TopicDetail viewer does). */
+  onNoteAdded?: (note: Note) => void;
+}) {
   const level = useContentLevel();
   const [expanded, setExpanded] = useState(false);
   const [contextOpen, setContextOpen] = useState(false);
@@ -52,6 +67,12 @@ export default function EntryCard({ entry }: { entry: DailyEntry }) {
   }, [entry.id, preferred]);
 
   const passage = usePassage(entry, translation);
+
+  // The passage text actually on screen right now. The anchored phrase was
+  // validated against the WEB at generation time, so a reader on the KJV or
+  // the BSB may be looking at words that do not contain it — everything that
+  // quotes the phrase has to check against THIS, not against verse_text.
+  const shownText = "text" in passage ? passage.text : entry.verse_text;
 
   // A version we cannot reach is not a version the reader can sit with.
   // Fall back to the text the entry already carries and say why, rather
@@ -118,21 +139,14 @@ export default function EntryCard({ entry }: { entry: DailyEntry }) {
         </section>
       )}
 
-      <section className="mt-8">
-        <h2 className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-muted">
-          To ponder
-        </h2>
-        <ol className="space-y-3">
-          {entry.ponder.map((q, i) => (
-            <li key={i} className="flex gap-3">
-              <span className="font-display text-xl font-semibold leading-6 text-moss">
-                {i + 1}
-              </span>
-              <span className="text-[16px] leading-relaxed">{q}</span>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <PonderFlow
+        entry={entry}
+        passageText={shownText}
+        notes={notes}
+        offline={notesOffline}
+        onNoteAdded={onNoteAdded}
+        challenge={challenge}
+      />
 
       {shown >= 3 && (
         <section className="mt-8">
@@ -223,7 +237,7 @@ function VerseHero({
             passage.status === "loading" ? "opacity-40" : "opacity-100"
           }`}
         >
-          “{text}”
+          <HeroText text={text} phrase={entry.verse_question?.phrase} challenge={challenge} />
         </p>
       )}
 
@@ -285,6 +299,39 @@ function VerseHero({
         </p>
       )}
     </section>
+  );
+}
+
+/**
+ * The passage with the anchored phrase marked.
+ *
+ * Only marks a phrase that appears verbatim in the text CURRENTLY on screen.
+ * That is the whole safety of it: the phrase was validated against the WEB
+ * when the entry was generated, so switching to the KJV or the BSB can
+ * legitimately mean it is not there any more, and the right answer then is a
+ * plain passage rather than a highlight over the wrong words.
+ */
+function HeroText({
+  text,
+  phrase,
+  challenge,
+}: {
+  text: string;
+  phrase?: string | null;
+  challenge: boolean;
+}) {
+  const at = phrase ? text.toLowerCase().indexOf(phrase.toLowerCase()) : -1;
+  if (!phrase || at < 0) return <>&ldquo;{text}&rdquo;</>;
+  return (
+    <>
+      &ldquo;{text.slice(0, at)}
+      <span
+        className={`rounded-sm px-0.5 ${challenge ? "bg-rust/20" : "bg-moss/20"}`}
+      >
+        {text.slice(at, at + phrase.length)}
+      </span>
+      {text.slice(at + phrase.length)}&rdquo;
+    </>
   );
 }
 

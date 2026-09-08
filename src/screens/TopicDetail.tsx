@@ -136,8 +136,12 @@ export default function TopicDetail({ topicId, onBack }: Props) {
           ← {topic.title}
         </button>
         <p className="mb-4 font-display text-xl text-muted">{formatLongDate(openEntry.date)}</p>
-        <EntryCard entry={openEntry} />
-        <NotesForEntry notes={notes.filter((n) => n.entry_id === openEntry.id)} />
+        {/* Read-only: no onNoteAdded, so the flow shows the questions and any
+            notes already written against them, without composers. */}
+        <EntryCard entry={openEntry} notes={notes.filter((n) => n.entry_id === openEntry.id)} />
+        <NotesForEntry
+          notes={notes.filter((n) => n.entry_id === openEntry.id && n.ponder_index == null)}
+        />
       </div>
     );
   }
@@ -242,6 +246,11 @@ export default function TopicDetail({ topicId, onBack }: Props) {
             <ul className="space-y-5">
               {notes.map((n) => {
                 const entry = entries.find((e) => e.id === n.entry_id);
+                // The question this note was written against, when it has one.
+                // This is the point of ponder_index: a note that carries its
+                // question is legible months later, where a loose paragraph
+                // is only legible to the person who wrote it that morning.
+                const asked = entry ? questionFor(entry, n.ponder_index) : null;
                 return (
                   <li key={n.id} className="border-l-2 border-moss/40 pl-4">
                     <p className="text-xs font-bold uppercase tracking-wider text-muted">
@@ -251,6 +260,14 @@ export default function TopicDetail({ topicId, onBack }: Props) {
                       })}
                       {entry && <span className="ml-2 text-moss">{entry.verse_ref}</span>}
                     </p>
+                    {asked && (
+                      <p className="mt-1.5 text-[13px] font-semibold leading-snug text-moss">
+                        {asked.phrase && (
+                          <span className="mr-1 italic">&ldquo;{asked.phrase}&rdquo; &mdash;</span>
+                        )}
+                        {asked.text}
+                      </p>
+                    )}
                     <p className="mt-1.5 whitespace-pre-wrap text-[15px] leading-relaxed">
                       {n.body}
                     </p>
@@ -358,4 +375,26 @@ function NotesForEntry({ notes }: { notes: Note[] }) {
       </ul>
     </section>
   );
+}
+
+/**
+ * Resolve a note's ponder_index back to the question it answers.
+ *
+ * Returns null for a general note (index null — every note written before
+ * 8 Sep 2026), and also for an index that no longer resolves. The latter
+ * should not happen: entries are immutable once written, so ponder[] cannot
+ * shift under a note. Handled anyway, because a journal that throws is worse
+ * than a journal missing one heading.
+ */
+function questionFor(
+  entry: DailyEntry,
+  index: number | null | undefined,
+): { text: string; phrase?: string | null } | null {
+  if (index == null) return null;
+  if (index === 0) {
+    const vq = entry.verse_question;
+    return vq?.question ? { text: vq.question, phrase: vq.phrase } : null;
+  }
+  const text = entry.ponder[index - 1];
+  return text ? { text } : null;
 }

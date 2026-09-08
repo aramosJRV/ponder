@@ -32,8 +32,13 @@ export default function NoteComposer({ entry, notes, onAdded, offline }: Props) 
 
   return (
     <section className="mt-10 border-t border-hairline pt-6">
+      {/* "Anything else", not "Your notes". Since notes attach to individual
+          ponder questions, a second box labelled "your notes" reads as the
+          real one and makes the per-question composers look like a detour.
+          This is the leftovers box: what belongs to the whole day rather
+          than to any one question. */}
       <h2 className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-muted">
-        Your notes
+        Anything else
       </h2>
 
       {notes.length > 0 && (
@@ -59,7 +64,7 @@ export default function NoteComposer({ entry, notes, onAdded, offline }: Props) 
         placeholder={
           offline
             ? "You're offline — notes need a connection for now"
-            : "What are you noticing? What stirred as you read?"
+            : "Anything that belongs to the whole of today rather than to one question"
         }
         disabled={offline}
         className="w-full resize-none rounded-xl border border-hairline bg-surface px-4 py-3 text-[15px] leading-relaxed outline-none focus:border-moss disabled:opacity-60"
