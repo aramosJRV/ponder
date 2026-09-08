@@ -32,19 +32,46 @@ export default function PassageContextSheet({
   onClose: () => void;
 }) {
   const state = usePassageContext(entry, translation, open);
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Escape closes. A sheet with no keyboard exit is a trap for anyone on an
   // external keyboard, which on iPad is not unusual.
+  //
+  // Focus goes to the DIALOG, not to the Close button, and with
+  // preventScroll. Focusing the footer button made the WebView scroll that
+  // button into view, which dragged the whole page and landed the reader
+  // somewhere below the start of the passage. Moving focus to the container
+  // gives the same keyboard entry point with nothing to scroll toward.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    closeRef.current?.focus();
+    dialogRef.current?.focus({ preventScroll: true });
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
+
+  // Lock the page behind the sheet. Without this the card underneath scrolls
+  // with the sheet (scroll chaining) and the reader loses their place on the
+  // entry when the sheet closes. Restore the previous value rather than
+  // hardcoding "" — another overlay may already own it.
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
+  // Start at the first verse every time. The container is reused across
+  // opens and across translation switches, so without this an earlier
+  // scroll position survives into a passage the reader has not read yet.
+  useEffect(() => {
+    if (state.status === "ready") scrollRef.current?.scrollTo({ top: 0 });
+  }, [state.status, entry.id, translation]);
 
   if (!open) return null;
 
@@ -57,11 +84,13 @@ export default function PassageContextSheet({
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
+        tabIndex={-1}
         aria-label={`${heading}, the passage around today's verse`}
         onClick={(e) => e.stopPropagation()}
-        className="flex max-h-[85vh] w-full max-w-lg animate-rise flex-col rounded-t-3xl bg-paper"
+        className="flex max-h-[85vh] w-full max-w-lg animate-rise flex-col rounded-t-3xl bg-paper outline-none"
       >
         <header className="shrink-0 border-b border-hairline px-6 pb-4 pt-5">
           <h2 className="font-display text-xl font-medium">{heading}</h2>
@@ -70,7 +99,10 @@ export default function PassageContextSheet({
           </p>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
+        <div
+          ref={scrollRef}
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-5"
+        >
           {state.status === "loading" && (
             <p aria-busy="true" className="text-[15px] text-muted">
               Finding the passage…
@@ -86,7 +118,6 @@ export default function PassageContextSheet({
 
         <footer className="shrink-0 border-t border-hairline px-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
           <button
-            ref={closeRef}
             type="button"
             onClick={onClose}
             className="pressable min-h-[48px] w-full rounded-2xl border border-hairline bg-surface text-base font-semibold text-ink"
