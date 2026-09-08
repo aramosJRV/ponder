@@ -68,11 +68,12 @@ export default function EntryCard({
 
   const passage = usePassage(entry, translation);
 
-  // The passage text actually on screen right now. The anchored phrase was
-  // validated against the WEB at generation time, so a reader on the KJV or
-  // the BSB may be looking at words that do not contain it — everything that
-  // quotes the phrase has to check against THIS, not against verse_text.
-  const shownText = "text" in passage ? passage.text : entry.verse_text;
+  // NOTE: the passage is shown PLAIN, in every version. The verse_question
+  // phrase is never marked up here. Highlighting it pre-answers the question —
+  // the reader's eye lands on the marked words before they have been asked
+  // anything, which is the opposite of what the ponder flow is for. The phrase
+  // appears in the question card instead, once the reader has chosen to look.
+  // Do not "restore" the highlight.
 
   // A version we cannot reach is not a version the reader can sit with.
   // Fall back to the text the entry already carries and say why, rather
@@ -141,7 +142,6 @@ export default function EntryCard({
 
       <PonderFlow
         entry={entry}
-        passageText={shownText}
         notes={notes}
         offline={notesOffline}
         onNoteAdded={onNoteAdded}
@@ -237,7 +237,7 @@ function VerseHero({
             passage.status === "loading" ? "opacity-40" : "opacity-100"
           }`}
         >
-          <HeroText text={text} phrase={entry.verse_question?.phrase} challenge={challenge} />
+          &ldquo;{text}&rdquo;
         </p>
       )}
 
@@ -299,39 +299,6 @@ function VerseHero({
         </p>
       )}
     </section>
-  );
-}
-
-/**
- * The passage with the anchored phrase marked.
- *
- * Only marks a phrase that appears verbatim in the text CURRENTLY on screen.
- * That is the whole safety of it: the phrase was validated against the WEB
- * when the entry was generated, so switching to the KJV or the BSB can
- * legitimately mean it is not there any more, and the right answer then is a
- * plain passage rather than a highlight over the wrong words.
- */
-function HeroText({
-  text,
-  phrase,
-  challenge,
-}: {
-  text: string;
-  phrase?: string | null;
-  challenge: boolean;
-}) {
-  const at = phrase ? text.toLowerCase().indexOf(phrase.toLowerCase()) : -1;
-  if (!phrase || at < 0) return <>&ldquo;{text}&rdquo;</>;
-  return (
-    <>
-      &ldquo;{text.slice(0, at)}
-      <span
-        className={`rounded-sm px-0.5 ${challenge ? "bg-rust/20" : "bg-moss/20"}`}
-      >
-        {text.slice(at, at + phrase.length)}
-      </span>
-      {text.slice(at + phrase.length)}&rdquo;
-    </>
   );
 }
 

@@ -41,16 +41,12 @@ const COUNT_WORD = ["none", "one", "two", "three", "four"];
 
 export default function PonderFlow({
   entry,
-  passageText,
   notes,
   offline = false,
   onNoteAdded,
   challenge,
 }: {
   entry: DailyEntry;
-  /** The passage text currently on screen — which version the reader picked,
-   *  not necessarily the WEB the phrase was validated against. */
-  passageText: string;
   notes: Note[];
   offline?: boolean;
   /** Omit to render read-only — no note affordances. */
@@ -99,7 +95,6 @@ export default function PonderFlow({
       {showAll ? (
         <ShowAll
           questions={questions}
-          passageText={passageText}
           accent={accent}
           onOneAtATime={() => {
             setShowAll(false);
@@ -123,7 +118,6 @@ export default function PonderFlow({
         <Question
           key={questions[step].idx}
           entry={entry}
-          passageText={passageText}
           q={questions[step]}
           position={step}
           total={questions.length}
@@ -228,7 +222,6 @@ function Gate({
  */
 function Question({
   entry,
-  passageText,
   q,
   position,
   total,
@@ -241,7 +234,6 @@ function Question({
   onShowAll,
 }: {
   entry: DailyEntry;
-  passageText: string;
   q: Q;
   position: number;
   total: number;
@@ -265,10 +257,6 @@ function Question({
     const t = setTimeout(() => setLocked(false), 420);
     return () => clearTimeout(t);
   }, [q.idx]);
-
-  // Same test the hero highlight makes, so the two can never disagree.
-  const inPassage =
-    !!q.phrase && passageText.toLowerCase().includes(q.phrase.toLowerCase());
 
   const left = total - position - 1;
   const word = COUNT_WORD[total] ?? String(total);
@@ -319,16 +307,16 @@ function Question({
             </div>
           )}
 
-          {/* The phrase was validated against the WEB server-side, but the
-              reader may have switched to the KJV or the BSB, where those exact
-              words may not appear. Quoting it anyway would put "called you by
-              your name" above a hero reading "called thee by thy name" — the
-              card contradicting the passage it points at. So the pull-quote is
-              checked against what is on screen, by the same indexOf the hero
-              highlight uses, and simply drops when it does not match. The
-              question itself always stands: it is written about the passage,
-              not welded to one version's wording. */}
-          {inPassage && (
+          {/* Shown whichever version is on screen.
+              The phrase is verbatim WEB — validated server-side as a substring
+              of verse_text — so a reader who has switched to the KJV or the
+              BSB may not find these exact words in the passage above. That is
+              a deliberate call: the pull-quote is what gives the question
+              something to point at, and a question that sometimes arrives
+              bare is a worse read than a quote whose wording differs by a
+              pronoun. The passage itself is never marked up (see EntryCard),
+              so the two are never in direct visual contradiction. */}
+          {q.phrase && (
             <p className={`mb-2.5 font-display text-[23px] italic leading-tight ${line}`}>
               &ldquo;{q.phrase}&rdquo;
             </p>
@@ -534,12 +522,10 @@ function Close({
 /** The escape hatch — the old <ol>, reachable from every state. */
 function ShowAll({
   questions,
-  passageText,
   accent,
   onOneAtATime,
 }: {
   questions: Q[];
-  passageText: string;
   accent: string;
   onOneAtATime: () => void;
 }) {
@@ -551,9 +537,7 @@ function ShowAll({
           <li key={q.idx} className="flex gap-3">
             <span className={`font-display text-xl font-semibold leading-6 ${line}`}>{i + 1}</span>
             <span className="text-[16px] leading-relaxed">
-              {q.phrase && passageText.toLowerCase().includes(q.phrase.toLowerCase()) && (
-                <em className={`not-italic ${line}`}>&ldquo;{q.phrase}&rdquo; &mdash; </em>
-              )}
+              {q.phrase && <em className={`not-italic ${line}`}>&ldquo;{q.phrase}&rdquo; &mdash; </em>}
               {q.text}
             </span>
           </li>
