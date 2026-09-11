@@ -45,5 +45,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<!-- Ponder uses only standard HTTPS/TLS, which is exempt. Declaring this
+	     here answers App Store Connect's export-compliance question at upload
+	     time instead of prompting for it on every single build. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

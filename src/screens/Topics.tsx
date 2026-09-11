@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   createTopic,
+  generateEntryNow,
   fetchAllTopics,
   fetchTopicStats,
   parseVerseRef,
@@ -21,12 +22,17 @@ interface Props {
   autoOpenCreate?: boolean;
   /** Called once the auto-open has been honored, so it fires only once. */
   onAutoOpenConsumed?: () => void;
+  /** Called after the user's FIRST thread is created, so the app can take them
+   *  straight to Today where its entry is already waiting. Not fired for
+   *  later threads — those shouldn't yank you off the list you're managing. */
+  onFirstThreadCreated?: () => void;
 }
 
 export default function Topics({
   onOpenTopic,
   autoOpenCreate = false,
   onAutoOpenConsumed,
+  onFirstThreadCreated,
 }: Props) {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [stats, setStats] = useState<Record<string, TopicStats>>({});
@@ -111,6 +117,26 @@ export default function Topics({
         </p>
       )}
 
+      {/* Dismissing the auto-opened create sheet (Cancel, or a tap on the
+          backdrop) used to leave a brand-new user on a literally blank screen
+          — header plus a small corner chip. The auto-open has already been
+          consumed by then, so nothing brings the sheet back. */}
+      {topics.length === 0 && (
+        <div className="animate-rise rounded-2xl border border-hairline bg-surface p-6 text-center">
+          <p className="font-display text-2xl">Begin with one thing</p>
+          <p className="mt-2 text-muted">
+            Name the first thing you sense God may be speaking about. You can add
+            more threads whenever you like.
+          </p>
+          <button
+            onClick={() => setShowCreate(true)}
+            className="pressable mt-5 min-h-[48px] w-full rounded-xl bg-moss py-3 font-semibold text-white"
+          >
+            Create my first thread
+          </button>
+        </div>
+      )}
+
       <ul className="space-y-4">
         {topics.map((t, i) => {
           const s = stats[t.id] ?? { entryCount: 0, lastNote: null };
@@ -165,10 +191,12 @@ export default function Topics({
 
       {showCreate && (
         <CreateTopicSheet
+          firstThread={topics.length === 0}
           onClose={() => setShowCreate(false)}
-          onCreated={() => {
+          onCreated={(wasFirst) => {
             setShowCreate(false);
             void load();
+            if (wasFirst) onFirstThreadCreated?.();
           }}
         />
       )}
@@ -211,14 +239,20 @@ function TopicAction({
 function CreateTopicSheet({
   onClose,
   onCreated,
+  firstThread = false,
 }: {
   onClose: () => void;
-  onCreated: () => void;
+  onCreated: (wasFirst: boolean) => void;
+  /** True when this is the user's first thread: the sheet then waits for the
+   *  first entry before handing back, so they land on content, not on a
+   *  "Generate today's entry" button they have to find and press. */
+  firstThread?: boolean;
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [focus, setFocus] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
 
   // seed verse: what the user typed, and the resolved passage (if any)
@@ -270,7 +304,7 @@ function CreateTopicSheet({
     setSaving(true);
     setError("");
     try {
-      await createTopic({
+      const created = await createTopic({
         title: title.trim(),
         description: description.trim(),
         focus,
@@ -283,10 +317,31 @@ function CreateTopicSheet({
             }
           : null,
       });
-      onCreated();
+
+      // pg_cron doesn't run until tonight, so a thread created now has nothing
+      // to show. Generate the first entry here rather than making a brand-new
+      // user find Today and press "Generate today's entry" — most of the time
+      // this is served straight from the pool and returns quickly.
+      //
+      // Only on the FIRST thread: someone adding their fourth already knows
+      // where entries come from and shouldn't be held in a modal.
+      //
+      // A failure must never fail thread creation. The thread exists either
+      // way, Today still offers a retry, and tonight's cron fills the gap.
+      if (firstThread) {
+        setGenerating(true);
+        try {
+          await generateEntryNow(created.id);
+        } catch {
+          /* non-fatal — see above */
+        }
+      }
+
+      onCreated(firstThread);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not create thread");
       setSaving(false);
+      setGenerating(false);
     }
   }
 
@@ -394,7 +449,7 @@ function CreateTopicSheet({
             disabled={saving || !title.trim() || seedPending}
             className="pressable min-h-[48px] flex-1 rounded-xl bg-moss font-semibold text-white disabled:opacity-50"
           >
-            {saving ? "Creating…" : "Create thread"}
+            {generating ? "Listening for a word…" : saving ? "Creating…" : "Create thread"}
           </button>
         </div>
       </form>

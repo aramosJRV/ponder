@@ -36,3 +36,6 @@ testing/
 
 # the pericope table is the one unreproducible input in data/ — keep it
 !data/pericopes.csv
+
+# Android Studio
+android/.idea/

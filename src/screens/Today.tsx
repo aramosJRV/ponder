@@ -17,7 +17,13 @@ import NoteComposer from "../components/NoteComposer";
 
 type LoadState = "loading" | "ready" | "error";
 
-export default function Today() {
+interface Props {
+  /** Routes to the Threads tab with the New thread sheet already open.
+   *  Optional so Today stays renderable anywhere (tests, replay). */
+  onStartFirstThread?: () => void;
+}
+
+export default function Today({ onStartFirstThread }: Props) {
   const date = todayLocal();
   const [state, setState] = useState<LoadState>("loading");
   const [failure, setFailure] = useState<{ kind: ErrorKind; code: string } | null>(null);
@@ -150,13 +156,24 @@ export default function Today() {
 
       <TopicSwitcher topics={topics} selectedId={selectedTopicId} onSelect={setSelectedTopicId} />
 
+      {/* An empty Today is the end of the road for anyone who skipped
+          onboarding. It used to say "head to the Threads tab" and offer
+          nothing to tap — the single widest leak in the first-run funnel. */}
       {topics.length === 0 && (
-        <div className="rounded-2xl border border-hairline bg-surface p-6">
-          <p className="font-display text-2xl">No threads yet</p>
+        <div className="animate-rise rounded-2xl border border-hairline bg-surface p-6">
+          <p className="font-display text-2xl">Nothing here yet</p>
           <p className="mt-2 text-muted">
-            Threads are what you sense God may be speaking about. Head to the Threads tab to start
-            one — today's entry will appear here once it's generated.
+            A thread is something you sense God may be speaking about — patience, a
+            decision, a relationship. Name one and today&rsquo;s entry appears here.
           </p>
+          {onStartFirstThread && (
+            <button
+              onClick={onStartFirstThread}
+              className="pressable mt-5 min-h-[48px] w-full rounded-xl bg-moss py-3 font-semibold text-white"
+            >
+              Start your first thread
+            </button>
+          )}
         </div>
       )}
 

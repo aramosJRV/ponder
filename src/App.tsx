@@ -204,7 +204,14 @@ export default function App() {
 
   return (
     <>
-      {tab === "today" && <Today />}
+      {tab === "today" && (
+        <Today
+          onStartFirstThread={() => {
+            setAutoCreateTopic(true);
+            setTab("topics");
+          }}
+        />
+      )}
 
       {tab === "topics" &&
         (openTopicId ? (
@@ -214,6 +221,7 @@ export default function App() {
             onOpenTopic={setOpenTopicId}
             autoOpenCreate={autoCreateTopic}
             onAutoOpenConsumed={() => setAutoCreateTopic(false)}
+            onFirstThreadCreated={() => setTab("today")}
           />
         ))}
 
