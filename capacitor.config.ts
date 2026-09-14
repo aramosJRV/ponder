@@ -23,8 +23,14 @@ const config: CapacitorConfig = {
     // iOS: resize the WKWebView itself so 100dvh / position:fixed shrink with
     // the keyboard. Android ignores `resize` — there the fix is
     // windowSoftInputMode="adjustResize" in AndroidManifest.xml plus the --kb
-    // inset from lib/keyboardInset.ts, which is written to survive either
-    // behaviour without double-counting.
+    // inset from lib/keyboardInset.ts.
+    //
+    // COUPLED: lib/keyboardInset.ts hardcodes NATIVE_RESIZE = (platform ===
+    // "ios") because of THIS line. CapacitorKeyboard applies the frame change
+    // ~450ms late, after both keyboardWillShow and keyboardDidShow have fired,
+    // so the web layer cannot measure it at the moment it is told about the
+    // keyboard — it has to know. If `resize` here ever changes, change
+    // NATIVE_RESIZE with it or iOS double-counts the keyboard again.
     Keyboard: {
       resize: "native",
       resizeOnFullScreen: true,
