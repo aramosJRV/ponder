@@ -179,10 +179,18 @@ export default function Today({ onStartFirstThread }: Props) {
 
       {selectedTopic && entry && (
         <>
-          <p className="mb-4 text-sm text-muted">
-            <span className="font-semibold text-ink">{selectedTopic.title}</span>
-            {selectedTopic.focus && " · focus"}
-          </p>
+          {/* The thread label, but ONLY when TopicSwitcher has nothing to show.
+              The switcher returns null at topics.length <= 1, so without this
+              a single-thread reader would have no thread name on Today at all
+              — 19 of 28 live users as at 16 Sep 2026. Above one thread the
+              pill row already names the thread and marks focus with a dot, and
+              repeating it here read as a duplicated title. Keep this condition
+              in lockstep with the guard in TopicSwitcher.tsx. */}
+          {topics.length <= 1 && (
+            <p className="mb-4 text-sm text-muted">
+              <span className="font-semibold text-ink">{selectedTopic.title}</span>
+            </p>
+          )}
           <EntryCard
             entry={entry}
             notes={entryNotes}

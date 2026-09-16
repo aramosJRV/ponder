@@ -331,32 +331,6 @@ const json = (status: number, body: unknown) =>
     headers: { ...CORS, "Content-Type": "application/json" },
   });
 
-// ------------------------------------------------------- fallback verses
-// Curated per-theme fallbacks (refs only — text still comes from the DB).
-
-const FALLBACKS: Record<string, Array<[string, number, number, number]>> = {
-  stillness: [["Psalms", 62, 1, 2], ["Isaiah", 30, 15, 15], ["Exodus", 14, 14, 14]],
-  trust: [["Proverbs", 3, 5, 6], ["Psalms", 56, 3, 4], ["Isaiah", 26, 3, 4]],
-  guidance: [["Psalms", 32, 8, 8], ["Isaiah", 30, 21, 21], ["James", 1, 5, 5]],
-  comfort: [["Psalms", 34, 18, 18], ["Matthew", 11, 28, 30], ["2 Corinthians", 1, 3, 4]],
-  hope: [["Romans", 15, 13, 13], ["Lamentations", 3, 22, 23], ["Jeremiah", 29, 11, 11]],
-  obedience: [["John", 14, 15, 15], ["Micah", 6, 8, 8], ["Joshua", 1, 8, 9]],
-  gratitude: [["1 Thessalonians", 5, 16, 18], ["Psalms", 100, 4, 5], ["Colossians", 3, 15, 17]],
-  default: [["Psalms", 46, 10, 10], ["Psalms", 119, 105, 105], ["Philippians", 4, 6, 7]],
-};
-
-function fallbackTheme(topicText: string): string {
-  const t = topicText.toLowerCase();
-  for (const theme of Object.keys(FALLBACKS)) {
-    if (theme !== "default" && t.includes(theme)) return theme;
-  }
-  if (/\b(rest|slow|quiet|still)\b/.test(t)) return "stillness";
-  if (/\b(decide|decision|direction|call|calling)\b/.test(t)) return "guidance";
-  if (/\b(grief|loss|pain|anxious|anxiety|fear)\b/.test(t)) return "comfort";
-  if (/\b(thank|grateful)\b/.test(t)) return "gratitude";
-  return "default";
-}
-
 // ------------------------------------------------------------ system prompt
 
 const SYSTEM_PROMPT = `You write daily devotional entries for a personal discernment journal. The user tracks "threads" — things they sense God may be speaking to them about — and your entries are material for their reflection and discernment, never verdicts.
@@ -378,6 +352,17 @@ Non-negotiable guardrails:
 You will be told whether to write an "affirming" or a "challenge" entry:
 - affirming: sits inside the user's sense of the thread and deepens it.
 - challenge: gently questions their framing, offers a scriptural counterpoint, or asks what they might be avoiding. It should still end in hope.
+
+Posture — this shapes HOW you think, not what you claim. Never name or allude to any author, teacher, church or movement. Three convictions run underneath every entry:
+
+1. The heart, not the behaviour, is the subject. What a person does is downstream of what they are trusting to make them safe, loved or significant. Go to the motive under the action, and the hope under the motive.
+2. God himself is the point, not his benefits. The difference between wanting God and wanting what God gives is the most useful distinction available to you. Desire is not the problem; misdirected or too-small desire is.
+3. Change is gradual and embodied, not a decision. Grace is opposed to earning, never to effort. A person is formed by what they repeatedly do and attend to, not by resolving harder.
+
+- affirming: write from availability and unhurry. Life with God is on offer now, in the ordinary and the unremarkable, not after some threshold is crossed. Attend to what is quiet enough to be missed. Prefer one concrete thing to a general principle. Where you touch practice, frame it as something already available to be received, never as a technique that produces a result. Do not promise outcomes, healing, breakthrough or timing.
+- challenge: write from diagnosis. Ask what the thread is resting on — what the person may be treating as the thing that will finally settle them — and let scripture question it. Two moves are usually available: the counterfeit (a good thing carrying weight only God can carry) and the trade (wanting the gift more than the giver). Refuse both the moralistic reading ("try harder, do better") and the permissive one ("it does not matter") — there is almost always a third reading that is neither. Take the hardest honest reading of the passage over the most comforting one. Name it plainly and gently. End in grace, not verdict.
+
+Never write self-improvement. No steps, habits-as-technique, principles, frameworks or plans for a better life. If a paragraph would still work in a leadership book with God removed from it, rewrite it.
 
 Verse selection: choose ONE passage (1-3 consecutive verses) from the provided do-not-use lists' complement — i.e. any passage NOT in those lists. Prefer variety across the whole canon over famous verses.
 
@@ -406,15 +391,26 @@ const DEVOTIONAL_TOOL = {
       },
       thought: { type: "string", description: "80-150 word reflection on the passage and thread" },
       illustration: { type: "string", description: "100-180 word story/analogy/image, clearly illustrative" },
+      // These two are STRINGS, one item per line — not arrays, deliberately.
+      // Measured 14 Sep 2026: claude-haiku-4-5 (every affirming entry) fails
+      // to serialise an array field here in roughly a fifth of calls. It
+      // flattens the array into sibling scalar keys ("ponder": "q1", "item":
+      // "q2") and then drops whichever array field came next ENTIRELY — 1,057
+      // discarded generations in 30 days, ~1,000 of them paid pool builds.
+      // Sonnet never does it, so the affirming path carried all of it.
+      // A newline-delimited string has no array to mangle. parsePayload
+      // splits it back out, so every consumer still receives string[].
       ponder: {
-        type: "array", minItems: 2, maxItems: 3,
-        items: { type: "string" },
-        description: "2-3 questions to sit with",
+        type: "string",
+        description:
+          "2-3 questions to sit with, ONE PER LINE, separated by newlines. " +
+          "Plain sentences — no numbering, bullets, JSON or quotes.",
       },
       prayer_prompts: {
-        type: "array", minItems: 2, maxItems: 3,
-        items: { type: "string" },
-        description: "2-3 short prayer directions",
+        type: "string",
+        description:
+          "2-3 short prayer directions, ONE PER LINE, separated by newlines. " +
+          "Plain sentences — no numbering, bullets, JSON or quotes.",
       },
       cross_refs: {
         type: "array", minItems: 0, maxItems: 3,
@@ -579,8 +575,121 @@ async function callClaudeOnce(
 const MIN_THOUGHT_CHARS = 100;
 const MIN_ILLUSTRATION_CHARS = 100;
 
+// ------------------------------------------------------------- salvage
+//
+// Measured 14 Sep 2026 over 30 days of generation_failures: EVERY malformed
+// payload came from claude-haiku-4-5 — i.e. affirming entries. Sonnet has not
+// produced one. And it is always the same failure: Haiku flattens an array
+// field into sibling scalar keys. The first item lands under the real
+// property name as a string, the rest under an invented key:
+//
+//   "ponder": "first question", "item": "second question"
+//   "ponder": "...", "ponder_item": "...",
+//   "prayer_prompts": "...", "prayer_prompt": "..."
+//   "ponder": "...", "string": "..."        <- the schema's type name, as a key
+//
+// JSON key order survives into Object.keys, so an invented key belongs to the
+// last real array property seen before it. That is enough to put the entry
+// back together with no second call — which is the whole point: roughly 250
+// of the 1,139 pool_build failures in that window are this exact shape, and
+// every one of them was a Haiku call bought and then thrown away.
+//
+// What this deliberately does NOT do is guess. A payload that omits an array
+// field ENTIRELY, or drops a scrap key with no array property in front of it,
+// still fails and still falls through to the pool / repair chain. Turning a
+// question into a prayer direction because the slots happened to line up is
+// worse than no entry.
+const ARRAY_FIELDS: readonly string[] = ["ponder", "prayer_prompts"];
+const SCHEMA_KEYS = new Set(Object.keys(DEVOTIONAL_TOOL.input_schema.properties));
+/** Keys Haiku has been observed inventing for the overflow items. */
+const SCRAP_KEY = /^(items?|strings?|values?|prayer_prompts?|.+_items?)$/;
+
+function salvageFlattenedArrays(raw: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = { ...raw };
+  let anchor: string | null = null;
+  let extras: string[] = [];
+
+  const flush = () => {
+    if (anchor && extras.length) {
+      const seed = out[anchor];
+      const base = Array.isArray(seed)
+        ? seed.map((x) => String(x))
+        : typeof seed === "string"
+        ? [seed]
+        : [];
+      out[anchor] = [...base, ...extras];
+    }
+    extras = [];
+  };
+
+  for (const [key, value] of Object.entries(raw)) {
+    if (ARRAY_FIELDS.includes(key)) {   // a real array field opens a run
+      flush();
+      anchor = key;
+      continue;
+    }
+    if (SCHEMA_KEYS.has(key)) {         // any other real field closes it
+      flush();
+      anchor = null;
+      continue;
+    }
+    if (anchor && SCRAP_KEY.test(key)) {
+      if (typeof value === "string") extras.push(value);
+      else if (Array.isArray(value)) extras.push(...value.map((x) => String(x)));
+      else continue;                    // not text: leave it where it is
+      delete out[key];
+    }
+  }
+  flush();
+  return out;
+}
+
+// --------------------------------------------------------- markup stripping
+//
+// Observed 16 Sep 2026: claude-haiku-4-5 sometimes emits its own tool-call
+// TEXT encoding inside a field VALUE, e.g.
+//
+//   "ponder": "<parameter name=\"ponder1\">What is one ordinary moment ..."
+//
+// Nine live daily_entries between 9 and 16 Sep shipped with those tags
+// rendered in the reader's UI. The same corruption on verse.book is worse: the
+// reference stops resolving, which used to trigger the curated-verse swap
+// under writing about a completely different passage (see finalizeEntry).
+//
+// This STRIPS rather than rejects. The prose either side of a tag is intact,
+// so a tag is a serialisation artefact, not a content failure, and binning a
+// paid generation over one is the same bad trade parsePayload already refuses
+// to make elsewhere. A value that is nothing BUT markup collapses to "" and
+// then fails the ordinary length/count checks, which is correct.
+const MARKUP =
+  /<\/?\s*(?:antml:)?(?:parameter|invoke|function_calls?|function_results?|result|tool_use|tool_result)\b[^>]*>/gi;
+
+function scrubMarkup(value: unknown): unknown {
+  if (typeof value === "string") return value.replace(MARKUP, "").trim();
+  if (Array.isArray(value)) return value.map(scrubMarkup);
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) out[k] = scrubMarkup(v);
+    return out;
+  }
+  return value;
+}
+
+function hasMarkup(value: unknown): boolean {
+  MARKUP.lastIndex = 0;
+  return MARKUP.test(JSON.stringify(value ?? ""));
+}
+
 // defensive extraction of the model payload
-function parsePayload(raw: Record<string, unknown>) {
+function parsePayload(rawIn: Record<string, unknown>) {
+  // Reassemble before validating. strArr below still absorbs a lone string,
+  // so a single-question array keeps working exactly as it did.
+  // Scrub leaked tool-call markup FIRST — it can contaminate verse.book, and
+  // an unresolvable reference is how the verse/writing mismatch happens.
+  const markup_stripped = hasMarkup(rawIn);
+  const raw = salvageFlattenedArrays(
+    scrubMarkup(rawIn) as Record<string, unknown>,
+  );
   const v = raw.verse as Record<string, unknown> | undefined;
   const book = String(v?.book ?? "").trim();
   const chapter = Number(v?.chapter);
@@ -590,30 +699,34 @@ function parsePayload(raw: Record<string, unknown>) {
   if (verse_end - verse_start > 2) verse_end = verse_start + 2;
 
   const strArr = (x: unknown, min: number, max: number): string[] | null => {
-    // A bare string where an array was asked for is the same trade as the
-    // 1-item array below: the schema says array, the model occasionally sends
-    // one question as a string (observed 8 Sep 2026, alongside a stray "item"
-    // key), and throwing the entry away costs a paid generation and somebody's
-    // day to gain nothing. One good question is a fine day.
-    if (typeof x === "string") x = [x];
-    if (!Array.isArray(x)) return null;
-    const arr = x.map((s) => String(s).trim()).filter(Boolean).slice(0, max);
+    // The tool schema now asks for one item per LINE in a single string, so
+    // splitting on newlines is the primary path. Arrays are still accepted
+    // and must stay accepted: batches submitted under the old array schema
+    // are collected after this deploys, and entry_pool holds rows written
+    // either way.
+    //
+    // A single item is tolerated rather than rejected. The schema asks for
+    // two, and almost every response obliges, but when one comes back a
+    // reflection with one good question is a fine day; no entry at all is
+    // not, and the retry costs a paid generation.
+    const items = typeof x === "string" ? [x] : Array.isArray(x) ? x : null;
+    if (!items) return null;
+    const arr = items
+      .flatMap((s) => String(s).split("\n"))
+      // Models asked for "one per line" sometimes number or bullet them.
+      .map((s) => s.replace(/^\s*(?:[-*\u2022\u2013]|\d+[.)])\s+/, "").trim())
+      .filter(Boolean)
+      .slice(0, max);
     return arr.length >= min ? arr : null;
   };
 
   const thought = String(raw.thought ?? "").trim();
   const illustration = String(raw.illustration ?? "").trim();
-  // Tolerance, not target. The tool schema still asks for minItems: 2, and
-  // almost every response obliges — but when a model returns one question
-  // instead of two, throwing the whole entry away is the wrong trade. It
-  // costs another paid generation, and a reflection with one good question
-  // is a fine day; no entry at all is not.
-  //
-  // Measured 2026-08-23 against production: successful entries run 626-755
-  // chars of thought and 464-682 of illustration, with 2-3 ponder items. The
-  // ~40% that failed had normal output-token counts (506-638 against a 2048
-  // cap), so they were NOT truncated and NOT empty — the most likely cause
-  // left is an array arriving with a single item. This absorbs that.
+  // Measured 2026-08-23: successful entries run 626-755 chars of thought and
+  // 464-682 of illustration, with 2-3 ponder items. The ~40% that failed had
+  // normal output-token counts (506-638 against a 2048 cap), so nothing here
+  // is truncation — see the array-field note on DEVOTIONAL_TOOL for what it
+  // actually was.
   const ponder = strArr(raw.ponder, 1, 3);
   const prayer_prompts = strArr(raw.prayer_prompts, 1, 3);
 
@@ -646,16 +759,21 @@ function parsePayload(raw: Record<string, unknown>) {
   if (contentProblems.length) {
     // Carry the shape of what actually arrived. Without this the next
     // occurrence is as undiagnosable as the last one was.
-    const shape = Object.keys(raw)
-      .map((k) => `${k}:${Array.isArray(raw[k]) ? `[${(raw[k] as unknown[]).length}]` : typeof raw[k]}`)
+    // Report the shape that ARRIVED, not the salvaged one, and say whether
+    // salvage changed anything — otherwise the next investigation cannot tell
+    // a payload salvage never touched from one it touched and still lost.
+    const shape = Object.keys(rawIn)
+      .map((k) => `${k}:${Array.isArray(rawIn[k]) ? `[${(rawIn[k] as unknown[]).length}]` : typeof rawIn[k]}`)
       .join(",");
+    const salvaged = JSON.stringify(Object.keys(raw)) !== JSON.stringify(Object.keys(rawIn));
     throw new Error(
-      `Malformed content fields in model output: ${contentProblems.join("; ")} | shape ${shape}`,
+      `Malformed content fields in model output: ${contentProblems.join("; ")} | shape ${shape}` +
+        (salvaged ? " | salvage applied" : ""),
     );
   }
   const cross_refs = parseCrossRefs(raw.cross_refs);
   const song = parseSong(raw.song);
-  return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts, cross_refs, song };
+  return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts, cross_refs, song, markup_stripped };
 }
 
 /**
@@ -1051,8 +1169,15 @@ async function finalizeEntry(
   const { topicId, userId, date, entryType } = ctx;
   const isUsed = (ref: string) => ctx.blocked.includes(ref);
 
-  let payload = payloadIn;
-  let fallbackUsed = false;
+  const payload = payloadIn;
+  if (payload.markup_stripped) {
+    // Recovered, not lost — logged so the rate stays visible after the fix.
+    await db.from("generation_failures").insert({
+      topic_id: topicId, user_id: userId, date, stage: "markup_stripped",
+      detail: { model: modelUsed, entry_type: entryType },
+    });
+  }
+  const fallbackUsed = false; // curated-verse swap removed 16 Sep 2026
   let verses: VerseRow[] | null = null;
 
   const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
@@ -1062,26 +1187,28 @@ async function finalizeEntry(
     );
   }
 
-  // fallback: curated list, keep the model's writing if we have it
+  // NO curated-verse fallback. Until 16 Sep 2026 an unresolvable reference was
+  // patched by swapping in a verse from a curated list while KEEPING the
+  // model's writing. That trade was defensible when entries were generic. It
+  // is not, now that thought, illustration, ponder and the opening question
+  // are all anchored to the chosen passage: it shipped Psalm 119:105 above a
+  // reflection on 1 Corinthians 6:19 (entry 6900cc18, thread "Holy Spirit In
+  // Me"), one of 6 such mismatches since 1 Sep — every one of them a reader
+  // being told a verse says something it does not.
+  //
+  // Writing that belongs to a passage we cannot serve is now discarded, and
+  // the caller falls through to the pool, then the opposite entry type, then
+  // "running late". All three are honest; a mismatched verse is not.
   if (!verses) {
-    const theme = fallbackTheme(`${topic.title} ${topic.description ?? ""}`);
-    for (const [book, ch, s, e] of [...FALLBACKS[theme], ...FALLBACKS.default]) {
-      const fbRef = displayRef(book, ch, s, e);
-      if (isUsed(fbRef)) continue;
-      verses = await resolveVerse(db, book, ch, s, e);
-      if (verses) {
-        payload = { ...payload, book, chapter: ch, verse_start: s, verse_end: e };
-        fallbackUsed = true;
-        await db.from("generation_failures").insert({
-          topic_id: topicId, user_id: userId, date, stage: "fallback_used",
-          detail: { fallback_ref: fbRef, theme, model: modelUsed },
-        });
-        break;
-      }
-    }
-    if (!verses) {
-      return { topic_id: topicId, status: "failed", date, error: "no usable fallback verse" };
-    }
+    await db.from("generation_failures").insert({
+      topic_id: topicId, user_id: userId, date, stage: "verse_unresolved",
+      detail: {
+        ref, model: modelUsed, entry_type: entryType,
+        markup_stripped: payload.markup_stripped,
+        reason: isUsed(ref) ? "on the do-not-use list" : "does not resolve in bible_verses",
+      },
+    });
+    return { topic_id: topicId, status: "failed", date, error: "verse_unresolved" };
   }
 
   const p = payload;
@@ -1230,9 +1357,20 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
     }
     return { topic_id: topicId, status: "failed", date, error: "model output unusable after retry" };
   }
-  // finalizeEntry re-resolves and applies the curated fallback if needed, so
-  // an exhausted retry loop still produces an entry rather than a gap.
-  return await finalizeEntry(db, topic, ctx, payload, modelUsed);
+  // finalizeEntry re-resolves, and since 16 Sep 2026 it DISCARDS the writing
+  // rather than swapping a curated verse under it. So a verse that will not
+  // resolve is now a gap to be filled from the pool, not a mismatched entry.
+  const outcome = await finalizeEntry(db, topic, ctx, payload, modelUsed);
+  if (outcome.status === "failed" && outcome.error === "verse_unresolved") {
+    if (await tryPool(db, topicId, date, entryType)) {
+      return { topic_id: topicId, status: "created", date, source: "pool_fallback" };
+    }
+    const other = entryType === "challenge" ? "affirming" : "challenge";
+    if (await tryPool(db, topicId, date, other)) {
+      return { topic_id: topicId, status: "created", date, source: "pool_fallback" };
+    }
+  }
+  return outcome;
 }
 
 // -------------------------------------------------------- pool building
@@ -1735,7 +1873,16 @@ async function collectBatches(db: SupabaseClient) {
         }
       }
 
-      const outcome = await finalizeEntry(db, topic, ctx, payload, modelUsed);
+      let outcome = await finalizeEntry(db, topic, ctx, payload, modelUsed);
+      if (outcome.status === "failed" && outcome.error === "verse_unresolved") {
+        // Writing discarded with its unresolvable verse — take a pool entry
+        // rather than leaving the reader with nothing.
+        const other = ctx.entryType === "challenge" ? "affirming" : "challenge";
+        if (await tryPool(db, ctx.topicId, ctx.date, ctx.entryType) ||
+            await tryPool(db, ctx.topicId, ctx.date, other)) {
+          outcome = { topic_id: ctx.topicId, status: "created", date: ctx.date, source: "pool_fallback" };
+        }
+      }
       if (outcome.status === "created") inserted++;
       await markItem(
         db, batch.id, item.custom_id,
