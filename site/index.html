@@ -1,0 +1,200 @@
+<!doctype html>
+<!--
+  ponder-devotion.com — marketing landing page.
+
+  Store links are live:
+    Apple  id6796225096  (Ponder: Daily Discernment)
+    Play   com.jrvsolutions.ponder
+
+  This is a SEPARATE Netlify site from the privacy-policy site. Do not merge
+  them and do not move the domain's nameservers — ponder-devotion.com carries
+  the auth/OTP email records.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ponder — A daily Bible devotional and prayer journal</title>
+<meta name="description" content="A daily devotional for what you sense God is saying to you. Name the thread; Ponder brings scripture to it every morning. Free on iOS and Android.">
+<link rel="canonical" href="https://ponder-devotion.com/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ponder-devotion.com/">
+<meta property="og:title" content="Ponder — A daily Bible devotional and prayer journal">
+<meta property="og:description" content="Name what you sense God is speaking to you about. Ponder brings scripture to it every morning.">
+<meta property="og:image" content="https://ponder-devotion.com/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/icon.png">
+<link rel="apple-touch-icon" href="/img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6EF; --surface:#FFFFFF; --ink:#1F1B16; --muted:#6E6659;
+    --moss:#3D5A44; --moss-deep:#2C4232; --moss-soft:#3D5A441A;
+    --rust:#A4552E; --hairline:#E7DFD2;
+    --display:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    --body:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
+       font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:var(--moss)}
+  .wrap{max-width:1040px;margin:0 auto;padding-inline:24px}
+
+  /* nav */
+  header{padding-block:22px}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+  .brand img{width:34px;height:34px;border-radius:9px}
+  .brand span{font-family:var(--display);font-size:27px;font-weight:600;letter-spacing:.01em}
+  .navlink{font-size:15px;font-weight:600;color:var(--moss);text-decoration:none}
+
+  /* hero */
+  .hero{padding-block:clamp(40px,7vw,84px) clamp(32px,5vw,56px);text-align:center}
+  .eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--moss);margin:0 0 20px}
+  h1{font-family:var(--display);font-weight:500;font-size:clamp(38px,6.6vw,68px);
+     line-height:1.08;letter-spacing:-.01em;margin:0 auto;max-width:17ch}
+  .lede{max-width:56ch;margin:22px auto 0;color:var(--muted);font-size:clamp(17px,2vw,19px)}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:32px}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border-radius:999px;
+       text-decoration:none;font-weight:600;font-size:16px;border:1px solid transparent;
+       transition:transform .15s ease, background .15s ease}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--moss);color:var(--paper)}
+  .btn-primary:hover{background:var(--moss-deep)}
+  .btn-ghost{background:transparent;color:var(--moss);border-color:var(--hairline)}
+  .btn-ghost:hover{background:var(--moss-soft)}
+  .free{margin-top:18px;font-size:14.5px;color:var(--muted)}
+
+  /* shots */
+  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,34px);
+         padding-block:clamp(24px,4vw,44px)}
+  .shot figure{margin:0}
+  .shot img{width:100%;border-radius:20px;border:1px solid var(--hairline);
+            box-shadow:0 18px 40px -24px rgba(31,27,22,.4)}
+  .shot figcaption{margin-top:14px;font-family:var(--display);font-size:20px;
+                   line-height:1.3;color:var(--ink);text-align:center}
+  @media(max-width:700px){
+    .shots{grid-template-columns:1fr;max-width:340px;margin-inline:auto}
+  }
+
+  /* feature band */
+  .band{background:var(--moss);color:var(--paper);margin-top:clamp(40px,6vw,72px)}
+  .band .wrap{padding-block:clamp(48px,7vw,84px);display:grid;
+              grid-template-columns:5fr 7fr;gap:clamp(24px,5vw,56px);align-items:start}
+  @media(max-width:780px){.band .wrap{grid-template-columns:1fr;gap:22px}}
+  .band h2{font-family:var(--display);font-weight:500;font-size:clamp(30px,4.4vw,46px);
+           line-height:1.14;margin:0}
+  .band p{margin:0 0 18px;color:#D6E6DE;font-size:clamp(16.5px,1.8vw,18px)}
+  .band p:last-child{margin-bottom:0}
+  .badge{display:inline-block;margin-bottom:22px;padding:5px 13px;border-radius:999px;
+         border:1px solid rgba(250,246,239,.35);font-size:12px;font-weight:600;
+         letter-spacing:.12em;text-transform:uppercase}
+
+  /* features */
+  .features{padding-block:clamp(48px,7vw,84px);display:grid;
+            grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,48px)}
+  @media(max-width:760px){.features{grid-template-columns:1fr;gap:34px}}
+  .f h3{font-family:var(--display);font-weight:600;font-size:26px;margin:0 0 10px;line-height:1.2}
+  .f p{margin:0;color:var(--muted);font-size:16.5px}
+  .rule{width:38px;height:2px;background:var(--rust);margin-bottom:18px;border-radius:2px}
+
+  /* closing */
+  .closing{border-top:1px solid var(--hairline);padding-block:clamp(44px,6vw,72px);text-align:center}
+  .closing h2{font-family:var(--display);font-weight:500;font-size:clamp(30px,4.4vw,44px);
+              margin:0 auto;max-width:18ch;line-height:1.15}
+  .note{max-width:60ch;margin:26px auto 0;font-size:15px;color:var(--muted)}
+
+  footer{border-top:1px solid var(--hairline);padding-block:30px 44px;font-size:14.5px;color:var(--muted)}
+  .fbar{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;justify-content:space-between}
+  footer a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--hairline)}
+  footer a:hover{color:var(--moss);border-color:var(--moss)}
+  .flinks{display:flex;flex-wrap:wrap;gap:8px 20px}
+</style>
+</head>
+<body>
+
+<header><div class="wrap bar">
+  <a class="brand" href="/"><img src="/img/icon.png" alt=""><span>Ponder</span></a>
+  <a class="navlink" href="#get">Get the app</a>
+</div></header>
+
+<main>
+  <section class="wrap hero">
+    <p class="eyebrow">Free · iPhone &amp; Android</p>
+    <h1>A daily devotional for the thread you're actually carrying.</h1>
+    <p class="lede">Most devotionals are written for a general audience, months in advance. Ponder starts from what <em>you</em> sense God is speaking to you about — you name it in your own words, and scripture is brought to it every morning.</p>
+    <div class="cta" id="get">
+      <a class="btn btn-primary" href="https://apps.apple.com/au/app/ponder/id6796225096">Download on iPhone</a>
+      <a class="btn btn-ghost" href="https://play.google.com/store/apps/details?id=com.jrvsolutions.ponder">Get it on Android</a>
+    </div>
+    <p class="free">Free. No subscription, no locked content, no ads.</p>
+  </section>
+
+  <section class="wrap shots">
+    <div class="shot"><figure>
+      <img src="/img/shot-1.png" alt="Ponder's Today screen showing a passage from Psalm 46 with a short reflection">
+      <figcaption>One passage. One thought.<br>One question to carry.</figcaption>
+    </figure></div>
+    <div class="shot"><figure>
+      <img src="/img/shot-2.png" alt="Several threads running side by side in Ponder">
+      <figcaption>Follow several threads<br>at once.</figcaption>
+    </figure></div>
+    <div class="shot"><figure>
+      <img src="/img/shot-3.png" alt="The Thread Journal, collecting every note in one chronological view">
+      <figcaption>Every note you've written,<br>in one place.</figcaption>
+    </figure></div>
+  </section>
+
+  <section class="band"><div class="wrap">
+    <div>
+      <span class="badge">Challenge entry</span>
+      <h2>Some mornings it pushes back.</h2>
+    </div>
+    <div>
+    <p>Roughly one entry in four questions your framing, offers a counterpoint from scripture, or asks something harder than you'd ask yourself. It's clearly marked when it does, and the tone is pastoral — hard questions, not harsh ones.</p>
+    <p>This is deliberate. A devotional that only ever confirms what you already believe isn't helping you discern anything. You control how often it happens.</p>
+    </div>
+  </div></section>
+
+  <section class="wrap features">
+    <div class="f"><div class="rule"></div>
+      <h3>Several threads at once</h3>
+      <p>God rarely works on one thing at a time, and neither does life. Run “learning to be still” alongside “whether to say yes to the new role.”</p>
+    </div>
+    <div class="f"><div class="rule"></div>
+      <h3>A journal that adds up</h3>
+      <p>Attach a note to any entry. Every note on a thread collects into one chronological journal, so months of scattered prayers read as a single arc.</p>
+    </div>
+    <div class="f"><div class="rule"></div>
+      <h3>See what's emerging</h3>
+      <p>Ask at any point and Ponder reviews the thread, its scriptures and your notes, then reflects back what keeps returning and what's still unresolved.</p>
+    </div>
+  </section>
+
+  <section class="wrap closing">
+    <h2>Three translations. Every verse from the actual text.</h2>
+    <p class="note">World English Bible, Berean Standard Bible and King James Version — all public domain, switchable on any verse. Verse text is served from the biblical text itself, never paraphrased or reconstructed.</p>
+    <p class="note">Written reflections are generated to give you material to pray with. They are not a claim about what God is telling you, and not direction on your life decisions. Treat them as a starting point for prayer, scripture, and conversation with people who know you. The posture is broadly orthodox and non-denominational.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://apps.apple.com/au/app/ponder/id6796225096">Download on iPhone</a>
+      <a class="btn btn-ghost" href="https://play.google.com/store/apps/details?id=com.jrvsolutions.ponder">Get it on Android</a>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap fbar">
+  <div>© 2026 JRV Solutions Pty Ltd</div>
+  <div class="flinks">
+    <a href="https://ponder.jrvsolutions.com.au/privacy.html">Privacy</a>
+    <a href="https://ponder.jrvsolutions.com.au/support.html">Support</a>
+    <a href="mailto:hello@ponder-devotion.com">hello@ponder-devotion.com</a>
+  </div>
+</div></footer>
+
+</body>
+</html>

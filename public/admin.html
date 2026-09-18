@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Ponder · ops</title>
+<link rel="icon" href="/favicon.svg">
+<style>
+:root{
+  color-scheme: light;
+  --surface:#fcfcfb; --surface-2:#f5f4f1; --rule:#e6e4df; --grid:#eceae6;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#8a8884;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --ord1:#86b6ef; --ord2:#5598e7; --ord3:#256abf; --ord4:#104281;
+  --track:#cde2fb;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --accent:#2a78d6;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --surface:#1a1a19; --surface-2:#211f1e; --rule:#2f2e2b; --grid:#2a2a28;
+    --ink:#ffffff; --ink-2:#c3c2b7; --ink-3:#8f8d84;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --ord1:#b7d3f6; --ord2:#86b6ef; --ord3:#3987e5; --ord4:#1c5cab;
+    --track:#184f95;
+    --accent:#3987e5;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --surface:#1a1a19; --surface-2:#211f1e; --rule:#2f2e2b; --grid:#2a2a28;
+  --ink:#ffffff; --ink-2:#c3c2b7; --ink-3:#8f8d84;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --ord1:#b7d3f6; --ord2:#86b6ef; --ord3:#3987e5; --ord4:#1c5cab;
+  --track:#184f95;
+  --accent:#3987e5;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--surface); color:var(--ink);
+  font:400 14px/1.5 ui-sans-serif,-apple-system,"SF Pro Text","Segoe UI",Inter,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding:0 0 64px;
+}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* ---------- chrome ---------- */
+header.top{
+  position:sticky;top:0;z-index:20;background:var(--surface);
+  border-bottom:1px solid var(--rule);
+}
+header.top .wrap{display:flex;align-items:baseline;gap:14px;height:56px}
+.brand{font-weight:600;letter-spacing:-.01em;font-size:15px}
+.brand span{color:var(--ink-3);font-weight:400}
+.top .meta{margin-left:auto;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--ink-3)}
+.btn{
+  font:inherit;font-size:12px;color:var(--ink-2);background:transparent;
+  border:1px solid var(--rule);border-radius:6px;padding:5px 10px;cursor:pointer;
+}
+.btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid currentColor}
+.badge.ok{color:var(--good)} .badge.stale{color:var(--warn)} .badge.bad{color:var(--crit)}
+
+/* ---------- section ---------- */
+section{padding-top:38px}
+.sec-head{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--rule);margin-bottom:22px}
+.sec-head h2{margin:0;font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.sec-head .note{font-size:12px;color:var(--ink-3);margin-left:auto}
+
+/* ---------- hero ---------- */
+.hero{display:flex;flex-wrap:wrap;align-items:flex-end;gap:34px;margin-bottom:6px}
+.hero .fig{font-size:60px;line-height:.95;font-weight:600;letter-spacing:-.03em}
+.hero .lab{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
+.hero .spark{flex:1;min-width:200px;max-width:420px}
+
+/* ---------- tiles ---------- */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.tiles.two{grid-template-columns:repeat(2,1fr)}
+.tile{background:var(--surface);padding:16px 16px 14px}
+.tile .lab{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .val{font-size:27px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.tile .sub{font-size:12px;color:var(--ink-3);margin-top:4px}
+.tile .sub b{font-weight:600;color:var(--ink-2)}
+.up{color:var(--good)} .down{color:var(--crit)} .flat{color:var(--ink-3)}
+
+/* ---------- panels ---------- */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:28px}
+.panel{min-width:0}
+.panel h3{margin:0 0 2px;font-size:13px;font-weight:600;letter-spacing:-.005em}
+.panel .cap{margin:0 0 14px;font-size:12px;color:var(--ink-3)}
+
+/* ---------- charts ---------- */
+svg{display:block;width:100%;overflow:visible}
+.tick{font-size:10px;fill:var(--ink-3)}
+.dlabel{font-size:11px;fill:var(--ink-2);font-weight:500}
+.gridline{stroke:var(--grid);stroke-width:1;shape-rendering:crispEdges}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin:10px 0 0;font-size:12px;color:var(--ink-2)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:0}
+
+/* ---------- bar list ---------- */
+.blist{display:flex;flex-direction:column;gap:9px}
+.brow{display:grid;grid-template-columns:minmax(90px,34%) 1fr auto;align-items:center;gap:12px}
+.brow .nm{font-size:12px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brow .tr{height:9px;border-radius:0 4px 4px 0;background:var(--s1);min-width:2px}
+.brow .vv{font-size:12px;font-variant-numeric:tabular-nums;color:var(--ink);min-width:34px;text-align:right}
+.brow .gate{font-size:10px;color:var(--warn);letter-spacing:.05em}
+
+/* ---------- funnel ---------- */
+.fn{display:flex;flex-direction:column;gap:2px}
+.fstage{display:grid;grid-template-columns:1fr 108px;align-items:center;gap:12px}
+.fstage .fwrap{display:flex;align-items:center;gap:10px;min-width:0;width:100%}
+.fbar{height:34px;max-width:100%;border-radius:0 4px 4px 0;display:flex;align-items:center;padding-left:11px;
+  font-size:12px;font-weight:500;white-space:nowrap;flex:0 0 auto}
+.fbar.out{padding-left:0}
+.foutside{font-size:12px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.fmeta{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.fmeta b{color:var(--ink);font-weight:600}
+.fdrop{font-size:11px;color:var(--crit);padding:1px 0 1px 11px}
+
+/* ---------- meter ---------- */
+.meter{height:12px;border-radius:6px;background:var(--track);overflow:hidden;margin:9px 0 7px}
+.meter i{display:block;height:100%;border-radius:6px;background:var(--accent);transition:width .3s}
+.meter i.w{background:var(--warn)} .meter i.c{background:var(--crit)}
+
+/* ---------- table ---------- */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-weight:500;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);padding:0 10px 7px 0;border-bottom:1px solid var(--rule)}
+td{padding:8px 10px 8px 0;border-bottom:1px solid var(--rule);vertical-align:middle}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;padding-right:0}
+tr.muted td{color:var(--ink-3)}
+code{font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+details.data{margin-top:10px}
+details.data summary{font-size:11px;color:var(--ink-3);cursor:pointer;list-style:none}
+details.data summary::-webkit-details-marker{display:none}
+details.data summary::before{content:"▸ ";}
+details.data[open] summary::before{content:"▾ ";}
+details.data table{margin-top:9px}
+
+/* ---------- tooltip ---------- */
+#tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .09s;
+  background:var(--surface);border:1px solid var(--rule);border-radius:7px;
+  box-shadow:0 6px 22px rgba(0,0,0,.16);padding:8px 10px;font-size:12px;color:var(--ink);
+  white-space:nowrap}
+#tip .k{color:var(--ink-3);font-size:11px;margin-bottom:3px}
+#tip .r{display:flex;gap:10px;justify-content:space-between;font-variant-numeric:tabular-nums}
+
+/* ---------- gate ---------- */
+#gate{max-width:360px;margin:14vh auto;padding:0 20px}
+#gate h1{font-size:19px;font-weight:600;margin:0 0 6px}
+#gate p{color:var(--ink-3);font-size:13px;margin:0 0 20px}
+#gate input{width:100%;font:inherit;padding:10px 12px;border-radius:8px;
+  border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);margin-bottom:10px}
+#gate button{width:100%;font:inherit;font-weight:500;padding:10px;border-radius:8px;border:0;
+  background:var(--accent);color:#fff;cursor:pointer}
+#gate .err{color:var(--crit);font-size:12.5px;min-height:18px;margin-top:10px}
+.hidden{display:none!important}
+.empty{color:var(--ink-3);font-size:12.5px;padding:14px 0}
+@media (max-width:820px){ .tiles{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:620px){
+  header.top .wrap{height:48px;gap:8px}
+  .brand{font-size:14px;white-space:nowrap}
+  .top .meta{gap:7px;font-size:11px}
+  #stamp{display:none}
+  .btn{padding:4px 8px;white-space:nowrap}
+}
+@media (max-width:560px){
+  .hero .fig{font-size:46px}
+  .hero{gap:24px}
+  .brow{grid-template-columns:minmax(74px,40%) 1fr auto}
+  .fstage{grid-template-columns:1fr;gap:4px}
+  .fmeta{padding-left:2px}
+}
+</style>
+</head>
+<body>
+
+<div id="tip"></div>
+
+<!-- ================= sign in ================= -->
+<div id="gate">
+  <h1>Ponder · ops</h1>
+  <p>Operator access. A six-digit code will be emailed to you.</p>
+  <div id="step1">
+    <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com">
+    <button id="send">Send code</button>
+  </div>
+  <div id="step2" class="hidden">
+    <input id="code" inputmode="numeric" autocomplete="one-time-code" placeholder="123456">
+    <button id="verify">Sign in</button>
+  </div>
+  <div class="err" id="gerr"></div>
+</div>
+
+<!-- ================= dashboard ================= -->
+<div id="app" class="hidden">
+<header class="top"><div class="wrap">
+  <div class="brand">Ponder <span>· ops</span></div>
+  <div class="meta">
+    <span id="stamp"></span>
+    <span id="fresh" class="badge ok">live</span>
+    <button class="btn" id="theme">theme</button>
+    <button class="btn" id="out">sign out</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+  <!-- PULSE -->
+  <section>
+    <div class="sec-head"><h2>Pulse</h2><span class="note" id="pulse-note"></span></div>
+    <div class="hero">
+      <div>
+        <div class="lab">Weekly active</div>
+        <div class="fig" id="hero-wau">—</div>
+      </div>
+      <div>
+        <div class="lab">vs last snapshot</div>
+        <div class="fig" id="hero-delta" style="font-size:34px">—</div>
+      </div>
+      <div class="spark" id="hero-spark"></div>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <!-- ACTIVATION -->
+  <section>
+    <div class="sec-head"><h2>Activation</h2><span class="note">accounts created in the last 30 days</span></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Where the funnel leaks</h3>
+        <p class="cap">Every install that never reaches a note is a person the app didn't land for.</p>
+        <div class="fn" id="funnel"></div>
+      </div>
+      <div class="panel">
+        <h3>Installs &amp; notes, 30 days</h3>
+        <p class="cap">Acquisition against the strongest intent signal in the app.</p>
+        <div id="c-acq"></div>
+        <div class="legend">
+          <span><i style="background:var(--s1)"></i>Installs</span>
+          <span><i style="background:var(--s3)"></i>Notes</span>
+        </div>
+        <details class="data"><summary>Data</summary><div id="t-acq"></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <section>
+    <div class="sec-head"><h2>Content &amp; generation</h2><span class="note" id="gen-note"></span></div>
+    <div class="tiles" id="gtiles" style="margin-bottom:28px"></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Pool depth by theme</h3>
+        <p class="cap">Thinnest first. A theme near zero falls back to live generation — slower and paid per user.</p>
+        <div class="blist" id="pool"></div>
+      </div>
+      <div class="panel">
+        <h3>What people are bringing</h3>
+        <p class="cap">Classified themes across active threads. Thin themes here are the pool gaps to fill next.</p>
+        <div class="blist" id="themes"></div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:28px">
+      <div class="panel">
+        <h3>Failures by stage, last 7 days</h3>
+        <p class="cap">Greyed rows are background pool noise and affect nobody. Read the highlighted rows only.</p>
+        <div id="fails"></div>
+      </div>
+      <div class="panel">
+        <h3>Scheduled jobs</h3>
+        <p class="cap">A job that stops running is silent — this is the only place it shows.</p>
+        <div id="cron"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COST -->
+  <section>
+    <div class="sec-head"><h2>Cost</h2><span class="note">from spend_ledger — recorded usage, not estimates</span></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Daily spend, 30 days</h3>
+        <p class="cap">Shape matters more than the number: a step change is a bug, not popularity.</p>
+        <div id="c-spend"></div>
+        <details class="data"><summary>Data</summary><div id="t-spend"></div></details>
+      </div>
+      <div class="panel">
+        <h3>Credit &amp; tripwires</h3>
+        <p class="cap" id="credit-cap">Balance is operator-anchored; re-anchor after every top-up.</p>
+        <div id="credit"></div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:28px">
+      <div class="panel">
+        <h3>Where the money goes</h3>
+        <p class="cap">Last 30 days by call kind.</p>
+        <div id="bykind"></div>
+      </div>
+      <div class="panel">
+        <h3>Unit economics</h3>
+        <p class="cap">Last 7 days.</p>
+        <div class="tiles two" id="unit"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL = 'https://rkslrbcbncecekghwbap.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_fs0jsvqnqpGvs7sTYtpQEQ_dN3f8K4I';
+
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { storageKey: 'ponder-ops-auth', detectSessionInUrl: false, persistSession: true }
+});
+
+/* ============ tiny helpers ============ */
+const $ = s => document.querySelector(s);
+const el = (t, c, h) => { const n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m]));
+const NS = 'http://www.w3.org/2000/svg';
+const svgEl = (t, a) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); return n; };
+const num = n => (n == null ? '—' : Number(n).toLocaleString('en-AU'));
+const usd = n => n == null ? '—' : (Math.abs(n) >= 100 ? '$' + Number(n).toFixed(0)
+  : Math.abs(n) >= 1 ? '$' + Number(n).toFixed(2) : '$' + Number(n).toFixed(3));
+const pct = n => n == null ? '—' : Number(n).toFixed(n < 10 ? 1 : 0) + '%';
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const dshort = d => new Date(d + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+
+const tip = $('#tip');
+function showTip(x, y, html) {
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const r = tip.getBoundingClientRect();
+  tip.style.left = Math.min(Math.max(8, x - r.width / 2), innerWidth - r.width - 8) + 'px';
+  tip.style.top = Math.max(8, y - r.height - 12) + 'px';
+}
+const hideTip = () => { tip.style.opacity = 0; };
+
+/* ============ charts ============ */
+
+// Multi-series line chart. Hairline solid grid, 2px lines, crosshair tooltip,
+// selective end-labels. One axis only — series are indexed to their own scale
+// ONLY when explicitly told to; by default they share one scale.
+function lineChart(mount, series, opts = {}) {
+  mount.innerHTML = '';
+  const W = mount.clientWidth || 420, H = opts.h || 190;
+  const m = { t: 12, r: 44, b: 22, l: 34 };
+  const pts = series[0].data;
+  if (!pts.length) { mount.appendChild(el('div', 'empty', 'No data yet.')); return; }
+  const maxV = Math.max(1, ...series.flatMap(s => s.data.map(p => p.v)));
+  const x = i => m.l + (W - m.l - m.r) * (pts.length === 1 ? .5 : i / (pts.length - 1));
+  const y = v => H - m.b - (H - m.t - m.b) * (v / maxV);
+
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img' });
+
+  // grid + y ticks
+  const steps = 3;
+  for (let i = 0; i <= steps; i++) {
+    const v = maxV * i / steps;
+    svg.appendChild(svgEl('line', { class: 'gridline', x1: m.l, x2: W - m.r, y1: y(v), y2: y(v) }));
+    const t = svgEl('text', { class: 'tick', x: m.l - 7, y: y(v) + 3.5, 'text-anchor': 'end' });
+    t.textContent = opts.fmtY ? opts.fmtY(v) : Math.round(v);
+    svg.appendChild(t);
+  }
+  // x ticks: first / middle / last only
+  [0, Math.floor(pts.length / 2), pts.length - 1].forEach((i, k) => {
+    const t = svgEl('text', { class: 'tick', x: x(i), y: H - 5,
+      'text-anchor': k === 0 ? 'start' : k === 2 ? 'end' : 'middle' });
+    t.textContent = dshort(pts[i].d); svg.appendChild(t);
+  });
+
+  series.forEach(s => {
+    const d = s.data.map((p, i) => `${i ? 'L' : 'M'}${x(i)},${y(p.v)}`).join(' ');
+    svg.appendChild(svgEl('path', { d, fill: 'none', stroke: css(s.color), 'stroke-width': 2,
+      'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    const last = s.data[s.data.length - 1];
+    svg.appendChild(svgEl('circle', { cx: x(s.data.length - 1), cy: y(last.v), r: 4.5,
+      fill: css(s.color), stroke: css('--surface'), 'stroke-width': 2 }));
+    const lab = svgEl('text', { class: 'dlabel', x: x(s.data.length - 1) + 9, y: y(last.v) + 4,
+      fill: css('--ink-2') });
+    lab.textContent = opts.fmtY ? opts.fmtY(last.v) : last.v; svg.appendChild(lab);
+  });
+
+  // crosshair
+  const cross = svgEl('line', { class: 'gridline', y1: m.t, y2: H - m.b, stroke: css('--ink-3'), opacity: 0 });
+  svg.appendChild(cross);
+  const hit = svgEl('rect', { x: m.l, y: 0, width: Math.max(1, W - m.l - m.r), height: H, fill: 'transparent' });
+  svg.appendChild(hit);
+  const move = ev => {
+    const r = svg.getBoundingClientRect();
+    const px = (ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left;
+    const rel = (px / r.width) * W;
+    let i = Math.round((rel - m.l) / Math.max(1, (W - m.l - m.r)) * (pts.length - 1));
+    i = Math.max(0, Math.min(pts.length - 1, i));
+    cross.setAttribute('x1', x(i)); cross.setAttribute('x2', x(i)); cross.setAttribute('opacity', .5);
+    const rows = series.map(s => `<div class="r"><span style="color:${css(s.color)}">■</span>&nbsp;${esc(s.name)}<b>${opts.fmtY ? opts.fmtY(s.data[i].v) : s.data[i].v}</b></div>`).join('');
+    showTip(r.left + (x(i) / W) * r.width, r.top + 10, `<div class="k">${dshort(pts[i].d)}</div>${rows}`);
+  };
+  svg.addEventListener('mousemove', move);
+  svg.addEventListener('touchmove', e => { move(e); e.preventDefault(); }, { passive: false });
+  svg.addEventListener('mouseleave', () => { cross.setAttribute('opacity', 0); hideTip(); });
+  mount.appendChild(svg);
+}
+
+// Column chart — <=24px thick, 4px rounded data-end, square at baseline, 2px gaps.
+function columns(mount, data, opts = {}) {
+  mount.innerHTML = '';
+  const W = mount.clientWidth || 420, H = opts.h || 190;
+  const m = { t: 12, r: 8, b: 22, l: 42 };
+  if (!data.length) { mount.appendChild(el('div', 'empty', 'No data yet.')); return; }
+  const maxV = Math.max(opts.min || 0.0001, ...data.map(p => p.v));
+  const band = (W - m.l - m.r) / data.length;
+  const bw = Math.min(24, Math.max(2, band - 2));
+  const y = v => H - m.b - (H - m.t - m.b) * (v / maxV);
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img' });
+  for (let i = 0; i <= 3; i++) {
+    const v = maxV * i / 3;
+    svg.appendChild(svgEl('line', { class: 'gridline', x1: m.l, x2: W - m.r, y1: y(v), y2: y(v) }));
+    const t = svgEl('text', { class: 'tick', x: m.l - 7, y: y(v) + 3.5, 'text-anchor': 'end' });
+    t.textContent = opts.fmtY ? opts.fmtY(v) : Math.round(v); svg.appendChild(t);
+  }
+  data.forEach((p, i) => {
+    const cx = m.l + band * i + band / 2;
+    const h = Math.max(p.v > 0 ? 2 : 0, (H - m.b) - y(p.v));
+    if (h > 0) {
+      const r = Math.min(4, bw / 2, h);
+      const xx = cx - bw / 2, yy = H - m.b - h;
+      const d = `M${xx},${H - m.b} L${xx},${yy + r} Q${xx},${yy} ${xx + r},${yy} L${xx + bw - r},${yy} Q${xx + bw},${yy} ${xx + bw},${yy + r} L${xx + bw},${H - m.b} Z`;
+      svg.appendChild(svgEl('path', { d, fill: css(opts.color || '--s1') }));
+    }
+    const hit = svgEl('rect', { x: cx - band / 2, y: m.t, width: band, height: H - m.t - m.b, fill: 'transparent' });
+    hit.addEventListener('mouseenter', ev => {
+      const r = ev.target.getBoundingClientRect();
+      showTip(r.left + r.width / 2, r.top + 12,
+        `<div class="k">${dshort(p.d)}</div><div class="r">${esc(opts.name || 'Value')}<b>${opts.fmtY ? opts.fmtY(p.v) : p.v}</b></div>`);
+    });
+    hit.addEventListener('mouseleave', hideTip);
+    svg.appendChild(hit);
+  });
+  [0, data.length - 1].forEach((i, k) => {
+    const t = svgEl('text', { class: 'tick', x: m.l + band * i + band / 2, y: H - 5,
+      'text-anchor': k ? 'end' : 'start' });
+    t.textContent = dshort(data[i].d); svg.appendChild(t);
+  });
+  mount.appendChild(svg);
+}
+
+function sparkline(mount, data, color) {
+  mount.innerHTML = '';
+  if (!data.length) return;
+  const W = mount.clientWidth || 300, H = 54;
+  const maxV = Math.max(1, ...data.map(p => p.v)), minV = Math.min(...data.map(p => p.v));
+  const x = i => (W - 6) * (data.length === 1 ? .5 : i / (data.length - 1)) + 3;
+  const y = v => H - 6 - (H - 12) * ((v - minV) / Math.max(1, maxV - minV));
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, height: H });
+  svg.appendChild(svgEl('path', {
+    d: data.map((p, i) => `${i ? 'L' : 'M'}${x(i)},${y(p.v)}`).join(' '),
+    fill: 'none', stroke: css(color), 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+  }));
+  const l = data.length - 1;
+  svg.appendChild(svgEl('circle', { cx: x(l), cy: y(data[l].v), r: 4,
+    fill: css(color), stroke: css('--surface'), 'stroke-width': 2 }));
+  mount.appendChild(svg);
+}
+
+// Nominal categories → one series, one color. Value direct-labelled (relief rule).
+function barList(mount, rows, opts = {}) {
+  mount.innerHTML = '';
+  if (!rows.length) { mount.appendChild(el('div', 'empty', opts.empty || 'Nothing here.')); return; }
+  const maxV = Math.max(1, ...rows.map(r => r.n));
+  rows.forEach(r => {
+    const row = el('div', 'brow');
+    row.appendChild(el('div', 'nm', esc(r.name) + (r.gated ? ' <span class="gate">REVIEW</span>' : '')));
+    const wrap = el('div');
+    const bar = el('div', 'tr');
+    bar.style.width = Math.max(2, (r.n / maxV) * 100) + '%';
+    if (r.color) bar.style.background = css(r.color);
+    wrap.appendChild(bar);
+    row.appendChild(wrap);
+    row.appendChild(el('div', 'vv', opts.fmt ? opts.fmt(r.n) : num(r.n)));
+    mount.appendChild(row);
+  });
+}
+
+function table(mount, cols, rows) {
+  mount.innerHTML = '';
+  const t = el('table');
+  const th = el('tr');
+  cols.forEach(c => th.appendChild(el('th', c.n ? 'n' : '', esc(c.label))));
+  t.appendChild(el('thead')).appendChild(th);
+  const tb = el('tbody');
+  rows.forEach(r => {
+    const tr = el('tr', r._muted ? 'muted' : '');
+    cols.forEach(c => tr.appendChild(el('td', c.n ? 'n' : '', r[c.key])));
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  mount.appendChild(t);
+}
+
+function tile(lab, val, sub) {
+  const t = el('div', 'tile');
+  t.appendChild(el('div', 'lab', esc(lab)));
+  t.appendChild(el('div', 'val', val));
+  if (sub) t.appendChild(el('div', 'sub', sub));
+  return t;
+}
+
+/* ============ render ============ */
+let SNAPS = [];
+
+function render() {
+  const snap = SNAPS[0];
+  if (!snap) return;
+  const p = snap.payload, prev = SNAPS[1]?.payload;
+  const u = p.users || {}, f = p.funnel || {}, e = p.engage || {},
+        c = p.content || {}, pool = p.pool || {}, fail = p.failures || {}, cost = p.cost || {};
+
+  // freshness
+  const ageH = (Date.now() - new Date(snap.captured_at)) / 36e5;
+  $('#stamp').textContent = new Date(snap.captured_at).toLocaleString('en-AU',
+    { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  const fr = $('#fresh');
+  fr.className = 'badge ' + (ageH < 30 ? 'ok' : ageH < 54 ? 'stale' : 'bad');
+  fr.textContent = ageH < 30 ? 'fresh' : Math.round(ageH / 24) + 'd stale';
+
+  // ---- hero
+  $('#hero-wau').textContent = num(u.wau);
+  const dw = prev ? u.wau - prev.users.wau : null;
+  const hd = $('#hero-delta');
+  hd.textContent = dw == null ? '—' : (dw > 0 ? '+' : '') + dw;
+  hd.className = 'fig ' + (dw == null ? 'flat' : dw > 0 ? 'up' : dw < 0 ? 'down' : 'flat');
+  const wauHist = SNAPS.slice().reverse().map(s => ({ d: s.captured_on, v: s.payload.users?.wau ?? 0 }));
+  sparkline($('#hero-spark'), wauHist, '--s1');
+  $('#pulse-note').textContent = SNAPS.length < 3
+    ? `trend builds from ${SNAPS.length} nightly snapshot${SNAPS.length === 1 ? '' : 's'} — DAU/WAU history cannot be backfilled`
+    : `${SNAPS.length} nightly snapshots`;
+
+  const r7 = u.retention_7d || {};
+  const tl = $('#tiles'); tl.innerHTML = '';
+  [
+    ['Daily active', num(u.dau), `${pct(u.total ? 100 * u.dau / u.total : null)} of installs`],
+    ['Installs', num(u.total), `<b>${num(u.new_7d)}</b> in 7d · <b>${num(u.new_24h)}</b> today`],
+    ['7-day retention', pct(r7.pct), `${num(r7.returned)} of ${num(r7.eligible)} eligible`],
+    ['Dormant 14d+', num(u.dormant_14d), `${pct(u.total ? 100 * u.dormant_14d / u.total : null)} of installs`],
+    ['Active threads', num(e.threads_active), `${num(e.threads_new_7d)} new in 7d`],
+    ['Note writers 7d', num(e.note_writers_7d), `${num(e.notes_7d)} notes written`],
+    ['Syntheses 7d', num(e.syntheses_7d), `${num(e.syntheses_30d)} in 30d`],
+    ['Email-backed', num(u.email_backed), `${num(u.anonymous)} anonymous`]
+  ].forEach(a => tl.appendChild(tile(a[0], a[1], a[2])));
+
+  // ---- funnel (ordinal ramp: ordered stages)
+  const fn = $('#funnel'); fn.innerHTML = '';
+  const base = f.installs || 0;
+  const stages = [
+    ['Installed', f.installs, '--ord1'],
+    ['Created a thread', f.made_thread, '--ord2'],
+    ['Received an entry', f.got_entry, '--ord3'],
+    ['Wrote a note', f.wrote_note, '--ord4']
+  ];
+  const barW = Math.max(120, (fn.clientWidth || 420) - 120);
+  stages.forEach(([name, v, col], i) => {
+    const row = el('div', 'fstage');
+    const wrap = el('div', 'fwrap');
+    const frac = base ? v / base : 0;
+    // Only label inside the mark when it fits with padding; otherwise outside.
+    const fits = barW * frac > name.length * 7.2 + 22;
+    const bar = el('div', 'fbar' + (fits ? '' : ' out'), fits ? esc(name) : '');
+    bar.style.width = Math.max(4, frac * 100) + '%';
+    bar.style.background = css(col);
+    bar.style.color = i < 2 ? '#0b0b0b' : '#fff';
+    wrap.appendChild(bar);
+    if (!fits) wrap.appendChild(el('div', 'foutside', esc(name)));
+    row.appendChild(wrap);
+    row.appendChild(el('div', 'fmeta', `<b>${num(v)}</b> · ${pct(base ? 100 * v / base : null)}`));
+    fn.appendChild(row);
+    if (i < stages.length - 1) {
+      const lost = v - stages[i + 1][1];
+      fn.appendChild(el('div', 'fdrop', `↓ ${num(lost)} lost (${pct(v ? 100 * lost / v : 0)})`));
+    }
+  });
+
+  // ---- acquisition
+  const inst = (u.installs_series || []).map(x => ({ d: x.d, v: x.n }));
+  const nts = (e.notes_series || []).map(x => ({ d: x.d, v: x.n }));
+  lineChart($('#c-acq'), [
+    { name: 'Installs', color: '--s1', data: inst },
+    { name: 'Notes', color: '--s3', data: nts }
+  ]);
+  table($('#t-acq'),
+    [{ key: 'd', label: 'Date' }, { key: 'i', label: 'Installs', n: 1 }, { key: 'n', label: 'Notes', n: 1 }],
+    inst.map((x, i) => ({ d: dshort(x.d), i: x.v, n: nts[i]?.v ?? 0 })).reverse().slice(0, 14));
+
+  // ---- generation tiles
+  const gt = $('#gtiles'); gt.innerHTML = '';
+  const chal = c.challenge_30d || 0, aff = c.affirming_30d || 0;
+  const chalPct = chal + aff ? 100 * chal / (chal + aff) : null;
+  const burn = pool.burn_per_day || 0;
+  const runway = burn > 0 ? Math.floor((pool.live || 0) / burn) : null;
+  [
+    ['Entries today', num(c.entries_today), `<b>${num(c.threads_missing_today)}</b> active threads missing`],
+    ['Errors 24h', num(fail.actionable_24h),
+      (fail.actionable_24h ? `<span class="down">${esc((fail.latest_error || '').slice(0, 46))}…</span>` : 'clear')],
+    ['Pool entries live', num(pool.live), runway == null ? 'no burn recorded' : `~${runway}d at ${burn}/day`],
+    ['Awaiting review', num(pool.unreviewed_gated), 'in doctrinally gated themes'],
+    ['Challenge ratio', pct(chalPct), 'target ~25%'],
+    ['Fallback rate 7d', pct(c.entries_7d ? 100 * c.fallback_7d / c.entries_7d : null), `${num(c.fallback_7d)} of ${num(c.entries_7d)}`],
+    ['Open reports', num(c.reports_open), `${num(c.reports_7d)} filed in 7d`],
+    ['Never generated', num(e.active_threads_no_entries), 'active threads, zero entries']
+  ].forEach(a => gt.appendChild(tile(a[0], a[1], a[2])));
+  $('#gen-note').textContent = `${num(c.entries_30d)} entries generated in 30 days`;
+
+  // ---- pool / themes
+  barList($('#pool'), (pool.by_theme || []).slice(0, 12)
+    .map(t => ({ name: t.theme, n: t.n, gated: t.gated })), { empty: 'Pool is empty.' });
+  barList($('#themes'), (c.top_themes || []).map(t => ({ name: t.theme, n: t.n })),
+    { empty: 'No classified threads yet.' });
+
+  // ---- failures
+  const NOISE = ['pool_build', 'pool_verse_resolution', 'attempt_1', 'fallback_used', 'cross_ref_dropped'];
+  const f24 = Object.fromEntries((fail.by_stage_24h || []).map(x => [x.stage, x.n]));
+  const rows = (fail.by_stage_7d || []).map(x => ({
+    stage: `<span class="dot" style="background:${NOISE.includes(x.stage) ? css('--ink-3') : css('--crit')}"></span>${esc(x.stage)}`,
+    d1: f24[x.stage] || 0, d7: x.n, _muted: NOISE.includes(x.stage)
+  }));
+  if (rows.length) {
+    table($('#fails'), [{ key: 'stage', label: 'Stage' }, { key: 'd1', label: '24h', n: 1 }, { key: 'd7', label: '7d', n: 1 }], rows);
+  } else { $('#fails').innerHTML = '<div class="empty">No failures in 7 days.</div>'; }
+
+  // ---- cron
+  if (p.cron) {
+    const cr = p.cron.map(j => {
+      const age = j.last_run ? (Date.now() - new Date(j.last_run)) / 36e5 : null;
+      const bad = !j.active || j.last_status !== 'succeeded' || age == null || age > 26;
+      return {
+        job: `<span class="dot" style="background:${bad ? css('--crit') : css('--good')}"></span>${esc(j.job)}`,
+        sch: `<code style="color:var(--ink-3)">${esc(j.schedule)}</code>`,
+        last: j.last_run ? new Date(j.last_run).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'never',
+        _muted: false
+      };
+    });
+    table($('#cron'), [{ key: 'job', label: 'Job' }, { key: 'sch', label: 'Schedule' }, { key: 'last', label: 'Last run' }], cr);
+  } else { $('#cron').innerHTML = '<div class="empty">cron history not readable by the snapshot function.</div>'; }
+
+  // ---- spend
+  const sp = (cost.daily_series || []).map(x => ({ d: x.d, v: Number(x.usd) }));
+  columns($('#c-spend'), sp, { color: '--s1', name: 'Spend', fmtY: v => '$' + Number(v).toFixed(2) });
+  table($('#t-spend'), [{ key: 'd', label: 'Date' }, { key: 'v', label: 'USD', n: 1 }],
+    sp.map(x => ({ d: dshort(x.d), v: usd(x.v) })).reverse().slice(0, 14));
+
+  // ---- credit + tripwires
+  const cd = cost.credit || {}, tw = cost.tripwire || {};
+  const d7 = Number(cost.d7_usd || 0), perDay = d7 / 7;
+  const rem = Number(cd.remaining_usd ?? 0);
+  const daysLeft = perDay > 0 ? Math.floor(rem / perDay) : null;
+  const fracLeft = cd.anchor_usd > 0 ? Math.max(0, Math.min(1, rem / Number(cd.anchor_usd))) : 0;
+  const sev = rem <= 0 || (daysLeft != null && daysLeft < 7) ? 'c'
+            : daysLeft != null && daysLeft < 21 ? 'w' : '';
+  const todayPct = Math.min(1, Number(cost.today_usd || 0) / Number(cost.daily_cap_usd || 15));
+  const mtdPct = Math.min(1, Number(cost.mtd_usd || 0) / Number(cost.monthly_cap_usd || 150));
+  $('#credit').innerHTML = `
+    <div style="display:flex;align-items:baseline;gap:10px">
+      <div style="font-size:34px;font-weight:600;letter-spacing:-.02em">${usd(rem)}</div>
+      <div style="font-size:12.5px;color:var(--ink-2)">${daysLeft == null ? 'no burn recorded'
+        : `~<b>${daysLeft}</b> days at ${usd(perDay)}/day`}</div>
+    </div>
+    <div class="meter"><i class="${sev}" style="width:${(fracLeft * 100).toFixed(1)}%"></i></div>
+    <div style="font-size:11.5px;color:var(--ink-3)">${usd(cd.spent_since)} of ${usd(cd.anchor_usd)} spent since anchor on ${cd.anchor_at ? new Date(cd.anchor_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</div>
+    <div style="margin-top:22px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink-2)">
+        <span>Today vs daily tripwire</span><span>${usd(cost.today_usd)} / ${usd(cost.daily_cap_usd)}</span></div>
+      <div class="meter"><i class="${tw.tripped_daily ? 'c' : todayPct > .5 ? 'w' : ''}" style="width:${(todayPct * 100).toFixed(1)}%"></i></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink-2);margin-top:12px">
+        <span>Month vs monthly tripwire</span><span>${usd(cost.mtd_usd)} / ${usd(cost.monthly_cap_usd)}</span></div>
+      <div class="meter"><i class="${tw.tripped_monthly ? 'c' : mtdPct > .5 ? 'w' : ''}" style="width:${(mtdPct * 100).toFixed(1)}%"></i></div>
+      <div style="font-size:11.5px;color:var(--ink-3);margin-top:10px">Tripwires are runaway detectors, not budgets. Either one firing means a bug, not popularity.</div>
+    </div>`;
+
+  // ---- by kind
+  barList($('#bykind'), (cost.by_kind_30d || []).map(k => ({ name: `${k.kind} · ${num(k.calls)} calls`, n: Number(k.usd) })),
+    { fmt: usd, empty: 'No spend recorded in 30 days.' });
+
+  // ---- unit economics
+  const perEntry = c.entries_7d ? d7 / c.entries_7d : null;
+  const perWau = u.wau ? d7 / u.wau : null;
+  const un = $('#unit'); un.innerHTML = '';
+  [
+    ['Spend 7d', usd(d7), `${usd(perDay)}/day`],
+    ['Per entry', perEntry == null ? '—' : '$' + perEntry.toFixed(4), `${num(c.entries_7d)} entries`],
+    ['Per weekly user', perWau == null ? '—' : '$' + perWau.toFixed(3), `${num(u.wau)} WAU`],
+    ['Month to date', usd(cost.mtd_usd), `30d ${usd(cost.d30_usd)}`]
+  ].forEach(a => un.appendChild(tile(a[0], a[1], a[2])));
+}
+
+/* ============ data ============ */
+async function load() {
+  const { data, error } = await sb.from('admin_snapshot')
+    .select('captured_on,captured_at,payload').order('captured_on', { ascending: false }).limit(60);
+  if (error) { $('#gerr').textContent = error.message; return false; }
+  if (!data.length) { $('#gerr').textContent = 'Signed in, but no snapshot rows are visible. Are you in admin_users?'; return false; }
+  SNAPS = data;
+  $('#gate').classList.add('hidden'); $('#app').classList.remove('hidden');
+  render();
+  return true;
+}
+
+/* ============ auth ============ */
+$('#send').onclick = async () => {
+  const email = $('#email').value.trim();
+  $('#gerr').textContent = '';
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
+  if (error) { $('#gerr').textContent = error.message; return; }
+  $('#step1').classList.add('hidden'); $('#step2').classList.remove('hidden'); $('#code').focus();
+};
+$('#verify').onclick = async () => {
+  $('#gerr').textContent = '';
+  const { error } = await sb.auth.verifyOtp({
+    email: $('#email').value.trim(), token: $('#code').value.trim(), type: 'email' });
+  if (error) { $('#gerr').textContent = error.message; return; }
+  load();
+};
+$('#out').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+$('#theme').onclick = () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  try { localStorage.setItem('ponder-ops-theme', document.documentElement.getAttribute('data-theme')); } catch (_) {}
+  render();
+};
+try {
+  const t = localStorage.getItem('ponder-ops-theme');
+  if (t) document.documentElement.setAttribute('data-theme', t);
+} catch (_) {}
+
+let rt;
+addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => SNAPS.length && render(), 160); });
+
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) await load();
+})();
+</script>
+</body>
+</html>

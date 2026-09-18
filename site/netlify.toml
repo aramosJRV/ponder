@@ -1,0 +1,25 @@
+# ponder-devotion.com — the MARKETING site.
+#
+# Deliberately separate from the privacy-policy site (ponder.jrvsolutions.com.au,
+# root netlify.toml). Create this as its own Netlify site with:
+#   Base directory:    site
+#   Publish directory: site
+#   Build command:     (none)
+#
+# DNS: add records at Porkbun. Do NOT delegate nameservers to Netlify —
+# ponder-devotion.com carries Ponder's auth/OTP email records.
+
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

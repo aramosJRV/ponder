@@ -1,3 +1,11 @@
+> # ⚠️ THIS FILE IS STALE — DO NOT TREAT AS THE CURRENT LISTING
+> Flagged 12 Sep 2026. It still describes the A$15.99/yr subscription, which was
+> superseded by the free + optional tips decision of 23 Aug 2026. The LIVE listings
+> are correct (Free, three tip tiers, no paid tier).
+> Current listing copy: `store/play-listing-2026-09-12.md`.
+> Pending Apple changes: `store/APPLY-AT-1.0.15.md`.
+> Reasoning: `store/ASO-AUDIT-2026-09-12.md`.
+
 # Ponder — Store Listing Metadata
 
 iOS bundle ID: `au.com.ponder.app` (registered with Apple 2026-07-28)
