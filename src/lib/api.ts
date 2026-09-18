@@ -739,6 +739,9 @@ export async function submitContentReport(args: {
           ponder: entry.ponder,
           prayer_prompts: entry.prayer_prompts,
           entry_type: entry.entry_type,
+          // Included deliberately: a report about a quote that felt wrong
+          // beside the passage is unactionable without the quote in it.
+          quote: entry.quote ?? null,
         }
       : synthesis
         ? { kind: synthesis.kind, content: synthesis.content }
@@ -831,6 +834,13 @@ export async function exportJournalMarkdown(): Promise<string> {
         "**Ponder**",
         ...e.ponder.map((q) => `- ${q}`),
         "",
+        ...(e.quote
+          ? [
+              `> ${e.quote.text}`,
+              `> — ${e.quote.author}, ${e.quote.work}${e.quote.year ? ` (${e.quote.year})` : ""}`,
+              "",
+            ]
+          : []),
         "**Pray**",
         ...e.prayer_prompts.map((p) => `- ${p}`),
         "",

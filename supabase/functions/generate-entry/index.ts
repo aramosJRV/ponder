@@ -347,7 +347,7 @@ Non-negotiable guardrails:
 7. cross_refs is a citation list shown to the reader as a footnote, not a decoration. Include a passage there ONLY if it genuinely informed what you wrote — a passage that gave the main text its context, or one whose idea you actually used. An empty list is the correct answer most of the time. Never list a passage you have not thought about, never list one merely because it shares a keyword, and never list the main passage again. Every reference is checked against the World English Bible before the reader sees it, and anything that does not exist is silently discarded — so a half-remembered reference costs you the citation.
 8. The passage text is shown to the reader verbatim (World English Bible) directly above your writing. Do NOT reproduce the passage as a full quotation in your thought or illustration — you will misremember the exact wording and contradict the text on screen (e.g. writing "the LORD" where the WEB reads "Yahweh", or adding words like "both"). Refer to the passage instead: describe what it says, and quote at most a short distinctive phrase of a few words. Never present a reconstructed full-verse quotation.
 9. song is OPTIONAL and applies to AFFIRMING entries only — never include a song on a challenge entry. It is looked up on Spotify before the reader sees it, and a song that cannot be found, or whose artist you have misremembered, is silently discarded, so accuracy beats ambition. Name a song you are confident actually exists under that exact title by that exact artist. Hymns and older worship songs need a specific recording artist, not "Traditional". Stay within Christian worship, hymnody and contemporary Christian music — this is a devotional journal, not a general playlist. Do not default to whatever is most popular: the same handful of songs across every entry is a failure.
-10. NEVER state or imply how long the person has been on this thread, or how long anything in their life has been going on. No counts ("day 40", "after three months", "a year of this"), no vague duration framing ("a while now", "lately", "all this time", "in these early days", "as the weeks have worn on", "you have been carrying this since..."), and no anniversary or season-of-the-journey language. This applies to every field you write — thought, illustration, ponder and prayer_prompts. Any dates you are shown below are for ordering only; they are not a timeline you may describe, and they do not tell you when the thread began or how long the person has sat with it. You do not know the reader's elapsed time, and guessing it is wrong far more often than it is right — it reads as a stranger pretending to know them. Write to today: this passage, this thread, what is in front of them now.
+10. NEVER state or imply how long the person has been on this thread, or how long anything in their life has been going on. No counts ("day 40", "after three months", "a year of this"), no vague duration framing ("a while now", "lately", "all this time", "in these early days", "as the weeks have worn on", "you have been carrying this since..."), and no anniversary or season-of-the-journey language. This applies to every field you write — thought, illustration, the ponder_* questions and the prayer_* directions. Any dates you are shown below are for ordering only; they are not a timeline you may describe, and they do not tell you when the thread began or how long the person has sat with it. You do not know the reader's elapsed time, and guessing it is wrong far more often than it is right — it reads as a stranger pretending to know them. Write to today: this passage, this thread, what is in front of them now.
 
 You will be told whether to write an "affirming" or a "challenge" entry:
 - affirming: sits inside the user's sense of the thread and deepens it.
@@ -370,13 +370,161 @@ If the thread includes an ORIGIN PASSAGE, treat it as background only: it tells 
 
 // ------------------------------------------------------------ claude tool
 
+// ---------------------------------------------------------------- quotes
+//
+// Bucket 1: a verbatim public-domain quote on some entries, with attribution.
+//
+// THE RULE: the model NEVER writes quote text. It returns an id from a slate
+// we hand it, the server looks the row up in voice_quotes and copies the real
+// text onto the entry. Same contract as verse_text (bible_verses) and song
+// (a Spotify response). An id that does not resolve means NO QUOTE — the
+// entry ships without one rather than failing.
+//
+// The 1-in-5 roll happens HERE, server-side, BEFORE the call. Candidates go
+// into the prompt only when the roll says yes, so the model never reaches for
+// a quote merely because one was on offer. Frequency stays exact and tunable
+// (same pattern as the challenge weighting).
+//
+// Both entry types carry quotes. Unlike `song`, which is affirming-only
+// because a challenge entry should arrive quieter, the corpus skews
+// diagnostic — pride, habit, doubt, being-forgiven are its deepest themes,
+// which is challenge material. Affirming-only would strand its best matches.
+
+const QUOTE_FREQUENCY = Number(Deno.env.get("QUOTE_FREQUENCY") ?? 0.2);
+const QUOTE_SLATE_THEMED = 12;
+const QUOTE_SLATE_TOTAL = 20;
+
+/** Roll for a quote. Server-side, before the Claude call. */
+function rollForQuote(): boolean {
+  return Math.random() < QUOTE_FREQUENCY;
+}
+
+type QuoteCandidate = {
+  id: string; text: string; author: string; work: string; year: number | null;
+};
+
+/** The quote as it lands on the entry. Mirrors daily_entries.quote's check. */
+type Quote = {
+  id: string; text: string; author: string; work: string; year: number | null;
+};
+
+// deno-lint-ignore no-explicit-any
+function toCandidate(r: any): QuoteCandidate | null {
+  const v = r.voices;
+  if (!v || !r.id || !r.text || !v.name || !v.work_title) return null;
+  return {
+    id: r.id, text: r.text, author: v.name,
+    work: v.work_title, year: v.work_year ?? null,
+  };
+}
+
+const QUOTE_SELECT = "id, text, voices!inner(name, work_title, work_year, active)";
+
+function shuffle<T>(xs: T[]): T[] {
+  for (let i = xs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [xs[i], xs[j]] = [xs[j], xs[i]];
+  }
+  return xs;
+}
+
+/**
+ * Build the candidate slate: up to QUOTE_SLATE_THEMED theme-matched, topped up
+ * to QUOTE_SLATE_TOTAL from the general (untagged) pool, shuffled.
+ *
+ * Theme tags do NOT select the quote — they narrow what the model sees. The
+ * model picks with the thread or theme brief in front of it, so a loose tag
+ * costs a slate slot, not a bad quote on a card.
+ *
+ * The general top-up is load-bearing, not a nicety: 20 of the 46 themes have
+ * one tagged quote or none (the corpus is 17th-19th century devotional
+ * writing, which barely touches relational circumstance), and strict matching
+ * would silently starve those threads.
+ */
+async function quoteSlate(
+  db: SupabaseClient,
+  themeId: string | null,
+  exclude: string[],
+): Promise<QuoteCandidate[]> {
+  const out: QuoteCandidate[] = [];
+  const seen = new Set<string>(exclude);
+
+  try {
+    if (themeId) {
+      const { data: tagged } = await db.from("voice_quote_themes")
+        .select(`quote_id, voice_quotes!inner(${QUOTE_SELECT})`)
+        .eq("theme_id", themeId)
+        .limit(200);
+      // deno-lint-ignore no-explicit-any
+      const themed: QuoteCandidate[] = shuffle(((tagged ?? []) as any[])
+        .map((r) => toCandidate(r.voice_quotes))
+        .filter((c): c is QuoteCandidate => c !== null && !seen.has(c.id)));
+      for (const c of themed.slice(0, QUOTE_SLATE_THEMED)) { out.push(c); seen.add(c.id); }
+    }
+
+    if (out.length < QUOTE_SLATE_TOTAL) {
+      const { data: all } = await db.from("voice_quotes")
+        .select(QUOTE_SELECT).eq("reviewed", true).eq("retired", false).limit(500);
+      // deno-lint-ignore no-explicit-any
+      const rest: QuoteCandidate[] = shuffle(((all ?? []) as any[])
+        .map(toCandidate)
+        .filter((c): c is QuoteCandidate => c !== null && !seen.has(c.id)));
+      for (const c of rest.slice(0, QUOTE_SLATE_TOTAL - out.length)) { out.push(c); seen.add(c.id); }
+    }
+  } catch (e) {
+    // No slate is a valid outcome: the entry ships without a quote.
+    console.warn(`quoteSlate failed: ${e}`);
+    return [];
+  }
+  return shuffle(out);
+}
+
+/**
+ * Resolve the id the model returned. Returns null for anything unexpected —
+ * an unknown id, a retired quote, an inactive voice — and the caller drops
+ * the quote silently. Never throws: a quote is decoration, an entry is not.
+ */
+async function resolveQuote(db: SupabaseClient, id: unknown): Promise<Quote | null> {
+  if (typeof id !== "string" || !id.trim()) return null;
+  try {
+    const { data } = await db.from("voice_quotes")
+      .select(QUOTE_SELECT)
+      .eq("id", id.trim()).eq("reviewed", true).eq("retired", false)
+      .maybeSingle();
+    // deno-lint-ignore no-explicit-any
+    if (!data || (data as any).voices?.active === false) return null;
+    return toCandidate(data);
+  } catch (e) {
+    console.warn(`resolveQuote(${id}) failed: ${e}`);
+    return null;
+  }
+}
+
+/** The prompt block. Only ever included when the roll said yes. */
+function quoteBlock(candidates: QuoteCandidate[]): string {
+  if (!candidates.length) return "";
+  const lines = candidates
+    .map((c) => `${c.id} | "${c.text}" — ${c.author}, ${c.work}`)
+    .join("\n");
+  return `
+A QUOTE MAY ACCOMPANY THIS ENTRY. Below are real lines from public-domain authors. If exactly ONE of them genuinely earns its place beside what you have written — sharpening it or naming the same thing from another angle, not merely touching the same subject — return that line's id as quote_id. Otherwise omit quote_id entirely: an omitted quote costs nothing, a forced one costs the reader's trust.
+
+Return the ID ONLY. Never write, quote, paraphrase, adapt or allude to the text of these lines anywhere in your entry, and never name their authors in your writing — the quote is rendered separately, verbatim, by the server.
+
+${lines}
+`;
+}
+
 const DEVOTIONAL_TOOL = {
   name: "record_devotional",
   description: "Record the completed devotional entry in structured form.",
   input_schema: {
     type: "object",
     additionalProperties: false,
-    required: ["verse", "thought", "illustration", "ponder", "prayer_prompts"],
+    required: [
+      "verse", "thought", "illustration",
+      "ponder_1", "ponder_2", "prayer_1", "prayer_2",
+    ],
     properties: {
       verse: {
         type: "object",
@@ -391,26 +539,52 @@ const DEVOTIONAL_TOOL = {
       },
       thought: { type: "string", description: "80-150 word reflection on the passage and thread" },
       illustration: { type: "string", description: "100-180 word story/analogy/image, clearly illustrative" },
-      // These two are STRINGS, one item per line — not arrays, deliberately.
-      // Measured 14 Sep 2026: claude-haiku-4-5 (every affirming entry) fails
-      // to serialise an array field here in roughly a fifth of calls. It
-      // flattens the array into sibling scalar keys ("ponder": "q1", "item":
-      // "q2") and then drops whichever array field came next ENTIRELY — 1,057
-      // discarded generations in 30 days, ~1,000 of them paid pool builds.
-      // Sonnet never does it, so the affirming path carried all of it.
-      // A newline-delimited string has no array to mangle. parsePayload
-      // splits it back out, so every consumer still receives string[].
-      ponder: {
+      // ---------------------------------------------------------------
+      // NO MULTI-ITEM FIELD HERE. Measured 3-16 Sep 2026 over 442 malformed
+      // payloads (403 pool_build + 39 batch_parse): claude-haiku-4-5 cannot
+      // reliably serialise a 2-3 item field on this tool, and the failure is
+      // independent of how the field is TYPED. As an array it flattened; as a
+      // newline string it still flattened. Either way exactly one of the two
+      // multi-item fields was emptied or omitted and its items spilled into
+      // invented sibling scalars:
+      //
+      //   item x175, ponder_item x47, prayer_prompt x20, string x15,
+      //   prayer_prompts_item x8, ponder_2 x8, ponder_3 x5,
+      //   prayer_prompt_2 x5, p2 x2, question x1 ...
+      //
+      // thought and illustration - single-value strings - were NEVER hit.
+      // Not truncation (max 903 output tokens against a 2048 cap on the
+      // identical synchronous path) and not batching (single-request batches
+      // failed too; the synchronous pool path failed harder, 25.2% vs 16.2%).
+      //
+      // So: give the model the shape it keeps reaching for. Fixed scalar
+      // slots. Nothing to flatten, no overflow key to invent, and `required`
+      // on slot 2 forces the field that used to go missing entirely - the
+      // half no salvage pass could ever recover. parsePayload reassembles
+      // string[], so every consumer downstream is unchanged.
+      ponder_1: {
         type: "string",
-        description:
-          "2-3 questions to sit with, ONE PER LINE, separated by newlines. " +
-          "Plain sentences — no numbering, bullets, JSON or quotes.",
+        description: "First question to sit with. One question, plain sentence, no numbering or quotes.",
       },
-      prayer_prompts: {
+      ponder_2: {
         type: "string",
-        description:
-          "2-3 short prayer directions, ONE PER LINE, separated by newlines. " +
-          "Plain sentences — no numbering, bullets, JSON or quotes.",
+        description: "Second question to sit with, different in angle from the first. One question, plain sentence.",
+      },
+      ponder_3: {
+        type: "string",
+        description: "OPTIONAL third question. Omit this property entirely rather than repeating or padding.",
+      },
+      prayer_1: {
+        type: "string",
+        description: "First short prayer direction. One direction, plain sentence, no numbering or quotes.",
+      },
+      prayer_2: {
+        type: "string",
+        description: "Second short prayer direction. One direction, plain sentence.",
+      },
+      prayer_3: {
+        type: "string",
+        description: "OPTIONAL third prayer direction. Omit this property entirely rather than padding.",
       },
       cross_refs: {
         type: "array", minItems: 0, maxItems: 3,
@@ -442,6 +616,29 @@ const DEVOTIONAL_TOOL = {
     },
   },
 };
+
+/**
+ * The tool for one call. `quote_id` exists ONLY when a slate was offered, and
+ * its enum is exactly that slate — so the model cannot return an id we did
+ * not hand it, and cannot return one at all on the 4-in-5 entries that were
+ * not rolled for a quote.
+ *
+ * A single scalar string is the shape the schema handles reliably; the
+ * flattening pathology documented above only ever hit multi-item fields.
+ */
+function devotionalTool(quoteIds?: string[]) {
+  if (!quoteIds?.length) return DEVOTIONAL_TOOL;
+  const tool = structuredClone(DEVOTIONAL_TOOL) as typeof DEVOTIONAL_TOOL & {
+    input_schema: { properties: Record<string, unknown> };
+  };
+  tool.input_schema.properties.quote_id = {
+    type: "string",
+    enum: quoteIds,
+    description:
+      "OPTIONAL. The id of the one offered quote that genuinely fits this entry. Omit entirely if none does. Never reproduce the quote text yourself.",
+  };
+  return tool;
+}
 
 // ---------------------------------------------------------------- helpers
 
@@ -495,11 +692,12 @@ async function callClaude(
   messages: unknown[],
   model: string,
   ledger?: { db: SupabaseClient; kind: string; userId?: string | null; detail?: Record<string, unknown> },
+  tool?: unknown,
 ): Promise<Record<string, unknown>> {
   let lastErr = "";
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      return await callClaudeOnce(messages, model, ledger);
+      return await callClaudeOnce(messages, model, ledger, tool);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       lastErr = msg;
@@ -517,6 +715,7 @@ async function callClaudeOnce(
   messages: unknown[],
   model: string,
   ledger?: { db: SupabaseClient; kind: string; userId?: string | null; detail?: Record<string, unknown> },
+  tool?: unknown,
 ): Promise<Record<string, unknown>> {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -545,7 +744,7 @@ async function callClaudeOnce(
           cache_control: { type: "ephemeral" },
         },
       ],
-      tools: [DEVOTIONAL_TOOL],
+      tools: [tool ?? DEVOTIONAL_TOOL],
       tool_choice: { type: "tool", name: "record_devotional" },
       messages,
     }),
@@ -600,7 +799,15 @@ const MIN_ILLUSTRATION_CHARS = 100;
 // question into a prayer direction because the slots happened to line up is
 // worse than no entry.
 const ARRAY_FIELDS: readonly string[] = ["ponder", "prayer_prompts"];
-const SCHEMA_KEYS = new Set(Object.keys(DEVOTIONAL_TOOL.input_schema.properties));
+// quote_id is appended explicitly: it lives on the per-call tool variant
+// (devotionalTool), not on the static DEVOTIONAL_TOOL, so Object.keys misses
+// it. Without it here a quote_id arriving mid-payload would fail to close an
+// open salvage anchor, and scrap keys after it would be absorbed into the
+// wrong field.
+const SCHEMA_KEYS = new Set([
+  ...Object.keys(DEVOTIONAL_TOOL.input_schema.properties),
+  "quote_id",
+]);
 /** Keys Haiku has been observed inventing for the overflow items. */
 const SCRAP_KEY = /^(items?|strings?|values?|prayer_prompts?|.+_items?)$/;
 
@@ -680,6 +887,26 @@ function hasMarkup(value: unknown): boolean {
   return MARKUP.test(JSON.stringify(value ?? ""));
 }
 
+// The model intermittently writes the chapter — or the whole reference — into
+// verse.book ("1 John 5", "1 Corinthians 6:19-20"). displayRef then renders it
+// faithfully as "1 John 5 5:4-5", resolve_verse_ref matches book on exact
+// name/alias, nothing resolves, and the writing is discarded. Measured across
+// the 487 logged occurrences (pool_verse_resolution 26 Aug - 9 Sep 2026, plus
+// verse_unresolved from 16 Sep): 454 carried the chapter, 30 the whole ref.
+// Checked against all 66 rows of bible_books: no name or alias ends in a digit,
+// so a trailing numeric fragment is never part of a real book name. Only strip
+// when the fragment's chapter AGREES with the chapter field — when they
+// disagree the payload is genuinely confused ("Psalm 138" with chapter 1) and
+// stripping would serve the wrong passage, which is exactly the failure the
+// curated-verse fallback was removed to prevent. Those 10 stay failures.
+const BOOK_TAIL = /\s+(\d+)(?::\d+(?:\s*-\s*\d+)?)?\s*$/;
+
+function cleanBookName(raw: string, chapter: number): string {
+  const m = raw.match(BOOK_TAIL);
+  if (!m || Number(m[1]) !== chapter) return raw;
+  return raw.slice(0, m.index).trim() || raw;
+}
+
 // defensive extraction of the model payload
 function parsePayload(rawIn: Record<string, unknown>) {
   // Reassemble before validating. strArr below still absorbs a lone string,
@@ -691,8 +918,8 @@ function parsePayload(rawIn: Record<string, unknown>) {
     scrubMarkup(rawIn) as Record<string, unknown>,
   );
   const v = raw.verse as Record<string, unknown> | undefined;
-  const book = String(v?.book ?? "").trim();
   const chapter = Number(v?.chapter);
+  const book = cleanBookName(String(v?.book ?? "").trim(), chapter);
   const verse_start = Number(v?.verse_start);
   let verse_end = Number(v?.verse_end);
   if (!Number.isInteger(verse_end) || verse_end < verse_start) verse_end = verse_start;
@@ -727,8 +954,22 @@ function parsePayload(rawIn: Record<string, unknown>) {
   // normal output-token counts (506-638 against a 2048 cap), so nothing here
   // is truncation — see the array-field note on DEVOTIONAL_TOOL for what it
   // actually was.
-  const ponder = strArr(raw.ponder, 1, 3);
-  const prayer_prompts = strArr(raw.prayer_prompts, 1, 3);
+  // Slots first (current schema), legacy string/array second. The legacy path
+  // MUST stay: batches submitted under the old schema are collected up to 24h
+  // after this deploys, and entry_pool holds rows written under all three
+  // shapes (array, newline string, slots).
+  const slots = (keys: string[]): string[] | null => {
+    const arr = keys
+      .map((k) => raw[k])
+      .filter((x) => typeof x === "string")
+      .flatMap((x) => String(x).split("\n"))
+      .map((x) => x.replace(/^\s*(?:[-*\u2022\u2013]|\d+[.)])\s+/, "").trim())
+      .filter(Boolean);
+    return arr.length ? arr.slice(0, 3) : null;
+  };
+  const ponder = slots(["ponder_1", "ponder_2", "ponder_3"]) ?? strArr(raw.ponder, 1, 3);
+  const prayer_prompts = slots(["prayer_1", "prayer_2", "prayer_3"]) ??
+    strArr(raw.prayer_prompts, 1, 3);
 
   if (!book || !Number.isInteger(chapter) || !Number.isInteger(verse_start)) {
     throw new Error(
@@ -746,14 +987,18 @@ function parsePayload(rawIn: Record<string, unknown>) {
   if (illustration.length < MIN_ILLUSTRATION_CHARS) {
     contentProblems.push(`illustration ${illustration.length} chars (min ${MIN_ILLUSTRATION_CHARS})`);
   }
+  const describe = (k: string) => {
+    const x = raw[k];
+    return `${k} ${Array.isArray(x) ? `${(x as unknown[]).length} items` : typeof x}`;
+  };
   if (!ponder) {
     contentProblems.push(
-      `ponder ${Array.isArray(raw.ponder) ? `${(raw.ponder as unknown[]).length} items` : typeof raw.ponder}`,
+      ["ponder_1", "ponder_2", "ponder_3", "ponder"].map(describe).join("/"),
     );
   }
   if (!prayer_prompts) {
     contentProblems.push(
-      `prayer_prompts ${Array.isArray(raw.prayer_prompts) ? `${(raw.prayer_prompts as unknown[]).length} items` : typeof raw.prayer_prompts}`,
+      ["prayer_1", "prayer_2", "prayer_3", "prayer_prompts"].map(describe).join("/"),
     );
   }
   if (contentProblems.length) {
@@ -773,7 +1018,11 @@ function parsePayload(rawIn: Record<string, unknown>) {
   }
   const cross_refs = parseCrossRefs(raw.cross_refs);
   const song = parseSong(raw.song);
-  return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts, cross_refs, song, markup_stripped };
+  // Carried raw and unvalidated on purpose: resolveQuote is the only thing
+  // that decides whether this becomes a quote, and it rejects anything it
+  // does not recognise. Nothing here can fail an entry.
+  const quote_id = typeof raw.quote_id === "string" ? raw.quote_id.trim() : null;
+  return { book, chapter, verse_start, verse_end, thought, illustration, ponder, prayer_prompts, cross_refs, song, quote_id, markup_stripped };
 }
 
 /**
@@ -940,8 +1189,8 @@ function parseCrossRefs(x: unknown): CrossRefInput[] {
   for (const item of x.slice(0, 3)) {
     if (!item || typeof item !== "object") continue;
     const r = item as Record<string, unknown>;
-    const book = String(r.book ?? "").trim();
     const chapter = Number(r.chapter);
+    const book = cleanBookName(String(r.book ?? "").trim(), chapter);
     const verse_start = Number(r.verse_start);
     let verse_end = Number(r.verse_end);
     if (!book || !Number.isInteger(chapter) || !Number.isInteger(verse_start)) continue;
@@ -1001,7 +1250,7 @@ async function validateCrossRefs(
 // --------------------------------------------------------- prompt builder
 
 // deno-lint-ignore no-explicit-any
-function buildUserPrompt(topic: any, recent: any[], usedRefs: string[], notes: any[], entryType: string, blockedRecent: string[], usedSongs: string[]) {
+function buildUserPrompt(topic: any, recent: any[], usedRefs: string[], notes: any[], entryType: string, blockedRecent: string[], usedSongs: string[], quotes: QuoteCandidate[] = []) {
   const recentBlock = recent.length
     ? recent.map((e) =>
         `- ${e.date} [${e.entry_type}] ${e.verse_ref}: ${String(e.thought).slice(0, 160)}...`,
@@ -1045,7 +1294,7 @@ ${songBlock}
 
 RECENT USER NOTES (their own reflections — weave awareness of these in gently, without quoting them back verbatim. Dates order these lines only; do not date, count or measure anything back to them):
 ${notesBlock}
-
+${quoteBlock(quotes)}
 Write today's ${entryType} entry now, for today alone — say nothing about how long they have been on this thread (see guardrail 10). Choose the passage first, ensuring its full context genuinely supports your use of it, then write the entry around it. Call record_devotional exactly once.`;
 }
 
@@ -1071,6 +1320,15 @@ interface EntryContext {
   messages: unknown[];
   /** Verse references the model must not choose. */
   blocked: string[];
+  /**
+   * Quote ids offered to the model, or empty when the roll said no.
+   *
+   * Must live on the context, not be re-derived: the batch path builds the
+   * tool at SUBMIT time and the prompt already names these ids, so a slate
+   * regenerated hours later at collect time would not match what the model
+   * was shown. Empty means the tool carries no quote_id property at all.
+   */
+  quoteIds: string[];
 }
 
 /** Gather everything needed to ask for one entry. Null when it already exists. */
@@ -1139,7 +1397,29 @@ async function buildContext(
     ? [...blockedRecent, seedRef as string]
     : blockedRecent;
 
-  const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedForPrompt, usedSongs);
+  // Quote roll — server-side, before the model is asked anything. On the
+  // live path the thread's own title and description are already in the
+  // prompt, so the model chooses against the reader's actual words rather
+  // than a theme bucket; the slate only narrows what it may choose from.
+  //
+  // The thread's theme comes from topic_themes when it has one. Threads
+  // below the pool confidence floor have no theme row at all, and those are
+  // exactly the idiosyncratic ones — they get a general slate, which is why
+  // the untagged top-up exists.
+  let quotes: QuoteCandidate[] = [];
+  if (rollForQuote()) {
+    const { data: themeRow } = await db.from("topic_themes")
+      .select("theme_id").eq("topic_id", topicId).maybeSingle();
+    const { data: quotedRows } = await db.from("daily_entries")
+      .select("quote").eq("topic_id", topicId).not("quote", "is", null);
+    const usedQuoteIds = [...new Set(
+      // deno-lint-ignore no-explicit-any
+      (quotedRows ?? []).map((r: any) => r.quote?.id).filter(Boolean) as string[],
+    )];
+    quotes = await quoteSlate(db, themeRow?.theme_id ?? null, usedQuoteIds);
+  }
+
+  const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedForPrompt, usedSongs, quotes);
 
   return {
     topicId,
@@ -1148,6 +1428,7 @@ async function buildContext(
     entryType,
     messages: [{ role: "user", content: userPrompt }],
     blocked: [...new Set([...usedRefs, ...blockedForPrompt])],
+    quoteIds: quotes.map((q) => q.id),
   };
 }
 
@@ -1246,6 +1527,21 @@ async function finalizeEntry(
     }
   } catch { /* a song is decoration; an entry without one is still an entry */ }
 
+  // Public-domain quote — resolved server-side from the id the model
+  // returned. Resolution is the only gate: an id we never offered, a retired
+  // quote or an inactive voice all yield null and the entry ships without
+  // one. Never allowed to fail the entry.
+  let quote: Quote | null = null;
+  try {
+    quote = await resolveQuote(db, p.quote_id);
+    if (p.quote_id && !quote) {
+      await db.from("generation_failures").insert({
+        topic_id: topicId, user_id: userId, date, stage: "quote_dropped",
+        detail: { asked: p.quote_id, model: modelUsed, offered: ctx.quoteIds.length },
+      });
+    }
+  } catch { /* a quote is decoration; an entry without one is still an entry */ }
+
   const { error: insErr } = await db.from("daily_entries").insert({
     topic_id: topicId,
     user_id: userId,
@@ -1264,6 +1560,7 @@ async function finalizeEntry(
     fallback_used: fallbackUsed,
     cross_refs: crossRefs,
     song,
+    quote,
     verse_question: await writeVerseQuestion(
       db, mainRef, verseText, entryType, MODEL_AFFIRMING,
       { topic_id: topicId, path: "live" },
@@ -1322,7 +1619,7 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
       const raw = await callClaude(messages, modelUsed, {
         db, kind: "entry", userId: ctx.userId,
         detail: { topic_id: ctx.topicId, date: ctx.date, attempt, path: "sync" },
-      });
+      }, devotionalTool(ctx.quoteIds));
       payload = parsePayload(raw);
       const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
       if (isUsed(ref)) throw new Error(`Reference ${ref} is on the do-not-use list`);
@@ -1407,6 +1704,7 @@ function poolPrompt(
   entryType: string,
   dayIndex: number,
   avoidRefs: string[],
+  quotes: QuoteCandidate[] = [],
 ): string {
   return `THEME: ${theme.title}
 WHAT SOMEONE ON THIS THREAD IS SITTING WITH: ${theme.description}
@@ -1424,6 +1722,7 @@ POSTURE FOR THIS ENTRY: ${
 DO NOT USE any of these verse references (already in the library for this theme):
 ${avoidRefs.length ? avoidRefs.join("; ") : "(none)"}
 
+${quoteBlock(quotes)}
 IMPORTANT — this entry will be read by someone whose own words you have not seen. Write for the theme itself, honestly and concretely, but do NOT invent specifics about their circumstances (no assumed spouse, job, diagnosis, city, or age) and do not address them as though you know facts about them. Second person is fine; assumed biography is not.
 
 Write this ${entryType} entry now. Choose the passage first, ensuring its full context genuinely supports your use of it, then write the entry around it. Call record_devotional exactly once.`;
@@ -1495,12 +1794,27 @@ async function buildPool(
     // Spread day_index across a year rather than clustering at 0.
     const dayIndex = (( (existing?.length ?? 0) * 37) % 365);
 
+    // Quote roll — server-side, before the call. Candidates reach the prompt
+    // only when the roll says yes. Already-used ids for this theme are
+    // excluded up front so the library does not circle the same few lines.
+    let quotes: QuoteCandidate[] = [];
+    if (rollForQuote()) {
+      const { data: usedQuoteRows } = await db.from("entry_pool")
+        .select("quote").eq("theme_id", slot.theme.id).not("quote", "is", null);
+      const usedQuoteIds = [...new Set(
+        // deno-lint-ignore no-explicit-any
+        (usedQuoteRows ?? []).map((r: any) => r.quote?.id).filter(Boolean) as string[],
+      )];
+      quotes = await quoteSlate(db, slot.theme.id, usedQuoteIds);
+    }
+
     const model = modelFor(slot.entryType, 1);
     try {
       const raw = await callClaude(
-        [{ role: "user", content: poolPrompt(slot.theme, slot.entryType, dayIndex, avoid) }],
+        [{ role: "user", content: poolPrompt(slot.theme, slot.entryType, dayIndex, avoid, quotes) }],
         model,
         { db, kind: "pool_build", detail: { theme: slot.theme.slug, entry_type: slot.entryType } },
+        devotionalTool(quotes.map((q) => q.id)),
       );
       const payload = parsePayload(raw);
 
@@ -1519,6 +1833,17 @@ async function buildPool(
         continue;
       }
 
+      // Resolve the id against voice_quotes. An id we did not offer, a
+      // retired quote or an inactive voice all yield null, and the entry
+      // simply ships without a quote — never a failure.
+      const quote = quotes.length ? await resolveQuote(db, payload.quote_id) : null;
+      if (payload.quote_id && !quote) {
+        await db.from("generation_failures").insert({
+          stage: "quote_dropped",
+          detail: { theme: slot.theme.slug, asked: payload.quote_id, model, offered: quotes.length },
+        });
+      }
+
       const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
       const { error } = await db.from("entry_pool").insert({
         theme_id: slot.theme.id,
@@ -1534,6 +1859,7 @@ async function buildPool(
         illustration: payload.illustration,
         ponder: payload.ponder,
         prayer_prompts: payload.prayer_prompts,
+        quote,
         // Same second pass as the live path. Miss this and every pooled entry
         // silently lands with a null anchored question, so the feature looks
         // broken for exactly the users who never hit live generation.
@@ -1587,14 +1913,14 @@ function anthropicHeaders() {
 }
 
 /** Request body for one entry, matching the synchronous callClaude shape. */
-function batchParams(messages: unknown[], model: string) {
+function batchParams(messages: unknown[], model: string, tool?: unknown) {
   return {
     model,
     max_tokens: 2048,
     system: [
       { type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } },
     ],
-    tools: [DEVOTIONAL_TOOL],
+    tools: [tool ?? DEVOTIONAL_TOOL],
     tool_choice: { type: "tool", name: "record_devotional" },
     messages,
   };
@@ -1644,7 +1970,7 @@ async function submitBatch(
     const customId = `${ctx.topicId}_${ctx.date}`;
     requests.push({
       custom_id: customId,
-      params: batchParams(ctx.messages, modelFor(ctx.entryType, 1)),
+      params: batchParams(ctx.messages, modelFor(ctx.entryType, 1), devotionalTool(ctx.quoteIds)),
     });
     items.push({
       custom_id: customId,
@@ -1656,7 +1982,11 @@ async function submitBatch(
       // collect time. Re-deriving it later would be subtly wrong: an
       // on-demand entry created in between would change the answer and could
       // reject a passage the model was legitimately told it could use.
-      detail: { blocked: ctx.blocked },
+      //
+      // quote_ids rides along for the same reason: the slate the model was
+      // actually shown is a submit-time fact, and a fresh roll at collect
+      // time would report a different one in the quote_dropped log.
+      detail: { blocked: ctx.blocked, quote_ids: ctx.quoteIds },
     });
   }
 
@@ -1817,6 +2147,9 @@ async function collectBatches(db: SupabaseClient) {
         entryType: item.entry_type as string,
         messages: [],
         blocked: ((item.detail as { blocked?: string[] })?.blocked) ?? [],
+        // Absent on items submitted before this shipped — an empty slate is
+        // the correct reading of those: they were never offered a quote.
+        quoteIds: ((item.detail as { quote_ids?: string[] })?.quote_ids) ?? [],
       };
 
       const result = results.get(item.custom_id as string);
@@ -1864,7 +2197,7 @@ async function collectBatches(db: SupabaseClient) {
             await callClaude(repaired.messages, modelUsed, {
               db, kind: "entry", userId: ctx.userId,
               detail: { topic_id: ctx.topicId, date: ctx.date, path: "batch_repair" },
-            }),
+            }, devotionalTool(repaired.quoteIds)),
           );
           ctx.blocked = repaired.blocked;
         } catch (e) {

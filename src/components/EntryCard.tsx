@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ContentLevel, DailyEntry, Note, Song, Translation } from "../lib/types";
+import type { ContentLevel, DailyEntry, Note, Quote, Song, Translation } from "../lib/types";
 import { useContentLevel } from "../lib/contentLevel";
 import {
   DEFAULT_TRANSLATION,
@@ -88,6 +88,11 @@ export default function EntryCard({
   const shown: ContentLevel = expanded ? 3 : level;
   const challenge = entry.entry_type === "challenge";
   const showSong = shown >= 3 && !!entry.song;
+  // Level 2 — it lives at the foot of the Thought section, so it folds with
+  // the thought rather than with illustration/prayer/song. A reader on Fuller
+  // therefore gets the quote before the illustration; that is deliberate, the
+  // quote reads as the closing beat of the thought rather than as an extra.
+  const showQuote = shown >= 2 && !!entry.quote;
 
   return (
     <article className="animate-rise">
@@ -126,6 +131,7 @@ export default function EntryCard({
             Thought
           </h2>
           <p className="text-[17px] leading-relaxed">{entry.thought}</p>
+          {showQuote && <QuoteBlock quote={entry.quote!} />}
         </section>
       )}
 
@@ -357,6 +363,35 @@ function MoreToggle({
  * which does NOT reliably honour universal links — the user would get the
  * web player in a sheet rather than their own Spotify.
  */
+/**
+ * A real line from a public-domain author, closing the Thought section.
+ *
+ * No heading and no card, deliberately. The card treatment put it beside the
+ * ponder and prayer boxes and it read as a third one; a rule plus the
+ * attribution is enough to mark it as someone else speaking. It is the only
+ * element on the card with a named human author, so the attribution is the
+ * signal and does not need a border to carry it.
+ *
+ * Rendered verbatim. The text was copied from voice_quotes server-side and the
+ * model never wrote it, so nothing here may trim, ellipsise or re-wrap it —
+ * this is attributed to a named real person.
+ */
+function QuoteBlock({ quote }: { quote: Quote }) {
+  return (
+    <figure className="mt-5 border-t border-hairline pt-4">
+      <blockquote className="text-[16px] leading-relaxed text-ink/90 [font-style:italic]">
+        {quote.text}
+      </blockquote>
+      <figcaption className="mt-2 text-[13px] text-muted">
+        {quote.author}
+        {", "}
+        <cite className="not-italic">{quote.work}</cite>
+        {quote.year ? ` (${quote.year})` : ""}
+      </figcaption>
+    </figure>
+  );
+}
+
 function SongRow({ song }: { song: Song }) {
   return (
     <section className="mt-8">

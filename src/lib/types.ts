@@ -139,7 +139,28 @@ export interface DailyEntry {
    * shipped, so the UI must treat absence as normal.
    */
   song?: Song | null;
+  /**
+   * A verbatim public-domain quote, or null. Every field was copied from
+   * voice_quotes/voices server-side — the model only ever returned an id, so
+   * nothing here is model-written text. Null on roughly 4 entries in 5 by
+   * design, and on every entry generated before this shipped, so the UI must
+   * treat absence as ordinary rather than as an error.
+   */
+  quote?: Quote | null;
   created_at: string;
+}
+
+/**
+ * A public-domain author quote. Reproduced exactly as published; never edit,
+ * trim or re-wrap the text in the UI. `work_year` may be absent on a future
+ * source that has no clean publication year.
+ */
+export interface Quote {
+  id: string;
+  text: string;
+  author: string;
+  work: string;
+  year?: number | null;
 }
 
 /** The anchored opening question. `phrase` verified server-side. */
