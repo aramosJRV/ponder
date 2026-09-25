@@ -20,9 +20,17 @@ import type {
   Topic,
   Translation,
 } from "./types";
+import { systemFontScale } from "./nativeTextZoom";
+import {
+  DEFAULT_TEXT_SCALE,
+  markTextScaleSeeded,
+  nearestRung,
+  setTextScale,
+  textScaleSeeded,
+} from "./textScale";
 
 const PROFILE_COLS =
-  "id, timezone, notification_hour, challenge_frequency, content_level, translation";
+  "id, timezone, notification_hour, challenge_frequency, content_level, text_scale, translation";
 
 /**
  * Topic columns the client asks for.
@@ -63,6 +71,7 @@ export async function updateProfile(
       | "notification_hour"
       | "challenge_frequency"
       | "content_level"
+      | "text_scale"
       | "translation"
     >
   >,
@@ -87,6 +96,44 @@ export async function updateProfile(
  * set a timezone in Settings we never override it. Best-effort: failure here
  * must never block app start.
  */
+/**
+ * Seed text_scale from the device's own font-size setting, once per install.
+ *
+ * Android only (see lib/nativeTextZoom). Runs after the WebView pin, so the
+ * value read is the OS setting rather than anything we have changed. The
+ * seeded flag is written only on a successful save: until the text_scale
+ * migration is applied the update 400s, and we would rather retry next launch
+ * than mark an install seeded when nothing was stored.
+ *
+ * Best-effort throughout: failure here must never block app start.
+ */
+export async function ensureDeviceTextScale(): Promise<void> {
+  try {
+    if (textScaleSeeded()) return;
+
+    const multiplier = await systemFontScale();
+    if (multiplier === null) {
+      // iOS, web, or a build without the plugin. Nothing to seed from, and
+      // nothing will change on a later launch either.
+      markTextScaleSeeded();
+      return;
+    }
+
+    const rung = nearestRung(multiplier);
+    if (rung === DEFAULT_TEXT_SCALE) {
+      // Already where we would put them. Mark it done so this stops asking.
+      markTextScaleSeeded();
+      return;
+    }
+
+    await updateProfile({ text_scale: rung });
+    setTextScale(rung);
+    markTextScaleSeeded();
+  } catch {
+    /* leave unseeded; try again next launch */
+  }
+}
+
 export async function ensureDeviceTimezone(): Promise<void> {
   try {
     const tz = deviceTimezone();
@@ -125,7 +172,10 @@ export async function fetchActiveTopics(): Promise<Topic[]> {
     .from("topics")
     .select(TOPIC_COLS)
     .eq("status", "active")
-    .order("focus", { ascending: false })
+    // Ordered by age only. `focus` is no longer settable anywhere in the app —
+    // the daily reminder rotates instead (see lib/notifications) — so ordering
+    // by it would just make list order depend on whatever a pre-rotation build
+    // happened to leave in the column.
     .order("created_at", { ascending: true });
   if (error) throw error;
   return data as Topic[];
@@ -188,12 +238,11 @@ export async function fetchAllTopics(): Promise<Topic[]> {
     .order("status", { ascending: true }) // active < concluded < paused alphabetically? no — see sort below
     .order("created_at", { ascending: true });
   if (error) throw error;
-  // stable app-level ordering: active (focus first), paused, concluded
+  // stable app-level ordering: active, paused, concluded — then oldest first
   const rank = { active: 0, paused: 1, concluded: 2 } as const;
   return (data as Topic[]).sort(
     (a, b) =>
       rank[a.status] - rank[b.status] ||
-      Number(b.focus) - Number(a.focus) ||
       a.created_at.localeCompare(b.created_at),
   );
 }
@@ -282,7 +331,6 @@ export async function fetchPassageContext(
 export async function createTopic(input: {
   title: string;
   description: string;
-  focus: boolean;
   /** Optional seed passage. Coordinates only — ref/text are derived server-side. */
   seed?: Pick<
     ResolvedVerseRef,
@@ -292,7 +340,6 @@ export async function createTopic(input: {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id;
   if (!userId) throw new Error("Not signed in");
-  if (input.focus) await clearFocus();
   const { seed, ...fields } = input;
   const { data, error } = await supabase
     .from("topics")
@@ -339,28 +386,13 @@ function asThreadLimitError(error: { message?: string; code?: string }): Error {
   return error as Error;
 }
 
-async function clearFocus(): Promise<void> {
-  const { error } = await supabase
-    .from("topics")
-    .update({ focus: false })
-    .eq("focus", true);
-  if (error) throw error;
-}
-
-export async function setFocusTopic(topicId: string): Promise<void> {
-  await clearFocus();
-  const { error } = await supabase
-    .from("topics")
-    .update({ focus: true })
-    .eq("id", topicId);
-  if (error) throw error;
-}
-
-/** Clear the focus topic entirely — the daily notification then rotates among
- * active topics. */
-export async function clearFocusTopic(): Promise<void> {
-  await clearFocus();
-}
+/*
+ * setFocusTopic / clearFocusTopic / clearFocus were removed when the daily
+ * reminder moved to rotation. The topics.focus column is deliberately left in
+ * the schema: dropping it is a migration that older installed builds still
+ * read through TOPIC_COLS, and a column that no longer exists breaks them.
+ * Nothing writes it any more, and nothing reads it for behaviour.
+ */
 
 export async function setTopicStatus(
   topicId: string,

@@ -45,7 +45,7 @@ export default function NoteComposer({ entry, notes, onAdded, offline }: Props) 
         <ul className="mb-4 space-y-3">
           {notes.map((n) => (
             <li key={n.id} className="rounded-xl bg-moss-soft px-4 py-3">
-              <p className="whitespace-pre-wrap text-[15px] leading-relaxed">{n.body}</p>
+              <p className="whitespace-pre-wrap text-base leading-relaxed">{n.body}</p>
               <p className="mt-1.5 text-xs text-muted">
                 {new Date(n.created_at).toLocaleTimeString("en-AU", {
                   hour: "numeric",
@@ -67,7 +67,7 @@ export default function NoteComposer({ entry, notes, onAdded, offline }: Props) 
             : "Anything that belongs to the whole of today rather than to one question"
         }
         disabled={offline}
-        className="w-full resize-none rounded-xl border border-hairline bg-surface px-4 py-3 text-[15px] leading-relaxed outline-none focus:border-moss disabled:opacity-60"
+        className="w-full resize-none rounded-xl border border-hairline bg-surface px-4 py-3 text-base leading-relaxed outline-none focus:border-moss disabled:opacity-60"
       />
       <div className="mt-2 flex items-center justify-between">
         {error ? <p className="text-sm text-rust">{error}</p> : <span />}

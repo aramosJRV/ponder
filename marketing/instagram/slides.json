@@ -1,0 +1,260 @@
+{
+  "carousel_c1": [
+    {
+      "kind": "cover",
+      "label": "Discernment",
+      "title": "5 questions to ask before you decide <em>God told you</em> something",
+      "foot": "Save this one →"
+    },
+    {
+      "kind": "q",
+      "n": "01",
+      "q": "Does it contradict scripture?",
+      "a": "If yes, stop. That settles it, and nothing else on this list matters."
+    },
+    {
+      "kind": "q",
+      "n": "02",
+      "q": "Would I want this to be God’s voice?",
+      "a": "Wanting it doesn’t make it false. It does mean you need more than your own certainty."
+    },
+    {
+      "kind": "q",
+      "n": "03",
+      "q": "Who else has confirmed it?",
+      "a": "People who know you and will tell you the truth. Not people who’ll agree."
+    },
+    {
+      "kind": "q",
+      "n": "04",
+      "q": "What does waiting cost?",
+      "a": "If the honest answer is nothing, wait."
+    },
+    {
+      "kind": "q",
+      "n": "05",
+      "q": "Am I asking for direction, or for permission?",
+      "a": "You already know which one this is."
+    },
+    {
+      "kind": "cta",
+      "kicker": "Discernment is slow on purpose.",
+      "title": "A devotional that asks <em>harder</em> questions.",
+      "foot": "Ponder · free on iOS &amp; Android<br><span class=\"url\">ponder-devotion.com</span>"
+    }
+  ],
+  "singles": [
+    {
+      "file": "S1",
+      "kind": "quote",
+      "label": "Ponder",
+      "quote": "A devotional that asks <em>harder</em> questions.",
+      "foot": "ponder-devotion.com"
+    },
+    {
+      "file": "S2",
+      "kind": "quote",
+      "label": "On holding several threads",
+      "quote": "God rarely works on one thing at a time.<br>Neither does life.",
+      "foot": "ponder-devotion.com"
+    },
+    {
+      "file": "S3",
+      "kind": "quote",
+      "label": "A question to sit with",
+      "quote": "Am I asking for direction,<br>or for <em>permission</em>?",
+      "foot": "ponder-devotion.com"
+    },
+    {
+      "file": "S4",
+      "kind": "quote",
+      "label": "On discernment",
+      "quote": "Discernment is slow<br>on purpose.",
+      "foot": "ponder-devotion.com"
+    }
+  ],
+  "carousel_c2": [
+    {
+      "kind": "cover",
+      "label": "Prayer journalling",
+      "title": "How to keep a prayer journal you’ll <em>actually re-read</em>",
+      "foot": "Save this one →"
+    },
+    {
+      "kind": "q",
+      "n": "01",
+      "q": "One thread per thing you’re carrying.",
+      "a": "Not one notebook for everything. Several threads running at once — because life isn’t one subject at a time.",
+      "lab": "Step 01"
+    },
+    {
+      "kind": "q",
+      "n": "02",
+      "q": "Anchor every entry to a passage.",
+      "a": "Feelings without scripture attached won’t mean much to you in six months.",
+      "lab": "Step 02"
+    },
+    {
+      "kind": "q",
+      "n": "03",
+      "q": "Write the question, not the conclusion.",
+      "a": "Conclusions go stale. Questions don’t.",
+      "lab": "Step 03"
+    },
+    {
+      "kind": "q",
+      "n": "04",
+      "q": "Date everything.",
+      "a": "The pattern only shows up when you can see the order it arrived in.",
+      "lab": "Step 04"
+    },
+    {
+      "kind": "q",
+      "n": "05",
+      "q": "Re-read monthly.",
+      "a": "This is the step everyone skips. It is also the only one that matters.",
+      "lab": "Step 05"
+    },
+    {
+      "kind": "cta",
+      "kicker": "The writing is easy. The re-reading is the work.",
+      "title": "Ponder does all five <em>by default</em>.",
+      "foot": "Free on iOS &amp; Android<br><span class=\"url\">ponder-devotion.com</span>"
+    }
+  ],
+  "carousel_c3": [
+    {
+      "kind": "cover",
+      "label": "Scripture",
+      "title": "6 passages for when you can’t tell if it’s <em>God or you</em>",
+      "foot": "Save this one →"
+    },
+    {
+      "kind": "verse",
+      "ref": "1 Kings 19:11–12",
+      "text": "“…and after the fire a still small voice.”",
+      "note": "Not in the wind. Not in the earthquake."
+    },
+    {
+      "kind": "verse",
+      "ref": "Proverbs 3:5",
+      "text": "“Don’t lean on your own understanding.”",
+      "note": "Including your understanding of what you’re hearing."
+    },
+    {
+      "kind": "verse",
+      "ref": "Psalm 139:23",
+      "text": "“Search me, God, and know my heart.”",
+      "note": "An invitation, not a conclusion."
+    },
+    {
+      "kind": "verse",
+      "ref": "James 1:5",
+      "text": "“If any of you lacks wisdom, let him ask of God.”",
+      "note": "Asking is permitted. Assuming isn’t."
+    },
+    {
+      "kind": "verse",
+      "ref": "Jeremiah 17:9",
+      "text": "“The heart is deceitful above all things.”",
+      "note": "Read this one alongside the others — never instead of them."
+    },
+    {
+      "kind": "cta",
+      "kicker": "Sit with these.",
+      "title": "Daily scripture for the thread <em>you’re</em> carrying.",
+      "foot": "Ponder · free on iOS &amp; Android<br><span class=\"url\">ponder-devotion.com</span>"
+    }
+  ],
+  "carousel_c4": [
+    {
+      "kind": "cover",
+      "label": "How Ponder works",
+      "title": "Why a devotional should ask <em>hard questions</em>",
+      "foot": "Swipe →"
+    },
+    {
+      "kind": "q",
+      "n": "01",
+      "q": "Encouragement is easy to find.",
+      "a": "It is most of what this category offers, and there is nothing wrong with it. Some days it is exactly what you need.",
+      "lab": "How it works"
+    },
+    {
+      "kind": "q",
+      "n": "02",
+      "q": "But if every entry confirms you,",
+      "a": "you are not discerning. You are rehearsing something you already decided.",
+      "lab": "How it works"
+    },
+    {
+      "kind": "q",
+      "n": "03",
+      "q": "So one entry in four is a challenge entry.",
+      "a": "Clearly labelled, so you know the posture before you read a word of it.",
+      "lab": "How it works"
+    },
+    {
+      "kind": "q",
+      "n": "04",
+      "q": "It questions the framing.",
+      "a": "Or offers a counterpoint from scripture. Or asks something harder than you would ask yourself.",
+      "lab": "How it works"
+    },
+    {
+      "kind": "q",
+      "n": "05",
+      "q": "Pastoral, not harsh.",
+      "a": "Hard questions, asked gently. And you control how often they appear.",
+      "lab": "How it works"
+    },
+    {
+      "kind": "cta",
+      "kicker": "Discernment is slow on purpose.",
+      "title": "A devotional that asks <em>harder</em> questions.",
+      "foot": "Ponder · free on iOS &amp; Android<br><span class=\"url\">ponder-devotion.com</span>"
+    }
+  ],
+  "carousel_c0": [
+    {
+      "kind": "cover",
+      "label": "Ponder",
+      "title": "A daily devotional for the thread you’re <em>actually carrying</em>.",
+      "foot": "Swipe →"
+    },
+    {
+      "kind": "q",
+      "lab": "How it works",
+      "n": "",
+      "q": "Name it in your own words.",
+      "a": "“Trusting God with my business.” “Learning to be still.” Whatever it is you keep coming back to."
+    },
+    {
+      "kind": "q",
+      "lab": "How it works",
+      "n": "",
+      "q": "Scripture comes to it. Every day.",
+      "a": "A passage, a short reflection, an illustration to sit with, questions, and directions for prayer."
+    },
+    {
+      "kind": "q",
+      "lab": "How it works",
+      "n": "",
+      "q": "Keep notes. See the pattern.",
+      "a": "Every note collects into one journal for that thread — so months of scattered thoughts read as a single arc."
+    },
+    {
+      "kind": "q",
+      "lab": "How it works",
+      "n": "",
+      "q": "Hold several at once.",
+      "a": "God rarely works on one thing at a time. Neither does life."
+    },
+    {
+      "kind": "cta",
+      "kicker": "Made by one person, in Melbourne.",
+      "title": "Free. No subscription, no ads, <em>nothing locked</em>.",
+      "foot": "Ponder · on iOS &amp; Android<br><span class=\"url\">ponder-devotion.com</span>"
+    }
+  ]
+}

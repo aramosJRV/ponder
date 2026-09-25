@@ -155,20 +155,19 @@ export default function TopicDetail({ topicId, onBack }: Props) {
       <header className="mb-2 mt-2">
         <div className="flex items-start justify-between gap-3">
           <h1 className="font-display text-3xl font-medium leading-tight">
-            {topic.focus && <span className="mr-1.5 text-moss">●</span>}
             {topic.title}
           </h1>
           <StatusChip status={topic.status} />
         </div>
         {topic.description && (
-          <p className="mt-2 text-[15px] leading-relaxed text-muted">{topic.description}</p>
+          <p className="mt-2 text-base leading-relaxed text-muted">{topic.description}</p>
         )}
         {topic.seed_verse_ref && topic.seed_verse_text && (
           <blockquote className="mt-4 rounded-2xl border border-hairline bg-surface p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-moss">
               Where this began
             </p>
-            <p className="mt-2 text-[15px] italic leading-relaxed text-ink/85">
+            <p className="mt-2 text-base italic leading-relaxed text-ink/85">
               {topic.seed_verse_text}
             </p>
             <p className="mt-2 text-sm font-semibold text-muted">{topic.seed_verse_ref}</p>
@@ -208,14 +207,14 @@ export default function TopicDetail({ topicId, onBack }: Props) {
               <li key={e.id}>
                 <button
                   onClick={() => setOpenEntryId(e.id)}
-                  className="pressable w-full rounded-2xl border border-hairline bg-surface p-4 text-left"
+                  className="pressable block w-full overflow-hidden rounded-2xl border border-hairline bg-surface p-4 text-left"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-muted">
                       {formatLongDate(e.date)}
                     </span>
                     {challenge && (
-                      <span className="rounded-full bg-rust-soft px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-rust">
+                      <span className="rounded-full bg-rust-soft px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-rust">
                         challenge
                       </span>
                     )}
@@ -261,14 +260,14 @@ export default function TopicDetail({ topicId, onBack }: Props) {
                       {entry && <span className="ml-2 text-moss">{entry.verse_ref}</span>}
                     </p>
                     {asked && (
-                      <p className="mt-1.5 text-[13px] font-semibold leading-snug text-moss">
+                      <p className="mt-1.5 text-sm font-semibold leading-snug text-moss">
                         {asked.phrase && (
                           <span className="mr-1 italic">&ldquo;{asked.phrase}&rdquo; &mdash;</span>
                         )}
                         {asked.text}
                       </p>
                     )}
-                    <p className="mt-1.5 whitespace-pre-wrap text-[15px] leading-relaxed">
+                    <p className="mt-1.5 whitespace-pre-wrap text-base leading-relaxed">
                       {n.body}
                     </p>
                     <button
@@ -369,7 +368,7 @@ function NotesForEntry({ notes }: { notes: Note[] }) {
       <ul className="space-y-3">
         {notes.map((n) => (
           <li key={n.id} className="rounded-xl bg-moss-soft px-4 py-3">
-            <p className="whitespace-pre-wrap text-[15px] leading-relaxed">{n.body}</p>
+            <p className="whitespace-pre-wrap text-base leading-relaxed">{n.body}</p>
           </li>
         ))}
       </ul>

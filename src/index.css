@@ -6,6 +6,19 @@
 
 :root {
   color-scheme: light;
+
+  /* Text size multiplier. The single source of scale for every font size in
+     the app — tailwind.config.js expresses the whole type scale as
+     calc(<base>px * var(--font-scale)).
+
+     Settings is the only writer at runtime; it sets this on the root element
+     from profiles.text_scale (mirrored in localStorage, same pattern as
+     content_level). The ladder is 1 / 1.4 / 2.
+
+     Do NOT scale by changing the root font-size instead: Tailwind's spacing
+     utilities are rem-based, so that would resize padding, gaps and radii
+     along with the text and burst the fixed-height rows. */
+  --font-scale: 1;
 }
 
 html,

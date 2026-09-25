@@ -108,7 +108,33 @@ export type ReminderState =
   | { kind: "error"; message: string };
 
 /**
- * Re-read profile + focus topic + today's entry and (re)schedule the reminder.
+ * Which active thread today's reminder is about.
+ *
+ * Rotation, not a pin. Before this, the reminder took topics[0] from a list
+ * ordered `focus desc, created_at asc` — so with no focus thread set (the
+ * default, and now the only state) it was always the oldest active thread and
+ * the others never notified at all, despite Settings offering "Rotate among
+ * active threads".
+ *
+ * Keyed on the local calendar date so it is stable within a day: this runs
+ * again on every Settings save and Today sync, and the reminder must not hop
+ * to a different thread mid-morning. `date` is the "YYYY-MM-DD" from
+ * todayLocal(); parsing it as UTC is safe because only the difference between
+ * consecutive days matters, not the absolute instant.
+ *
+ * Order comes from fetchActiveTopics (oldest first), so the cycle is stable
+ * across launches. Creating or concluding a thread reshuffles which day lands
+ * on which thread — acceptable: every active thread still comes round.
+ */
+export function reminderTopicForDate(topics: Topic[], date: string): Topic | null {
+  if (topics.length === 0) return null;
+  const dayIndex = Math.floor(Date.parse(date + "T00:00:00Z") / 86_400_000);
+  if (!Number.isFinite(dayIndex)) return topics[0];
+  return topics[((dayIndex % topics.length) + topics.length) % topics.length];
+}
+
+/**
+ * Re-read profile + today's thread + today's entry and (re)schedule the reminder.
  * Self-contained so any screen can call it — Settings after a save, Today after
  * a sync. Cancels the reminder when there is nothing to remind about.
  * Best-effort: never throws.
@@ -121,8 +147,7 @@ export async function refreshDailyReminder(): Promise<ReminderState> {
     if (!granted) return { kind: "no-permission" };
 
     const [profile, topics] = await Promise.all([fetchProfile(), fetchActiveTopics()]);
-    // fetchActiveTopics orders focus first, so topics[0] is the notification topic.
-    const topic = topics[0] ?? null;
+    const topic = reminderTopicForDate(topics, todayLocal());
     if (!topic) {
       await notifier.cancelDaily();
       return { kind: "no-thread" };

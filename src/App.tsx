@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase, ensureSession } from "./lib/supabase";
-import { ensureDeviceTimezone, recordAppOpen } from "./lib/api";
+import { ensureDeviceTextScale, ensureDeviceTimezone, recordAppOpen } from "./lib/api";
 import { hasOnboarded, markOnboarded } from "./lib/onboarding";
 import { consumeSignedOutFlag } from "./lib/signOutFlag";
 import { startKeyboardTracking } from "./lib/keyboardInset";
@@ -76,6 +76,10 @@ export default function App() {
       setBoot("ready");
       // Adopt device timezone on first run — best-effort, don't block UI.
       void ensureDeviceTimezone();
+      // Same shape for text size: seed once from the Android system font
+      // scale. After the pin in main.tsx, --font-scale is the only multiplier
+      // in play, so this is the one chance to inherit what the OS was doing.
+      void ensureDeviceTextScale();
       // Feeds idle auto-pause. Fire-and-forget.
       void recordAppOpen();
     } catch (e) {

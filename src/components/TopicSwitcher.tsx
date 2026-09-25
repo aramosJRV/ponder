@@ -22,7 +22,6 @@ export default function TopicSwitcher({ topics, selectedId, onSelect }: Props) {
                 : "border-hairline bg-surface text-muted"
             }`}
           >
-            {t.focus && <span className="mr-1.5">●</span>}
             {t.title}
           </button>
         );

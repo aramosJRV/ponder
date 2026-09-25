@@ -25,7 +25,7 @@ export default function SynthesisCard({
           {kind === "conclusion" ? "Looking back" : "What's emerging"} · {when}
         </span>
         {latest && (
-          <span className="rounded-full bg-moss px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white">
+          <span className="rounded-full bg-moss px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-white">
             latest
           </span>
         )}
@@ -66,10 +66,10 @@ function SynthesisFootnotes({ synthesis }: { synthesis: Synthesis }) {
     <div className="mt-5 border-t border-hairline pt-3">
       {s && (
         <div className="mb-3">
-          <h3 className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-muted">
+          <h3 className="mb-1.5 text-xs font-bold uppercase tracking-[0.16em] text-muted">
             Sources
           </h3>
-          <ol className="space-y-1.5 text-[12.5px] leading-snug text-muted">
+          <ol className="space-y-1.5 text-sm leading-snug text-muted">
             <li className="flex gap-2">
               <span className="shrink-0 tabular-nums">1.</span>
               <span>
@@ -115,7 +115,7 @@ function Section({ title, items }: { title: string; items: string[] }) {
       <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-moss">{title}</h3>
       <ul className="mt-1.5 space-y-1.5">
         {items.map((it, i) => (
-          <li key={i} className="flex gap-2 text-[15px] leading-relaxed">
+          <li key={i} className="flex gap-2 text-base leading-relaxed">
             <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-ink/40" />
             <span>{it}</span>
           </li>

@@ -9,7 +9,7 @@ const STYLES: Record<TopicStatus, string> = {
 export default function StatusChip({ status }: { status: TopicStatus }) {
   return (
     <span
-      className={`rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider ${STYLES[status]}`}
+      className={`rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-wider ${STYLES[status]}`}
     >
       {status}
     </span>

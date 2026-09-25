@@ -5,7 +5,6 @@ import {
   fetchAllTopics,
   fetchTopicStats,
   parseVerseRef,
-  setFocusTopic,
   setTopicStatus,
   maxActiveThreadsForUser,
   type TopicStats,
@@ -152,7 +151,6 @@ export default function Topics({
               >
                 <div className="flex items-start justify-between gap-3">
                   <h2 className="font-display text-2xl font-medium leading-tight">
-                    {t.focus && <span className="mr-1.5 text-moss">●</span>}
                     {t.title}
                   </h2>
                   <StatusChip status={t.status} />
@@ -169,9 +167,6 @@ export default function Topics({
 
               {t.status !== "concluded" && (
                 <div className="mt-2 flex gap-2 px-1">
-                  {t.status === "active" && !t.focus && (
-                    <TopicAction label="Make focus" onClick={() => act(() => setFocusTopic(t.id))} />
-                  )}
                   {t.status === "active" ? (
                     <TopicAction label="Pause" onClick={() => act(() => setTopicStatus(t.id, "paused"))} />
                   ) : (
@@ -250,7 +245,6 @@ function CreateTopicSheet({
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [focus, setFocus] = useState(false);
   const [saving, setSaving] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
@@ -307,7 +301,6 @@ function CreateTopicSheet({
       const created = await createTopic({
         title: title.trim(),
         description: description.trim(),
-        focus,
         seed: seed
           ? {
               book_number: seed.book_number,
@@ -416,23 +409,11 @@ function CreateTopicSheet({
         {seedState === "ok" && seed && (
           <blockquote className="mt-2 rounded-xl border-l-2 border-moss bg-surface px-4 py-3">
             <p className="text-sm font-semibold text-moss">{seed.verse_ref}</p>
-            <p className="mt-1 text-[15px] italic leading-relaxed text-ink/85">
+            <p className="mt-1 text-base italic leading-relaxed text-ink/85">
               {seed.verse_text}
             </p>
           </blockquote>
         )}
-
-        <label className="mt-4 flex min-h-[44px] items-center gap-3">
-          <input
-            type="checkbox"
-            checked={focus}
-            onChange={(e) => setFocus(e.target.checked)}
-            className="h-5 w-5 accent-moss"
-          />
-          <span className="text-sm">
-            Make this the <span className="font-semibold">focus thread</span> (daily notification)
-          </span>
-        </label>
 
         {error && <p className="mt-3 text-sm text-rust">{error}</p>}
 
