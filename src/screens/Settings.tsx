@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  clearFocusTopic,
-  fetchActiveTopics,
   fetchProfile,
-  setFocusTopic,
   updateProfile,
 } from "../lib/api";
 import {
@@ -24,12 +21,18 @@ import {
   setContentLevel,
 } from "../lib/contentLevel";
 import {
+  DEFAULT_TEXT_SCALE,
+  TEXT_SCALES,
+  getTextScale,
+  setTextScale,
+} from "../lib/textScale";
+import {
   DEFAULT_TRANSLATION,
   TRANSLATIONS,
   getTranslation,
   setTranslation,
 } from "../lib/translations";
-import type { ContentLevel, Profile, Topic, Translation } from "../lib/types";
+import type { ContentLevel, Profile, TextScale, Translation } from "../lib/types";
 
 /** Settings auto-save. Long enough that dragging the slider is one write. */
 const SAVE_DEBOUNCE_MS = 700;
@@ -54,7 +57,6 @@ export default function Settings({
   onShowIntro?: () => void;
 } = {}) {
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -65,10 +67,10 @@ export default function Settings({
   // Seeded from localStorage so the control is right before the fetch lands;
   // the profile row overwrites it on load and is the source of truth.
   const [contentLevel, setLevel] = useState<ContentLevel>(getContentLevel);
+  const [textScale, setScale] = useState<TextScale>(getTextScale);
   const [translation, setTr] = useState<Translation>(getTranslation);
   const [saveState, setSaveState] = useState<SaveState>("idle");
 
-  const [focusBusy, setFocusBusy] = useState(false);
 
   // notification permission
   const [permission, setPermission] = useState<PermissionStatus>("unsupported");
@@ -112,7 +114,7 @@ export default function Settings({
 
   async function load() {
     try {
-      const [p, t] = await Promise.all([fetchProfile(), fetchActiveTopics()]);
+      const p = await fetchProfile();
       if (p) {
         setProfile(p);
         setHour(p.notification_hour);
@@ -120,11 +122,12 @@ export default function Settings({
         setChallenge(p.challenge_frequency);
         setLevel(p.content_level ?? DEFAULT_CONTENT_LEVEL);
         setTr(p.translation ?? DEFAULT_TRANSLATION);
+        setScale(p.text_scale ?? DEFAULT_TEXT_SCALE);
         // Reconcile the render-path mirrors EntryCard reads.
         setContentLevel(p.content_level ?? DEFAULT_CONTENT_LEVEL);
         setTranslation(p.translation ?? DEFAULT_TRANSLATION);
+        setTextScale(p.text_scale ?? DEFAULT_TEXT_SCALE);
       }
-      setTopics(t);
       setError("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not load settings");
@@ -152,6 +155,10 @@ export default function Settings({
       timezone !== profile.timezone ||
       Math.abs(challenge - profile.challenge_frequency) > 1e-9 ||
       contentLevel !== profile.content_level ||
+      // Coalesced, unlike the others: until the text_scale migration is
+      // applied the column comes back undefined, and a bare !== would make
+      // this permanently dirty and retry a 400 save every debounce tick.
+      textScale !== (profile.text_scale ?? DEFAULT_TEXT_SCALE) ||
       translation !== profile.translation);
 
   const saveProfile = useCallback(async () => {
@@ -163,6 +170,7 @@ export default function Settings({
         timezone,
         challenge_frequency: challenge,
         content_level: contentLevel,
+        text_scale: textScale,
         translation,
       });
       setProfile(updated);
@@ -176,7 +184,7 @@ export default function Settings({
       setSaveState("idle");
       setError(e instanceof Error ? e.message : "Could not save");
     }
-  }, [hour, timezone, challenge, contentLevel, translation, syncReminder]);
+  }, [hour, timezone, challenge, contentLevel, textScale, translation, syncReminder]);
 
   // Auto-save: no Save button to hunt for, and no ambiguity about which
   // section a button belongs to.
@@ -192,22 +200,6 @@ export default function Settings({
     if (granted) void syncReminder();
   }
 
-  async function chooseFocus(topicId: string | null) {
-    setFocusBusy(true);
-    setError("");
-    try {
-      if (topicId) await setFocusTopic(topicId);
-      else await clearFocusTopic();
-      setTopics(await fetchActiveTopics());
-      // Focus decides which thread the reminder is about.
-      void syncReminder();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not update focus");
-    } finally {
-      setFocusBusy(false);
-    }
-  }
-
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -215,8 +207,6 @@ export default function Settings({
       </div>
     );
   }
-
-  const focusId = topics.find((t) => t.focus)?.id ?? null;
 
   return (
     <div className="mx-auto min-h-screen max-w-lg px-6 pb-28 pt-6">
@@ -319,12 +309,74 @@ export default function Settings({
                 }`}
               >
                 <span
-                  className={`block text-[15px] font-semibold ${active ? "text-moss" : ""}`}
+                  className={`block text-base font-semibold ${active ? "text-moss" : ""}`}
                 >
                   {opt.label}
                 </span>
                 <span className="mt-0.5 block text-xs leading-snug text-muted">
                   {opt.detail}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Text size */}
+      <section className="mt-5 rounded-2xl border border-hairline bg-surface p-5">
+        <h2 className="font-display text-xl">Text size</h2>
+        <p className="mt-1 text-sm text-muted">
+          Starts where your phone&rsquo;s own text size is set. Changing it here only
+          affects Ponder.
+        </p>
+
+        {/* Stacked rows, the same shape as "Bible version" directly below — name
+            and description on the left, a trailing marker on the right (the Aa
+            sample here, the translation code there).
+            Tried three-across to match "How much to read" and reverted: a
+            third-width cell has no room for the Aa beside the label, and the
+            labels are tight at the largest step. The Aa is absolute px at that
+            option's own scale, so it previews the result instead of compounding
+            with the scale already applied. */}
+        <div role="radiogroup" aria-label="Text size" className="mt-4 grid gap-2">
+          {TEXT_SCALES.map((opt) => {
+            const active = textScale === opt.value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => {
+                  setScale(opt.value);
+                  // Mirror first: the whole app resizes on this tap, not on
+                  // the debounced save landing.
+                  setTextScale(opt.value);
+                }}
+                className={`flex min-h-[56px] items-center gap-3 rounded-xl border px-4 py-3 text-left transition-colors ${
+                  active
+                    ? "border-moss bg-moss-soft"
+                    : "border-hairline bg-paper hover:border-moss"
+                }`}
+              >
+                <span className="min-w-0 flex-1">
+                  <span
+                    className={`block text-base font-semibold ${active ? "text-moss" : ""}`}
+                  >
+                    {opt.label}
+                  </span>
+                  <span className="mt-0.5 block text-xs leading-snug text-muted">
+                    {opt.detail}
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className={`shrink-0 font-display leading-none ${
+                    active ? "text-moss" : "text-muted"
+                  }`}
+                  style={{ fontSize: `${(17 * opt.value) / 100}px` }}
+                >
+                  Aa
                 </span>
               </button>
             );
@@ -368,7 +420,7 @@ export default function Settings({
               >
                 <span>
                   <span
-                    className={`block text-[15px] font-semibold ${active ? "text-moss" : ""}`}
+                    className={`block text-base font-semibold ${active ? "text-moss" : ""}`}
                   >
                     {opt.name}
                   </span>
@@ -377,7 +429,7 @@ export default function Settings({
                   </span>
                 </span>
                 <span
-                  className={`shrink-0 text-[11px] font-bold uppercase tracking-[0.16em] ${
+                  className={`shrink-0 text-xs font-bold uppercase tracking-[0.16em] ${
                     active ? "text-moss" : "text-muted"
                   }`}
                 >
@@ -414,36 +466,6 @@ export default function Settings({
           How often an entry questions your framing instead of affirming it. A discernment tool
           needs some friction — 0% means every entry sits inside your current sense of the thread.
         </p>
-      </section>
-
-      {/* Focus thread */}
-      <section className="mt-5 rounded-2xl border border-hairline bg-surface p-5">
-        <h2 className="font-display text-xl">Focus thread</h2>
-        <p className="mt-1 text-sm text-muted">
-          The thread your daily notification centres on. Choose “Rotate” to cycle through all
-          active threads.
-        </p>
-
-        <div className="mt-4 space-y-1">
-          <FocusOption
-            label="Rotate among active threads"
-            checked={focusId === null}
-            disabled={focusBusy}
-            onSelect={() => void chooseFocus(null)}
-          />
-          {topics.map((t) => (
-            <FocusOption
-              key={t.id}
-              label={t.title}
-              checked={focusId === t.id}
-              disabled={focusBusy}
-              onSelect={() => void chooseFocus(t.id)}
-            />
-          ))}
-          {topics.length === 0 && (
-            <p className="py-2 text-sm text-muted">No active threads to focus on yet.</p>
-          )}
-        </div>
       </section>
 
       {/* How to use / about */}
@@ -562,34 +584,5 @@ function NotificationStatus({
         </p>
       )}
     </div>
-  );
-}
-
-function FocusOption({
-  label,
-  checked,
-  disabled,
-  onSelect,
-}: {
-  label: string;
-  checked: boolean;
-  disabled: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      onClick={onSelect}
-      disabled={disabled}
-      className="pressable flex min-h-[48px] w-full items-center gap-3 rounded-xl px-2 text-left disabled:opacity-60"
-    >
-      <span
-        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-          checked ? "border-moss" : "border-hairline"
-        }`}
-      >
-        {checked && <span className="h-2.5 w-2.5 rounded-full bg-moss" />}
-      </span>
-      <span className={`text-[15px] ${checked ? "font-semibold" : ""}`}>{label}</span>
-    </button>
   );
 }

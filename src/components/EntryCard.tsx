@@ -130,7 +130,7 @@ export default function EntryCard({
           <h2 className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-muted">
             Thought
           </h2>
-          <p className="text-[17px] leading-relaxed">{entry.thought}</p>
+          <p className="text-body leading-relaxed">{entry.thought}</p>
           {showQuote && <QuoteBlock quote={entry.quote!} />}
         </section>
       )}
@@ -140,7 +140,7 @@ export default function EntryCard({
           <h2 className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-muted">
             Illustration
           </h2>
-          <p className="border-l-2 border-hairline pl-4 text-[16px] leading-relaxed text-ink/90 [font-style:italic]">
+          <p className="border-l-2 border-hairline pl-4 text-base leading-relaxed text-ink/90 [font-style:italic]">
             {entry.illustration}
           </p>
         </section>
@@ -163,7 +163,7 @@ export default function EntryCard({
             {entry.prayer_prompts.map((p, i) => (
               <li
                 key={i}
-                className="rounded-xl border border-hairline bg-surface px-4 py-3 text-[15px] leading-relaxed"
+                className="rounded-xl border border-hairline bg-surface px-4 py-3 text-base leading-relaxed"
               >
                 {p}
               </li>
@@ -233,13 +233,13 @@ function VerseHero({
   return (
     <section className={`-mx-6 px-6 py-8 ${challenge ? "bg-rust-soft" : "bg-moss-soft"}`}>
       {passage.status === "absent" ? (
-        <p className="font-display text-[22px] font-medium leading-snug text-ink/60">
+        <p className="font-display text-2xl font-medium leading-snug text-ink/60">
           This passage isn’t in the {translationName(translation)}.
         </p>
       ) : (
         <p
           aria-busy={passage.status === "loading"}
-          className={`font-display text-[28px] font-medium leading-snug transition-opacity duration-200 ${
+          className={`font-display text-3xl font-medium leading-snug transition-opacity duration-200 ${
             passage.status === "loading" ? "opacity-40" : "opacity-100"
           }`}
         >
@@ -259,7 +259,7 @@ function VerseHero({
       <button
         type="button"
         onClick={onReadContext}
-        className={`pressable mt-3 inline-flex min-h-[40px] items-center rounded-full border px-4 text-[13px] font-semibold transition-colors ${
+        className={`pressable mt-3 inline-flex min-h-[40px] items-center rounded-full border px-4 text-sm font-semibold transition-colors ${
           challenge
             ? "border-rust/30 text-rust hover:bg-rust/10"
             : "border-moss/30 text-moss hover:bg-moss/10"
@@ -285,7 +285,7 @@ function VerseHero({
               aria-checked={on}
               aria-label={t.name}
               onClick={() => onSelect(t.value)}
-              className={`pressable rounded-full px-3.5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] transition-colors ${
+              className={`pressable rounded-full px-3.5 py-2.5 text-xs font-bold uppercase tracking-[0.16em] transition-colors ${
                 on
                   ? challenge
                     ? "bg-rust text-paper"
@@ -329,7 +329,7 @@ function MoreToggle({
         type="button"
         onClick={onToggle}
         aria-expanded={expanded}
-        className="w-full rounded-xl border border-hairline bg-surface px-4 py-3 text-left text-[15px] leading-snug text-muted transition-colors hover:border-moss"
+        className="w-full rounded-xl border border-hairline bg-surface px-4 py-3 text-left text-base leading-snug text-muted transition-colors hover:border-moss"
       >
         {expanded ? (
           <span className="font-semibold text-moss">Show less</span>
@@ -379,10 +379,10 @@ function MoreToggle({
 function QuoteBlock({ quote }: { quote: Quote }) {
   return (
     <figure className="mt-5 border-t border-hairline pt-4">
-      <blockquote className="text-[16px] leading-relaxed text-ink/90 [font-style:italic]">
+      <blockquote className="text-base leading-relaxed text-ink/90 [font-style:italic]">
         {quote.text}
       </blockquote>
-      <figcaption className="mt-2 text-[13px] text-muted">
+      <figcaption className="mt-2 text-sm text-muted">
         {quote.author}
         {", "}
         <cite className="not-italic">{quote.work}</cite>
@@ -413,12 +413,12 @@ function SongRow({ song }: { song: Song }) {
           />
         )}
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-[15px] font-medium">{song.name}</span>
-          <span className="block truncate text-[13px] text-muted">{song.artist}</span>
+          <span className="block truncate text-base font-medium">{song.name}</span>
+          <span className="block truncate text-sm text-muted">{song.artist}</span>
         </span>
         <span className="flex shrink-0 items-center gap-1.5">
           <SpotifyIcon />
-          <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954]">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#1DB954]">
             Play on Spotify
           </span>
         </span>
@@ -469,11 +469,11 @@ function Footnotes({
   const crossRefs = shown >= 2 ? (entry.cross_refs ?? []) : [];
   return (
     <section className="mt-10 border-t border-hairline pt-4">
-      <h2 className="mb-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-muted">
+      <h2 className="mb-2.5 text-xs font-bold uppercase tracking-[0.18em] text-muted">
         Sources
       </h2>
 
-      <ol className="space-y-1.5 text-[13px] leading-snug text-muted">
+      <ol className="space-y-1.5 text-sm leading-snug text-muted">
         <li className="flex gap-2">
           <span className="shrink-0 tabular-nums">1.</span>
           <span>

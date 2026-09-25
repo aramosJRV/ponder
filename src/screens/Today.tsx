@@ -6,7 +6,7 @@ import {
   generateEntryNow,
 } from "../lib/api";
 import { GenerationDelayedError } from "../lib/entitlements";
-import { refreshDailyReminder } from "../lib/notifications";
+import { refreshDailyReminder, reminderTopicForDate } from "../lib/notifications";
 import { loadTodayCache, saveTodayCache } from "../lib/cache";
 import { errorCopy, logError, type ErrorKind } from "../lib/errors";
 import { formatLongDate, todayLocal } from "../lib/dates";
@@ -46,7 +46,9 @@ export default function Today({ onStartFirstThread }: Props) {
       setOffline(false);
       setState("ready");
       saveTodayCache({ date, topics: t, entries: e, notes: n });
-      setSelectedTopicId((cur) => cur ?? t.find((x) => x.focus)?.id ?? t[0]?.id ?? null);
+      // Open on the same thread the reminder is about, so tapping the
+      // notification and opening the app cold land in the same place.
+      setSelectedTopicId((cur) => cur ?? reminderTopicForDate(t, date)?.id ?? null);
 
       // (Re)schedule the daily verse reminder. Native only (no-ops on web) and
       // fire-and-forget so it never blocks the screen. Settings calls the same
@@ -66,7 +68,7 @@ export default function Today({ onStartFirstThread }: Props) {
         setOffline(true);
         setState("ready");
         setSelectedTopicId(
-          (cur) => cur ?? cached.topics.find((x) => x.focus)?.id ?? cached.topics[0]?.id ?? null,
+          (cur) => cur ?? reminderTopicForDate(cached.topics, date)?.id ?? null,
         );
       } else {
         setState("error");

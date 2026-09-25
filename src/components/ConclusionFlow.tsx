@@ -104,7 +104,7 @@ export default function ConclusionFlow({
 
   return (
     <div className="fixed inset-0 z-40 overflow-y-auto bg-paper">
-      <div className="mx-auto max-w-lg px-6 pb-28 pt-6">
+      <div className="mx-auto max-w-lg px-6 pb-28 pt-[max(1.5rem,calc(env(safe-area-inset-top)+0.75rem))]">
         <button
           onClick={onClose}
           className="pressable min-h-[44px] text-sm font-semibold text-muted"
@@ -117,7 +117,7 @@ export default function ConclusionFlow({
             Concluding
           </p>
           <h1 className="font-display text-3xl font-medium leading-tight">{topic.title}</h1>
-          <p className="mt-2 text-[15px] leading-relaxed text-muted">
+          <p className="mt-2 text-base leading-relaxed text-muted">
             Sit with the whole arc before you close it. Concluded threads become read-only but
             stay fully browsable.
           </p>
@@ -156,7 +156,7 @@ export default function ConclusionFlow({
                       })}{" "}
                       · note
                     </p>
-                    <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-ink/80">
+                    <p className="whitespace-pre-wrap text-base leading-relaxed text-ink/80">
                       {it.note.body}
                     </p>
                   </li>
@@ -175,7 +175,7 @@ export default function ConclusionFlow({
             <SynthesisCard synthesis={synthesis} latest />
           ) : (
             <div className="rounded-2xl border border-hairline bg-surface p-5">
-              <p className="text-[15px] leading-relaxed text-muted">
+              <p className="text-base leading-relaxed text-muted">
                 Generate a reflective read of the whole journey — what keeps returning, tensions,
                 and where it seems to have led.
               </p>

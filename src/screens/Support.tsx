@@ -91,7 +91,7 @@ export default function Support({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-paper px-6 pb-16 pt-16">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-paper px-6 pb-16 pt-[max(4rem,calc(env(safe-area-inset-top)+1.5rem))]">
       <div className="mx-auto max-w-md animate-rise">
         <button
           onClick={onClose}

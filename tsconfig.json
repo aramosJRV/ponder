@@ -12,6 +12,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "skipLibCheck": true,
+    // Typecheck-only project: Vite compiles the app, tsc never should.
+    // Without this, a `tsc` invocation whose --noEmit gets dropped (npx has
+    // done this on a cold resolve) drops a .js beside every .tsx in src/,
+    // and Vite resolves .js first — the dev server then serves a frozen
+    // snapshot and every later edit appears to do nothing.
+    "noEmit": true,
     "types": ["vite/client"]
   },
   "include": ["src"]

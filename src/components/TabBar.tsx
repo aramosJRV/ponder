@@ -64,7 +64,7 @@ const TABS: Array<{ id: Tab; label: string; Icon: (p: IconProps) => JSX.Element 
 
 export default function TabBar({ tab, onChange }: Props) {
   return (
-    <nav className="hide-when-keyboard fixed inset-x-0 bottom-0 z-20 border-t border-hairline bg-paper/95 backdrop-blur">
+    <nav className="hide-when-keyboard fixed inset-x-0 bottom-0 z-20 border-t border-hairline bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
       <div className="mx-auto flex max-w-lg">
         {TABS.map((t) => {
           const active = tab === t.id;
@@ -72,7 +72,7 @@ export default function TabBar({ tab, onChange }: Props) {
             <button
               key={t.id}
               onClick={() => onChange(t.id)}
-              className={`pressable flex min-h-[56px] flex-1 flex-col items-center justify-center gap-1 pb-[env(safe-area-inset-bottom)] ${
+              className={`pressable flex min-h-[56px] flex-1 flex-col items-center justify-center gap-1 py-2 ${
                 active ? "text-moss" : "text-muted"
               }`}
             >

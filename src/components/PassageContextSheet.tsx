@@ -116,7 +116,7 @@ export default function PassageContextSheet({
           className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-5"
         >
           {state.status === "loading" && (
-            <p aria-busy="true" className="text-[15px] text-muted">
+            <p aria-busy="true" className="text-base text-muted">
               Finding the passage…
             </p>
           )}
@@ -168,7 +168,7 @@ function Passage({
   let lastChapter = rows[0].chapter;
 
   return (
-    <div className="text-[17px] leading-[1.75]">
+    <div className="text-body leading-[1.75]">
       {rows.map((r, i) => {
         // A chapter number appears mid-passage only when the unit crosses a
         // break — the reader should be able to see that it did.
@@ -179,7 +179,7 @@ function Passage({
         return (
           <span key={`${r.chapter}:${r.verse}`}>
             {crossed && (
-              <span className="mx-1 align-baseline text-[13px] font-bold text-moss">
+              <span className="mx-1 align-baseline text-sm font-bold text-moss">
                 {r.chapter}
               </span>
             )}
@@ -190,7 +190,7 @@ function Passage({
                   : undefined
               }
             >
-              <sup className="mr-0.5 align-super text-[11px] font-bold text-muted">
+              <sup className="mr-0.5 align-super text-xs font-bold text-muted">
                 {r.verse}
               </sup>
               {r.verse_text ?? (
@@ -217,8 +217,8 @@ function Unavailable({ kind }: { kind: import("../lib/errors").ErrorKind }) {
   return (
     <div>
       <p className="font-display text-lg font-medium">{copy.title}</p>
-      <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{copy.body}</p>
-      <p className="mt-4 text-[15px] leading-relaxed text-muted">
+      <p className="mt-1.5 text-base leading-relaxed text-muted">{copy.body}</p>
+      <p className="mt-4 text-base leading-relaxed text-muted">
         Today’s verse is still on the card behind this — it’s stored with the
         entry. The verses around it aren’t.
       </p>

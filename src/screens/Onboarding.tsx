@@ -97,7 +97,7 @@ export default function Onboarding({ onDone, replay = false }: Props) {
   return (
     <div className="flex w-full flex-col overflow-hidden overscroll-none bg-paper" style={{ height: "calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom))" }}>
       {/* Skip — always available, marks onboarding done without creating a thread */}
-      <div className="flex h-11 shrink-0 items-center justify-end px-5">
+      <div className="flex min-h-11 shrink-0 items-center justify-end px-5">
         {(replay || index < last) && (
           <button
             onClick={() => onDone(false)}
@@ -125,7 +125,7 @@ export default function Onboarding({ onDone, replay = false }: Props) {
                 <s.Mark />
               </div>
 
-              <p className="mt-[3vh] text-[11px] font-semibold uppercase tracking-[0.24em] text-moss">
+              <p className="mt-[3vh] text-xs font-semibold uppercase tracking-[0.24em] text-moss">
                 {s.eyebrow}
               </p>
               <h1 className="mt-1 font-display text-[clamp(1.375rem,5.5vw,2rem)] font-medium leading-tight text-ink">
@@ -148,7 +148,7 @@ export default function Onboarding({ onDone, replay = false }: Props) {
                     “{s.verse}”
                   </p>
                   {s.verseRef && (
-                    <figcaption className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-moss">
+                    <figcaption className="mt-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-moss">
                       {s.verseRef}
                     </figcaption>
                   )}

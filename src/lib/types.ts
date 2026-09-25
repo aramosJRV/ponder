@@ -9,6 +9,9 @@ export type TopicStatus = "active" | "paused" | "concluded";
  */
 export type ContentLevel = 1 | 2 | 3;
 
+/** Reader text size as a percent. Mirrors profiles.text_scale. */
+export type TextScale = 100 | 140 | 200;
+
 /**
  * Public-domain Bible translations. Mirrors the bible_translations table.
  *
@@ -27,6 +30,8 @@ export interface Profile {
   notification_hour: number; // 0–23, local hour to fire the daily reminder
   challenge_frequency: number; // 0.00–0.50
   content_level: ContentLevel;
+  /** Display scale for all type. Drives --font-scale; never affects generation. */
+  text_scale: TextScale;
   /** Standing preference. What new entries and the notification body are
    *  rendered in. Per-passage tab switching does NOT write here. */
   translation: Translation;

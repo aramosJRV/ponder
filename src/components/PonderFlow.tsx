@@ -261,10 +261,10 @@ function Gate({
         accent === "rust" ? "border-rust/25 bg-rust-soft" : "border-moss/25 bg-moss-soft"
       }`}
     >
-      <p className="font-display text-[27px] font-medium italic leading-tight">
+      <p className="font-display text-3xl font-medium italic leading-tight">
         Ready to ponder?
       </p>
-      <p className="mx-auto mt-2.5 max-w-[270px] text-[14.5px] leading-relaxed text-muted">
+      <p className="mx-auto mt-2.5 max-w-[calc(270px*var(--font-scale))] text-sm leading-relaxed text-muted">
         {count === 1 ? "One question." : `${word[0].toUpperCase()}${word.slice(1)} questions, one at a time.`}
         <br />
         Stay with {count === 1 ? "it" : "each"} until it&rsquo;s finished with you.
@@ -272,7 +272,7 @@ function Gate({
       <button
         type="button"
         onClick={onBegin}
-        className={`pressable mt-6 min-h-[48px] rounded-2xl px-8 text-[15px] font-bold tracking-wide text-paper ${
+        className={`pressable mt-6 min-h-[48px] rounded-2xl px-8 text-base font-bold tracking-wide text-paper ${
           accent === "rust" ? "bg-rust" : "bg-moss"
         }`}
       >
@@ -281,7 +281,7 @@ function Gate({
       <button
         type="button"
         onClick={onShowAll}
-        className="mt-3 block w-full py-2.5 text-[13px] text-muted underline underline-offset-[3px]"
+        className="mt-3 block w-full py-2.5 text-sm text-muted underline underline-offset-[3px]"
       >
         Show all {count === 1 ? "of it" : word} instead
       </button>
@@ -407,11 +407,19 @@ function Question({
 
   return (
     <>
-      <div className="relative pb-[34px]">
+      {/* COUPLED GEOMETRY — the peek strip.
+          pb, the decoy layer's h/bottom, and the button's h/pt are one set: the
+          strip is absolutely positioned, so the parent's bottom padding has to
+          reserve exactly the strip's height or the next block overlaps it.
+          All of them scale with --font-scale because the strip holds text-sm;
+          at 2x that text is 28px and a fixed 34px box clipped it. The
+          horizontal insets (inset-x) are card-edge offsets, not text-driven,
+          so they stay fixed. */}
+      <div className="relative pb-[calc(34px*var(--font-scale))]">
         {left >= 2 && (
           <div
             aria-hidden="true"
-            className="absolute inset-x-[22px] bottom-[-11px] z-[1] h-[34px] rounded-2xl border border-hairline border-b-0 bg-surface opacity-50"
+            className="absolute inset-x-[22px] bottom-[calc(-11px*var(--font-scale))] z-[1] h-[calc(34px*var(--font-scale))] rounded-2xl border border-hairline border-b-0 bg-surface opacity-50"
           />
         )}
         <button
@@ -423,7 +431,7 @@ function Question({
               ? "Finish and see all the questions"
               : `Reveal question ${position + 2} of ${total}`
           }
-          className={`pressable absolute inset-x-[10px] bottom-[-1px] z-[2] flex h-[34px] items-start justify-center rounded-2xl border border-hairline border-b-0 bg-surface pt-[9px] text-[12.5px] font-bold uppercase tracking-[0.13em] transition-opacity ${line} ${
+          className={`pressable absolute inset-x-[10px] bottom-[-1px] z-[2] flex h-[calc(34px*var(--font-scale))] items-start justify-center rounded-2xl border border-hairline border-b-0 bg-surface pt-[calc(9px*var(--font-scale))] text-sm font-bold uppercase tracking-[0.13em] transition-opacity ${line} ${
             locked ? "opacity-40" : "opacity-100"
           }`}
         >
@@ -452,7 +460,7 @@ function Question({
                   className={`h-1.5 w-1.5 rounded-full ${accent === "rust" ? "bg-rust" : "bg-moss"}`}
                 />
                 <span
-                  className={`text-[10px] font-bold uppercase tracking-[0.16em] ${line}`}
+                  className={`text-xs font-bold uppercase tracking-[0.16em] ${line}`}
                 >
                   In today&rsquo;s verse
                 </span>
@@ -469,12 +477,12 @@ function Question({
                 pronoun. The passage itself is never marked up (see EntryCard),
                 so the two are never in direct visual contradiction. */}
             {q.phrase && (
-              <p className={`mb-2.5 font-display text-[23px] italic leading-tight ${line}`}>
+              <p className={`mb-2.5 font-display text-2xl italic leading-tight ${line}`}>
                 &ldquo;{q.phrase}&rdquo;
               </p>
             )}
 
-            <p className="text-[18.5px] leading-relaxed">{q.text}</p>
+            <p className="text-lg leading-relaxed">{q.text}</p>
             <p className="mt-4 text-xs tracking-wide text-muted">
               {position + 1} of {total}
             </p>
@@ -486,8 +494,8 @@ function Question({
                   accent === "rust" ? "border-rust bg-rust-soft" : "border-moss bg-moss-soft"
                 }`}
               >
-                <p className="whitespace-pre-wrap text-[14.5px] leading-relaxed">{n.body}</p>
-                <p className="mt-1.5 text-[11.5px] text-muted">
+                <p className="whitespace-pre-wrap text-sm leading-relaxed">{n.body}</p>
+                <p className="mt-1.5 text-xs text-muted">
                   {new Date(n.created_at).toLocaleTimeString("en-AU", {
                     hour: "numeric",
                     minute: "2-digit",
@@ -533,7 +541,7 @@ function Question({
           <button
             type="button"
             onClick={onBack}
-            className="py-2.5 text-[13px] text-muted underline underline-offset-[3px]"
+            className="py-2.5 text-sm text-muted underline underline-offset-[3px]"
           >
             &larr; Question {position}
           </button>
@@ -541,7 +549,7 @@ function Question({
           <button
             type="button"
             onClick={onShowAll}
-            className="py-2.5 text-[13px] text-muted underline underline-offset-[3px]"
+            className="py-2.5 text-sm text-muted underline underline-offset-[3px]"
           >
             Show all {word}
           </button>
@@ -595,7 +603,7 @@ function QuestionNote({
         rows={4}
         disabled={offline}
         placeholder="What comes to mind?"
-        className="w-full resize-none rounded-xl border border-hairline bg-paper px-3.5 py-3 text-[15px] leading-relaxed outline-none focus:border-moss disabled:opacity-60"
+        className="w-full resize-none rounded-xl border border-hairline bg-paper px-3.5 py-3 text-base leading-relaxed outline-none focus:border-moss disabled:opacity-60"
       />
       <div className="mt-2.5 flex items-center justify-between">
         {error ? (
@@ -604,7 +612,7 @@ function QuestionNote({
           <button
             type="button"
             onClick={() => onDone(null)}
-            className="py-2 text-[13px] text-muted underline underline-offset-[3px]"
+            className="py-2 text-sm text-muted underline underline-offset-[3px]"
           >
             Cancel
           </button>
@@ -640,7 +648,7 @@ function Close({
   return (
     <div className="rounded-2xl border border-hairline bg-surface p-5">
       <p className="font-display text-2xl italic">That&rsquo;s the {word}.</p>
-      <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
+      <p className="mt-2 text-sm leading-relaxed text-muted">
         Stay as long as you like. Nothing here expires.
       </p>
       <div className="mt-4 flex flex-col gap-2">
@@ -653,7 +661,7 @@ function Close({
               onClick={() => onRevisit(i)}
               className="pressable flex w-full gap-2.5 rounded-xl border border-hairline bg-paper px-3.5 py-3 text-left"
             >
-              <span className="font-display text-[17px] font-semibold leading-tight text-moss">
+              <span className="font-display text-body font-semibold leading-tight text-moss">
                 {i + 1}
               </span>
               <span className="min-w-0 flex-1">
@@ -710,7 +718,7 @@ function ShowAll({
                   {i + 1}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[16px] leading-relaxed">
+                  <span className="block text-base leading-relaxed">
                     {q.phrase && (
                       <em className={`not-italic ${line}`}>&ldquo;{q.phrase}&rdquo; &mdash; </em>
                     )}
@@ -731,7 +739,7 @@ function ShowAll({
         <button
           type="button"
           onClick={onOneAtATime}
-          className="py-2.5 text-[13px] text-muted underline underline-offset-[3px]"
+          className="py-2.5 text-sm text-muted underline underline-offset-[3px]"
         >
           Take them one at a time
         </button>

@@ -48,7 +48,7 @@ export default function ConfirmDialog({
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 px-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
       <div className="w-full max-w-lg animate-rise rounded-3xl bg-paper p-6">
         <h2 className="font-display text-2xl font-medium">{title}</h2>
-        <p className="mt-2 text-[15px] leading-relaxed text-muted">{body}</p>
+        <p className="mt-2 text-base leading-relaxed text-muted">{body}</p>
 
         {requireTyped && (
           <>
