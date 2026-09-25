@@ -27,3 +27,9 @@ verify_jwt = false
 # end-user JWT (service keys are rejected). Left off for consistency with the
 # other functions; the in-function check is the actual gate.
 verify_jwt = false
+
+[functions.guardrail-preview]
+# THROWAWAY dry-run tool (old vs proposed guardrail 4 wording). Deployed from
+# chat on 24 Sep; source pulled from live v1 on 25 Sep. Auth: sb_secret_* key
+# checked inside the function. Delete once the guardrail decision is made.
+verify_jwt = false

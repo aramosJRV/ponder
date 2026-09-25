@@ -306,6 +306,176 @@ async function tryPool(
   }
 }
 
+// ----------------------------------------------------------------- facets
+//
+// A thread is one subject with several sides to it. "Holy Spirit In Me" is
+// his indwelling, his guidance, his conviction, his fruit — and any one entry
+// can only be about one of them. Without rotation the live path keeps picking
+// whichever side the description leads with, and the reader gets the same
+// angle reworded for a week.
+//
+// Facets are that subject broken into its sides, generated once per thread
+// from the reader's own words, then rotated least-recently-used.
+//
+// LIVE PATH ONLY. A pooled entry is written from a shared theme brief and has
+// no facet by definition — daily_entries.facet stays null there, which is
+// what "pooled or pre-migration" means in 20260919000001.
+
+const FACET_MIN = 4;
+const FACET_MAX = 7;
+
+type Facet = { slug: string; label: string; brief: string };
+
+const FACET_TOOL = {
+  name: "record_facets",
+  description: "Break a discernment thread into the distinct sides it has.",
+  input_schema: {
+    type: "object",
+    properties: {
+      facets: {
+        type: "array",
+        minItems: FACET_MIN,
+        maxItems: FACET_MAX,
+        items: {
+          type: "object",
+          properties: {
+            slug:  { type: "string", description: "lowercase-hyphenated and stable, e.g. 'indwelling'" },
+            label: { type: "string", description: "2-5 words the person would recognise as part of their own subject" },
+            brief: { type: "string", description: "One sentence telling a writer what an entry on this side should sit with." },
+          },
+          required: ["slug", "label", "brief"],
+        },
+      },
+    },
+    required: ["facets"],
+  },
+} as const;
+
+const FACET_SYSTEM =
+  "You break a personal spiritual-discernment thread into the distinct sides it actually has, " +
+  "so that daily entries can rotate through them instead of circling one. " +
+  "Work only from the person's own title and description — do not import a doctrinal outline " +
+  "they did not ask for, and do not add a side they would not recognise as theirs. " +
+  "Each facet must be genuinely distinct: if two of them would produce the same entry, merge them. " +
+  "Prefer fewer, sharper facets over padding to the maximum.";
+
+/** Defensive parse: a duplicate or empty slug would quietly break LRU rotation. */
+// deno-lint-ignore no-explicit-any
+function parseFacets(x: unknown): Facet[] {
+  if (!Array.isArray(x)) return [];
+  const seen = new Set<string>();
+  const out: Facet[] = [];
+  for (const raw of x) {
+    // deno-lint-ignore no-explicit-any
+    const r = raw as any;
+    const slug  = String(r?.slug  ?? "").trim().toLowerCase();
+    const label = String(r?.label ?? "").trim();
+    const brief = String(r?.brief ?? "").trim();
+    if (!slug || !label || !brief) continue;
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    out.push({ slug, label, brief });
+    if (out.length >= FACET_MAX) break;
+  }
+  // One facet is not a rotation; treat it as a failed generation and retry.
+  return out.length >= 2 ? out : [];
+}
+
+/**
+ * Give a thread its facets, once.
+ *
+ * UPDATE ONLY — this never inserts a topic_themes row, and that is load
+ * bearing. ensureTheme() treats the mere existence of a row as
+ * "classification already attempted" and returns early, so a row created
+ * here would cost the thread its theme permanently. buildContext() runs
+ * before ensureTheme() has made the row, so a brand-new thread's first entry
+ * goes out facet-less and the second picks facets up. That is the accepted
+ * cost of not owning the row.
+ *
+ * facets_generated_at is the "already tried" marker, set only on success —
+ * a failure leaves it null and is retried on the next generation.
+ */
+// deno-lint-ignore no-explicit-any
+async function ensureFacets(db: SupabaseClient, topic: any): Promise<Facet[]> {
+  const { data: row, error: readErr } = await db.from("topic_themes")
+    .select("facets, facets_generated_at").eq("topic_id", topic.id).maybeSingle();
+  if (readErr) { console.warn(`ensureFacets read: ${readErr.message}`); return []; }
+  if (!row) return [];                        // no row yet — see the note above
+  if (row.facets_generated_at) return parseFacets(row.facets);
+
+  let facets: Facet[] = [];
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: anthropicHeaders(),
+      body: JSON.stringify({
+        model: MODEL_AFFIRMING,   // cheapest model; this is a decomposition task
+        max_tokens: 1024,
+        system: FACET_SYSTEM,
+        tools: [FACET_TOOL],
+        tool_choice: { type: "tool", name: "record_facets" },
+        messages: [{
+          role: "user",
+          content: `THREAD: ${topic.title}\nTHEIR OWN WORDS: ${topic.description || "(none provided)"}`,
+        }],
+      }),
+    });
+    if (!res.ok) throw new Error(`Anthropic API ${res.status}`);
+    const data = await res.json();
+    await recordSpend(db, "facets", MODEL_AFFIRMING, (data.usage ?? {}) as Usage, {
+      userId: topic.user_id, detail: { topic_id: topic.id },
+    });
+    const block = (data.content ?? []).find((b: { type: string }) => b.type === "tool_use");
+    // deno-lint-ignore no-explicit-any
+    facets = parseFacets((block?.input as any)?.facets);
+  } catch (e) {
+    console.warn(`ensureFacets failed for ${topic.id}: ${e}`);
+    return [];
+  }
+  if (!facets.length) return [];
+
+  const { error } = await db.from("topic_themes")
+    .update({ facets, facets_generated_at: new Date().toISOString() })
+    .eq("topic_id", topic.id);
+  if (error) { console.warn(`ensureFacets update: ${error.message}`); return facets; }
+  return facets;
+}
+
+/**
+ * Least-recently-used facet for this thread.
+ *
+ * Never-used facets win outright, in the order the model returned them, so a
+ * thread works through its whole subject before repeating any side. Once all
+ * have been used it is genuinely oldest-first. The 60-row window is what
+ * daily_entries_topic_facet_date_idx exists to serve.
+ */
+async function pickFacet(
+  db: SupabaseClient, topicId: string, facets: Facet[],
+): Promise<Facet | null> {
+  if (!facets.length) return null;
+
+  const { data, error } = await db.from("daily_entries")
+    .select("facet, date").eq("topic_id", topicId).not("facet", "is", null)
+    .order("date", { ascending: false }).limit(60);
+  if (error) { console.warn(`pickFacet: ${error.message}`); return facets[0]; }
+
+  // Rows arrive newest-first, so the first sighting of a slug is its last use.
+  const lastUsed = new Map<string, string>();
+  for (const r of data ?? []) {
+    // deno-lint-ignore no-explicit-any
+    const row = r as any;
+    const slug = String(row.facet);
+    if (!lastUsed.has(slug)) lastUsed.set(slug, String(row.date));
+  }
+
+  const unused = facets.filter((f) => !lastUsed.has(f.slug));
+  if (unused.length) return unused[0];
+
+  return facets.slice().sort((a, b) =>
+    (lastUsed.get(a.slug) ?? "").localeCompare(lastUsed.get(b.slug) ?? "")
+  )[0];
+}
+
 // The topic's seed passage may be chosen again as a daily entry. Set this to a
 // positive number of days to suppress it for a topic's opening stretch (avoids
 // the "it just gave me back the verse I typed in" moment in week one).
@@ -341,7 +511,7 @@ Non-negotiable guardrails:
 1. NEVER claim God is telling the user something, and never make predictive or directive claims about their life decisions ("God is saying...", "this means you should quit/stay/move" are all forbidden). Frame everything as invitation to reflect: "consider", "notice", "sit with".
 2. Scripture must be handled in context. Do not proof-text: never use a verse fragment against the meaning of its surrounding passage. Choose passages whose actual context genuinely relates to the thread.
 3. Illustrations must be either clearly framed as hypothetical/analogy ("imagine...", "a farmer who...") or verifiably true and commonly known. NEVER invent quotes, statistics, or historical anecdotes presented as fact. No invented named people.
-4. Broadly orthodox, non-denominational Christian posture. Avoid partisan politics and denominationally contentious claims (e.g. modes of baptism, predestination debates) unless the thread explicitly invites them.
+4. Broadly orthodox, non-denominational Christian posture. Cover the full breadth of what Scripture says about the thread's subject, including its demanding and stirring parts, not only the gentlest reading. Where Christians genuinely disagree (e.g. baptism, predestination, which spiritual gifts continue today), you may describe the question and the views Christians have held, but never decide it for the reader. Avoid partisan politics.
 5. Challenge entries question the user's framing honestly but pastorally — hard questions, not harsh ones. Never mock, never shame.
 6. Use the World English Bible naming: "Psalms" (not "Psalm") as the book name in references.
 7. cross_refs is a citation list shown to the reader as a footnote, not a decoration. Include a passage there ONLY if it genuinely informed what you wrote — a passage that gave the main text its context, or one whose idea you actually used. An empty list is the correct answer most of the time. Never list a passage you have not thought about, never list one merely because it shares a keyword, and never list the main passage again. Every reference is checked against the World English Bible before the reader sees it, and anything that does not exist is silently discarded — so a half-remembered reference costs you the citation.
@@ -1250,7 +1420,7 @@ async function validateCrossRefs(
 // --------------------------------------------------------- prompt builder
 
 // deno-lint-ignore no-explicit-any
-function buildUserPrompt(topic: any, recent: any[], usedRefs: string[], notes: any[], entryType: string, blockedRecent: string[], usedSongs: string[], quotes: QuoteCandidate[] = []) {
+function buildUserPrompt(topic: any, recent: any[], usedRefs: string[], notes: any[], entryType: string, blockedRecent: string[], usedSongs: string[], quotes: QuoteCandidate[] = [], facet: Facet | null = null) {
   const recentBlock = recent.length
     ? recent.map((e) =>
         `- ${e.date} [${e.entry_type}] ${e.verse_ref}: ${String(e.thought).slice(0, 160)}...`,
@@ -1274,12 +1444,22 @@ Do not build today's entry around this passage. Use it only to understand where 
     : `SONGS ALREADY USED IN THIS THREAD (do not repeat any of these):
 ${usedSongs.length ? usedSongs.map((t) => `- ${t}`).join("\n") : "(none yet)"}`;
 
+  // Naming the facet would expose the machinery the same way the fabricated
+  // day count did: the reader is meant to see an entry, not a scheme.
+  const facetBlock = facet
+    ? `TODAY'S SIDE OF THIS THREAD: ${facet.label}
+${facet.brief}
+Write today's entry about THIS side specifically. Do not try to cover the whole subject — the other sides get their own days. Never name this side, number it, or hint in any way that the thread has been divided up.`
+    : `TODAY'S SIDE OF THIS THREAD: (none set — cover the thread as the person described it)`;
+
   return `THREAD: ${topic.title}
 USER'S OWN WORDS ABOUT IT: ${topic.description || "(none provided)"}
 
 ${originBlock}
 
 ENTRY TYPE FOR TODAY: ${entryType}
+
+${facetBlock}
 
 LAST ENTRIES (for continuity — do not repeat their angle or verses. The dates order these lines and nothing more: they do not tell you when this thread began or how long it has run, and must never be turned into a statement about elapsed time):
 ${recentBlock}
@@ -1329,6 +1509,12 @@ interface EntryContext {
    * was shown. Empty means the tool carries no quote_id property at all.
    */
   quoteIds: string[];
+  /**
+   * topic_themes.facets[].slug this entry is being written against, or null
+   * when the thread has no facets yet. Stamped onto daily_entries.facet so
+   * the next pick can rotate past it.
+   */
+  facet: string | null;
 }
 
 /** Gather everything needed to ask for one entry. Null when it already exists. */
@@ -1419,7 +1605,12 @@ async function buildContext(
     quotes = await quoteSlate(db, themeRow?.theme_id ?? null, usedQuoteIds);
   }
 
-  const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedForPrompt, usedSongs, quotes);
+  // Facet rotation. Live path only — if tryPool() serves this day instead,
+  // none of this is reached and the entry is correctly left facet-less.
+  const facets = await ensureFacets(db, topic);
+  const facet = await pickFacet(db, topicId, facets);
+
+  const userPrompt = buildUserPrompt(topic, recent ?? [], usedRefs, notes ?? [], entryType, blockedForPrompt, usedSongs, quotes, facet);
 
   return {
     topicId,
@@ -1429,6 +1620,7 @@ async function buildContext(
     messages: [{ role: "user", content: userPrompt }],
     blocked: [...new Set([...usedRefs, ...blockedForPrompt])],
     quoteIds: quotes.map((q) => q.id),
+    facet: facet?.slug ?? null,
   };
 }
 
@@ -1557,6 +1749,7 @@ async function finalizeEntry(
     ponder: p.ponder,
     prayer_prompts: p.prayer_prompts,
     entry_type: entryType,
+    facet: ctx.facet,
     fallback_used: fallbackUsed,
     cross_refs: crossRefs,
     song,
@@ -1962,6 +2155,7 @@ async function submitBatch(
     // all, so the nightly bill scales with the number of THEMES, not the
     // number of users.
     await ensureTheme(db, topic);
+    await ensureFacets(db, topic);
     if (await tryPool(db, ctx.topicId, ctx.date, ctx.entryType)) {
       pooled++;
       continue;
@@ -1986,7 +2180,11 @@ async function submitBatch(
       // quote_ids rides along for the same reason: the slate the model was
       // actually shown is a submit-time fact, and a fresh roll at collect
       // time would report a different one in the quote_dropped log.
-      detail: { blocked: ctx.blocked, quote_ids: ctx.quoteIds },
+      //
+      // facet rides along too: it was chosen at submit time and is already
+      // baked into the prompt the model was sent, so re-picking it at collect
+      // time could stamp the row with a side the entry is not about.
+      detail: { blocked: ctx.blocked, quote_ids: ctx.quoteIds, facet: ctx.facet },
     });
   }
 
@@ -2080,6 +2278,10 @@ async function fetchBatchResults(resultsUrl: string) {
  * repairs are a small fraction of entries, and a batch failure otherwise
  * means the user simply has no entry that day.
  */
+/** finalizeEntry's own shapes, plus the `source` the pool fallback adds. */
+type BatchOutcome =
+  Awaited<ReturnType<typeof finalizeEntry>> & { source?: string; error?: string };
+
 async function collectBatches(db: SupabaseClient) {
   const { data: open, error } = await db.from("generation_batches")
     .select("id, provider_batch_id, request_count")
@@ -2150,6 +2352,9 @@ async function collectBatches(db: SupabaseClient) {
         // Absent on items submitted before this shipped — an empty slate is
         // the correct reading of those: they were never offered a quote.
         quoteIds: ((item.detail as { quote_ids?: string[] })?.quote_ids) ?? [],
+        // Absent on items submitted before this shipped — null is the correct
+        // reading of those: they were written without a facet.
+        facet: ((item.detail as { facet?: string | null })?.facet) ?? null,
       };
 
       const result = results.get(item.custom_id as string);
@@ -2206,14 +2411,24 @@ async function collectBatches(db: SupabaseClient) {
         }
       }
 
-      let outcome = await finalizeEntry(db, topic, ctx, payload, modelUsed);
+      // PRE-EXISTING TYPE HOLE, made explicit rather than fixed here:
+      // finalizeEntry() has an inferred return type, and the pool-fallback
+      // branch below adds a `source` key none of its three return shapes
+      // declare. `deno check` rejects it; `supabase functions deploy` never
+      // type-checks, which is why it has shipped. The real fix is an explicit
+      // return type on finalizeEntry — out of scope for the facet change.
+      let outcome: BatchOutcome =
+        await finalizeEntry(db, topic, ctx, payload, modelUsed) as BatchOutcome;
       if (outcome.status === "failed" && outcome.error === "verse_unresolved") {
         // Writing discarded with its unresolvable verse — take a pool entry
         // rather than leaving the reader with nothing.
         const other = ctx.entryType === "challenge" ? "affirming" : "challenge";
         if (await tryPool(db, ctx.topicId, ctx.date, ctx.entryType) ||
             await tryPool(db, ctx.topicId, ctx.date, other)) {
-          outcome = { topic_id: ctx.topicId, status: "created", date: ctx.date, source: "pool_fallback" };
+          outcome = {
+            topic_id: ctx.topicId, status: "created", date: ctx.date,
+            source: "pool_fallback",
+          } as BatchOutcome;
         }
       }
       if (outcome.status === "created") inserted++;
