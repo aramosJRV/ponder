@@ -27,6 +27,13 @@
 import { createClient, SupabaseClient } from "npm:@supabase/supabase-js@2";
 import * as jose from "npm:jose@5";
 import { resolveSong, type Song, spotifyConfigured } from "./spotify.ts";
+import {
+  type Meditation,
+  MEDITATION_TRANSLATIONS,
+  type MeditationTexts,
+  meditationRequest,
+  parseMeditation,
+} from "./meditation.ts";
 
 // ---------------------------------------------------------------- config
 
@@ -1337,6 +1344,51 @@ function anchorVerseQuestion(
   return { question: vq.question };
 }
 
+/**
+ * Meditate phrases — see meditation.ts for the prompt and the verification.
+ * This wrapper only fetches the three translations, makes the call and
+ * records the spend. Every failure path returns null and the entry ships
+ * without Meditate; the client then opens straight onto the questions.
+ */
+async function writeMeditation(
+  db: SupabaseClient,
+  verseRef: string,
+  coords: { book_number: number; chapter: number; verse_start: number; verse_end: number },
+  model: string,
+  ledgerDetail: Record<string, unknown>,
+): Promise<Meditation | null> {
+  try {
+    const texts: MeditationTexts = {};
+    for (const t of MEDITATION_TRANSLATIONS) {
+      const { data, error } = await db.rpc("passage_text", {
+        p_book_number: coords.book_number,
+        p_chapter: coords.chapter,
+        p_verse_start: coords.verse_start,
+        p_verse_end: coords.verse_end,
+        p_translation: t,
+      });
+      if (!error && typeof data === "string" && data.trim()) texts[t] = data;
+    }
+    if (!Object.keys(texts).length) return null;
+
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: anthropicHeaders(),
+      body: JSON.stringify(meditationRequest(model, verseRef, texts)),
+    });
+    if (!res.ok) throw new Error(`Anthropic API ${res.status}`);
+    const data = await res.json();
+    await recordSpend(db, "meditation", model, (data.usage ?? {}) as Usage, {
+      detail: ledgerDetail,
+    });
+    const toolUse = (data.content ?? []).find((b: { type: string }) => b.type === "tool_use");
+    return parseMeditation(toolUse?.input, texts);
+  } catch (e) {
+    console.warn(`writeMeditation: ${e instanceof Error ? e.message : String(e)}`);
+    return null;
+  }
+}
+
 // Shape-only pass, same posture as parseCrossRefs. A bad song must never
 // fail the entry — it is dropped later if Spotify can't confirm it.
 function parseSong(x: unknown): { title: string; artist: string } | null {
@@ -1758,6 +1810,12 @@ async function finalizeEntry(
       db, mainRef, verseText, entryType, MODEL_AFFIRMING,
       { topic_id: topicId, path: "live" },
     ),
+    meditation: await writeMeditation(
+      db, mainRef,
+      { book_number: verses[0].book_number, chapter: p.chapter, verse_start: p.verse_start, verse_end: p.verse_end },
+      MODEL_AFFIRMING,
+      { topic_id: topicId, path: "live" },
+    ),
   });
   if (insErr) {
     if (insErr.code === "23505") return { topic_id: topicId, status: "exists", date };
@@ -2058,6 +2116,12 @@ async function buildPool(
         // broken for exactly the users who never hit live generation.
         verse_question: await writeVerseQuestion(
           db, ref, verses.map((v) => v.text).join(" "), slot.entryType, MODEL_AFFIRMING,
+          { theme: slot.theme.slug, path: "pool" },
+        ),
+        meditation: await writeMeditation(
+          db, ref,
+          { book_number: verses[0].book_number, chapter: payload.chapter, verse_start: payload.verse_start, verse_end: payload.verse_end },
+          MODEL_AFFIRMING,
           { theme: slot.theme.slug, path: "pool" },
         ),
         model,
