@@ -64,6 +64,12 @@ Order: backend/migration first, app build second.
   doesn't have yet (e.g. `profiles.text_scale`) fails the whole query.
 - Migrations have been run by hand in the SQL editor before. Check
   `supabase migration list --linked` AND that the objects exist.
+- Verse walk (code name "Meditate", never shown to readers): phrases live in
+  `daily_entries.meditation` / `entry_pool.meditation`, keyed by translation.
+  Picked in `generate-entry/meditation.ts` (Sonnet via `MODEL_MEDITATION`)
+  and kept only if verbatim in that translation. The 1,845 pool entries
+  built before 26 Sep 2026 have none, by Antonio's choice (no backfill).
+  `scripts/meditation-preview.ts` previews picks without writing anything.
 - `generate-entry` imports `spotify.ts`; song lookup is dormant until
   `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` secrets are set.
 - Old build artefacts clutter the root (`vite.config.ts.timestamp-*`, deploy
