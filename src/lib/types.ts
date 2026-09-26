@@ -152,6 +152,15 @@ export interface DailyEntry {
    * treat absence as ordinary rather than as an error.
    */
   quote?: Quote | null;
+  /**
+   * Meditate phrases, keyed by translation, walked one at a time before the
+   * ponder questions. Every string was sliced out of bible_verses text
+   * server-side after an exact match, so it is always found verbatim in that
+   * translation's passage. A translation is simply missing when its phrases
+   * did not verify. Null on every entry generated before this shipped — no
+   * backfill — so absence is the normal case: skip straight to the questions.
+   */
+  meditation?: Partial<Record<Translation, string[]>> | null;
   created_at: string;
 }
 

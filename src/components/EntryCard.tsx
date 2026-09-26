@@ -148,6 +148,8 @@ export default function EntryCard({
 
       <PonderFlow
         entry={entry}
+        translation={translation}
+        passageText={passage.status === "ready" ? passage.text : null}
         notes={notes}
         offline={notesOffline}
         onNoteAdded={onNoteAdded}
