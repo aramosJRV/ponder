@@ -23,13 +23,19 @@ const MODEL = Deno.env.get("ANTHROPIC_MODEL_AFFIRMING") ?? "claude-haiku-4-5-202
 const COUNT = Number(Deno.args[0] ?? 8);
 
 async function sql(query: string): Promise<Record<string, unknown>[]> {
+  // Pin the format: the CLI prints a table to a person's terminal and a
+  // wrapped object to an agent, and this script is run by both.
   const out = await new Deno.Command("supabase", {
-    args: ["db", "query", "--linked", query],
+    args: ["db", "query", "--linked", "--agent", "no", "-o", "json", query],
     stdout: "piped",
-    stderr: "null",
+    stderr: "piped",
   }).output();
   const txt = new TextDecoder().decode(out.stdout);
-  return JSON.parse(txt.slice(txt.indexOf("{"))).rows ?? [];
+  const start = txt.indexOf("[");
+  if (!out.success || start < 0) {
+    throw new Error(`supabase db query failed:\n${new TextDecoder().decode(out.stderr)}${txt}`);
+  }
+  return JSON.parse(txt.slice(start));
 }
 
 const passages = await sql(
