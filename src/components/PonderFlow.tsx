@@ -376,11 +376,10 @@ function Meditate({
 
   return (
     <div className="flex min-h-[calc(360px*var(--font-scale))] flex-col rounded-2xl border border-hairline bg-surface px-5 pb-5 pt-5 shadow-[0_2px_10px_rgba(31,27,22,0.04)]">
-      <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">
-        Meditate
-        <span className="ml-2 font-normal normal-case tracking-normal">
-          {verseRef} · {translation}
-        </span>
+      {/* No name of its own: to the reader this is simply how pondering
+          begins, under the section's "To ponder" heading. */}
+      <p className="text-xs text-muted">
+        {verseRef} · {translation}
       </p>
 
       {phrase ? (
