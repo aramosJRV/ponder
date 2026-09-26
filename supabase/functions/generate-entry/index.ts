@@ -1786,6 +1786,21 @@ async function finalizeEntry(
     }
   } catch { /* a quote is decoration; an entry without one is still an entry */ }
 
+  // Both second passes read the settled passage and nothing else, so they
+  // run side by side: someone is waiting on this path.
+  const [verseQuestion, meditation] = await Promise.all([
+    writeVerseQuestion(
+      db, mainRef, verseText, entryType, MODEL_AFFIRMING,
+      { topic_id: topicId, path: "live" },
+    ),
+    writeMeditation(
+      db, mainRef,
+      { book_number: verses[0].book_number, chapter: p.chapter, verse_start: p.verse_start, verse_end: p.verse_end },
+      MODEL_AFFIRMING,
+      { topic_id: topicId, path: "live" },
+    ),
+  ]);
+
   const { error: insErr } = await db.from("daily_entries").insert({
     topic_id: topicId,
     user_id: userId,
@@ -1806,16 +1821,8 @@ async function finalizeEntry(
     cross_refs: crossRefs,
     song,
     quote,
-    verse_question: await writeVerseQuestion(
-      db, mainRef, verseText, entryType, MODEL_AFFIRMING,
-      { topic_id: topicId, path: "live" },
-    ),
-    meditation: await writeMeditation(
-      db, mainRef,
-      { book_number: verses[0].book_number, chapter: p.chapter, verse_start: p.verse_start, verse_end: p.verse_end },
-      MODEL_AFFIRMING,
-      { topic_id: topicId, path: "live" },
-    ),
+    verse_question: verseQuestion,
+    meditation,
   });
   if (insErr) {
     if (insErr.code === "23505") return { topic_id: topicId, status: "exists", date };
@@ -2096,6 +2103,22 @@ async function buildPool(
       }
 
       const ref = displayRef(payload.book, payload.chapter, payload.verse_start, payload.verse_end);
+      // Same second passes as the live path. Miss either and every pooled
+      // entry silently lands without it, so the feature looks broken for
+      // exactly the users who never hit live generation. Side by side, so
+      // the extra pass adds almost nothing to a run under the wall-clock limit.
+      const [verseQuestion, meditation] = await Promise.all([
+        writeVerseQuestion(
+          db, ref, verses.map((v) => v.text).join(" "), slot.entryType, MODEL_AFFIRMING,
+          { theme: slot.theme.slug, path: "pool" },
+        ),
+        writeMeditation(
+          db, ref,
+          { book_number: verses[0].book_number, chapter: payload.chapter, verse_start: payload.verse_start, verse_end: payload.verse_end },
+          MODEL_AFFIRMING,
+          { theme: slot.theme.slug, path: "pool" },
+        ),
+      ]);
       const { error } = await db.from("entry_pool").insert({
         theme_id: slot.theme.id,
         day_index: dayIndex,
@@ -2111,19 +2134,8 @@ async function buildPool(
         ponder: payload.ponder,
         prayer_prompts: payload.prayer_prompts,
         quote,
-        // Same second pass as the live path. Miss this and every pooled entry
-        // silently lands with a null anchored question, so the feature looks
-        // broken for exactly the users who never hit live generation.
-        verse_question: await writeVerseQuestion(
-          db, ref, verses.map((v) => v.text).join(" "), slot.entryType, MODEL_AFFIRMING,
-          { theme: slot.theme.slug, path: "pool" },
-        ),
-        meditation: await writeMeditation(
-          db, ref,
-          { book_number: verses[0].book_number, chapter: payload.chapter, verse_start: payload.verse_start, verse_end: payload.verse_end },
-          MODEL_AFFIRMING,
-          { theme: slot.theme.slug, path: "pool" },
-        ),
+        verse_question: verseQuestion,
+        meditation,
         model,
       });
       if (error) {
