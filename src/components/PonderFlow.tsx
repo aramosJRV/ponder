@@ -427,7 +427,7 @@ function Meditate({
             }
           >
             {at === -1
-              ? "Read it slowly once. Then we\u2019ll walk through it a piece at a time."
+              ? "Read it slowly once. Then we\u2019ll pause on a few of its words, one at a time. Stay with each and notice what it stirs in you."
               : "Now read it once more, whole."}
           </p>
         </>
