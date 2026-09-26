@@ -158,17 +158,19 @@ export default function PonderFlow({
     savePonderProgress(entry.id, { ...prev, begun: true, showAll: true });
   }, [entry.id]);
 
+  const phrases = entry.meditation?.[translation];
+  const canWalk = !!passageText && !!phrases && phrases.length >= 2;
+
   const begin = useCallback(() => {
-    const phrases = entry.meditation?.[translation];
-    if (!passageText || !phrases || phrases.length < 2) {
+    if (!canWalk) {
       goTo(0);
       return;
     }
     // The gate is spent the moment it is accepted (rule 4), walk or no walk.
     const prev = loadPonderProgress(entry.id);
     savePonderProgress(entry.id, { ...prev, begun: true, showAll: false });
-    setWalk({ phrases, text: passageText, translation });
-  }, [entry.id, entry.meditation, translation, passageText, goTo]);
+    setWalk({ phrases: phrases!, text: passageText!, translation });
+  }, [canWalk, entry.id, phrases, translation, passageText, goTo]);
 
   const accent = challenge ? "rust" : "moss";
 
@@ -201,6 +203,7 @@ export default function PonderFlow({
       ) : step === -1 ? (
         <Gate
           count={questions.length}
+          withVerse={canWalk}
           accent={accent}
           onBegin={begin}
           onShowAll={openShowAll}
@@ -287,16 +290,20 @@ function Pips({
  */
 function Gate({
   count,
+  withVerse,
   accent,
   onBegin,
   onShowAll,
 }: {
   count: number;
+  /** Begin opens the verse walk first. The copy says so rather than surprise. */
+  withVerse: boolean;
   accent: string;
   onBegin: () => void;
   onShowAll: () => void;
 }) {
   const word = COUNT_WORD[count] ?? String(count);
+  const Word = `${word[0].toUpperCase()}${word.slice(1)}`;
   return (
     <div
       className={`rounded-2xl border border-dashed px-6 py-7 text-center ${
@@ -307,7 +314,9 @@ function Gate({
         Ready to ponder?
       </p>
       <p className="mx-auto mt-2.5 max-w-[calc(270px*var(--font-scale))] text-sm leading-relaxed text-muted">
-        {count === 1 ? "One question." : `${word[0].toUpperCase()}${word.slice(1)} questions, one at a time.`}
+        {withVerse
+          ? `The verse, then ${word} question${count === 1 ? "" : "s"}.`
+          : count === 1 ? "One question." : `${Word} questions, one at a time.`}
         <br />
         Stay with {count === 1 ? "it" : "each"} until it&rsquo;s finished with you.
       </p>
