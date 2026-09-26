@@ -25,14 +25,16 @@ export type MeditationTexts = Partial<Record<MeditationTranslation, string>>;
 /** A translation with fewer verified phrases than this gets no Meditate. */
 const MIN_PHRASES = 2;
 const MAX_PHRASES = 6;
-const MAX_WORDS = 8;
+/** The prompt asks for one to four; this is the guard, with a little give. */
+const MAX_WORDS = 6;
 
 const PHRASES_SCHEMA = {
   type: "array",
   items: { type: "string" },
   description:
-    "Three to five phrases COPIED CHARACTER FOR CHARACTER from this translation's text, in the order " +
-    "the reader should dwell on them. Not a paraphrase, not modernised, no ellipsis.",
+    "Three to five phrases of one to four words each, COPIED CHARACTER FOR CHARACTER from this " +
+    "translation's text, in the order the reader should dwell on them. The first is a single word. " +
+    "Not a paraphrase, not modernised, no ellipsis.",
 };
 
 const TOOL = {
@@ -46,18 +48,30 @@ const TOOL = {
   },
 };
 
+// Measured 26 Sep 2026: with only "one to six words" and "begin small",
+// Haiku returned whole clauses ("you shall not harden your heart" -> "nor
+// shut your hand from your poor brother") and never a single word, which
+// chops the verse up instead of slowing it down. Hence hard numbers, the
+// explicit widening rule and the worked example.
 const SYSTEM =
-  "You guide a slow, meditative reading of a Bible passage. The reader will see one phrase at a " +
-  "time, alone on the screen, and stay with it before moving on. Nothing else is shown with it.\n\n" +
-  "Choose three to five phrases from the passage that are worth pausing on. Walk the reader " +
-  "through it: begin small — often a single weighty word — and let later phrases widen or move on " +
-  "(\"Trust\", then \"Trust in the LORD\", then \"with all your heart\"). Follow the order of the " +
-  "passage. Prefer the words that carry the weight; skip connective filler. Each phrase is one to " +
-  "six words.\n\n" +
+  "You guide a slow, meditative reading of a Bible passage. The reader sees one phrase at a time, " +
+  "alone on the screen, and stays with it before moving on. Nothing else is shown with it. The point " +
+  "is to slow down on a few words, not to cover the passage.\n\n" +
+  "Choose three to five SHORT phrases to pause on:\n" +
+  "- Each phrase is ONE TO FOUR WORDS. Never a whole clause or sentence.\n" +
+  "- The first phrase is a single word: the weightiest word in the passage.\n" +
+  "- The walk widens at least once: a later phrase contains the one before it and adds a few words " +
+  "(\"Trust\", then \"Trust in the LORD\").\n" +
+  "- Then move on through the passage in order, picking the few words that carry the weight in each " +
+  "part. Skip filler such as \"and\", \"for\", \"that\", \"therefore\".\n" +
+  "- In a long passage, do not try to cover everything. Pick the moments most worth stopping on.\n\n" +
+  "Example. Proverbs 3:5 (BSB): \"Trust in the LORD with all your heart, and lean not on your own " +
+  "understanding;\" -> [\"Trust\", \"Trust in the LORD\", \"all your heart\", \"lean not\", " +
+  "\"your own understanding\"]\n\n" +
   "You are given the same passage in three translations. For EACH translation, copy its phrases " +
   "CHARACTER FOR CHARACTER from that translation's text, exactly as it appears, including spelling " +
-  "and capitalisation. Do not modernise, paraphrase or tidy. Keep the three walks parallel — the " +
-  "same moments of the passage in each — but each list must come only from its own text.";
+  "and capitalisation. Do not modernise, paraphrase or tidy. Keep the three walks parallel (the same " +
+  "moments of the passage in each), but each list must come only from its own text.";
 
 /** Messages API request body. Translations missing from `texts` are named as absent. */
 export function meditationRequest(model: string, verseRef: string, texts: MeditationTexts) {
