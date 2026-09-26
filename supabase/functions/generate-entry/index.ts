@@ -63,6 +63,13 @@ const MODEL_CHALLENGE =
 const MODEL_AFFIRMING =
   Deno.env.get("ANTHROPIC_MODEL_AFFIRMING") ?? "claude-haiku-4-5-20251001";
 
+/** Meditate phrases. Sonnet, not Haiku: on 26 Sep 2026 Haiku ran phrases
+ *  together ("lean on your own understanding", losing the WEB's "don't")
+ *  where Sonnet walked Proverbs 3:5 word for word as intended. ~3x the cost
+ *  of the Haiku pass, about $9 a month at current volume. */
+const MODEL_MEDITATION =
+  Deno.env.get("ANTHROPIC_MODEL_MEDITATION") ?? "claude-sonnet-4-6";
+
 /** Set ANTHROPIC_MODEL to pin both paths to one model (e.g. to A/B quality). */
 const MODEL_OVERRIDE = Deno.env.get("ANTHROPIC_MODEL");
 
@@ -1796,7 +1803,7 @@ async function finalizeEntry(
     writeMeditation(
       db, mainRef,
       { book_number: verses[0].book_number, chapter: p.chapter, verse_start: p.verse_start, verse_end: p.verse_end },
-      MODEL_AFFIRMING,
+      MODEL_MEDITATION,
       { topic_id: topicId, path: "live" },
     ),
   ]);
@@ -2115,7 +2122,7 @@ async function buildPool(
         writeMeditation(
           db, ref,
           { book_number: verses[0].book_number, chapter: payload.chapter, verse_start: payload.verse_start, verse_end: payload.verse_end },
-          MODEL_AFFIRMING,
+          MODEL_MEDITATION,
           { theme: slot.theme.slug, path: "pool" },
         ),
       ]);
