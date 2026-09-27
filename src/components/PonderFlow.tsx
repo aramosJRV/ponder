@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { DailyEntry, Note, Translation } from "../lib/types";
+import type { DailyEntry, Note } from "../lib/types";
 import { useContentLevel } from "../lib/contentLevel";
 import { addNote } from "../lib/api";
 import { loadPonderProgress, savePonderProgress } from "../lib/ponderProgress";
@@ -40,14 +40,8 @@ import { loadPonderProgress, savePonderProgress } from "../lib/ponderProgress";
  *    From it every question is one tap away, notes and composer included.
  *    See lib/ponderProgress.ts.
  *
- * 5. MEDITATE IS PART OF THE INVITATION (26 Sep 2026). When the entry
- *    carries verified phrases for the translation on screen, "Begin" first
- *    walks the passage one phrase at a time, then lands on question one.
- *    It inherits rules 1–4: "Skip to questions" is on every screen, the
- *    only pacing is the reader's tap, nothing is counted, and it is offered
- *    only from the gate — so a return visit, or Brief (which skips the
- *    gate), never walks it again. Tapping Begin spends the gate, so leaving
- *    mid-walk and coming back lands on question one.
+ * The verse walk used to open this flow behind "Begin" (26 Sep 2026). It
+ * moved to the verse hero on 28 Sep — see VerseWalkSheet.
  *
  * Navigation is three redundant affordances over the same move, because the
  * pips already promised a carousel and only the strip delivered one: swipe
@@ -78,18 +72,12 @@ function resumeStep(entryId: string, level: number, count: number): number {
 
 export default function PonderFlow({
   entry,
-  translation,
-  passageText,
   notes,
   offline = false,
   onNoteAdded,
   challenge,
 }: {
   entry: DailyEntry;
-  /** The version on screen in the hero. Meditate walks that version's phrases. */
-  translation: Translation;
-  /** That version's passage text once loaded; null while loading or missing. */
-  passageText: string | null;
   notes: Note[];
   offline?: boolean;
   /** Omit to render read-only — no note affordances. */
@@ -118,15 +106,9 @@ export default function PonderFlow({
   const [step, setStep] = useState<number>(() => resumeStep(entry.id, level, questions.length));
   const [showAll, setShowAll] = useState(() => loadPonderProgress(entry.id).showAll);
 
-  // The walk in progress, or null. Pinned when Begin is tapped — phrases,
-  // text and version together — so switching the hero's version tab mid-walk
-  // cannot swap the list out from under the reader.
-  const [walk, setWalk] = useState<Walk | null>(null);
-
   useEffect(() => {
     setStep(resumeStep(entry.id, level, questions.length));
     setShowAll(loadPonderProgress(entry.id).showAll);
-    setWalk(null);
   }, [entry.id, level, questions.length]);
 
   // Progress is written at the transition, never from an effect watching
@@ -139,7 +121,6 @@ export default function PonderFlow({
   const goTo = useCallback(
     (i: number) => {
       setShowAll(false);
-      setWalk(null);
       setStep(i);
       const prev = loadPonderProgress(entry.id);
       savePonderProgress(entry.id, {
@@ -152,25 +133,10 @@ export default function PonderFlow({
   );
 
   const openShowAll = useCallback(() => {
-    setWalk(null);
     setShowAll(true);
     const prev = loadPonderProgress(entry.id);
     savePonderProgress(entry.id, { ...prev, begun: true, showAll: true });
   }, [entry.id]);
-
-  const phrases = entry.meditation?.[translation];
-  const canWalk = !!passageText && !!phrases && phrases.length >= 2;
-
-  const begin = useCallback(() => {
-    if (!canWalk) {
-      goTo(0);
-      return;
-    }
-    // The gate is spent the moment it is accepted (rule 4), walk or no walk.
-    const prev = loadPonderProgress(entry.id);
-    savePonderProgress(entry.id, { ...prev, begun: true, showAll: false });
-    setWalk({ phrases: phrases!, text: passageText!, translation });
-  }, [canWalk, entry.id, phrases, translation, passageText, goTo]);
 
   const accent = challenge ? "rust" : "moss";
 
@@ -180,7 +146,7 @@ export default function PonderFlow({
     <section className="mt-8">
       <div className="mb-3 flex items-baseline justify-between">
         <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-muted">To ponder</h2>
-        {!showAll && !walk && step >= 0 && (
+        {!showAll && step >= 0 && (
           <Pips total={questions.length} at={step} accent={accent} onJump={goTo} />
         )}
       </div>
@@ -193,19 +159,11 @@ export default function PonderFlow({
           onOneAtATime={() => goTo(0)}
           onOpen={goTo}
         />
-      ) : walk ? (
-        <Meditate
-          walk={walk}
-          verseRef={entry.verse_ref}
-          accent={accent}
-          onDone={() => goTo(0)}
-        />
       ) : step === -1 ? (
         <Gate
           count={questions.length}
-          withVerse={canWalk}
           accent={accent}
-          onBegin={begin}
+          onBegin={() => goTo(0)}
           onShowAll={openShowAll}
         />
       ) : step >= questions.length ? (
@@ -290,14 +248,11 @@ function Pips({
  */
 function Gate({
   count,
-  withVerse,
   accent,
   onBegin,
   onShowAll,
 }: {
   count: number;
-  /** Begin opens the verse walk first. The copy says so rather than surprise. */
-  withVerse: boolean;
   accent: string;
   onBegin: () => void;
   onShowAll: () => void;
@@ -314,9 +269,7 @@ function Gate({
         Ready to ponder?
       </p>
       <p className="mx-auto mt-2.5 max-w-[calc(270px*var(--font-scale))] text-sm leading-relaxed text-muted">
-        {withVerse
-          ? `The verse, then ${word} question${count === 1 ? "" : "s"}.`
-          : count === 1 ? "One question." : `${Word} questions, one at a time.`}
+        {count === 1 ? "One question." : `${Word} questions, one at a time.`}
         <br />
         Stay with {count === 1 ? "it" : "each"} until it&rsquo;s finished with you.
       </p>
@@ -337,135 +290,6 @@ function Gate({
         Show all {count === 1 ? "of it" : word} instead
       </button>
     </div>
-  );
-}
-
-type Walk = { phrases: string[]; text: string; translation: Translation };
-
-/**
- * Meditate: the passage, then one phrase at a time, then the passage again.
- *
- * Phrase only — no commentary under it. The reader brings the thought; a
- * line of ours would tell them what to see before they had looked.
- *
- * The passage stays faded above each phrase with that phrase picked out, so
- * the reader never loses where in the verse they are. Phrases are verbatim
- * slices of this version's text (see generate-entry/meditation.ts), so the
- * indexOf always lands; if it ever did not, the passage just shows unmarked.
- *
- * Same 420ms entrance guard as Question, for the same reason and no other:
- * it stops a double tap eating a phrase. It is not a timer (rule 2).
- */
-function Meditate({
-  walk,
-  verseRef,
-  accent,
-  onDone,
-}: {
-  walk: Walk;
-  verseRef: string;
-  accent: string;
-  onDone: () => void;
-}) {
-  const { phrases, text, translation } = walk;
-  const last = phrases.length;
-  // -1 = the whole passage, read once; 0..last-1 = one phrase; last = whole again.
-  const [at, setAt] = useState(-1);
-  const [locked, setLocked] = useState(true);
-
-  useEffect(() => {
-    setLocked(true);
-    const t = setTimeout(() => setLocked(false), 420);
-    return () => clearTimeout(t);
-  }, [at]);
-
-  const fill = accent === "rust" ? "bg-rust" : "bg-moss";
-  const line = accent === "rust" ? "text-rust" : "text-moss";
-  const phrase = at >= 0 && at < last ? phrases[at] : null;
-
-  return (
-    <div className="flex min-h-[calc(360px*var(--font-scale))] flex-col rounded-2xl border border-hairline bg-surface px-5 pb-5 pt-5 shadow-[0_2px_10px_rgba(31,27,22,0.04)]">
-      {/* No name of its own: to the reader this is simply how pondering
-          begins, under the section's "To ponder" heading. */}
-      <p className="text-xs text-muted">
-        {verseRef} · {translation}
-      </p>
-
-      {phrase ? (
-        <>
-          <p className="mt-4 font-display text-base leading-snug text-ink/35">
-            <Marked text={text} phrase={phrase} className={line} />
-          </p>
-          <p
-            key={at}
-            className="animate-rise my-auto py-8 font-display text-3xl font-medium leading-tight [text-wrap:balance]"
-          >
-            {phrase[0].toUpperCase() + phrase.slice(1)}
-          </p>
-          <div className="mb-4 flex justify-center gap-1.5" aria-hidden="true">
-            {phrases.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1.5 w-1.5 rounded-full ${i === at ? fill : "bg-hairline"}`}
-              />
-            ))}
-          </div>
-        </>
-      ) : (
-        <>
-          <p
-            key={at}
-            className="animate-rise my-auto py-6 font-display text-2xl leading-snug"
-          >
-            {text}
-          </p>
-          <p
-            className={
-              at === -1
-                ? "mb-4 text-sm leading-relaxed text-muted"
-                : "mb-4 font-display text-xl italic leading-snug text-muted"
-            }
-          >
-            {at === -1
-              ? "Read it slowly once. Then we\u2019ll pause on a few of its words, one at a time. Stay with each and notice what it stirs in you."
-              : "Now read it once more, whole."}
-          </p>
-        </>
-      )}
-
-      <button
-        type="button"
-        disabled={locked}
-        onClick={() => (at >= last ? onDone() : setAt(at + 1))}
-        className={`pressable min-h-[48px] w-full rounded-2xl text-base font-bold tracking-wide text-paper transition-opacity ${fill} ${
-          locked ? "opacity-60" : "opacity-100"
-        }`}
-      >
-        {at >= last ? "On to the questions" : "Continue"}
-      </button>
-      {at < last && (
-        <button
-          type="button"
-          onClick={onDone}
-          className="mt-2 w-full py-2.5 text-sm text-muted underline underline-offset-[3px]"
-        >
-          Skip to questions
-        </button>
-      )}
-    </div>
-  );
-}
-
-/** `text` with the first occurrence of `phrase` picked out. */
-function Marked({ text, phrase, className }: { text: string; phrase: string; className: string }) {
-  const i = text.indexOf(phrase);
-  if (i < 0) return <>{text}</>;
-  return (
-    <>
-      {text.slice(0, i)}
-      <span className={`font-semibold ${className}`}>{phrase}</span>
-      {text.slice(i + phrase.length)}
-    </>
   );
 }
 

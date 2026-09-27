@@ -11,6 +11,8 @@ import {
 import type { PassageState } from "../lib/translations";
 import PassageContextSheet from "./PassageContextSheet";
 import PonderFlow from "./PonderFlow";
+import VerseWalkSheet from "./VerseWalkSheet";
+import type { Walk } from "./VerseWalkSheet";
 import ReportButton from "./ReportButton";
 
 /**
@@ -46,12 +48,14 @@ export default function EntryCard({
   const level = useContentLevel();
   const [expanded, setExpanded] = useState(false);
   const [contextOpen, setContextOpen] = useState(false);
+  const [walk, setWalk] = useState<Walk | null>(null);
 
   // A new entry starts folded again — otherwise switching threads on Today
   // carries the previous card's expanded state across.
   useEffect(() => {
     setExpanded(false);
     setContextOpen(false);
+    setWalk(null);
   }, [entry.id]);
 
   // Which version this card is showing right now. Seeded from the standing
@@ -67,6 +71,14 @@ export default function EntryCard({
   }, [entry.id, preferred]);
 
   const passage = usePassage(entry, translation);
+
+  // The verse walk is offered only for a version whose phrases were verified
+  // against its own text, and only once that text is on screen.
+  const phrases = entry.meditation?.[translation];
+  const walkable =
+    passage.status === "ready" && !!phrases && phrases.length >= 2
+      ? { phrases, text: passage.text, translation }
+      : null;
 
   // NOTE: the passage is shown PLAIN, in every version. The verse_question
   // phrase is never marked up here. Highlighting it pre-answers the question —
@@ -116,6 +128,7 @@ export default function EntryCard({
           setTranslation(t);
         }}
         onReadContext={() => setContextOpen(true)}
+        onReadSlowly={walkable ? () => setWalk(walkable) : undefined}
       />
 
       <PassageContextSheet
@@ -123,6 +136,13 @@ export default function EntryCard({
         translation={translation}
         open={contextOpen}
         onClose={() => setContextOpen(false)}
+      />
+
+      <VerseWalkSheet
+        walk={walk}
+        verseRef={entry.verse_ref}
+        challenge={challenge}
+        onClose={() => setWalk(null)}
       />
 
       {shown >= 2 && (
@@ -148,8 +168,6 @@ export default function EntryCard({
 
       <PonderFlow
         entry={entry}
-        translation={translation}
-        passageText={passage.status === "ready" ? passage.text : null}
         notes={notes}
         offline={notesOffline}
         onNoteAdded={onNoteAdded}
@@ -218,6 +236,7 @@ function VerseHero({
   offline,
   onSelect,
   onReadContext,
+  onReadSlowly,
 }: {
   entry: DailyEntry;
   challenge: boolean;
@@ -226,12 +245,19 @@ function VerseHero({
   offline: boolean;
   onSelect: (t: Translation) => void;
   onReadContext: () => void;
+  /** Opens the verse walk. Omitted when this version has no phrases. */
+  onReadSlowly?: () => void;
 }) {
   const accent = challenge ? "text-rust" : "text-moss";
   // "unavailable" is a single frame: the parent reverts to the WEB the moment
   // it sees that status. Render the text the entry already carries rather
   // than flashing an empty hero on the way there.
   const text = "text" in passage ? passage.text : entry.verse_text;
+  const pill = `pressable inline-flex min-h-[40px] items-center rounded-full border px-4 text-sm font-semibold transition-colors ${
+    challenge
+      ? "border-rust/30 text-rust hover:bg-rust/10"
+      : "border-moss/30 text-moss hover:bg-moss/10"
+  }`;
   return (
     <section className={`-mx-6 px-6 py-8 ${challenge ? "bg-rust-soft" : "bg-moss-soft"}`}>
       {passage.status === "absent" ? (
@@ -258,17 +284,20 @@ function VerseHero({
       {/* Not "read the full chapter". The unit offered is the pericope the
           verse actually sits in — often tighter than a chapter, and sometimes
           crossing one. */}
-      <button
-        type="button"
-        onClick={onReadContext}
-        className={`pressable mt-3 inline-flex min-h-[40px] items-center rounded-full border px-4 text-sm font-semibold transition-colors ${
-          challenge
-            ? "border-rust/30 text-rust hover:bg-rust/10"
-            : "border-moss/30 text-moss hover:bg-moss/10"
-        }`}
-      >
-        Read the full context
-      </button>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={onReadContext}
+          className={pill}
+        >
+          Read the full context
+        </button>
+        {onReadSlowly && (
+          <button type="button" onClick={onReadSlowly} className={pill}>
+            Read it slowly
+          </button>
+        )}
+      </div>
 
       <div
         role="radiogroup"

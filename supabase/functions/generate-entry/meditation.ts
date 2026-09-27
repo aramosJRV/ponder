@@ -24,7 +24,13 @@ export type MeditationTexts = Partial<Record<MeditationTranslation, string>>;
 
 /** A translation with fewer verified phrases than this gets no Meditate. */
 const MIN_PHRASES = 2;
-const MAX_PHRASES = 6;
+const MAX_PHRASES = 8;
+/**
+ * Past this many words the passage counts as long and gets five to seven
+ * phrases instead of three to five (Antonio, 28 Sep 2026: longer passages
+ * felt thin with only a handful). Measured on the longest version shown.
+ */
+const LONG_PASSAGE_WORDS = 30;
 /** The prompt asks for one to four; this is the guard, with a little give. */
 const MAX_WORDS = 6;
 
@@ -32,7 +38,8 @@ const PHRASES_SCHEMA = {
   type: "array",
   items: { type: "string" },
   description:
-    "Three to five phrases of one to four words each, COPIED CHARACTER FOR CHARACTER from this " +
+    "Three to seven phrases (as many as the message asks for) of one to four words each, " +
+    "COPIED CHARACTER FOR CHARACTER from this " +
     "translation's text, in the order the reader should dwell on them. The first is a single word. " +
     "Not a paraphrase, not modernised, no ellipsis.",
 };
@@ -57,7 +64,7 @@ const SYSTEM =
   "You guide a slow, meditative reading of a Bible passage. The reader sees one phrase at a time, " +
   "alone on the screen, and stays with it before moving on. Nothing else is shown with it. The point " +
   "is to slow down on a few words, not to cover the passage.\n\n" +
-  "Choose three to five SHORT phrases to pause on:\n" +
+  "Choose SHORT phrases to pause on (the message says how many for this passage):\n" +
   "- Each phrase is ONE TO FOUR WORDS. Never a whole clause or sentence.\n" +
   "- The first phrase is a single word: the weightiest word in the passage.\n" +
   "- The walk widens at least once: a later phrase contains the one before it and adds a few words " +
@@ -76,6 +83,8 @@ const SYSTEM =
 /** Messages API request body. Translations missing from `texts` are named as absent. */
 export function meditationRequest(model: string, verseRef: string, texts: MeditationTexts) {
   const shown = MEDITATION_TRANSLATIONS.filter((t) => texts[t]);
+  const words = Math.max(0, ...shown.map((t) => texts[t]!.trim().split(/\s+/).length));
+  const count = words > LONG_PASSAGE_WORDS ? "five to seven" : "three to five";
   return {
     model,
     max_tokens: 800,
@@ -90,7 +99,7 @@ export function meditationRequest(model: string, verseRef: string, texts: Medita
         (shown.length < MEDITATION_TRANSLATIONS.length
           ? "\n\nA translation not shown here does not contain this passage; return an empty list for it."
           : "") +
-        "\n\nChoose the phrases for each translation from its text above.",
+        `\n\nChoose ${count} phrases for each translation from its text above.`,
     }],
   };
 }
