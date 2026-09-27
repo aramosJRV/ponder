@@ -5,14 +5,16 @@ import type { Translation } from "../lib/types";
 export type Walk = { phrases: string[]; text: string; translation: Translation };
 
 /**
- * The verse walk (code name "Meditate", never shown to readers): the passage,
- * then one phrase at a time, then the passage again.
+ * The verse walk (code name "Meditate", never shown to readers): one phrase
+ * of the passage at a time.
  *
  * LIVES WITH THE VERSE, NOT THE QUESTIONS (28 Sep 2026). It first shipped as
  * the opening of the ponder flow, behind "Begin". Antonio moved it up to the
  * verse hero, beside "Read the full context": it is a way of reading the
  * passage, so it sits with the other way of reading the passage, and it is
- * offered every visit rather than once behind the gate.
+ * offered every visit rather than once behind the gate. The whole-passage
+ * screens that opened and closed it went at the same time: the reader has
+ * just read the verse in the hero, so the walk starts on the first phrase.
  *
  * Phrase only — no commentary under it. The reader brings the thought; a
  * line of ours would tell them what to see before they had looked.
@@ -97,8 +99,7 @@ function Steps({
 }) {
   const { phrases, text, translation } = walk;
   const last = phrases.length;
-  // -1 = the whole passage, read once; 0..last-1 = one phrase; last = whole again.
-  const [at, setAt] = useState(-1);
+  const [at, setAt] = useState(0);
   const [locked, setLocked] = useState(true);
 
   useEffect(() => {
@@ -109,7 +110,8 @@ function Steps({
 
   const fill = challenge ? "bg-rust" : "bg-moss";
   const line = challenge ? "text-rust" : "text-moss";
-  const phrase = at >= 0 && at < last ? phrases[at] : null;
+  const phrase = phrases[at];
+  const final = at >= last - 1;
 
   return (
     <div className="flex min-h-[calc(420px*var(--font-scale))] flex-col">
@@ -117,59 +119,35 @@ function Steps({
         {verseRef} · {translation}
       </p>
 
-      {phrase ? (
-        <>
-          <p className="mt-4 font-display text-base leading-snug text-ink/35">
-            <Marked text={text} phrase={phrase} className={line} />
-          </p>
-          <p
-            key={at}
-            className="animate-rise my-auto py-8 font-display text-3xl font-medium leading-tight [text-wrap:balance]"
-          >
-            {phrase[0].toUpperCase() + phrase.slice(1)}
-          </p>
-          <div className="mb-4 flex justify-center gap-1.5" aria-hidden="true">
-            {phrases.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1.5 w-1.5 rounded-full ${i === at ? fill : "bg-hairline"}`}
-              />
-            ))}
-          </div>
-        </>
-      ) : (
-        <>
-          <p
-            key={at}
-            className="animate-rise my-auto py-6 font-display text-2xl leading-snug"
-          >
-            {text}
-          </p>
-          <p
-            className={
-              at === -1
-                ? "mb-4 text-sm leading-relaxed text-muted"
-                : "mb-4 font-display text-xl italic leading-snug text-muted"
-            }
-          >
-            {at === -1
-              ? "Read it slowly once. Then we’ll pause on a few of its words, one at a time. Stay with each and notice what it stirs in you."
-              : "Now read it once more, whole."}
-          </p>
-        </>
-      )}
+      <p className="mt-4 font-display text-base leading-snug text-ink/35">
+        <Marked text={text} phrase={phrase} className={line} />
+      </p>
+      <p
+        key={at}
+        className="animate-rise my-auto py-8 font-display text-3xl font-medium leading-tight [text-wrap:balance]"
+      >
+        {phrase[0].toUpperCase() + phrase.slice(1)}
+      </p>
+      <div className="mb-4 flex justify-center gap-1.5" aria-hidden="true">
+        {phrases.map((_, i) => (
+          <span
+            key={i}
+            className={`h-1.5 w-1.5 rounded-full ${i === at ? fill : "bg-hairline"}`}
+          />
+        ))}
+      </div>
 
       <button
         type="button"
         disabled={locked}
-        onClick={() => (at >= last ? onClose() : setAt(at + 1))}
+        onClick={() => (final ? onClose() : setAt(at + 1))}
         className={`pressable min-h-[48px] w-full rounded-2xl text-base font-bold tracking-wide text-paper transition-opacity ${fill} ${
           locked ? "opacity-60" : "opacity-100"
         }`}
       >
-        {at >= last ? "Done" : "Continue"}
+        {final ? "Done" : "Continue"}
       </button>
-      {at < last && (
+      {!final && (
         <button
           type="button"
           onClick={onClose}
