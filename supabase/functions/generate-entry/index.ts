@@ -313,10 +313,96 @@ async function tryPool(
     if (serveErr) { console.warn(`serve_pool_entry: ${serveErr.message}`); return false; }
     // null means the day was already filled by someone else — also a success
     // from the caller's point of view: the user has an entry.
+    if (newId !== null) inBackground(fillServedMeditation(db, poolId as string, topicId, date));
     return newId !== null;
   } catch (e) {
     console.warn(`tryPool failed for ${topicId}: ${e}`);
     return false;
+  }
+}
+
+// ----------------------------------------------------- pool meditation fill
+//
+// The 1,845 pool entries built before 26 Sep 2026 have no Meditate phrases,
+// so about a third of days arrived without the verse walk. Antonio chose (28
+// Sep 2026) to fill them as they are served rather than in one bulk job:
+// the first time an old entry is served, its phrases are written, saved to
+// the pool row (so every later serve copies them) and to the day just
+// served.
+//
+// OFF THE CRITICAL PATH. The nightly loop serves every thread in turn, so
+// awaiting a Sonnet call here would add seconds per pooled thread and could
+// push the run past the wall-clock limit. The day is served at once without
+// phrases; the fill runs alongside and patches the row when it lands. If it
+// fails, the day simply has no walk, as a live entry would.
+
+/** Keeps a background task alive past the response where the runtime allows. */
+function inBackground(p: Promise<unknown>) {
+  const rt = (globalThis as { EdgeRuntime?: { waitUntil?: (p: Promise<unknown>) => void } }).EdgeRuntime;
+  rt?.waitUntil?.(p);
+}
+
+/** One fill per pool entry per isolate, however many threads it serves tonight. */
+const poolFills = new Map<string, Promise<Meditation | null>>();
+/** Caps parallel Sonnet calls when a night serves many unfilled entries. */
+const FILL_CONCURRENCY = 4;
+let fillsRunning = 0;
+const fillQueue: (() => void)[] = [];
+
+async function withFillSlot<T>(fn: () => Promise<T>): Promise<T> {
+  if (fillsRunning >= FILL_CONCURRENCY) await new Promise<void>((r) => fillQueue.push(r));
+  fillsRunning++;
+  try {
+    return await fn();
+  } finally {
+    fillsRunning--;
+    fillQueue.shift()?.();
+  }
+}
+
+function poolMeditation(db: SupabaseClient, poolId: string): Promise<Meditation | null> {
+  let p = poolFills.get(poolId);
+  if (!p) {
+    p = (async () => {
+      const { data: row, error } = await db.from("entry_pool")
+        .select("verse_ref, book_number, chapter, verse_start, verse_end, meditation")
+        .eq("id", poolId).maybeSingle();
+      if (error || !row) return null;
+      if (row.meditation) return row.meditation as Meditation;
+      const med = await withFillSlot(() =>
+        writeMeditation(
+          db, row.verse_ref,
+          { book_number: row.book_number, chapter: row.chapter, verse_start: row.verse_start, verse_end: row.verse_end },
+          MODEL_MEDITATION,
+          { pool_id: poolId, path: "pool_fill" },
+        )
+      );
+      if (med) {
+        await db.from("entry_pool").update({ meditation: med })
+          .eq("id", poolId).is("meditation", null);
+      }
+      return med;
+    })().catch((e) => {
+      console.warn(`poolMeditation ${poolId}: ${e}`);
+      return null;
+    });
+    poolFills.set(poolId, p);
+  }
+  return p;
+}
+
+async function fillServedMeditation(db: SupabaseClient, poolId: string, topicId: string, date: string) {
+  try {
+    // Fast path: served from an entry that already had phrases — nothing to do.
+    const { data: day } = await db.from("daily_entries")
+      .select("meditation").eq("topic_id", topicId).eq("date", date).maybeSingle();
+    if (!day || day.meditation) return;
+    const med = await poolMeditation(db, poolId);
+    if (!med) return;
+    await db.from("daily_entries").update({ meditation: med })
+      .eq("topic_id", topicId).eq("date", date).is("meditation", null);
+  } catch (e) {
+    console.warn(`fillServedMeditation ${topicId} ${date}: ${e}`);
   }
 }
 
