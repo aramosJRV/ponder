@@ -24,13 +24,15 @@ export type MeditationTexts = Partial<Record<MeditationTranslation, string>>;
 
 /** A translation with fewer verified phrases than this gets no Meditate. */
 const MIN_PHRASES = 2;
-const MAX_PHRASES = 8;
+const MAX_PHRASES = 10;
 /**
- * Past this many words the passage counts as long and gets five to seven
- * phrases instead of three to five (Antonio, 28 Sep 2026: longer passages
- * felt thin with only a handful). Measured on the longest version shown.
+ * How many phrases to ask for scales with the passage (Antonio, 28 Sep
+ * 2026: longer passages felt thin with only a handful). Word count is the
+ * longest version shown. Up to 30 words: three to five; up to 60: five to
+ * seven; longer: seven to nine.
  */
-const LONG_PASSAGE_WORDS = 30;
+const MEDIUM_PASSAGE_WORDS = 30;
+const LONG_PASSAGE_WORDS = 60;
 /** The prompt asks for one to four; this is the guard, with a little give. */
 const MAX_WORDS = 6;
 
@@ -38,7 +40,7 @@ const PHRASES_SCHEMA = {
   type: "array",
   items: { type: "string" },
   description:
-    "Three to seven phrases (as many as the message asks for) of one to four words each, " +
+    "Three to nine phrases (as many as the message asks for) of one to four words each, " +
     "COPIED CHARACTER FOR CHARACTER from this " +
     "translation's text, in the order the reader should dwell on them. The first is a single word. " +
     "Not a paraphrase, not modernised, no ellipsis.",
@@ -84,7 +86,11 @@ const SYSTEM =
 export function meditationRequest(model: string, verseRef: string, texts: MeditationTexts) {
   const shown = MEDITATION_TRANSLATIONS.filter((t) => texts[t]);
   const words = Math.max(0, ...shown.map((t) => texts[t]!.trim().split(/\s+/).length));
-  const count = words > LONG_PASSAGE_WORDS ? "five to seven" : "three to five";
+  const count = words > LONG_PASSAGE_WORDS
+    ? "seven to nine"
+    : words > MEDIUM_PASSAGE_WORDS
+    ? "five to seven"
+    : "three to five";
   return {
     model,
     max_tokens: 800,
