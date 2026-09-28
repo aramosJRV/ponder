@@ -11,8 +11,8 @@ import {
 import type { PassageState } from "../lib/translations";
 import PassageContextSheet from "./PassageContextSheet";
 import PonderFlow from "./PonderFlow";
-import VerseWalkSheet from "./VerseWalkSheet";
-import type { Walk } from "./VerseWalkSheet";
+import { WalkControls, WalkText, useWalkStep } from "./VerseWalk";
+import type { Walk } from "./VerseWalk";
 import ReportButton from "./ReportButton";
 
 /**
@@ -85,7 +85,9 @@ export default function EntryCard({
   // the reader's eye lands on the marked words before they have been asked
   // anything, which is the opposite of what the ponder flow is for. The phrase
   // appears in the question card instead, once the reader has chosen to look.
-  // Do not "restore" the highlight.
+  // Do not "restore" the highlight. (The verse walk lights phrases in the
+  // hero too, but only after the reader taps "Read it slowly", and they are
+  // its own phrases, not the question's.)
 
   // A version we cannot reach is not a version the reader can sit with.
   // Fall back to the text the entry already carries and say why, rather
@@ -129,6 +131,8 @@ export default function EntryCard({
         }}
         onReadContext={() => setContextOpen(true)}
         onReadSlowly={walkable ? () => setWalk(walkable) : undefined}
+        walk={walk}
+        onEndWalk={() => setWalk(null)}
       />
 
       <PassageContextSheet
@@ -136,13 +140,6 @@ export default function EntryCard({
         translation={translation}
         open={contextOpen}
         onClose={() => setContextOpen(false)}
-      />
-
-      <VerseWalkSheet
-        walk={walk}
-        verseRef={entry.verse_ref}
-        challenge={challenge}
-        onClose={() => setWalk(null)}
       />
 
       {shown >= 2 && (
@@ -237,6 +234,8 @@ function VerseHero({
   onSelect,
   onReadContext,
   onReadSlowly,
+  walk,
+  onEndWalk,
 }: {
   entry: DailyEntry;
   challenge: boolean;
@@ -247,7 +246,11 @@ function VerseHero({
   onReadContext: () => void;
   /** Opens the verse walk. Omitted when this version has no phrases. */
   onReadSlowly?: () => void;
+  /** The walk in progress: the hero lights one phrase at a time. */
+  walk: Walk | null;
+  onEndWalk: () => void;
 }) {
+  const step = useWalkStep(walk);
   const accent = challenge ? "text-rust" : "text-moss";
   // "unavailable" is a single frame: the parent reverts to the WEB the moment
   // it sees that status. Render the text the entry already carries rather
@@ -271,7 +274,13 @@ function VerseHero({
             passage.status === "loading" ? "opacity-40" : "opacity-100"
           }`}
         >
-          &ldquo;{text}&rdquo;
+          &ldquo;
+          {walk ? (
+            <WalkText text={walk.text} phrase={walk.phrases[step.at]} challenge={challenge} />
+          ) : (
+            text
+          )}
+          &rdquo;
         </p>
       )}
 
@@ -281,54 +290,67 @@ function VerseHero({
         {entry.verse_ref} · {translation}
       </p>
 
-      {/* Not "read the full chapter". The unit offered is the pericope the
-          verse actually sits in — often tighter than a chapter, and sometimes
-          crossing one. */}
-      <div className="mt-3 flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={onReadContext}
-          className={pill}
-        >
-          Read the full context
-        </button>
-        {onReadSlowly && (
-          <button type="button" onClick={onReadSlowly} className={pill}>
-            Read it slowly
+      {walk ? (
+        <WalkControls
+          total={walk.phrases.length}
+          at={step.at}
+          locked={step.locked}
+          challenge={challenge}
+          onNext={step.next}
+          onClose={onEndWalk}
+        />
+      ) : (
+        <>
+        {/* Not "read the full chapter". The unit offered is the pericope the
+            verse actually sits in — often tighter than a chapter, and sometimes
+            crossing one. */}
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={onReadContext}
+            className={pill}
+          >
+            Read the full context
           </button>
-        )}
-      </div>
-
-      <div
-        role="radiogroup"
-        aria-label="Bible version"
-        className={`mt-4 flex gap-1 border-t pt-3 ${
-          challenge ? "border-rust/20" : "border-moss/20"
-        }`}
-      >
-        {TRANSLATIONS.map((t) => {
-          const on = t.value === translation;
-          return (
-            <button
-              key={t.value}
-              type="button"
-              role="radio"
-              aria-checked={on}
-              aria-label={t.name}
-              onClick={() => onSelect(t.value)}
-              className={`pressable rounded-full px-3.5 py-2.5 text-xs font-bold uppercase tracking-[0.16em] transition-colors ${
-                on
-                  ? challenge
-                    ? "bg-rust text-paper"
-                    : "bg-moss text-paper"
-                  : `text-muted ${challenge ? "hover:text-rust" : "hover:text-moss"}`
-              }`}
-            >
-              {t.label}
+          {onReadSlowly && (
+            <button type="button" onClick={onReadSlowly} className={pill}>
+              Read it slowly
             </button>
-          );
-        })}
-      </div>
+          )}
+        </div>
+
+        <div
+          role="radiogroup"
+          aria-label="Bible version"
+          className={`mt-4 flex gap-1 border-t pt-3 ${
+            challenge ? "border-rust/20" : "border-moss/20"
+          }`}
+        >
+          {TRANSLATIONS.map((t) => {
+            const on = t.value === translation;
+            return (
+              <button
+                key={t.value}
+                type="button"
+                role="radio"
+                aria-checked={on}
+                aria-label={t.name}
+                onClick={() => onSelect(t.value)}
+                className={`pressable rounded-full px-3.5 py-2.5 text-xs font-bold uppercase tracking-[0.16em] transition-colors ${
+                  on
+                    ? challenge
+                      ? "bg-rust text-paper"
+                      : "bg-moss text-paper"
+                    : `text-muted ${challenge ? "hover:text-rust" : "hover:text-moss"}`
+                }`}
+              >
+                {t.label}
+              </button>
+            );
+          })}
+        </div>
+        </>
+      )}
 
       {offline && (
         <p className="mt-3 text-xs leading-snug text-muted">

@@ -41,7 +41,7 @@ import { loadPonderProgress, savePonderProgress } from "../lib/ponderProgress";
  *    See lib/ponderProgress.ts.
  *
  * The verse walk used to open this flow behind "Begin" (26 Sep 2026). It
- * moved to the verse hero on 28 Sep — see VerseWalkSheet.
+ * moved to the verse hero on 28 Sep — see VerseWalk.
  *
  * Navigation is three redundant affordances over the same move, because the
  * pips already promised a carousel and only the strip delivered one: swipe
