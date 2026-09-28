@@ -67,8 +67,12 @@ Order: backend/migration first, app build second.
 - Verse walk (code name "Meditate", never shown to readers): phrases live in
   `daily_entries.meditation` / `entry_pool.meditation`, keyed by translation.
   Picked in `generate-entry/meditation.ts` (Sonnet via `MODEL_MEDITATION`)
-  and kept only if verbatim in that translation. The 1,845 pool entries
-  built before 26 Sep 2026 have none, by Antonio's choice (no backfill).
+  and kept only if verbatim in that translation. Count scales with length
+  (≤30 words 3–5, ≤60 5–7, longer 7–9). The pool entries built before
+  26 Sep 2026 had none; since v40 each is filled in the background the first
+  time it is served (`fillServedMeditation`). Past days are not backfilled.
+  In the app it is "Read it slowly" in the verse hero (`VerseWalk.tsx`),
+  lighting phrases in place; it is no longer part of the ponder flow.
   `scripts/meditation-preview.ts` previews picks without writing anything.
 - `generate-entry` imports `spotify.ts`; song lookup is dormant until
   `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` secrets are set.
