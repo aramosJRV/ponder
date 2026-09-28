@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ContentLevel, DailyEntry, Note, Quote, Song, Translation } from "../lib/types";
 import { useContentLevel } from "../lib/contentLevel";
 import {
@@ -11,7 +11,7 @@ import {
 import type { PassageState } from "../lib/translations";
 import PassageContextSheet from "./PassageContextSheet";
 import PonderFlow from "./PonderFlow";
-import { WalkControls, WalkText, useWalkStep } from "./VerseWalk";
+import { WalkControls, WalkText, useFollowPhrase, useWalkStep } from "./VerseWalk";
 import type { Walk } from "./VerseWalk";
 import ReportButton from "./ReportButton";
 
@@ -251,6 +251,8 @@ function VerseHero({
   onEndWalk: () => void;
 }) {
   const step = useWalkStep(walk);
+  const verseRef = useRef<HTMLParagraphElement>(null);
+  useFollowPhrase(verseRef, step.at, walk);
   const accent = challenge ? "text-rust" : "text-moss";
   // "unavailable" is a single frame: the parent reverts to the WEB the moment
   // it sees that status. Render the text the entry already carries rather
@@ -269,6 +271,7 @@ function VerseHero({
         </p>
       ) : (
         <p
+          ref={verseRef}
           aria-busy={passage.status === "loading"}
           className={`font-display text-3xl font-medium leading-snug transition-opacity duration-200 ${
             passage.status === "loading" ? "opacity-40" : "opacity-100"
