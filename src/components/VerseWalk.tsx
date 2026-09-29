@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { RefObject } from "react";
+import { createPortal } from "react-dom";
 import type { Translation } from "../lib/types";
 
 export type Walk = { phrases: string[]; text: string; translation: Translation };
@@ -112,6 +113,11 @@ export function WalkText({
  * Progress dots, Continue / Done, and a quiet way out, in a bar pinned just
  * above the tab bar (56px tall plus the home-indicator inset) for as long
  * as the walk is open.
+ *
+ * Portalled to <body>: the entry card's `animate-rise` leaves a transform on
+ * the <article>, and a transformed ancestor makes `position: fixed` pin to
+ * that ancestor instead of the screen, which put the bar at the bottom of
+ * the card, below the fold again.
  */
 export function WalkControls({
   total,
@@ -130,7 +136,7 @@ export function WalkControls({
 }) {
   const final = at >= total - 1;
   const fill = challenge ? "bg-rust" : "bg-moss";
-  return (
+  return createPortal(
     <div
       data-walk-bar
       className="hide-when-keyboard fixed inset-x-0 bottom-[calc(56px+env(safe-area-inset-bottom))] z-20 border-t border-hairline bg-paper/95 shadow-[0_-6px_16px_rgba(31,27,22,0.06)] backdrop-blur"
@@ -167,6 +173,7 @@ export function WalkControls({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
