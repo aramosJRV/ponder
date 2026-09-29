@@ -35,6 +35,22 @@ export type Walk = { phrases: string[]; text: string; translation: Translation }
  * did not, the passage just shows unlit.
  */
 
+/**
+ * The phrases in the order they appear in the passage, so the walk reads
+ * start to finish and never jumps ahead then back. Until 29 Sep the model
+ * was told to open on "the weightiest word in the passage", which was often
+ * near the end, and the walk followed its order. A phrase and the wider
+ * phrase that starts with it ("Trust", "Trust in the LORD") share a start;
+ * the shorter comes first so the walk still widens.
+ */
+export function inReadingOrder(phrases: string[], text: string): string[] {
+  const at = (p: string) => {
+    const i = text.indexOf(p);
+    return i < 0 ? Infinity : i;
+  };
+  return [...phrases].sort((a, b) => at(a) - at(b) || a.length - b.length);
+}
+
 /** Steps through a walk. Resets whenever a new walk starts. */
 export function useWalkStep(walk: Walk | null) {
   const [at, setAt] = useState(0);

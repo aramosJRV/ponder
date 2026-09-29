@@ -11,7 +11,7 @@ import {
 import type { PassageState } from "../lib/translations";
 import PassageContextSheet from "./PassageContextSheet";
 import PonderFlow from "./PonderFlow";
-import { WalkControls, WalkText, useFollowPhrase, useWalkStep } from "./VerseWalk";
+import { WalkControls, WalkText, inReadingOrder, useFollowPhrase, useWalkStep } from "./VerseWalk";
 import type { Walk } from "./VerseWalk";
 import ReportButton from "./ReportButton";
 
@@ -77,7 +77,7 @@ export default function EntryCard({
   const phrases = entry.meditation?.[translation];
   const walkable =
     passage.status === "ready" && !!phrases && phrases.length >= 2
-      ? { phrases, text: passage.text, translation }
+      ? { phrases: inReadingOrder(phrases, passage.text), text: passage.text, translation }
       : null;
 
   // NOTE: the passage is shown PLAIN, in every version. The verse_question

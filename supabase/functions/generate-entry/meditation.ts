@@ -42,7 +42,7 @@ const PHRASES_SCHEMA = {
   description:
     "Three to nine phrases (as many as the message asks for) of one to four words each, " +
     "COPIED CHARACTER FOR CHARACTER from this " +
-    "translation's text, in the order the reader should dwell on them. The first is a single word. " +
+    "translation's text, in the order they appear in the passage. The first is a single word. " +
     "Not a paraphrase, not modernised, no ellipsis.",
 };
 
@@ -68,7 +68,8 @@ const SYSTEM =
   "is to slow down on a few words, not to cover the passage.\n\n" +
   "Choose SHORT phrases to pause on (the message says how many for this passage):\n" +
   "- Each phrase is ONE TO FOUR WORDS. Never a whole clause or sentence.\n" +
-  "- The first phrase is a single word: the weightiest word in the passage.\n" +
+  "- The phrases follow the passage in order, start to finish. Never jump ahead and come back.\n" +
+  "- The first phrase is a single word from the opening of the passage.\n" +
   "- The walk widens at least once: a later phrase contains the one before it and adds a few words " +
   "(\"Trust\", then \"Trust in the LORD\").\n" +
   "- Then move on through the passage in order, picking the few words that carry the weight in each " +
@@ -144,7 +145,7 @@ export function anchorMeditation(raw: unknown, text: string): string[] {
   const isWordChar = (c: string | undefined) => !!c && /[\p{L}\p{N}]/u.test(c);
 
   const seen = new Set<string>();
-  const kept: string[] = [];
+  const kept: { at: number; slice: string }[] = [];
   for (const item of raw) {
     if (kept.length >= MAX_PHRASES) break;
     const phrase = String(item ?? "")
@@ -162,7 +163,12 @@ export function anchorMeditation(raw: unknown, text: string): string[] {
     const key = slice.toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);
-    kept.push(slice);
+    kept.push({ at, slice });
   }
-  return kept;
+  // Reading order, start to finish (29 Sep 2026: the walk jumped to the end
+  // and back). A phrase and the wider one starting with it share a start;
+  // the shorter goes first so the walk still widens.
+  return kept
+    .sort((a, b) => a.at - b.at || a.slice.length - b.slice.length)
+    .map((k) => k.slice);
 }
