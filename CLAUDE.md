@@ -68,7 +68,9 @@ Order: backend/migration first, app build second.
   `daily_entries.meditation` / `entry_pool.meditation`, keyed by translation.
   Picked in `generate-entry/meditation.ts` (Sonnet via `MODEL_MEDITATION`)
   and kept only if verbatim in that translation. Count scales with length
-  (≤30 words 3–5, ≤60 5–7, longer 7–9). The pool entries built before
+  (≤30 words 3–5, ≤60 5–7, longer 7–9). Phrases run in reading order, start to
+  finish: `anchorMeditation` sorts them (v41) and the app sorts again
+  (`inReadingOrder`) for older entries. The pool entries built before
   26 Sep 2026 had none; since v40 each is filled in the background the first
   time it is served (`fillServedMeditation`). Past days are not backfilled.
   In the app it is "Read it slowly" in the verse hero (`VerseWalk.tsx`),
