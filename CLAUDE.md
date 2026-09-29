@@ -73,6 +73,9 @@ Order: backend/migration first, app build second.
   time it is served (`fillServedMeditation`). Past days are not backfilled.
   In the app it is "Read it slowly" in the verse hero (`VerseWalk.tsx`),
   lighting phrases in place; it is no longer part of the ponder flow.
+  While walking, dots/Continue/× sit in a bar pinned above the tab bar and
+  each step scrolls the lit phrase into view. The bar is portalled to
+  `<body>`: EntryCard's `animate-rise` transform breaks `position: fixed`.
   `scripts/meditation-preview.ts` previews picks without writing anything.
 - `generate-entry` imports `spotify.ts`; song lookup is dormant until
   `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` secrets are set.
