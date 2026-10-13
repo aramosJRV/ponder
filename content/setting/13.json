@@ -12,7 +12,7 @@
     "9:1": "This list of people resettling Jerusalem after the exile closely parallels a similar list in Nehemiah 11.",
     "10:1": "Saul's final battle on Mount Gilboa, in northern Israel, is usually dated around 1010 BC; the account parallels 1 Samuel 31.",
     "11:4": "David's capture of Jerusalem, then a Jebusite (Canaanite) stronghold, is usually dated around 1000 BC.",
-    "13:1": "The ark, Israel's sacred gold-covered chest, had stayed at Kiriath-jearim for about twenty years after the Philistines returned it.",
+    "13:1": "The ark, Israel's sacred gold-covered chest, had stayed at Kiriath-jearim for many years, right through Saul's reign, ever since the Philistines returned it.",
     "16:7": "This song of thanks shares its opening section with Psalm 105.",
     "16:23": "This part of the song matches Psalm 96, with closing lines found in Psalm 106.",
     "19:1": "The Ammonites lived east of the Jordan River, around the city of Rabbah, today's Amman in Jordan.",
@@ -23,9 +23,11 @@
   },
   "flags": [
     {
-      "where": "13:1",
-      "problem": "The claim that the ark stayed at Kiriath-jearim for 'about twenty years' is doubtful. The twenty years mentioned in 1 Samuel 7 is the time before Samuel called Israel to repentance. The ark stayed there until David moved it, which spans Saul's reign and likely several decades longer.",
-      "suggestion": "Remove the figure, e.g. 'had stayed at Kiriath-jearim for many years, through Saul's reign, after the Philistines returned it.'"
+      "where": "5:23",
+      "problem": "The note is keyed to the wrong verse. 5:23 describes the half-tribe of Manasseh settling east of the Jordan. Pul and Tiglath-pileser carrying off the eastern tribes is mentioned at 5:26 (with an earlier reference at 5:6). A reader opening 5:23 would find no Assyrian king there.",
+      "suggestion": "Move the note to 5:26, or rewrite it so it fits 5:23."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

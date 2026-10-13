@@ -3,22 +3,19 @@
   "name": "Lamentations",
   "author": "The book itself names no author. Jewish and Christian tradition has long credited it to Jeremiah, a prophet who lived through the fall of Jerusalem and had warned of it for years. Many scholars instead think it came from one or more unnamed poets in Judah who saw the disaster firsthand. Either way, the writer was a skilled poet, shaping most chapters as alphabet poems in which each verse or group of verses begins with the next letter of the Hebrew alphabet.",
   "audience": "The first hearers were survivors of Jerusalem's destruction, mostly people left behind among the ruins of Judah, and perhaps also those carried off to Babylon. Their city lay burned, their temple was gone, and many had lost family to war, famine and exile. The poems were likely recited at gatherings where people mourned the ruined temple, and Jewish communities still read them each year on a fast day remembering its destruction.",
-  "era": "Around 588 BC the armies of Nebuchadnezzar, king of the powerful Babylonian empire, surrounded Jerusalem after Judah rebelled. The siege brought terrible famine, and in 586 BC the walls were broken, the temple Solomon had built was burned, and King Zedekiah was captured. Many leading citizens were marched into exile in Babylon, while neighbouring peoples looked on and some joined in the plunder.",
+  "era": "Around 588 BC the armies of Nebuchadnezzar, king of the powerful Babylonian empire, surrounded Jerusalem after Judah rebelled. The siege brought terrible famine, and in 587 or 586 BC the walls were broken, the temple Solomon had built was burned, and King Zedekiah was captured. Many leading citizens were marched into exile in Babylon, while neighbouring peoples looked on and some joined in the plunder.",
   "notes": {
-    "3:1": "Unlike the other chapters, this poem speaks as one suffering man; tradition has often linked it to Jeremiah, who was beaten, imprisoned and lowered into a muddy well.",
+    "3:1": "Unlike the other chapters, this poem speaks as one suffering man; tradition has often linked it to Jeremiah, who was beaten, imprisoned and lowered into a muddy cistern, an underground tank for storing rainwater.",
     "4:1": "This chapter's mention of the king's capture is widely taken to refer to Zedekiah, caught fleeing Jerusalem, and its closing lines address Edom, a neighbour that welcomed Judah's fall.",
     "5:1": "This closing prayer, spoken by the whole community, is not an alphabet poem and seems to look back from a time when Judah was living under foreign rule."
   },
   "flags": [
     {
-      "where": "era",
-      "problem": "The fall of Jerusalem is given as a firm 586 BC. Scholars genuinely disagree between 587 and 586 BC, so the exact year is stated as settled when it is not.",
-      "suggestion": "Write \"in 587 or 586 BC\" or \"around 586 BC\" so the date reads as approximate."
-    },
-    {
       "where": "3:1",
-      "problem": "Jeremiah was lowered into a cistern, an underground tank for storing rainwater, not a well. \"Muddy well\" is slightly inaccurate.",
-      "suggestion": "Change to \"lowered into a muddy cistern (an underground water tank)\"."
+      "problem": "\"Unlike the other chapters, this poem speaks as one suffering man\" overstates the contrast. Other chapters also use first-person voices: Jerusalem speaks as a grieving woman in chapter 1, and the poet speaks of his own weeping in chapter 2. Chapter 3 also shifts to \"we\" partway through. Readers who notice the earlier \"I\" passages may be confused.",
+      "suggestion": "Soften it, e.g. \"Much of this poem speaks in the voice of a single suffering man, rather than of Jerusalem pictured as a grieving woman.\""
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

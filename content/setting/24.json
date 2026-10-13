@@ -1,13 +1,13 @@
 {
   "book_number": 24,
   "name": "Jeremiah",
-  "author": "Jeremiah was the son of Hilkiah, from a family of priests in Anathoth, a small village a few miles north of Jerusalem. He was called as a prophet, someone who spoke God's messages to the people, while still young, around 627 BC, and kept speaking for about forty years, often at great personal cost. His friend and scribe Baruch wrote down many of his words. Traditionally Jeremiah is seen as the book's source; many scholars think his followers later collected and arranged it, noting that the ancient Greek version is shorter and ordered differently.",
+  "author": "Jeremiah was the son of Hilkiah, from a family of priests in Anathoth, a small village a few miles north of Jerusalem. He was called as a prophet, someone who spoke God's messages to the people, while still young, and kept speaking for about forty years, often at great personal cost. His call is traditionally dated to around 627 BC, though some scholars think that date marks his birth and that his public work began nearer 609 BC. His friend and scribe Baruch wrote down many of his words. Traditionally Jeremiah is seen as the book's source; many scholars think his followers later collected and arranged it, noting that the ancient Greek version is shorter and ordered differently.",
   "audience": "Jeremiah spoke first to the kings, priests and ordinary people of Judah and its capital, Jerusalem, a small kingdom caught between powerful empires. Many of them refused to listen, and some tried to silence him. Later parts address those deported to Babylon and the refugees who fled to Egypt after Jerusalem fell.",
   "era": "Jeremiah lived through the collapse of the Assyrian Empire and the rise of Babylon. Good King Josiah led a sweeping religious reform around 622 BC but was killed in battle by Egypt's Pharaoh Necho in 609 BC. After Babylon defeated Egypt at Carchemish in 605 BC, Judah became its subject, and repeated rebellions led to a first deportation of Jerusalem's leaders in 597 BC. In 587 or 586 BC the Babylonians destroyed Jerusalem and its temple and carried many more into exile.",
   "notes": {
     "1:1": "Anathoth was a village of priests in the tribe of Benjamin's land; Jeremiah's call is dated to Josiah's thirteenth year, around 627 BC.",
     "3:6": "This message is dated to King Josiah's reign, when the northern kingdom of Israel had already been conquered by Assyria about a century earlier.",
-    "7:1": "This 'temple sermon' is widely linked with chapter 26, early in Jehoiakim's reign around 609 BC; Shiloh was where the tabernacle once stood before being destroyed.",
+    "7:1": "This 'temple sermon' is widely linked with chapter 26, early in Jehoiakim's reign around 609 BC; Shiloh, where the tabernacle (the portable worship tent) once stood, had long since been destroyed.",
     "11:18": "The plotters were men from Jeremiah's own hometown of Anathoth, possibly including members of his priestly family.",
     "13:1": "The place named 'Perath' is usually taken as the distant Euphrates River, though some think it means Parah, a spring near Anathoth.",
     "14:1": "The heading links this passage to a severe drought in Judah; its exact date is not known.",
@@ -23,7 +23,7 @@
     "28:1": "Dated to Zedekiah's fourth year, around 593 BC, when hopes ran high that the exiles of 597 BC would soon return.",
     "29:1": "A letter Jeremiah sent to the exiles in Babylon, carried by royal envoys, a few years after the deportation of 597 BC.",
     "30:1": "Chapters 30–33 are often called the 'Book of Consolation'; some think parts were first addressed to descendants of the long-conquered northern kingdom.",
-    "31:15": "Ramah, a town north of Jerusalem, was later where captives were gathered before deportation; Rachel's tomb was traditionally thought to lie nearby.",
+    "31:15": "Ramah, a town north of Jerusalem, was later where captives were gathered before deportation; one old tradition placed Rachel's tomb in Benjamin's territory, not far from Ramah, though the better-known site is near Bethlehem.",
     "32:1": "Dated to Zedekiah's tenth year, around 587 BC, during the final siege, while Jeremiah was confined in the palace guardhouse.",
     "34:1": "During the final siege, Lachish and Azekah were the last fortified towns in Judah still holding out besides Jerusalem.",
     "34:8": "During the siege, owners freed their Hebrew slaves, then took them back when the Babylonian army briefly withdrew to face Egypt.",
@@ -50,21 +50,13 @@
     "52:28": "These deportation figures, smaller than those in 2 Kings, may count only adult men or a particular group.",
     "52:31": "Around 561 BC, the new Babylonian king Evil-merodach (Amel-Marduk) released Jehoiachin after thirty-seven years in prison."
   },
-  "flags": [
+  "flags": [],
+  "unsure": [
     {
-      "where": "31:15",
-      "problem": "Saying Rachel's tomb was 'traditionally thought to lie nearby' Ramah is doubtful. The long-standing tradition places it near Bethlehem, south of Jerusalem. Only one older biblical tradition puts it in Benjamin's territory, toward Ramah. Readers who know the Bethlehem site may be confused.",
-      "suggestion": "Reword to something like: 'one old tradition placed Rachel's tomb in Benjamin's territory, not far from Ramah, though the better-known site is near Bethlehem.' Or drop the tomb detail."
-    },
-    {
-      "where": "7:1",
-      "problem": "'Shiloh was where the tabernacle once stood before being destroyed' is ambiguous. It could mean the tabernacle itself was destroyed rather than the town and shrine at Shiloh.",
-      "suggestion": "Clarify, e.g. 'Shiloh, where the tabernacle (the portable worship tent) once stood, had long since been destroyed.'"
-    },
-    {
-      "where": "author",
-      "problem": "The call date of around 627 BC is given as settled fact, here and in note 1:1. Scholars genuinely debate it: some think the 627 BC date marks his birth, or that his public work really began under Jehoiakim around 609 BC.",
-      "suggestion": "Add a short clause, e.g. 'traditionally dated to around 627 BC, though some scholars think his public ministry began nearer 609 BC.'"
+      "where": "author (as it bears on note 1:1)",
+      "problem": "The flag says the 627 BC call date is presented as settled both in the author field and in note 1:1.",
+      "suggestion": "I added the scholarly debate to the author field only. Note 1:1 says the call 'is dated to' Josiah's thirteenth year, which accurately reports the book's own heading, and the flag's suggested fix targeted the author field. Whether note 1:1 should also mention the debate is left for a person to decide."
     }
-  ]
+  ],
+  "fixed": true
 }

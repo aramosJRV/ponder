@@ -1,7 +1,7 @@
 {
   "book_number": 3,
   "name": "Leviticus",
-  "author": "Jewish and Christian tradition holds that Moses wrote Leviticus. He was an Israelite raised in the Egyptian royal court, later a shepherd in the desert, and then the leader who brought his people out of slavery and passed on God's laws to them. Many modern scholars think the book took its final shape centuries later, gathered by priests in Jerusalem from older traditions, perhaps around the time of the Babylonian exile. Either way, it reads as a manual for worship, largely concerned with the work of priests from the tribe of Levi, which gives the book its name.",
+  "author": "Jewish and Christian tradition holds that Moses wrote Leviticus. He was an Israelite raised in the Egyptian royal court, later a shepherd in the desert, and then the leader who brought his people out of slavery and passed on God's laws to them. Many modern scholars think the book took its final shape centuries later, gathered by priests from older traditions, perhaps during or soon after the Babylonian exile. Either way, it reads as a manual for worship, largely concerned with the work of priests from the tribe of Levi, which gives the book its name.",
   "audience": "The book presents itself as instructions given to the Israelites camped at Mount Sinai, newly freed from Egypt, and especially to Aaron and his sons, the first priests. They were a large, wandering people learning how to live and worship together before entering the land of Canaan. If the book was compiled later, its first readers would also have included Israelites around the exile who were trying to keep their worship and identity intact.",
   "era": "In the traditional view the setting is the Late Bronze Age, roughly the 1400s or 1200s BC, when Egypt was the great power and Canaan was a patchwork of small city-states. Leviticus picks up just after the end of Exodus, when the Israelites had finished building the tabernacle, or \"tent of meeting\", a portable tent-shrine where they believed God's presence lived among them. The whole book covers only about a month at Sinai. Animal sacrifice and rules about ritual \"cleanness\", meaning fitness to take part in worship, were normal features of religion across the ancient world.",
   "notes": {
@@ -18,11 +18,7 @@
     "26:34": "Centuries later, the writer of 2 Chronicles connected this passage to the land lying empty during the Babylonian exile.",
     "27:1": "Many readers see this chapter on vows as an appendix, since the previous chapter closes with what sounds like the book's natural ending."
   },
-  "flags": [
-    {
-      "where": "author",
-      "problem": "'Gathered by priests in Jerusalem … perhaps around the time of the Babylonian exile' is a doubtful combination. During the exile the Jerusalem priesthood was largely in Babylon, and scholars disagree on whether the priestly material was compiled in Babylon or back in Jerusalem after the return. Naming Jerusalem states the place more firmly than the evidence allows, and readers may be confused about how Jerusalem priests worked there during the exile.",
-      "suggestion": "Drop the location, e.g. 'gathered by priests from older traditions, perhaps during or soon after the Babylonian exile.'"
-    }
-  ]
+  "flags": [],
+  "unsure": [],
+  "fixed": true
 }

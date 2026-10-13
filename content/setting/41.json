@@ -19,7 +19,7 @@
     "11:1": "Bethphage and Bethany were villages on the Mount of Olives, just east of Jerusalem, where the city was filling with pilgrims for Passover.",
     "11:15": "In the temple's large outer court, traders sold animals for sacrifice and money changers swapped Roman coins for the special coinage required for the temple tax.",
     "12:13": "The tax was a Roman tribute paid in silver denarius coins stamped with the emperor Tiberius' image, a sore point for many Jews.",
-    "12:18": "The Sadducees were a wealthy priestly group who accepted only the first five books of Scripture as authoritative and did not believe in resurrection.",
+    "12:18": "The Sadducees were a wealthy priestly group who rejected the Pharisees' unwritten traditions and did not believe in resurrection; some ancient writers say they accepted only the first five books of Scripture, though many scholars doubt this.",
     "12:41": "The temple treasury probably refers to offering chests, said to be shaped like trumpets, that stood in the temple's Court of the Women.",
     "13:1": "Herod the Great began rebuilding the temple around 20 BC with enormous white stones, and work was still continuing in Jesus' day.",
     "14:1": "Passover, followed by the week-long Feast of Unleavened Bread, recalled Israel's escape from Egypt and drew huge crowds to Jerusalem each spring.",
@@ -33,9 +33,11 @@
   },
   "flags": [
     {
-      "where": "12:18",
-      "problem": "It is stated as settled fact that the Sadducees accepted only the first five books of Scripture. This idea comes mainly from later church writers. Many scholars doubt it and think the Sadducees rejected the Pharisees' oral traditions rather than the Prophets and other writings.",
-      "suggestion": "Soften or hedge the claim, e.g. 'who rejected the Pharisees' oral traditions and did not believe in resurrection', or add 'some ancient writers say they accepted only the first five books of Scripture'."
+      "where": "14:43",
+      "problem": "The note is about the young man who ran away, but he appears at 14:51–52, not 14:43, where the arrest begins. A reader on 14:43 will meet a detail that isn't in their verse.",
+      "suggestion": "Move this note to start at 14:51."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

@@ -5,7 +5,7 @@
   "audience": "On the traditional view, the first readers were Jews living in exile in Babylon and its aftermath, learning how to stay loyal to God while serving powerful foreign rulers far from home. On the later-date view, the book was written for Jews in Judea around 167–164 BC, when the Greek-Syrian king Antiochus IV outlawed their faith on pain of death. In both pictures, the readers were God's people living under hostile empires.",
   "era": "The stories are set in the 500s BC, after the Babylonian king Nebuchadnezzar conquered Judah, destroyed Jerusalem and its Temple in 586 BC, and carried many of its people off to Babylon. In 539 BC Babylon fell to Cyrus of Persia, who soon allowed exiles to go home and rebuild. If the book was finished in the 160s BC, its writer lived under Greek rulers descended from Alexander the Great's generals, during Antiochus IV's persecution and the Jewish uprising led by the Maccabee family. In Jewish Bibles, Daniel sits among the Writings rather than the Prophets.",
   "notes": {
-    "1:1": "The third year of King Jehoiakim of Judah is around 605 BC, when Nebuchadnezzar first took captives and Temple treasures from Jerusalem to Babylon.",
+    "1:1": "The third year of King Jehoiakim of Judah is around 605 BC, when Nebuchadnezzar began to take control of the region; tradition places the first captives and Temple treasures being taken to Babylon at this time, though Babylonian records do not mention it.",
     "2:1": "At verse 4 the book switches from Hebrew to Aramaic, the common language of the Babylonian and Persian empires, and stays in Aramaic through chapter 7.",
     "4:28": "No Babylonian record mentions this illness; some scholars link the story to King Nabonidus, who spent about ten years away from Babylon at the desert oasis of Tema.",
     "5:1": "Babylonian records show Belshazzar was the son of King Nabonidus and ruled Babylon on his behalf while his father was away at Tema.",
@@ -15,20 +15,27 @@
     "8:1": "Dated around 551 BC, this vision is set at Susa, an ancient city later used as a Persian royal capital; from here the book returns to Hebrew.",
     "9:1": "The first year of Darius places this prayer around 539 BC, just after Babylon fell to the Persians.",
     "10:1": "The third year of Cyrus is around 536 BC, shortly after the first group of exiles had been permitted to return to Jerusalem.",
-    "11:5": "Most interpreters link the kings of the south and north here with the Ptolemy rulers of Egypt and the Seleucid rulers of Syria, around 320–190 BC.",
+    "11:5": "Most interpreters link the kings of the south and north here with the Ptolemy rulers of Egypt and the Seleucid rulers of Syria, around 320–175 BC.",
     "11:21": "These verses are widely linked to Antiochus IV, who in 167 BC banned Jewish worship and set up a pagan altar in the Jerusalem Temple.",
     "11:40": "These details do not match known accounts of Antiochus IV's death in 164 BC; some scholars see the writer looking beyond his own day, others see a further future in view."
   },
   "flags": [
     {
-      "where": "1:1",
-      "problem": "The note says it is settled that Nebuchadnezzar took captives and Temple treasures from Jerusalem in 605 BC. Babylonian records for that year mention his campaign in the region but no siege or deportation from Jerusalem, and many scholars doubt an exile that early. The traditional view accepts it.",
-      "suggestion": "Keep the date and soften the event: 'The third year of King Jehoiakim of Judah is around 605 BC, when Nebuchadnezzar began to take control of the region; tradition places the first captives being taken to Babylon at this time, though Babylonian records do not mention it.'"
+      "where": "era",
+      "problem": "The stories are not all set after 586 BC or in the 500s BC. Chapter 1 opens around 605 BC, and the Nebuchadnezzar stories in chapters 1–4 fall in the late 600s and early 500s, before or around the destruction of Jerusalem. Saying the stories are set 'in the 500s BC, after' the 586 destruction is inaccurate and would confuse readers who just read the 605 BC date in the author section.",
+      "suggestion": "Say the stories span from around 605 BC, when Nebuchadnezzar first took captives from Judah, through his destruction of Jerusalem and its Temple in 586 BC, to the early years of Persian rule after 539 BC."
     },
     {
-      "where": "11:5",
-      "problem": "The end date is too early. The kings of the south and north in this stretch of the chapter (up to the ruler before Antiochus IV in verse 21) run to Seleucus IV, who died in 175 BC, not around 190 BC.",
-      "suggestion": "Change the range to 'around 320–175 BC'."
+      "where": "11:40",
+      "problem": "The two views offered are so alike that they read as the same view ('looking beyond his own day' versus 'a further future in view'). The main scholarly alternative is missing: that the writer, working before Antiochus died, was predicting how his end would come, and events turned out differently. That leaves readers confused and the debate unfairly presented.",
+      "suggestion": "Name the two positions clearly. For example: many scholars think the writer was working just before Antiochus's death and expected it to happen this way; others, especially on the traditional view, think these verses look to a figure still further in the future."
+    },
+    {
+      "where": "audience",
+      "problem": "'Learning how to stay loyal to God while serving powerful foreign rulers' describes what the book teaches its readers rather than who they were and what they faced. It edges into interpretation.",
+      "suggestion": "Keep to their situation. For example: 'Jews living in exile in Babylon and afterwards, serving under powerful foreign rulers far from home.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

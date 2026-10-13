@@ -13,18 +13,13 @@
     "28:16": "The Assyrian king here is Tiglath-pileser III, who around 734 BC was expanding his empire westward across Syria and Israel.",
     "30:1": "Assyria had conquered the northern kingdom of Israel around 722 BC, so Hezekiah's messengers were inviting the people left behind in its land.",
     "32:1": "The Assyrian king Sennacherib invaded Judah in 701 BC; his own records boast of shutting Hezekiah up in Jerusalem 'like a bird in a cage'.",
-    "32:27": "Hezekiah's water tunnel under Jerusalem still survives and can be walked through today; an ancient inscription found inside describes its digging.",
     "33:10": "Assyrian records name Manasseh among kings paying tribute to Assyria; his captivity and return are told only in Chronicles.",
     "34:14": "This discovery took place around 622 BC; many scholars think the book found was an early form of Deuteronomy.",
     "35:20": "In 609 BC Pharaoh Necho II was marching north to help the failing Assyrian Empire against Babylon when Josiah confronted him at Megiddo.",
     "36:15": "The Babylonian army under Nebuchadnezzar destroyed Jerusalem and its temple in 586 BC, and many survivors were taken into exile in Babylon.",
     "36:22": "Cyrus, king of Persia, conquered Babylon in 539 BC and soon let exiles return home; the book of Ezra opens with these same words."
   },
-  "flags": [
-    {
-      "where": "32:27",
-      "problem": "The note is attached to the wrong verse. 32:27 describes Hezekiah's wealth and storehouses. His water tunnel is described in 32:30. A reader tapping 32:27 would find a note that doesn't match the verse.",
-      "suggestion": "Move this note to 32:30. The wording can stay as it is."
-    }
-  ]
+  "flags": [],
+  "unsure": [],
+  "fixed": true
 }

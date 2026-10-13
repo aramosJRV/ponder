@@ -10,13 +10,12 @@
     "6:1": "This vision is set in the Jerusalem temple and dated to the year King Uzziah died, around 740 BC, after his long reign of about fifty years.",
     "7:1": "Around 735 BC the kings of Aram (Syria) and northern Israel marched on Jerusalem to force King Ahaz to join their alliance against Assyria.",
     "8:1": "This passage comes from the same crisis; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.",
-    "8:16": "Zebulun and Naphtali, in Galilee in the far north, were among the first areas Assyria took from Israel, around 732 BC.",
     "9:8": "This section is aimed at the northern kingdom of Israel, also called Ephraim, whose capital was Samaria, in the years before Assyria destroyed it in 722 BC.",
     "10:5": "The cities listed, such as Carchemish, Hamath, Arpad and Damascus, all fell to Assyria's armies during the decades of Isaiah's ministry.",
     "10:28": "The towns named trace an army's march from the north toward Jerusalem, ending at Nob, a hill within sight of the city.",
     "11:1": "Jesse was the father of King David, so this passage looks to David's royal family, which still ruled Judah in Isaiah's day.",
     "13:1": "This oracle concerns Babylon; some scholars place it in Isaiah's day, when Babylon was resisting Assyria, while many date it later, when Babylon itself ruled the region.",
-    "14:28": "This oracle is dated to the year King Ahaz died, around 715 BC, and addressed to Philistia, Judah's neighbour on the Mediterranean coast.",
+    "14:28": "This oracle is dated to the year King Ahaz died, around 727 or 715 BC (scholars differ on which), and addressed to Philistia, Judah's neighbour on the Mediterranean coast.",
     "15:1": "Moab was a kingdom east of the Dead Sea, a close neighbour and frequent rival of Israel and Judah; the many towns named were Moabite cities.",
     "17:1": "Damascus was the capital of Aram, roughly modern Syria, which was allied with northern Israel against Judah; Assyria captured it in 732 BC.",
     "18:1": "Cush was the land south of Egypt, roughly modern Sudan, whose kings ruled Egypt in this period and sent envoys seeking allies against Assyria.",
@@ -51,14 +50,16 @@
   },
   "flags": [
     {
-      "where": "14:28",
-      "problem": "The year of Ahaz's death is genuinely disputed. Some scholars put it around 727 BC, others around 715 BC. The note gives 715 BC as settled. The 727 date matters here, because it matches the death of the Assyrian king Tiglath-pileser, which many link to this oracle.",
-      "suggestion": "Hedge the date, e.g. 'dated to the year King Ahaz died, around 727 or 715 BC (scholars differ)'. Alternatively, drop the specific year."
+      "where": "audience",
+      "problem": "States as settled fact that chapters 40–66 address exiles in Babylon and returnees. That is the scholarly view. In the traditional view, Isaiah himself wrote these chapters, foreseeing that time, so the original hearers were still his own people. The author section and the 40:1 note handle this fairly, but here it reads as fact.",
+      "suggestion": "Hedge it, e.g. 'Many scholars think chapters 40–66 were written for a later situation… ; traditionally they are read as Isaiah's words looking ahead to that time.'"
     },
     {
-      "where": "8:16",
-      "problem": "Zebulun and Naphtali are not named until 9:1 in English Bibles (8:23 in Hebrew). A reader tapping 8:16 gets a note about places that do not appear for several verses, which may confuse.",
-      "suggestion": "Move this note to 9:1, or give 8:16 a note about the passage it actually opens."
+      "where": "24:1",
+      "problem": "Calls the section the 'Isaiah Apocalypse' without explaining 'apocalypse'. Ordinary readers may take it to mean simply 'disaster' or 'the end of the world'.",
+      "suggestion": "Add a short gloss, e.g. 'often called the \"Isaiah Apocalypse\" because, like the book of Revelation, they describe judgment and renewal on a worldwide scale.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

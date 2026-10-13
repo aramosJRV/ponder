@@ -2,24 +2,21 @@
   "book_number": 61,
   "name": "2 Peter",
   "author": "The letter names its writer as Simon Peter, a fisherman from Galilee whom Jesus called to be one of his twelve closest followers, known as apostles. Peter became a leading figure in the early church, preaching in Jerusalem and travelling widely. The letter presents itself as written near the end of his life. Many scholars think a follower wrote it in Peter's name after his death, because its style differs from 1 Peter; the traditional view holds that Peter wrote it himself, perhaps with a helper.",
-  "audience": "It was written to Christians who had already received an earlier letter from Peter, probably the believers in what is now Turkey addressed in 1 Peter. They were a mix of Jewish and non-Jewish converts. Teachers had arisen among them who mocked the hope that Jesus would return and encouraged careless, self-indulgent living.",
+  "audience": "It was written to Christians who had already received an earlier letter from Peter, probably the believers in what is now Turkey addressed in 1 Peter. Teachers had arisen among them who mocked the hope that Jesus would return and encouraged careless, self-indulgent living.",
   "era": "The Roman Empire ruled the Mediterranean world, and Greek language and ideas shaped daily life in its cities. If Peter wrote the letter, it dates to the mid-60s AD under Emperor Nero, shortly before Peter's death in Rome, where tradition says he was crucified. Those who see it as written later place it near the end of the first century or early in the second. Either way, the first generation of Jesus' followers was dying, and some Christians wondered why he had not yet come back.",
   "notes": {
     "1:12": "Written as a farewell, Peter speaks of his approaching death and recalls being on the mountain when Jesus appeared in shining glory, an event called the transfiguration.",
-    "2:1": "This section closely resembles the short letter of Jude; most scholars think one writer drew on the other, though they disagree about which came first.",
+    "2:1": "This section closely resembles the short letter of Jude; most scholars think 2 Peter drew on Jude, though some argue the borrowing went the other way.",
     "3:1": "The writer calls this his second letter, most likely pointing back to 1 Peter, and turns to scoffers who doubted Jesus would ever return.",
     "3:14": "This mention of Paul's letters is one of the earliest signs that they were already being gathered, circulated among churches, and read alongside the Jewish scriptures."
   },
   "flags": [
     {
-      "where": "audience",
-      "problem": "The claim that the readers were 'a mix of Jewish and non-Jewish converts' is stated as fact, but 2 Peter addresses its readers only in general terms and never describes their background. The identification with 1 Peter's readers is itself only probable.",
-      "suggestion": "Remove the sentence about Jewish and non-Jewish converts, or hedge it clearly, e.g. 'If these were the same readers as 1 Peter, many were likely non-Jewish converts.'"
-    },
-    {
-      "where": "2:1",
-      "problem": "Saying scholars 'disagree about which came first' understates the scholarly picture. Most scholars think 2 Peter drew on Jude, and only a minority argue the reverse. As written, it suggests an even split.",
-      "suggestion": "Rephrase, e.g. 'most scholars think 2 Peter drew on Jude, though some argue the borrowing went the other way.'"
+      "where": "3:14",
+      "problem": "Paul's letters are mentioned in 3:15–16, not 3:14. A reader on 3:14 will see 'This mention of Paul's letters' and find no mention of Paul in that verse, which is confusing.",
+      "suggestion": "Move the note to start at 3:15, or reword it so it does not imply that Paul is named in 3:14."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

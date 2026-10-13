@@ -3,9 +3,8 @@
   "name": "Galatians",
   "author": "The letter comes from Paul, and almost all scholars agree he wrote it. He was a Jew from Tarsus, in what is now southern Turkey, trained as a Pharisee (a strict teacher of Jewish law), and once fiercely opposed to the followers of Jesus. After meeting the risen Jesus, he became an apostle, a messenger sent to spread the good news, travelling from city to city founding churches and often supporting himself as a tentmaker.",
   "audience": "It went to several churches in Galatia, a region in the middle of modern Turkey. Scholars disagree on which: traditionally the Celtic Galatian people in the north, though many think it means towns in the south such as Iconium, Lystra and Derbe, which Paul visited on his first journey. These were mostly non-Jewish believers, and new teachers had arrived insisting they be circumcised and keep the Jewish law to belong fully to God's people.",
-  "era": "Paul probably wrote around AD 48–55, while Rome ruled the whole Mediterranean world under Emperor Claudius. Some date it very early, before the church leaders met in Jerusalem to settle this question around AD 49; others date it a few years later. It was a time when the young church, which began among Jews, was working out whether non-Jewish believers had to follow Jewish customs.",
+  "era": "Paul probably wrote around AD 48–55, while Rome ruled the whole Mediterranean world under Emperor Claudius and then, from AD 54, Nero. Some date it very early, before the church leaders met in Jerusalem to settle this question around AD 49; others date it a few years later. It was a time when the young church, which began among Jews, was working out whether non-Jewish believers had to follow Jewish customs.",
   "notes": {
-    "1:11": "Arabia here probably means the Nabataean kingdom, east of the Jordan River and south of Damascus, where Paul went soon after his conversion near Damascus.",
     "1:18": "Paul describes visits to Jerusalem to meet Peter and James, Jesus' brother; scholars debate whether the second matches the Jerusalem meeting or an earlier famine-relief visit.",
     "2:11": "Antioch in Syria was a large city with one of the first churches mixing Jews and non-Jews, where shared meals raised questions about Jewish food laws.",
     "4:12": "Paul recalls his first visit to the Galatians, when some illness or physical weakness led to his preaching among them.",
@@ -13,14 +12,16 @@
   },
   "flags": [
     {
-      "where": "era",
-      "problem": "It says Rome ruled 'under Emperor Claudius' across the whole AD 48–55 range. Claudius died in AD 54 and Nero then became emperor, so the later end of that range, and the later dates the paragraph itself mentions, fall under Nero.",
-      "suggestion": "Say 'under the emperors Claudius and then Nero', or drop the emperor's name."
+      "where": "1:18",
+      "problem": "This verse describes Paul's first visit to Jerusalem, but the note jumps to 'the second', a visit not mentioned until chapter 2. Readers on this verse won't know which visit is meant, and 'the Jerusalem meeting' is not explained in the note itself.",
+      "suggestion": "Make the sequence explicit. For example: 'Here Paul describes his first visit to Jerusalem, three years after his conversion, to meet Peter and James, Jesus' brother. He later describes a second visit (in chapter 2), and scholars debate whether that matches the church leaders' meeting in Jerusalem around AD 49 or an earlier visit to bring famine relief.'"
     },
     {
-      "where": "1:11",
-      "problem": "This note is about Arabia, but Paul mentions going to Arabia in 1:17, not 1:11. Readers will see it on the wrong verse.",
-      "suggestion": "Move the note's start reference to 1:17."
+      "where": "6:11",
+      "problem": "'Usually dictated' is stated a little too firmly. It is a widely held inference from a few letters, such as Romans, which names a scribe, and others where Paul adds a greeting in his own hand. It is not a documented habit across all his letters.",
+      "suggestion": "Soften to 'Paul often dictated his letters to a scribe' or 'Paul seems to have usually dictated his letters'."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

@@ -1,9 +1,9 @@
 {
   "book_number": 19,
   "name": "Psalms",
-  "author": "Psalms is a collection of 150 songs and prayers by many writers over several centuries. The headings credit about half to King David, a shepherd who became Israel's warrior-king and a skilled musician. Others are credited to Asaph and the 'sons of Korah' (families of Levites who led temple music), to King Solomon, and one to Moses, while many carry no name. Scholars debate whether the headings, added later, always mean authorship, since 'of David' can also mean 'for' or 'in the style of' David.",
+  "author": "Psalms is a collection of 150 songs and prayers by many writers over several centuries. The headings credit about half to King David, a shepherd who became Israel's warrior-king and a skilled musician. Others are credited to Asaph and the 'sons of Korah' (families of Levites who led temple music), to King Solomon, and one to Moses, while many carry no name. Many scholars think the headings were added later, and they debate whether the headings always mean authorship, since 'of David' can also mean 'for' or 'in the style of' David.",
   "audience": "These songs were first sung by the people of Israel in worship, especially at the temple in Jerusalem, where Levite choirs led with harps, lyres, cymbals and trumpets. Over time the collection became Israel's hymnbook and prayer book, used by pilgrims at festivals, by Jews returning from exile, and later in synagogues.",
-  "era": "The psalms span roughly a thousand years, from Moses through King David around 1000 BC, when Jerusalem became the capital, and Solomon's building of the temple. They cover the divided kingdoms, threats from Assyria and Babylon, Jerusalem's destruction in 586 BC and the exile in Babylon. The collection likely reached its final form after the return under Persian rule, when the temple was rebuilt around 516 BC.",
+  "era": "The psalms span many centuries. Tradition traces the oldest to Moses, though many scholars date the earliest to around King David's time, about 1000 BC, when Jerusalem became the capital and Solomon then built the temple. They cover the divided kingdoms, threats from Assyria and Babylon, Jerusalem's destruction in 586 BC and the exile in Babylon. The collection likely reached its final form after the return under Persian rule, when the temple was rebuilt around 516 BC.",
   "notes": {
     "1:1": "Psalm 1 opens Book One of the five 'books' Psalms is divided into, and many think it was placed first as a doorway into the whole collection.",
     "2:1": "Many scholars think this was sung at the crowning of a new king from David's family in Jerusalem.",
@@ -51,7 +51,7 @@
     "110:1": "Credited to David, it is a royal psalm, probably used when a new king was enthroned in Jerusalem.",
     "113:1": "Psalms 113–118 form the 'Hallel' (praise), sung by Jewish families at Passover; Jesus and his disciples probably sang them at the Last Supper.",
     "118:1": "The last of the Hallel psalms sung at Passover, it seems written for a thanksgiving procession entering the temple gates.",
-    "119:1": "The longest psalm: 22 stanzas of eight lines, every line in a stanza starting with the same letter, working through the Hebrew alphabet.",
+    "119:1": "The longest psalm: 22 stanzas of eight verses, every verse in a stanza starting with the same letter, working through the Hebrew alphabet.",
     "120:1": "This opens the 'Songs of Ascents' (120–134), probably sung by pilgrims as they went up to Jerusalem for the yearly festivals.",
     "122:1": "A pilgrim song credited to David, celebrating arrival at Jerusalem's gates after the festival journey.",
     "126:1": "Most think it celebrates the return of exiles from Babylon after 538 BC, when the Persian king Cyrus allowed them home.",
@@ -59,7 +59,7 @@
     "132:1": "It recalls David's resolve to find a home for the ark, Israel's sacred chest, and may have been sung in temple processions.",
     "134:1": "The last Song of Ascents, addressed to the Levites who kept watch and served in the temple through the night.",
     "136:1": "Every line ends with the same refrain, likely sung responsively, with a leader singing and the congregation answering.",
-    "137:1": "It comes from those taken to Babylon after Jerusalem fell in 586 BC, remembering the exiles by Babylon's rivers.",
+    "137:1": "It comes from the Jews taken to Babylon after Jerusalem fell in 586 BC, recalling their time by Babylon's rivers, whether written there or soon after returning home.",
     "142:1": "The heading links it to when David hid in a cave while fleeing King Saul.",
     "145:1": "The last psalm credited to David, an acrostic whose verses run through the Hebrew alphabet.",
     "146:1": "Psalms 146–150 form a closing group of praise, each beginning and ending with 'Hallelujah', meaning 'Praise the LORD'.",
@@ -68,24 +68,11 @@
   },
   "flags": [
     {
-      "where": "era",
-      "problem": "Saying the psalms span 'from Moses' states the traditional dating as fact. It rests only on the heading of Psalm 90, and the author field itself notes that headings are debated. Many scholars date even Psalm 90 much later, so the 'thousand years' span is disputed.",
-      "suggestion": "Hedge it, e.g. 'The psalms span many centuries. Tradition traces the oldest to Moses, though many scholars date the earliest to around David's time, about 1000 BC…'"
-    },
-    {
-      "where": "author",
-      "problem": "'the headings, added later' presents the late addition of the headings as settled. Many traditional scholars regard the headings as ancient and reliable.",
-      "suggestion": "Soften to something like 'Many scholars think the headings were added later and debate whether they always mean authorship…', or simply drop 'added later'."
-    },
-    {
-      "where": "119:1",
-      "problem": "Slightly inaccurate. Each stanza has eight verses, not eight lines, and each verse is usually two lines. It is each verse, not each line, that begins with the stanza's letter.",
-      "suggestion": "Write '22 stanzas of eight verses, every verse in a stanza starting with the same letter of the Hebrew alphabet.'"
-    },
-    {
-      "where": "137:1",
-      "problem": "'remembering the exiles by Babylon's rivers' is confusing. The singers are the exiles themselves, recalling their own time by Babylon's rivers. It also hides the open question of whether it was written in exile or soon after the return.",
-      "suggestion": "Rephrase, e.g. 'It comes from the Jews taken to Babylon after Jerusalem fell in 586 BC, recalling their time by Babylon's rivers, whether written there or soon after returning home.'"
+      "where": "88:1",
+      "problem": "This treats two possibly different Hemans as one person. Heman the wise man (1 Kings 4) and Heman the Levite temple singer (1 Chronicles) may not be the same man, and scholars dispute it. The note also leaves out that the same heading credits the psalm to the sons of Korah, so readers get an incomplete picture of the attribution.",
+      "suggestion": "Say the heading credits it to the sons of Korah and to Heman the Ezrahite. Then either describe Heman only as a temple musician of David's time, or add that he may or may not be the wise man of the same name mentioned in Solomon's day."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

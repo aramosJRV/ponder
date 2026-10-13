@@ -11,7 +11,7 @@
     "3:1": "Joshua was the high priest, the chief religious leader of the returned community and the first to hold that office after the exile.",
     "4:1": "Zerubbabel was the Persian-appointed governor of Judah, a descendant of King David, and he led the work of rebuilding the temple.",
     "6:9": "Three men, Heldai, Tobijah and Jedaiah, had just arrived from the exiles in Babylon bringing gifts of silver and gold.",
-    "7:1": "Dated to late 518 BC, when people from Bethel asked whether they should keep fasting to mourn the temple's destruction by Babylon in 586 BC.",
+    "7:1": "Dated to late 518 BC, when a delegation, probably sent from the town of Bethel, asked whether the people should keep fasting to mourn the temple's destruction by Babylon in 586 BC.",
     "8:18": "The four fasts mentioned recalled sad events around Jerusalem's fall: the siege, the city walls breached, the temple burned, and the murder of governor Gedaliah.",
     "9:1": "Names cities of Syria, Phoenicia and Philistia; some scholars connect this with Alexander the Great's march down that coast in 332 BC.",
     "9:11": "This passage mentions Greece, one reason some scholars date these later chapters to a time when Greek power was rising.",
@@ -21,9 +21,26 @@
   },
   "flags": [
     {
-      "where": "7:1",
-      "problem": "'People from Bethel' is stated as settled, but the Hebrew is ambiguous. Some translations read it as the people of Bethel sending messengers. Others take 'Bethel-sharezer' as the name of a man who sent the delegation.",
-      "suggestion": "Hedge it, e.g. 'when a delegation, probably from the town of Bethel, asked whether…', or simply 'when a group of people asked whether…'."
+      "where": "audience",
+      "problem": "\"About seventy years of exile\" is doubtful as a historical figure. Seventy years is the traditional prophetic number, which Zechariah himself uses. But Jerusalem fell in 586 BC and the first return came in 538 BC, which is under fifty years. Many of the returnees had been born in Babylon.",
+      "suggestion": "Write \"after decades of exile in Babylon\" or \"after about fifty years of exile in Babylon\". Or note that seventy years was the traditional reckoning."
+    },
+    {
+      "where": "9:11",
+      "problem": "The mention of Greece is in 9:13, not 9:11. Verse 9:11 is about something else, so a reader tapping this note will not find what it describes.",
+      "suggestion": "Move the note to 9:13."
+    },
+    {
+      "where": "12:10",
+      "problem": "The mourning at Hadad-rimmon near Megiddo is in 12:11, not 12:10. Verse 12:10 is a well-known verse on a different subject, so attaching this note to it could confuse readers.",
+      "suggestion": "Move the note to 12:11."
+    },
+    {
+      "where": "14:1",
+      "problem": "The earthquake in the days of King Uzziah is mentioned in 14:5, not 14:1. Verse 14:1 does not mention it, so \"It recalls an earthquake\" is wrong for that verse.",
+      "suggestion": "Move the note to 14:5."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

@@ -1,7 +1,7 @@
 {
   "book_number": 42,
   "name": "Luke",
-  "author": "From early times the church has named Luke as the writer: a doctor and travelling companion of the apostle Paul, who mentions him in his letters. He was probably a Gentile (not Jewish), well educated and writing in polished Greek, and he also wrote the book of Acts as a second volume. He was not an eyewitness of Jesus' life but gathered accounts from those who were. Most accept this tradition, though some scholars think the author was an unnamed later companion of Paul's circle.",
+  "author": "From early times the church has named Luke as the writer: a doctor and travelling companion of the apostle Paul, who mentions him in his letters. He was probably a Gentile (not Jewish), well educated and writing in polished Greek, and he also wrote the book of Acts as a second volume. He was not an eyewitness of Jesus' life but gathered accounts from those who were. Many accept this tradition, though others think the author was an unknown later Christian, perhaps connected with Paul's circle.",
   "audience": "Luke addresses his work to Theophilus, probably a well-placed patron or official, possibly a new believer. Behind him stood a wider circle of mostly Gentile Christians spread across the Roman Empire, many of whom had never seen Judea. They wanted a careful, orderly account of the faith they had joined.",
   "era": "Jesus lived under Roman rule, when Judea and Galilee were governed by Roman officials and local kings from Herod's family. Luke wrote decades later, as the church was spreading from Jewish communities into Greek-speaking cities across the empire. Traditionally the book is dated to the early 60s AD, though many scholars place it around AD 80–90, after the Romans destroyed Jerusalem in AD 70.",
   "notes": {
@@ -26,7 +26,7 @@
     "10:38": "John's Gospel places the home of Martha and Mary in Bethany, a village just outside Jerusalem.",
     "13:1": "This killing of Galileans by Pilate is not recorded elsewhere; the tower of Siloam stood near the Pool of Siloam in Jerusalem.",
     "17:11": "People with skin diseases were required by law to live apart from others and keep their distance, often in small outcast groups.",
-    "18:35": "Jericho was a lush oasis city about fifteen miles northeast of Jerusalem, a usual stop for pilgrims on the way up to the city.",
+    "18:35": "Jericho was a lush oasis city about fifteen miles northeast of Jerusalem as the crow flies (a little farther by the winding road), a usual stop for pilgrims on the way up to the city.",
     "19:1": "Jericho sat on a busy trade route, making it an important tax post where a chief tax collector could grow very rich.",
     "19:11": "Listeners may have recalled Herod's son Archelaus, who travelled to Rome around 4 BC to be made king while a Jewish delegation opposed him.",
     "19:28": "Bethphage and Bethany were villages on the Mount of Olives, the ridge facing Jerusalem from the east across a valley.",
@@ -46,14 +46,11 @@
   },
   "flags": [
     {
-      "where": "author",
-      "problem": "'Most accept this tradition' overstates agreement. Many critical scholars regard the author as unknown, so the scholarly field is more evenly divided than 'most' suggests. The alternative is also framed narrowly: the main alternative is usually an unknown later Christian, not necessarily a member of Paul's circle.",
-      "suggestion": "Soften to something like: 'Many accept this tradition, though others think the author was an unknown later Christian, perhaps connected with Paul's circle.'"
-    },
-    {
-      "where": "18:35",
-      "problem": "This note puts Jericho about fifteen miles from Jerusalem, while the 10:25 note gives the road as about seventeen miles. Both figures are defensible (straight-line versus road distance), but a reader may see the mismatch as an error.",
-      "suggestion": "Use one consistent figure in both notes (e.g. 'about fifteen to seventeen miles'), or make clear that 10:25 refers to the winding road."
+      "where": "2:21",
+      "problem": "This note is pinned to 2:21, the verse about Jesus' circumcision and naming, but it describes the mother's purification offering, which begins at 2:22. A reader on 2:21 would see background for a different event.",
+      "suggestion": "Move the note to start at 2:22. Alternatively, keep it at 2:21 and open with a short clause on circumcision and naming on the eighth day before turning to the purification offering."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

@@ -17,7 +17,6 @@
     "7:37": "Later Jewish writings describe priests carrying water from the Pool of Siloam each day of this festival and pouring it out at the temple altar.",
     "7:53": "This story does not appear in the earliest surviving manuscripts of John, and many Bibles mark it off; it was likely an early account added later.",
     "8:12": "During Tabernacles, great lamps were lit in the temple courts, reportedly lighting up much of Jerusalem; the treasury was in this same area.",
-    "8:48": "The Pool of Siloam lay in the southern part of Jerusalem; its remains were rediscovered by archaeologists in 2004.",
     "10:22": "The Festival of Dedication, now called Hanukkah, remembered the temple's rededication in 164 BC after Jewish rebels freed it from a foreign king who had defiled it.",
     "11:45": "Caiaphas served as high priest from about AD 18 to 36, holding office with Roman approval; the council was the Sanhedrin, Jerusalem's highest Jewish court.",
     "12:12": "Palm branches had been a symbol of Jewish national hope and victory since the Jewish revolt against foreign rule in the 160s BC.",
@@ -25,27 +24,19 @@
     "13:1": "Washing guests' dusty feet was normally a servant's task. John sets this meal just before Passover, a timing that differs slightly from the other Gospels.",
     "18:1": "The garden lay across the Kidron Valley on the Mount of Olives; the other Gospels call it Gethsemane.",
     "18:12": "Annas had been high priest around AD 6 to 15 and, as Caiaphas's father-in-law, remained a powerful figure in the priestly family.",
-    "18:28": "Pontius Pilate governed Judea for Rome from about AD 26 to 36; under Roman rule, Jewish leaders could not carry out executions themselves.",
+    "18:28": "Pontius Pilate governed Judea for Rome from about AD 26 to 36; Rome generally kept the power to carry out executions in the governor's hands, though historians debate how strictly this applied.",
     "19:17": "Crucifixion was a Roman punishment for slaves, rebels and criminals, carried out publicly outside city walls as a warning to others.",
     "19:38": "Wealthy families buried their dead in tombs cut into rock, wrapping the body in linen with spices; the amount described here was lavish.",
     "21:1": "Many scholars think this final chapter was added as an epilogue, possibly by the author's circle, after the book's first ending.",
-    "21:20": "The closing verses, partly written as 'we', suggest the author's community added them, possibly after the beloved disciple's death, to address a rumour about him."
+    "21:20": "The closing verses are partly written as 'we'. Traditionally they have been read as the author's own words; many scholars think his community added them, possibly after the beloved disciple's death, to address a rumour about him."
   },
   "flags": [
     {
-      "where": "8:48",
-      "problem": "The Pool of Siloam does not appear at 8:48. It first appears in the healing of the man born blind in chapter 9 (around 9:7), so the note is attached to the wrong passage and would confuse readers. The fact itself (rediscovered in 2004) is correct.",
-      "suggestion": "Move this note to 9:1 or 9:7."
-    },
-    {
-      "where": "18:28",
-      "problem": "The claim that Jewish leaders could not carry out executions under Roman rule is stated as settled fact. Historians debate how absolute this restriction was; the stoning of Stephen and the execution of James in AD 62 are often raised against it.",
-      "suggestion": "Soften it, e.g. 'Rome generally kept the power of execution in the governor's hands, though historians debate how strictly this applied.'"
-    },
-    {
-      "where": "21:20",
-      "problem": "Authorship of the closing verses is presented one-sidedly. The note gives only the view that the author's community added them, possibly after the beloved disciple's death, and leaves out the traditional view that the author wrote them himself.",
-      "suggestion": "Add a short clause such as 'Traditionally they have been read as the author's own words; many scholars think his community added them…'"
+      "where": "18:1",
+      "problem": "'The other Gospels call it Gethsemane' is not quite accurate. Matthew and Mark name Gethsemane. Luke only says Jesus went to the Mount of Olives and does not use the name.",
+      "suggestion": "Say 'Matthew and Mark call it Gethsemane' instead of 'the other Gospels'."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

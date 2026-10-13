@@ -8,7 +8,7 @@
     "3:4": "A Moabite inscription known as the Mesha Stone, found in 1868, records King Mesha's own account of throwing off Israel's rule.",
     "8:7": "Assyrian inscriptions also mention Hazael, describing him as a man of no royal family, which matches his seizing the throne of Aram, the kingdom based at Damascus.",
     "9:14": "An Aramean inscription found at Tel Dan, probably set up by Hazael, claims credit for killing Joram and Ahaziah; scholars debate how it fits with this account.",
-    "10:29": "An Assyrian monument called the Black Obelisk, from around 841 BC, shows Jehu or his envoy bowing and paying tribute to King Shalmaneser III.",
+    "10:29": "An Assyrian monument called the Black Obelisk shows Jehu or his envoy bowing and paying tribute to King Shalmaneser III around 841 BC.",
     "14:23": "The prophets Amos and Hosea preached in Israel during Jeroboam II's long, prosperous reign.",
     "15:1": "Azariah is also called Uzziah; the prophet Isaiah dates his call to the year this king died, around 740 BC.",
     "15:17": "Pul is the Assyrian king Tiglath-pileser III, whose own records list Menahem of Samaria among the kings paying him tribute.",
@@ -31,18 +31,20 @@
     "24:18": "Throughout Zedekiah's reign the prophet Jeremiah urged surrender to Babylon, as the book of Jeremiah records.",
     "25:8": "Jerusalem and its temple fell in 586 BC (some date it 587); the book of Lamentations traditionally mourns this destruction.",
     "25:22": "Jeremiah 40–43 tells this episode more fully, including the prophet himself being taken to Egypt afterwards.",
-    "25:27": "Evil-merodach (Amel-Marduk) began ruling around 562 BC; Babylonian ration tablets name Jehoiachin, king of Judah, and his sons receiving food allowances."
+    "25:27": "Evil-merodach (Amel-Marduk) began ruling around 562 BC. Babylonian ration tablets from years earlier in Jehoiachin's captivity already name him as king of Judah and record him and his sons receiving food allowances."
   },
   "flags": [
     {
-      "where": "10:29",
-      "problem": "The Black Obelisk was not made around 841 BC. That is roughly when Jehu paid tribute; the monument itself was set up later, around 825 BC.",
-      "suggestion": "Reword to say the Black Obelisk records tribute paid around 841 BC, for example: 'An Assyrian monument called the Black Obelisk shows Jehu or his envoy bowing and paying tribute to King Shalmaneser III around 841 BC.'"
+      "where": "25:27",
+      "problem": "The pronouns are ambiguous. Because Evil-merodach is the subject of the first sentence, 'name him as king of Judah' reads as if the tablets call Evil-merodach king of Judah. In fact they name Jehoiachin.",
+      "suggestion": "Name Jehoiachin explicitly, e.g. 'Babylonian ration tablets from years earlier in his captivity already list Jehoiachin as king of Judah and record food allowances for him and his sons.'"
     },
     {
-      "where": "25:27",
-      "problem": "Placing the ration tablets right after Evil-merodach's accession suggests they record Jehoiachin's treatment after his release. In fact the tablets date from years earlier, around 590s–570s BC, during his captivity.",
-      "suggestion": "Make clear the tablets come from earlier in his captivity, for example: 'Babylonian ration tablets from years earlier in his exile already name Jehoiachin, king of Judah, and his sons receiving food allowances.'"
+      "where": "19:35",
+      "problem": "This note is about Sennacherib's murder, which happens in 19:37, but it is attached to 19:35, the verse about the deaths in the Assyrian camp. A reader may think the Babylonian records bear on the event in 19:35. 'Confirm' also overstates the match: the chronicle mentions one son, while the passage names two.",
+      "suggestion": "Move the note to 19:37. Replace 'confirm' with something like 'A Babylonian chronicle records that Sennacherib was killed by his son in a rebellion in 681 BC, about twenty years after this campaign.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

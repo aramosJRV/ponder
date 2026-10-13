@@ -5,10 +5,10 @@
   "audience": "The first readers were most likely Jews living after the fall of Jerusalem in 586 BC, many of them exiles in Babylon. Their kings, temple and homeland were gone, and they were asking how their nation had come to this.",
   "era": "The book covers roughly 970 to 850 BC, from King David's death and Solomon's reign to the split of the kingdom and the rival kings of Israel in the north and Judah in the south. Small kingdoms such as Tyre, Aram and Moab traded and fought around them, while Egypt and later Assyria loomed as great powers. The finished work, ending in 2 Kings, dates from after about 560 BC, when Babylon had destroyed Jerusalem and its temple.",
   "notes": {
-    "1:28": "The Gihon spring, where Solomon is anointed, was Jerusalem's main water source, in the Kidron Valley just below the old city.",
+    "1:28": "The Gihon spring, where Solomon is anointed, was the city's main water source, in the Kidron Valley just below the oldest part of Jerusalem, known as the City of David.",
     "2:26": "Anathoth, where Abiathar is sent, was a town of priests a few miles north-east of Jerusalem; centuries later it was the prophet Jeremiah's home town.",
     "3:4": "Gibeon was a town a few miles north-west of Jerusalem; according to Chronicles, the old tent of worship from Moses' time stood there.",
-    "5:1": "Hiram ruled Tyre, a wealthy Phoenician port in what is now Lebanon, whose hills were famous for cedar timber.",
+    "5:1": "Hiram ruled Tyre, a wealthy Phoenician port in what is now Lebanon, with access to the famous cedar forests of the Lebanon mountains inland.",
     "6:1": "Building began in Solomon's fourth year, usually dated around 966 BC; the month Ziv falls in spring, around April or May.",
     "8:1": "The dedication took place in the seventh month, autumn, at the Festival of Shelters (Tabernacles), a week-long harvest celebration when crowds gathered in Jerusalem.",
     "9:15": "Archaeologists have found large city gateways at Hazor, Megiddo and Gezer; some date them to Solomon's time, while others argue they were built later.",
@@ -26,16 +26,7 @@
     "21:1": "Jezreel, in a fertile valley north of Samaria, was the site of a second royal residence for Ahab's family.",
     "22:1": "Ramoth-gilead was a fortified town east of the Jordan, on the disputed border between Israel and Aram."
   },
-  "flags": [
-    {
-      "where": "1:28",
-      "problem": "'Just below the old city' could confuse readers who know Jerusalem's walled Old City. The Gihon spring lies below the City of David, the original hilltop town south of today's Old City walls, not below the Old City itself.",
-      "suggestion": "Say it lay 'in the Kidron Valley just below the oldest part of Jerusalem, known as the City of David'."
-    },
-    {
-      "where": "5:1",
-      "problem": "'Whose hills were famous for cedar timber' suggests the cedars grew on Tyre's own hills. Tyre was largely an island port, and the famous cedars grew in the Lebanon mountains inland, which Hiram's people could reach.",
-      "suggestion": "Rephrase to something like 'a wealthy Phoenician port in what is now Lebanon, with access to the cedar forests of the Lebanon mountains'."
-    }
-  ]
+  "flags": [],
+  "unsure": [],
+  "fixed": true
 }

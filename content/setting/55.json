@@ -7,16 +7,34 @@
   "notes": {
     "1:15": "Asia here means the Roman province around Ephesus in western Turkey; Onesiphorus apparently came from Ephesus and searched Rome to find the imprisoned Paul.",
     "3:1": "Jannes and Jambres are names Jewish tradition gave to Pharaoh's magicians who opposed Moses; the book of Exodus itself does not name them.",
-    "3:10": "Antioch, Iconium and Lystra were towns in southern Turkey where Paul was attacked on his first missionary journey; Lystra was Timothy's hometown.",
+    "3:10": "Pisidian Antioch (not the larger Antioch in Syria), Iconium and Lystra were towns in south-central Turkey where Paul was attacked on his first missionary journey; Lystra was probably Timothy's hometown.",
     "4:6": "Paul writes expecting execution soon; early church tradition holds that he was beheaded outside Rome during Nero's reign.",
     "4:9": "The \"first defence\" probably means an initial hearing before a Roman court; Dalmatia was a region on the coast of modern Croatia.",
     "4:19": "Priscilla and Aquila were a tentmaking married couple who had worked alongside Paul in Corinth and Ephesus years earlier."
   },
   "flags": [
     {
-      "where": "3:10",
-      "problem": "Plain \"Antioch\" may confuse readers who know the better-known Antioch in Syria, where Paul's journeys began. This is Pisidian Antioch, in south-central Turkey. Also, Lystra as Timothy's hometown is an inference: Acts places Timothy at 'Derbe and Lystra' without clearly naming his home town.",
-      "suggestion": "Write 'Pisidian Antioch (not the larger Antioch in Syria)'. Soften the hometown claim, e.g. 'Lystra was probably Timothy's hometown.'"
+      "where": "4:6",
+      "problem": "'Paul writes expecting execution soon' states Paul's authorship as settled, although the author section notes that many scholars think a later follower wrote the letter in his name.",
+      "suggestion": "Reword to follow the letter's own framing, e.g. 'The letter pictures Paul expecting execution soon; early church tradition holds that he was beheaded outside Rome during Nero's reign.'"
     }
-  ]
+  ],
+  "unsure": [
+    {
+      "where": "3:1",
+      "problem": "Not flagged, but this note is anchored at 3:1 while Jannes and Jambres are named at 3:8, so readers starting at 3:1 meet the note several verses before the names appear.",
+      "suggestion": "Left unchanged because it was not flagged; a person should consider moving the note's start to 3:8."
+    },
+    {
+      "where": "4:9",
+      "problem": "Not flagged, but Dalmatia is mentioned at 4:10 and the \"first defence\" at 4:16, so this note sits ahead of both and also covers verses that 4:9 does not reach.",
+      "suggestion": "Left unchanged because it was not flagged; a person should consider re-anchoring or splitting this note."
+    },
+    {
+      "where": "1:15",
+      "problem": "Not flagged, but Onesiphorus first appears at 1:16, just after this note's start.",
+      "suggestion": "Left unchanged because it was not flagged; probably acceptable as one note on the passage, but worth a quick check."
+    }
+  ],
+  "fixed": true
 }

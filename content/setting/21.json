@@ -5,16 +5,17 @@
   "audience": "It was written for Israelites who wanted to think carefully about work, wealth, pleasure, injustice and death. If written by Solomon, its first readers lived in Israel's prosperous golden age. If written later, they were Jews in the small province of Judah, living under foreign rulers and dealing with taxes, officials and trade.",
   "era": "On the traditional view, the setting is Solomon's reign, around 970–930 BC, a time of peace, great building projects, international trade and royal splendour in Jerusalem. On the later view, it comes from around 450–250 BC, when Judah was ruled by the Persian Empire and then by Greek kings after Alexander the Great. Throughout this whole period, nations across the Middle East had their own traditions of wisdom writing about how to live well.",
   "notes": {
-    "2:1": "The houses, vineyards, parks, pools, servants and singers described here echo the famous wealth and building projects of Solomon's court recorded in 1 Kings.",
     "5:1": "'The house of God' is the temple in Jerusalem, where worshippers offered sacrifices and made vows, solemn promises to give God something.",
     "8:1": "This section reflects life at a royal court, where advisers and officials served at the king's pleasure and had to handle his commands carefully.",
     "12:9": "These closing verses speak about the Teacher rather than in his voice; many think they were added by a student or editor who gathered his words."
   },
   "flags": [
     {
-      "where": "2:1",
-      "problem": "The houses, vineyards, parks, pools, servants and singers appear in 2:4–8, not 2:1. Verse 2:1 is about the Teacher deciding to test pleasure, so a reader on 2:1 will not see what 'described here' points to.",
-      "suggestion": "Move the note to 2:4, or reword it so it fits 2:1, e.g. 'In the verses that follow, the houses, vineyards, parks, pools, servants and singers he describes echo the famous wealth and building projects of Solomon's court recorded in 1 Kings.'"
+      "where": "12:9",
+      "problem": "The note gives only the editor view ('many think... added by a student or editor'). It does not give the traditional or alternative view that the Teacher, or the book's author, wrote the closing words himself, speaking of himself in the third person. The guidelines ask for both views on disputed authorship.",
+      "suggestion": "Add a short balancing clause, e.g. 'many think they were added by a student or editor who gathered his words; others think the author himself wrote them as a closing summary.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

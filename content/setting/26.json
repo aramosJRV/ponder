@@ -1,13 +1,12 @@
 {
   "book_number": 26,
   "name": "Ezekiel",
-  "author": "The book is traditionally credited to Ezekiel, the son of Buzi, a priest from Jerusalem trained to serve in the temple. He was taken to Babylon as a captive in 597 BC, along with King Jehoiachin and many of Judah's leading families. He lived among the exiles in a settlement called Tel Aviv, beside the Kebar canal. There, around 593 BC, he was called to be a prophet; most scholars think much of the book comes from him, though some believe followers later arranged and expanded it.",
+  "author": "The book is traditionally credited to Ezekiel, the son of Buzi, a priest from Jerusalem trained to serve in the temple. He was taken to Babylon as a captive in 597 BC, along with King Jehoiachin and many of Judah's leading families. He lived among the exiles in a settlement called Tel Abib (the modern Israeli city of Tel Aviv later took its name from it), beside the Kebar canal. There, around 593 BC, he was called to be a prophet; most scholars think much of the book comes from him, though some believe followers later arranged and expanded it.",
   "audience": "The first hearers were Judeans living as exiles (people forced from their homeland) in Babylon, far from Jerusalem and its temple. Many hoped for a quick return home and believed Jerusalem could never fall. After the city was destroyed in 586 BC, they were left grieving the loss of their city, their king and their temple.",
   "era": "The Babylonian empire under King Nebuchadnezzar dominated the region, and Judah was a subject kingdom paying tribute. After a first deportation in 597 BC, Babylon placed Zedekiah on Judah's throne, but he rebelled, hoping Egypt would help. Babylon besieged Jerusalem from about 588 BC and destroyed the city and Solomon's temple in 586 BC. Ezekiel's dated messages span roughly 593 to 571 BC.",
   "notes": {
     "1:1": "Dated to the fifth year of King Jehoiachin's exile, about 593 BC, by the Kebar canal in Babylonia; the 'thirtieth year' is often taken as Ezekiel's age.",
     "8:1": "Dated to about 592 BC, while the elders of the exiles sat in Ezekiel's house in Babylon.",
-    "8:5": "The god Tammuz, mourned in this vision, was a Mesopotamian god whose death was ritually lamented each year.",
     "14:12": "The Daniel named here may be the exile in Babylon or Danel, an ancient righteous king known from older Canaanite stories; scholars differ.",
     "16:1": "Jerusalem had been a Canaanite city, held by a people called the Jebusites, until King David captured it around 1000 BC.",
     "17:1": "Set against King Zedekiah breaking his sworn loyalty to Babylon and seeking military help from Egypt.",
@@ -23,7 +22,7 @@
     "29:1": "Dated to about January 587 BC, during Jerusalem's siege; Egypt's Pharaoh, probably Hophra, was the ally Judah hoped would rescue it.",
     "29:17": "Dated to about 571 BC, the latest date in the book, soon after Nebuchadnezzar's long siege of Tyre ended.",
     "30:20": "Dated to about 587 BC, soon after an Egyptian army failed to break Babylon's siege of Jerusalem.",
-    "31:1": "Dated to about 587 BC, a few months before Jerusalem fell.",
+    "31:1": "Dated to about 587 BC, during Babylon's siege of Jerusalem.",
     "32:1": "Dated to about 585 BC, after news of Jerusalem's fall had reached the exiles.",
     "32:17": "Dated to the twelfth year of the exile, around 586 or 585 BC.",
     "33:21": "Dated to about January 585 BC, when a refugee reached the exiles in Babylon with news that Jerusalem had fallen.",
@@ -35,19 +34,16 @@
   },
   "flags": [
     {
-      "where": "8:5",
-      "problem": "Tammuz is not mentioned in 8:5, which describes an idol at the temple's north gate. The women mourning Tammuz appear at 8:14, so a reader opening verse 8:5 will see a note about something not in the passage.",
-      "suggestion": "Move this note to 8:14."
+      "where": "1:1",
+      "problem": "The words 'thirtieth year' in quotation marks are a direct quote of the verse, which breaks the no-quoting rule.",
+      "suggestion": "Paraphrase without quotation marks, e.g. 'the book's opening reference to a thirtieth year is often taken as Ezekiel's age.'"
     },
     {
-      "where": "31:1",
-      "problem": "This oracle is dated to the third month of Zedekiah's eleventh year, about June 587 BC. The book's own chronology places Jerusalem's fall in 586 BC, so it came roughly a year earlier, not 'a few months'.",
-      "suggestion": "Say 'Dated to about 587 BC, roughly a year before Jerusalem fell', or simply 'during Babylon's siege of Jerusalem'."
-    },
-    {
-      "where": "author",
-      "problem": "Calling the settlement 'Tel Aviv' may lead ordinary readers to picture the modern Israeli city, which is in Judah's homeland, not Babylon. English Bibles usually spell the ancient place 'Tel Abib'.",
-      "suggestion": "Use 'Tel Abib', perhaps adding that the modern city of Tel Aviv later took its name from it."
+      "where": "40:5",
+      "problem": "The words 'long cubit' in quotation marks repeat a specific translation's wording of the verse, which amounts to quoting scripture.",
+      "suggestion": "Drop the quotation marks and describe it plainly, e.g. 'the cubit used here was a longer one, a handbreadth more than usual.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

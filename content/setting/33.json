@@ -5,7 +5,7 @@
   "audience": "Micah's messages were first spoken to the people of Judah and its capital Jerusalem, and also to the northern kingdom of Israel and its capital Samaria. He spoke especially to rulers, judges, priests and prophets, and to wealthy landowners who were taking land and homes from poorer families.",
   "era": "Micah prophesied around 740–700 BC, during the reigns of Judah's kings Jotham, Ahaz and Hezekiah, at the same time as the prophet Isaiah. The Assyrian Empire, based in what is now northern Iraq, was conquering the region. Assyria destroyed Samaria in 722 BC, and in 701 BC its king Sennacherib invaded Judah, capturing many towns near Micah's home.",
   "notes": {
-    "1:2": "This warning is aimed at Samaria, capital of the northern kingdom, which Assyria besieged and destroyed in 722 BC.",
+    "1:2": "This opening calls all the nations to listen as witnesses, then turns to Samaria, capital of the northern kingdom, and to Jerusalem. Assyria besieged and destroyed Samaria in 722 BC.",
     "1:8": "This lament names towns in Micah's home region, including Lachish and Moresheth, many with wordplay on their names; it is often linked to Assyria's advance through Judah.",
     "3:9": "About a century later, Jeremiah 26 records elders recalling this warning about Jerusalem, saying King Hezekiah responded by turning to God.",
     "4:1": "A nearly identical passage appears in Isaiah 2; scholars debate whether one prophet borrowed from the other or both drew on an older saying.",
@@ -19,8 +19,15 @@
   "flags": [
     {
       "where": "1:2",
-      "problem": "Micah 1:2 summons all peoples and the whole earth, not Samaria specifically. The section that follows names both Samaria and Jerusalem (1:5), and the judgement on Samaria comes in 1:6–7. Saying 1:2 is 'aimed at Samaria' misdescribes the verse a reader is looking at.",
-      "suggestion": "Reword along these lines: 'This opening summons all the nations as witnesses, then turns to Samaria, capital of the northern kingdom, and to Jerusalem. Assyria besieged and destroyed Samaria in 722 BC.'"
+      "problem": "The opening does not call the nations to act as witnesses. It calls the peoples to listen and says the Lord himself will be witness against them. Casting the nations as witnesses misdescribes the passage.",
+      "suggestion": "Rephrase to: 'This opening calls all peoples to listen, with God as witness, then turns to Samaria, capital of the northern kingdom, and to Jerusalem.'"
+    },
+    {
+      "where": "6:9",
+      "problem": "The Bible ties Baal worship to Ahab (and Jezebel), not to Omri. Omri is condemned for doing evil in general, so 'remembered for Baal worship' slightly misstates the record for both kings.",
+      "suggestion": "Rephrase to: 'Omri and Ahab were northern Israelite kings over a century earlier; Ahab was remembered for Baal worship and for seizing Naboth's vineyard.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

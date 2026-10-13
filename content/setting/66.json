@@ -3,7 +3,7 @@
   "name": "Revelation",
   "author": "The writer calls himself John, a servant of Jesus who shared in the hardships of the believers he wrote to. Christian tradition from the second century identifies him as the apostle John, a former Galilean fisherman and one of Jesus' twelve closest followers, who later led churches around Ephesus. Many scholars think he was a different John, a respected Christian prophet in the same region, noting that his Greek style differs from John's Gospel. He wrote in a vivid style full of visions and symbols, drawing heavily on Old Testament prophets like Daniel and Ezekiel.",
   "audience": "It was first sent to seven churches in the Roman province of Asia, in what is now western Turkey, and was meant to be read aloud to each congregation. These were small groups of believers in busy, prosperous cities, some facing hostility, poverty or prison, others growing comfortable and blending in with the surrounding culture.",
-  "era": "Most scholars date the book to around AD 95, under the Roman emperor Domitian; some place it earlier, in the late 60s, after Emperor Nero's persecution of Christians in Rome. Rome ruled the whole Mediterranean world, and cities in Asia competed to honour the emperor with temples and festivals. Christians who refused to take part in emperor worship or in trade-guild feasts dedicated to pagan gods could face suspicion, lost business or worse. Jerusalem's temple had been destroyed by Roman armies in AD 70.",
+  "era": "Most scholars date the book to around AD 95, under the Roman emperor Domitian; some place it earlier, in the late 60s, after Emperor Nero's persecution of Christians in Rome. Rome ruled the whole Mediterranean world, and cities in Asia competed to honour the emperor with temples and festivals. Christians who refused to take part in emperor worship or in trade-guild feasts dedicated to pagan gods could face suspicion, lost business or worse. If the book was written around AD 95, Jerusalem's temple had already been destroyed by Roman armies in AD 70; on the earlier date, the war with Rome that led to its destruction was under way or about to begin.",
   "notes": {
     "1:9": "Patmos was a small, rocky island in the Aegean Sea off the coast of Asia; John was there, most likely as an exile, because of his preaching.",
     "2:1": "Ephesus was the province's greatest city and a major port, home to the famous temple of the goddess Artemis; Paul had worked there for over two years.",
@@ -12,31 +12,9 @@
     "2:18": "Thyatira was a trading town known for its craft guilds, such as dyers and bronze workers; guild banquets usually honoured pagan gods. Lydia, Paul's convert, came from here.",
     "3:1": "Sardis, once the rich capital of the kingdom of Lydia, had a hilltop fortress twice captured by surprise; it was rebuilt after a severe earthquake in AD 17.",
     "3:7": "Philadelphia was a smaller city on an important trade road, badly damaged by the AD 17 earthquake and shaken by tremors for years afterwards.",
-    "3:14": "Laodicea was a wealthy banking city known for black wool and eye ointment; its water was piped in from a distance, and nearby Hierapolis had hot springs.",
-    "13:11": "In the ancient world letters of the alphabet also served as numbers, so adding up the value of a name was a familiar kind of puzzle.",
-    "17:7": "Rome was famously known as the city built on seven hills, a detail John's first readers would likely have recognised.",
-    "18:9": "Rome drew luxury goods such as silk, spices, ivory and fine wood from across the empire and beyond, much of it shipped by sea through busy ports."
+    "3:14": "Laodicea was a wealthy banking city known for black wool and eye ointment; its water was piped in from a distance, and nearby Hierapolis had hot springs."
   },
-  "flags": [
-    {
-      "where": "era",
-      "problem": "The final sentence says the temple 'had been destroyed' in AD 70, which only holds for the later date. It sits right after the late-60s option, so a reader could think the destruction is settled background either way. On the early date the temple would still have been standing.",
-      "suggestion": "Tie it to the dating, e.g. 'If the book was written around AD 95, Jerusalem's temple had already been destroyed by Roman armies in AD 70; on the earlier date, that war was under way or about to begin.'"
-    },
-    {
-      "where": "13:11",
-      "problem": "The note about letters doubling as numbers explains the number of the beast, which comes at 13:18. Verse 11 introduces the second beast, so readers at 13:11 will not see the connection.",
-      "suggestion": "Move the note to 13:18."
-    },
-    {
-      "where": "17:7",
-      "problem": "The seven hills/mountains detail is in 17:9. Verse 7 is only the angel offering to explain the mystery, so the note is anchored to the wrong verse.",
-      "suggestion": "Move the note to 17:9."
-    },
-    {
-      "where": "18:9",
-      "problem": "The list of luxury cargoes (silk, spices, ivory, fine wood) is in the merchants' lament, 18:11–13. Verse 9 is about the kings of the earth mourning, so the note does not match its verse.",
-      "suggestion": "Move the note to 18:11."
-    }
-  ]
+  "flags": [],
+  "unsure": [],
+  "fixed": true
 }

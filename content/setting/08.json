@@ -2,8 +2,8 @@
   "book_number": 8,
   "name": "Ruth",
   "author": "The book of Ruth does not name its author. Jewish tradition, recorded in the Talmud, credits the prophet Samuel, the last of Israel's judges, who anointed its first kings, Saul and David. Many scholars instead think an unnamed Israelite storyteller wrote it later, either during the time of the kings or after the Jewish exile in Babylon.",
-  "audience": "The first hearers were Israelites who knew David as their great king, since the book ends by tracing his family line back to Ruth. If it was written during the time of the kings, they were living under rulers from David's family. If it was written after the exile, they were a small community rebuilding life in Judah and wrestling with questions about marriage to foreigners.",
-  "era": "The story is set in the days of the judges, roughly 1200–1050 BC, before Israel had a king, when the tribes were loosely bound together and times were often unsettled. Life in a small town like Bethlehem revolved around farming, family land and the harvest seasons, and relatives were expected to look after kin who fell on hard times. Moab, Ruth's homeland, lay east of the Dead Sea and was a long-standing neighbour of Israel and sometimes its enemy. The book itself was written down some generations later.",
+  "audience": "The first hearers were Israelites, and the book ends by tracing the family line of David, Israel's great king, back to Ruth. If Samuel wrote it, as Jewish tradition holds, David's reign still lay ahead for those first hearers. If it was written during the time of the kings, they knew David as their great king and were living under rulers from his family. If it was written after the exile, they were a small community rebuilding life in Judah and wrestling with questions about marriage to foreigners.",
+  "era": "The story is set in the days of the judges, roughly 1200–1050 BC, before Israel had a king, when the tribes were loosely bound together and times were often unsettled. Life in a small town like Bethlehem revolved around farming, family land and the harvest seasons, and relatives were expected to look after kin who fell on hard times. Moab, Ruth's homeland, lay east of the Dead Sea and was a long-standing neighbour of Israel and sometimes its enemy. The book itself was written down later, perhaps near the end of this period or several generations on, depending on who wrote it.",
   "notes": {
     "2:1": "Israel's law told landowners to leave grain at the field edges and not gather what reapers dropped, so poor people, foreigners and widows could collect it, called gleaning.",
     "3:1": "A threshing floor was a hard, open patch where harvested grain was beaten and tossed into the evening breeze to separate it from husks; workers often slept there to guard it.",
@@ -11,14 +11,16 @@
   },
   "flags": [
     {
-      "where": "audience",
-      "problem": "It states as fact that the first hearers knew David as their great king. Under the traditional view in the author section, Samuel wrote it, and Samuel died before David took the throne. That audience could not have known David as king, so the opening sentence quietly assumes the later-date view.",
-      "suggestion": "Hedge the first sentence, e.g. 'If the book was written after David's reign, its first hearers knew him as their great king…', or briefly note that under the traditional view David's kingship still lay ahead."
+      "where": "era",
+      "problem": "The closing sentence says the book was written 'perhaps near the end of this period or several generations on'. That understates the later view the author section gives: writing after the exile in Babylon would be roughly six centuries after the judges, not 'several generations'. The two sections don't match.",
+      "suggestion": "Change to something like 'perhaps near the end of this period, or some centuries later, depending on who wrote it.'"
     },
     {
-      "where": "era",
-      "problem": "'The book itself was written down some generations later' states the date as settled. It also conflicts with the Samuel tradition, since Samuel lived at the very end of the judges period rather than generations afterward.",
-      "suggestion": "Soften it, e.g. 'The book was written down later, possibly soon after these events or several generations on (see author).'"
+      "where": "4:1",
+      "problem": "The term 'kinsman-redeemer' is first explained here, but the idea comes up earlier in the story, when Naomi calls Boaz one of the family's redeemers (2:20) and Ruth uses the word to him (3:9). A reader meeting it at those verses gets no explanation.",
+      "suggestion": "Move the kinsman-redeemer explanation to a note at 2:20, or add a short one there, and keep the town-gate explanation at 4:1."
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

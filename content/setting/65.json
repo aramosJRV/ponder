@@ -1,32 +1,22 @@
 {
   "book_number": 65,
   "name": "Jude",
-  "author": "The writer calls himself Jude, a servant of Jesus Christ and brother of James. Traditionally he is identified as one of the brothers of Jesus named in the Gospels, who, like his brother James, came to believe in Jesus after the resurrection and became a respected figure among early Jewish Christians. Many scholars accept this, while others think a later follower wrote in Jude's name to carry his authority.",
-  "audience": "The letter does not name its readers. They were probably believers steeped in Jewish Scripture and tradition, perhaps in Palestine or nearby, meeting in small house churches. Certain people had slipped into their gatherings, sharing their meals while living immorally and treating God's grace as a licence for it, and Jude writes urgently to warn them.",
+  "author": "The writer calls himself Jude, a servant of Jesus Christ and brother of James. Traditionally he is identified as one of the brothers of Jesus named in the Gospels. Jesus' brothers did not believe in him during his ministry, but they are found among the believers after the resurrection, and Paul mentions the Lord's brothers travelling as missionaries. Beyond this, little is known about Jude himself. Many scholars accept the traditional view, while others think a later follower wrote in Jude's name to carry his authority.",
+  "audience": "The letter does not name its readers. They were probably believers steeped in Jewish Scripture and tradition, perhaps in Palestine or nearby, meeting in small house churches. Certain people had slipped into their gatherings, sharing their meals while living immorally and treating God's grace as a licence for it, and Jude writes urgently to warn the believers about them.",
   "era": "Jude was likely written in the second half of the first century AD, with suggested dates ranging from around AD 50–70 to as late as AD 90 or later. The young church was spreading across the Roman Empire through small household congregations, often visited by travelling teachers whose claims were hard to check. Letters like this one were carried by messengers and read aloud when believers gathered.",
-  "notes": {
-    "1:5": "Jude draws on stories his readers knew from popular Jewish writings outside the Old Testament, including the book of 1 Enoch and a tradition about Michael and Moses' body."
-  },
+  "notes": {},
   "flags": [
     {
-      "where": "1:5",
-      "problem": "The note is attached to the wrong verse. Jude 5 recalls the Exodus from Egypt, an Old Testament story. The tradition about Michael and Moses' body appears at verse 9, and the words from 1 Enoch at verses 14–15. A reader tapping verse 5 would be confused.",
-      "suggestion": "Move the note to 1:9, or split it: put the Michael and Moses tradition at 1:9 and the 1 Enoch material at 1:14."
-    },
-    {
-      "where": "1:5",
-      "problem": "'The book of 1 Enoch' is unexplained. Most churchgoers will not know what it is, and the '1' may puzzle them.",
-      "suggestion": "Add a short gloss, e.g. '1 Enoch, an ancient Jewish book of visions credited to Enoch, Noah's great-grandfather, which was widely read in Jude's day but is not in most Bibles.'"
+      "where": "era",
+      "problem": "The opening says Jude was 'likely written in the second half of the first century,' but the range that follows starts at AD 50 (mid-century) and runs to 'AD 90 or later' (possibly the second century). The framing and the range do not match, which could confuse readers and makes the 'likely' sound more settled than the spread of views allows.",
+      "suggestion": "Drop the opening claim and give the range directly, e.g. 'Scholars date Jude anywhere from around AD 50–70, if Jude himself wrote it, to around AD 90 or a little later, if it was written in his name.'"
     },
     {
       "where": "author",
-      "problem": "The text says flatly that Jude, like James, came to believe after the resurrection and became a respected figure among early Jewish Christians. Very little is known about Jude himself. The Gospels say Jesus' brothers did not believe during his ministry, and Acts places them among the believers after the resurrection. But there is no specific record of Jude's coming to faith or of his standing in the church, so this is inference presented as fact.",
-      "suggestion": "Soften it, e.g. 'Jesus' brothers did not believe in him during his ministry but are found among the believers after the resurrection; Paul mentions the Lord's brothers travelling as missionaries.' Drop 'respected figure', or hedge it."
-    },
-    {
-      "where": "audience",
-      "problem": "In 'Jude writes urgently to warn them', the nearest group mentioned is the intruders. So the sentence reads as if Jude is warning the troublemakers rather than the believers.",
-      "suggestion": "Make the referent clear, e.g. 'and Jude writes urgently to warn the believers about them.'"
+      "problem": "'Brother of James' is not explained. Ordinary readers may not know which James is meant, since several appear in the New Testament. The traditional link to Jesus' family depends on this James being the brother of Jesus who led the church in Jerusalem.",
+      "suggestion": "Add a short clause, e.g. 'brother of James, usually taken to be the James who led the Jerusalem church and was himself a brother of Jesus.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

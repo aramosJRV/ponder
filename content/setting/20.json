@@ -1,9 +1,9 @@
 {
   "book_number": 20,
   "name": "Proverbs",
-  "author": "Proverbs is traditionally linked to Solomon, son of David, king of Israel around 950 BC, remembered for his great wisdom and for collecting thousands of sayings. The book itself names other contributors too: unnamed 'wise' teachers, Agur, King Lemuel, and the scribes of King Hezekiah who copied out Solomon's sayings. Many scholars think the book grew over several centuries, gathered by royal scribes and teachers, with its final form perhaps after the Jews returned from exile in Babylon.",
+  "author": "Proverbs is traditionally linked to Solomon, son of David, king of Israel around 950 BC, remembered for his great wisdom and for speaking thousands of proverbs. The book itself names other contributors too: unnamed 'wise' teachers, Agur, King Lemuel, and the scribes of King Hezekiah who copied out Solomon's sayings. Many scholars think the book grew over several centuries, gathered by royal scribes and teachers, with its final form perhaps after the Jews returned from exile in Babylon.",
   "audience": "Much of the book speaks to a 'son,' likely young men being trained for adult life, whether by parents at home or by teachers preparing future officials at the royal court. Over time it became shared teaching for ordinary Israelite households, guiding everyday choices in work, family, money and speech.",
-  "era": "Solomon's reign was a rare time of peace and wealth for Israel, with busy foreign trade, a splendid court and the building of the first Temple in Jerusalem. Neighbouring lands such as Egypt and Mesopotamia had their own long traditions of wise sayings, often used to train young officials, and Israel's teachers shared in this wider world. Later collecting happened under King Hezekiah around 700 BC, when the small kingdom of Judah lived under the shadow of the mighty Assyrian empire.",
+  "era": "The Bible remembers Solomon's reign as a rare time of peace and wealth for Israel, with busy foreign trade, a splendid court and the building of the first Temple in Jerusalem, though historians and archaeologists debate how large and grand his kingdom really was. Neighbouring lands such as Egypt and Mesopotamia had their own long traditions of wise sayings, often used to train young officials, and Israel's teachers shared in this wider world. Later collecting happened under King Hezekiah around 700 BC, when the small kingdom of Judah lived under the shadow of the mighty Assyrian empire.",
   "notes": {
     "1:1": "The opening title names Solomon, son of David, king of Israel, and begins a long section (chapters 1–9) of speeches from a parent or teacher to a young man.",
     "10:1": "A fresh heading, 'the proverbs of Solomon,' starts the book's main collection of short two-line sayings, running through to the middle of chapter 22.",
@@ -12,23 +12,20 @@
     "25:1": "The heading says these Solomon sayings were copied out by the men of Hezekiah, king of Judah, around 700 BC, likely royal scribes at his court.",
     "30:1": "These are credited to Agur son of Jakeh, otherwise unknown; some think he came from Massa, a people in northern Arabia, while other translations read the word as 'oracle.'",
     "31:1": "These words are credited to King Lemuel, otherwise unknown, as teaching his mother gave him; like Agur, he may have come from Massa in northern Arabia.",
-    "31:10": "This closing poem is an acrostic: in Hebrew, each verse begins with the next letter of the alphabet, a form that aided memory."
+    "31:10": "This closing poem is an acrostic: in Hebrew, each verse begins with the next letter of the alphabet, a form that may have helped memory and gave a sense of completeness, from first letter to last."
   },
   "flags": [
     {
-      "where": "era",
-      "problem": "It states as settled fact that Solomon's reign was a time of great peace and wealth with a splendid court. That picture comes from the biblical account, and archaeologists and historians disagree about how large and rich his kingdom really was.",
-      "suggestion": "Attribute the description and note the debate briefly, e.g. 'The Bible remembers Solomon's reign as a rare time of peace and wealth…; historians debate how grand his kingdom actually was.'"
+      "where": "10:1",
+      "problem": "The note puts a phrase from the verse in quotation marks ('the proverbs of Solomon'), which is a direct quotation of scripture. 22:1 ('the words of the wise') and 24:1 ('the wise') do the same.",
+      "suggestion": "Paraphrase without quotation marks, e.g. 'A fresh heading credits what follows to Solomon…' and 'a new collection credited to unnamed wise teachers begins.'"
     },
     {
-      "where": "author",
-      "problem": "'Collecting thousands of sayings' slightly misstates the tradition. 1 Kings remembers Solomon as speaking or composing 3,000 proverbs, not collecting them.",
-      "suggestion": "Change to 'remembered for his great wisdom and for speaking thousands of proverbs.'"
-    },
-    {
-      "where": "31:10",
-      "problem": "'A form that aided memory' states the purpose of the acrostic as fact. Scholars suggest several reasons for the form, such as helping memory, showing artistry, or conveying completeness from A to Z.",
-      "suggestion": "Soften to 'a form that may have helped memory and gave a sense of completeness.'"
+      "where": "30:1",
+      "problem": "'Other translations read the word as oracle' doesn't say which word. An ordinary reader won't know that one Hebrew word (massa) can be read either as a place name or as 'oracle'.",
+      "suggestion": "Make the link explicit, e.g. 'the same Hebrew word, massa, can be read as the name of a people in northern Arabia or as \"oracle\" (a solemn message), so translations differ.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

@@ -5,12 +5,12 @@
   "audience": "Traditionally, the first hearers were the new generation of Israelites camped on the plains of Moab, east of the Jordan River, about to enter the land of Canaan after their parents' generation had died in the desert. Many scholars also see the finished book as speaking to later Israelites, possibly exiles in Babylon or those returning home, who were themselves waiting to settle again in the promised land.",
   "era": "The book covers roughly forty years of Israel's life as a wandering people in the desert, from Mount Sinai to the edge of Canaan. The date of the exodus from Egypt is debated, with the two main views placing it in the 1400s BC or the 1200s BC. Canaan was then a patchwork of small walled city-states, often under Egyptian influence, surrounded by neighbouring peoples such as the Edomites, Moabites, Amorites and Midianites. Israel lived in tents, organised by tribes and clans, with the portable worship tent called the tabernacle at the centre of the camp.",
   "notes": {
-    "6:22": "Two tiny silver scrolls found in a tomb near Jerusalem, dated around 600 BC, carry a version of this blessing, the oldest known written words from the Bible.",
+    "6:22": "Two tiny silver scrolls found in a tomb near Jerusalem, dated around 600 BC, carry a version of this blessing, the oldest surviving copy of any words found in the Bible.",
     "12:1": "Cush was a land south of Egypt, roughly modern Sudan; some readers think the wife meant here is Zipporah, others a second wife.",
     "20:1": "Most readers understand the story here as jumping forward about thirty-eight years, from the second year after leaving Egypt to near the fortieth.",
     "20:14": "Edom lay south-east of the Dead Sea; its people were seen as descendants of Esau, Jacob's brother, and the King's Highway was a major trade route through it.",
     "20:22": "Later in Numbers, Aaron's death on Mount Hor is dated to the fifth month of the fortieth year after leaving Egypt.",
-    "21:4": "Centuries later, around 700 BC, King Hezekiah destroyed a bronze snake kept in Jerusalem and called Nehushtan, which people were offering incense to.",
+    "21:4": "Centuries later, around 700 BC, King Hezekiah destroyed a bronze snake kept in Jerusalem, said to be the one Moses made; it was called Nehushtan, and people had been offering incense to it.",
     "21:10": "This passage quotes the Book of the Wars of the Lord, an ancient collection of songs or poems that has since been lost.",
     "21:33": "Bashan was a fertile highland east of the Sea of Galilee, famous in ancient times for its rich pastures, strong cattle and oak trees.",
     "22:1": "An inscription found at Deir Alla in Jordan, dated around 800 BC, mentions a seer named Balaam son of Beor, showing he was remembered beyond Israel.",
@@ -26,14 +26,11 @@
   },
   "flags": [
     {
-      "where": "21:4",
-      "problem": "The note doesn't say how Hezekiah's bronze snake connects to this passage. The account in 2 Kings says it was the one Moses made, but without that link an ordinary reader may not see why the later event is mentioned here.",
-      "suggestion": "Add that the bronze snake was said to be the one Moses made, e.g. 'King Hezekiah destroyed a bronze snake kept in Jerusalem, said to be the one Moses made and called Nehushtan, which people had been offering incense to.'"
-    },
-    {
-      "where": "6:22",
-      "problem": "'The oldest known written words from the Bible' is loose and could suggest this blessing is the oldest part of the Bible. What the scrolls actually are is the oldest surviving written copy of any Bible text.",
-      "suggestion": "Rephrase as 'the oldest surviving copy of any words found in the Bible.'"
+      "where": "29:12",
+      "problem": "'When Israelites later lived in temporary huts' suggests the huts were a later development. The Law itself, in Leviticus, already prescribes living in shelters during this feast.",
+      "suggestion": "Drop 'later': '...an autumn harvest celebration when Israelites lived in temporary huts for the week.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

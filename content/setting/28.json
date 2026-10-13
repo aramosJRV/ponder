@@ -1,71 +1,21 @@
 {
   "book_number": 28,
   "name": "Hosea",
-  "author": "The book is named after Hosea son of Beeri, a prophet: someone believed to speak messages from God to his people. He is the only prophet with a book in the Bible who seems to have come from, and worked in, the northern kingdom of Israel. Little is known of his daily life beyond his troubled marriage to a woman named Gomer, which the book describes. Most agree the messages go back to Hosea himself, though many scholars think they were later collected and edited in the southern kingdom of Judah, with a few lines added for readers there.",
-  "audience": "Hosea first spoke to the people of the northern kingdom of Israel, which he often calls 'Ephraim' after its largest tribe, and to its leaders in the capital, Samaria. Many mixed worship of Israel's God with worship of Baal, a Canaanite god believed to bring rain and good harvests, and the kingdom's official shrines held golden calf statues. After the north fell, the collected messages were treasured by readers in Judah to the south.",
+  "author": "The book is named after Hosea son of Beeri, a prophet: someone believed to speak messages from God to his people. He is the only prophet with a book in the Bible who seems to have come from, and worked in, the northern kingdom of Israel. Little is known of his daily life beyond his troubled marriage to a woman named Gomer, which the book describes. Most take this as a real marriage, though some, both in church tradition and among scholars, have read it as a vision or symbolic story. Most agree the messages go back to Hosea himself, though many scholars think they were later collected and edited in the southern kingdom of Judah, with a few lines added for readers there.",
+  "audience": "Hosea first spoke to the people of the northern kingdom of Israel, which he often calls 'Ephraim' after its leading tribe, and to its leaders in the capital, Samaria. Many mixed worship of Israel's God with worship of Baal, a Canaanite god believed to bring rain and good harvests, and the kingdom's official shrines held golden calf statues. After the north fell, the collected messages were treasured by readers in Judah to the south.",
   "era": "Hosea was active from roughly 750 to 720 BC. He began during the long, prosperous reign of King Jeroboam II, but after Jeroboam's death the northern kingdom fell into chaos, with six kings in about 25 years, four of them murdered. The mighty Assyrian empire, based in what is now Iraq, was expanding westward, and Israel's rulers swung between paying it off and seeking help from Egypt. In 722 BC Assyria captured Samaria and carried many Israelites into exile, ending the northern kingdom.",
   "notes": {
-    "1:1": "The opening names kings of Judah from Uzziah to Hezekiah and Jeroboam II of Israel, placing Hosea's work roughly between 750 and 715 BC.",
-    "1:2": "The name Jezreel recalls the valley where King Jehu slaughtered the family of King Ahab about a century earlier; Jeroboam II belonged to Jehu's family line.",
+    "1:1": "The opening names kings of Judah from Uzziah to Hezekiah and Jeroboam II of Israel, placing Hosea's work in the second half of the 700s BC.",
     "5:8": "Many scholars link this to the war of about 734–732 BC, when Israel and Syria fought Judah and Assyria stepped in; Gibeah and Ramah were border towns.",
-    "8:1": "Many connect the talk of buying Assyria's favour with King Menahem's heavy payment of silver to the Assyrian king around 740 BC.",
-    "9:1": "This may have been spoken during an autumn harvest festival, when crowds gathered at threshing floors and shrines to celebrate the grain and grape harvests.",
-    "10:1": "'Beth-aven', meaning 'house of wickedness', is Hosea's mocking name for Bethel, home of one of the kingdom's royal golden calf shrines.",
-    "10:9": "It mentions an attack by 'Shalman' on Beth-arbel, an event known only here; scholars are unsure whether Shalman was an Assyrian or a Moabite king.",
-    "11:12": "The mention of sending olive oil to Egypt while making a treaty with Assyria probably reflects King Hoshea's double-dealing shortly before Samaria fell.",
-    "13:9": "Many date this to Samaria's final years, possibly after Assyria took King Hoshea prisoner around 724 BC, leaving Israel without a king.",
-    "14:1": "The closing verse is written like a wise saying, and many scholars think an editor added it when the book was gathered for later readers."
+    "9:1": "This may have been spoken during an autumn harvest festival, when crowds gathered at threshing floors and shrines to celebrate the grain and grape harvests."
   },
   "flags": [
     {
       "where": "author",
-      "problem": "The marriage to Gomer is presented as a plain biographical fact. Scholars and church tradition have long debated whether it was a real marriage, a vision or a symbolic story.",
-      "suggestion": "Add a short clause, e.g. 'which the book describes and which most take as a real marriage, though some have read it as symbolic'."
-    },
-    {
-      "where": "audience",
-      "problem": "Calling Ephraim the 'largest' tribe is doubtful. It was the leading or dominant northern tribe, but not clearly the largest; Manasseh's territory was bigger.",
-      "suggestion": "Say 'after its leading tribe' or 'most powerful tribe'."
-    },
-    {
-      "where": "1:1",
-      "problem": "The note gives Hosea's work as roughly 750 to 715 BC, while the era section says roughly 750 to 720 BC. Readers may be confused by the mismatch. The end date also depends on the disputed start of Hezekiah's reign.",
-      "suggestion": "Make the two ranges agree, or explain that the heading's mention of Hezekiah may stretch the range a little later."
-    },
-    {
-      "where": "1:2",
-      "problem": "Wrong verse. Jezreel's name and its link to Jehu come at 1:4. Verse 1:2 is about the command to marry.",
-      "suggestion": "Move the note to 1:4."
-    },
-    {
-      "where": "8:1",
-      "problem": "Wrong verse. The talk of buying favour or hiring lovers, linked to Assyria, is at 8:9–10. Verse 8:1 is about the trumpet and the eagle.",
-      "suggestion": "Move the note to 8:9."
-    },
-    {
-      "where": "10:1",
-      "problem": "Wrong verse. 'Beth-aven' does not appear in 10:1. It appears in 10:5, and also in 4:15 and 5:8.",
-      "suggestion": "Move the note to 10:5."
-    },
-    {
-      "where": "10:9",
-      "problem": "Wrong verse. Shalman and Beth-arbel are mentioned at 10:14, not 10:9.",
-      "suggestion": "Move the note to 10:14."
-    },
-    {
-      "where": "11:12",
-      "problem": "Wrong verse. In English Bibles, the oil sent to Egypt and the treaty with Assyria come at 12:1 (12:2 in Hebrew). Verse 11:12 is about lies and deceit.",
-      "suggestion": "Move the note to 12:1."
-    },
-    {
-      "where": "13:9",
-      "problem": "Wrong verse. The question about Israel's missing king, which this note explains, is at 13:10.",
-      "suggestion": "Move the note to 13:10."
-    },
-    {
-      "where": "14:1",
-      "problem": "Wrong verse. The note describes 'the closing verse', which is 14:9 in English Bibles (14:10 in Hebrew). Verse 14:1 is the call to return. Attaching the note to 14:1 would confuse readers.",
-      "suggestion": "Move the note to 14:9."
+      "problem": "The claim that Hosea is the only prophet with a book in the Bible who came from and worked in the northern kingdom is doubtful as worded. Jonah also came from a northern town (Gath-hepher) and is said to have prophesied for Jeroboam II, so a reader who knows this may be confused. Scholars usually make a narrower claim: Hosea is the only prophet from the north whose own messages to the north make up a book.",
+      "suggestion": "Narrow the claim, e.g. 'He is the only prophet from the northern kingdom of Israel whose messages to his own people fill a book of the Bible.'"
     }
-  ]
+  ],
+  "unsure": [],
+  "fixed": true
 }

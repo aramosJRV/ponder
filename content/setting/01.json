@@ -3,32 +3,18 @@
   "name": "Genesis",
   "author": "Genesis does not name its author. Jewish and Christian tradition holds that it was written by Moses, an Israelite raised in the Egyptian royal court who later led his people out of slavery and served as their prophet and lawgiver. Many scholars instead think the book was woven together over centuries from several older collections of stories and family records. On that view it reached its final form around the time of Israel's exile in Babylon or shortly after, in the 500s BC.",
   "audience": "On the traditional view, the first hearers were the Israelites who had escaped Egypt and were living as wandering tribes in the desert, on their way to settle in Canaan, the land later called Israel. Scholars who favour a later date picture Israelites in or just after exile in Babylon, a people who had lost their land, king and temple. In either setting, these were people asking who they were and where they had come from.",
-  "era": "The stories themselves are set long before they were written down: the families of Abraham, Isaac and Jacob are usually placed somewhere around 2000–1500 BC, moving between Mesopotamia (modern Iraq), Canaan and Egypt. That world was made up of great river kingdoms, small city-states and herding families who travelled with their flocks in search of pasture and water. The surrounding peoples, especially in Babylon, told their own stories of creation and of a great flood. The book was written down either around the 1400s–1200s BC, on the traditional view, or as late as the 500s BC on the main alternative.",
+  "era": "The stories themselves are set long before they were written down: the families of Abraham, Isaac and Jacob are usually placed somewhere around 2000–1500 BC, moving between Mesopotamia (modern Iraq, Syria and south-east Turkey), Canaan and Egypt. That world was made up of great river kingdoms, small city-states and herding families who travelled with their flocks in search of pasture and water. The surrounding peoples, especially in Babylon, told their own stories of creation and of a great flood. The book was written down either around the 1400s–1200s BC, on the traditional view, or as late as the 500s BC on the main alternative.",
   "notes": {
     "1:1": "Neighbouring peoples, especially the Babylonians, had their own creation stories, involving many gods battling one another; Israel's first hearers would likely have known such tales.",
     "10:1": "Many names in this list match peoples and places known from the ancient world, such as Egypt, Canaan, Assyria and the islands and coasts of the Mediterranean.",
-    "11:1": "Babel is the Hebrew name for Babylon, whose cities were known for ziggurats, tall stepped towers of baked brick built as temples to their gods.",
+    "11:1": "Babel is the Hebrew name for Babylon. Babylon and other cities of Mesopotamia built ziggurats, tall stepped towers of mud brick faced with baked brick, with temples to their gods at the top.",
     "14:1": "Salem, the city of the priest-king Melchizedek, has long been identified with Jerusalem, which later became Israel's capital.",
     "23:1": "The cave of Machpelah lies at Hebron, south of Jerusalem; a site there, known as the Tomb of the Patriarchs, is still honoured by Jews, Christians and Muslims.",
     "28:10": "Bethel, a town north of Jerusalem, later became one of the main places of worship in the northern kingdom of Israel.",
     "41:1": "Egypt's harvests depended on the Nile flooding every year; when the flood failed, famine followed, so dreams about the river and its cattle would have felt deeply serious.",
-    "49:1": "Jacob's blessing is a poem, and many scholars consider it among the oldest pieces of poetry in the Bible, with each line speaking of a future tribe of Israel."
+    "49:1": "Jacob's blessing is a poem, and many scholars consider it among the oldest pieces of poetry in the Bible. It has a section for each of Jacob's twelve sons, whose descendants became the tribes of Israel."
   },
-  "flags": [
-    {
-      "where": "era",
-      "problem": "Calling Mesopotamia 'modern Iraq' is incomplete. Haran, where Abraham's family settled and where Jacob later lived with Laban, is in modern south-east Turkey, and the wider region also covers part of Syria.",
-      "suggestion": "Use 'Mesopotamia (modern Iraq, Syria and south-east Turkey)' or simply 'Mesopotamia, the land between the Tigris and Euphrates rivers'."
-    },
-    {
-      "where": "11:1",
-      "problem": "'Babylon, whose cities' is muddled, because Babylon was a single city. Ziggurats were found across Mesopotamia and were not only Babylonian. They were mostly mud brick with a baked-brick outer layer, and they held temples rather than being temples themselves.",
-      "suggestion": "Reword along these lines: 'Babel is the Hebrew name for Babylon. Babylon and other Mesopotamian cities built ziggurats, tall stepped towers of mud and baked brick, with temples to their gods at the top.'"
-    },
-    {
-      "where": "49:1",
-      "problem": "'Each line speaking of a future tribe' is inaccurate, because the poem is arranged in sections addressed to each of Jacob's sons, not one line per tribe. Describing it as speaking of the future also edges toward interpreting the passage.",
-      "suggestion": "Reword to say the poem has a section for each of Jacob's twelve sons, whose descendants became the tribes of Israel."
-    }
-  ]
+  "flags": [],
+  "unsure": [],
+  "fixed": true
 }
