@@ -374,7 +374,8 @@ async function toSql(): Promise<void> {
     ),
     ``,
   ];
-  const path = "supabase/migrations/20261012000002_the_setting_content.sql";
+  // Each content change needs a new migration file: pass its path after --sql.
+  const path = Deno.args[Deno.args.indexOf("--sql") + 1] ?? "supabase/migrations/20261012000002_the_setting_content.sql";
   await Deno.writeTextFile(path, lines.join("\n"));
   console.log(`Wrote ${path}`);
 }

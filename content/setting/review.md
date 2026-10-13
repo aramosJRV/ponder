@@ -440,7 +440,7 @@ What the fix step left alone, then anything the re-check found.
 
 ### 1 Corinthians
 
-**Who wrote it.** The letter is from Paul, with a co-worker named Sosthenes joined in the greeting. Paul was a Jew from Tarsus, in what is now southern Turkey, trained as a Pharisee (a strict teacher of Jewish law). He once persecuted Christians, but after encountering the risen Jesus he became a travelling missionary, an apostle who started churches across the Roman world. He earned his living as a tentmaker, and almost all scholars agree he wrote this letter.
+**Who wrote it.** The letter is from Paul, with a co-worker named Sosthenes joined in the greeting. Paul was a Jew from Tarsus, in what is now southern Turkey, trained as a Pharisee (a member of a Jewish group devoted to strictly keeping God's law). He once persecuted Christians, but after encountering the risen Jesus he became a travelling missionary, an apostle who started churches across the Roman world. He earned his living as a tentmaker, and almost all scholars agree he wrote this letter.
 
 **Who first heard it.** The first readers were the believers in Corinth, a church Paul had started around AD 50–52 during a stay of about eighteen months. Most were non-Jews, along with some Jews, and they met in one another's homes. A few years after Paul left, he heard reports of quarrels and troubles among them, and they had also written to him with questions.
 
@@ -448,7 +448,7 @@ What the fix step left alone, then anything the re-check found.
 
 ### 2 Corinthians
 
-**Who wrote it.** The letter comes from Paul, a Jewish man from Tarsus who had been a Pharisee, a strict teacher of Jewish law, before becoming a follower of Jesus. He worked as a travelling apostle, a missionary who started churches across the Roman world, and supported himself by making tents. He had founded the church in Corinth himself around AD 50–51. Nearly everyone accepts Paul wrote it, though many scholars think the book joins two or more of his letters to Corinth, while others read it as one letter.
+**Who wrote it.** The letter comes from Paul, a Jewish man from Tarsus who had been a Pharisee, a member of a Jewish group devoted to strictly keeping God's law, before becoming a follower of Jesus. He worked as a travelling apostle, a missionary who started churches across the Roman world, and supported himself by making tents. He had founded the church in Corinth himself around AD 50–51. Nearly everyone accepts Paul wrote it, though many scholars think the book joins two or more of his letters to Corinth, while others read it as one letter.
 
 **Who first heard it.** It was written to the church in Corinth, mostly non-Jewish converts with some Jewish believers, and to Christians across Achaia, the Roman province of southern Greece. Paul's relationship with them had become strained, with a painful visit, a sorrowful letter, and visiting rival teachers who questioned his authority.
 
@@ -488,7 +488,7 @@ What the fix step left alone, then anything the re-check found.
 
 ### 1 Thessalonians
 
-**Who wrote it.** The letter names Paul, along with his travelling companions Silvanus (also called Silas) and Timothy, and it is almost universally accepted as Paul's own. Paul was a Jew from Tarsus, in what is now southern Turkey, trained as a Pharisee, a strict teacher of Jewish law. He once persecuted followers of Jesus, then became one of the movement's leading missionaries, earning his living as a tentmaker as he travelled. This is probably one of his earliest surviving letters, and perhaps the oldest writing in the New Testament.
+**Who wrote it.** The letter names Paul, along with his travelling companions Silvanus (also called Silas) and Timothy, and it is almost universally accepted as Paul's own. Paul was a Jew from Tarsus, in what is now southern Turkey, trained as a Pharisee, a member of a Jewish group devoted to strictly keeping God's law. He once persecuted followers of Jesus, then became one of the movement's leading missionaries, earning his living as a tentmaker as he travelled. This is probably one of his earliest surviving letters, and perhaps the oldest writing in the New Testament.
 
 **Who first heard it.** It was written to a young church in Thessalonica, a busy port city and the capital of the Roman province of Macedonia in northern Greece. Most believers there seem to have been non-Jews who had recently turned away from worshipping idols. Paul had been forced to leave the city after only a short stay because of opposition, and the new believers were facing pressure and hostility from their neighbours.
 
@@ -504,7 +504,7 @@ What the fix step left alone, then anything the re-check found.
 
 ### 1 Timothy
 
-**Who wrote it.** The letter names Paul as its writer. He was a Jewish scholar trained as a Pharisee (a strict teacher of God's law), a tentmaker by trade, and a former persecutor of Christians who became a travelling missionary and founder of churches. Traditionally it is dated late in his life, perhaps in the early-to-mid 60s AD after a release from house arrest in Rome; many scholars instead think a later follower wrote it in Paul's name to pass on his teaching.
+**Who wrote it.** The letter names Paul as its writer. He was a Jewish scholar trained as a Pharisee (a member of a Jewish group devoted to strictly keeping God's law), a tentmaker by trade, and a former persecutor of Christians who became a travelling missionary and founder of churches. Traditionally it is dated late in his life, perhaps in the early-to-mid 60s AD after a release from house arrest in Rome; many scholars instead think a later follower wrote it in Paul's name to pass on his teaching.
 
 **Who first heard it.** It is addressed to Timothy, Paul's younger co-worker and close friend of many years, the son of a Jewish mother and a Greek father, whom Paul had left in Ephesus to guide the church there. The believers met in homes, and some teachers among them were spreading confusing ideas and stirring up arguments, so Timothy needed help organising leadership and church life.
 
