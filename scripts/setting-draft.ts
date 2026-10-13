@@ -5,6 +5,8 @@
 //
 //   1. Draft + check (resumable: books already in content/setting/ are skipped)
 //        ANTHROPIC_API_KEY=... deno run --no-lock --node-modules-dir=none -A scripts/setting-draft.ts [bookNumber ...]
+//   1b. Apply the check's clear fixes, then check again (books with flags only)
+//        ANTHROPIC_API_KEY=... deno run --no-lock --node-modules-dir=none -A scripts/setting-draft.ts --fix
 //   2. Review page for a person: content/setting/review.md
 //        deno run --no-lock --node-modules-dir=none -A scripts/setting-draft.ts --report
 //   3. After approval, the content migration loaded with `supabase db push`
@@ -33,6 +35,9 @@ type Setting = {
   /** Keyed by pericope start, "chapter:verse". Most passages are absent. */
   notes: Record<string, string>;
   flags: Flag[];
+  /** Set by --fix: flags it left for a person, with why. */
+  unsure?: Flag[];
+  fixed?: boolean;
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -139,6 +144,31 @@ Passages:
 ${list.map((p) => p.label).join("\n")}`;
 }
 
+const FIX_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["author", "audience", "era", "notes", "unsure"],
+  properties: {
+    ...DRAFT_SCHEMA.properties,
+    unsure: CHECK_SCHEMA.properties.flags,
+  },
+};
+
+function fixPrompt(book: Book, s: Setting): string {
+  const { flags, ...draft } = s;
+  return `Below is "The setting" for ${book.name} and a fact-checker's flags on it.
+
+Apply each flag's fix where it is clearly right. You may word the fix better than the suggestion. If a flag is mistaken, or the fix is a judgement call a person should make, leave that text as it is and list it under "unsure": "where" as in the flag, "problem" restating the issue, "suggestion" saying why you didn't apply it.
+
+Change nothing that was not flagged. Return all three book fields and every note (unchanged ones too). To remove a flagged note, leave it out.
+
+Draft:
+${JSON.stringify(draft, null, 2)}
+
+Flags:
+${JSON.stringify(flags, null, 2)}`;
+}
+
 function checkPrompt(book: Book, draft: Omit<Setting, "flags">): string {
   return `You are fact-checking "The setting" for ${book.name} before a person reviews it. Flag anything that:
 - is factually wrong or doubtful,
@@ -192,6 +222,33 @@ async function draftBook(book: Book): Promise<void> {
   console.log(`${book.name}: ${Object.keys(notes).length}/${list.length} notes, ${flags.length} flagged`);
 }
 
+async function fixBook(book: Book): Promise<void> {
+  const s: Setting = JSON.parse(await Deno.readTextFile(fileFor(book.n)));
+  if (s.fixed || !s.flags.length) return;
+  const raw = await ask<{ author: string; audience: string; era: string; notes: { start: string; note: string }[]; unsure: Flag[] }>(
+    fixPrompt(book, s),
+    FIX_SCHEMA,
+  );
+  const flaggedAt = new Set(s.flags.map((f) => f.where));
+  const notes: Record<string, string> = {};
+  for (const n of raw.notes) {
+    if (!(n.start in s.notes)) continue; // fixes edit or remove notes, never add them
+    notes[n.start] = n.note.trim();
+  }
+  // Guard against silent rewrites: anything unflagged that changed is put back.
+  for (const [k, v] of Object.entries(s.notes)) {
+    if (!flaggedAt.has(k) && notes[k] !== v) notes[k] = v;
+  }
+  const keep = (k: "author" | "audience" | "era") => (flaggedAt.has(k) ? raw[k] : s[k]);
+  const draft = { book_number: s.book_number, name: s.name, author: keep("author"), audience: keep("audience"), era: keep("era"), notes };
+  const { flags } = await ask<{ flags: Flag[] }>(checkPrompt(book, draft), CHECK_SCHEMA);
+  await Deno.writeTextFile(
+    fileFor(book.n),
+    JSON.stringify({ ...draft, flags, unsure: raw.unsure, fixed: true }, null, 2) + "\n",
+  );
+  console.log(`${book.name}: ${s.flags.length} flags → ${raw.unsure.length} left for you, ${flags.length} new from the re-check`);
+}
+
 async function readAll(): Promise<Setting[]> {
   const all: Setting[] = [];
   for (const b of BOOKS as Book[]) {
@@ -220,7 +277,7 @@ function sample<T>(items: T[], k: number): T[] {
 
 async function report(): Promise<void> {
   const all = await readAll();
-  const flagged = all.flatMap((s) => s.flags.map((f) => ({ s, f })));
+  const flagged = all.flatMap((s) => [...(s.unsure ?? []), ...s.flags].map((f) => ({ s, f })));
   const flaggedKeys = new Set(flagged.map(({ s, f }) => `${s.book_number}|${f.where}`));
   const notes = all.flatMap((s) => Object.entries(s.notes).map(([start, note]) => ({ s, start, note })));
   const picked = sample(notes.filter(({ s, start }) => !flaggedKeys.has(`${s.book_number}|${start}`)), SAMPLE);
@@ -234,7 +291,9 @@ async function report(): Promise<void> {
     ``,
     `Read: every book below, every flagged item, and the random sample.`,
     ``,
-    `## Flagged by the check`,
+    `## For you to decide`,
+    ``,
+    `What the fix step left alone, then anything the re-check found.`,
     ``,
     ...flagged.flatMap(({ s, f }) => [
       `**${s.name} — ${f.where}**`,
@@ -299,7 +358,21 @@ async function toSql(): Promise<void> {
 
 await Deno.mkdir(DIR, { recursive: true });
 
-if (Deno.args.includes("--report")) {
+async function pool(books: Book[], run: (b: Book) => Promise<void>): Promise<void> {
+  // A few books at a time; a failure is logged and the rest carry on.
+  // Rerun to pick up whatever failed.
+  const queue = [...books];
+  await Promise.all(Array.from({ length: 4 }, async () => {
+    for (let b = queue.shift(); b; b = queue.shift()) {
+      await run(b).catch((e) => console.error(`${b!.name}: FAILED — ${e.message ?? e}`));
+    }
+  }));
+}
+
+if (Deno.args.includes("--fix")) {
+  await pool(BOOKS as Book[], fixBook);
+  await report();
+} else if (Deno.args.includes("--report")) {
   await report();
 } else if (Deno.args.includes("--sql")) {
   await toSql();
@@ -314,14 +387,7 @@ if (Deno.args.includes("--report")) {
       todo.push(b);
     }
   }
-  // A few books at a time; a failure is logged and the rest carry on.
-  // Rerun to pick up whatever failed.
   if (todo.length) await passages(todo[0]);
-  const queue = [...todo];
-  await Promise.all(Array.from({ length: 4 }, async () => {
-    for (let b = queue.shift(); b; b = queue.shift()) {
-      await draftBook(b).catch((e) => console.error(`${b!.name}: FAILED — ${e.message ?? e}`));
-    }
-  }));
+  await pool(todo, draftBook);
   await report();
 }
