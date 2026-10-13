@@ -1,0 +1,42 @@
+{
+  "book_number": 22,
+  "name": "Song of Solomon",
+  "author": "The opening line links the book to Solomon, king of Israel around 970–930 BC, the son of King David, remembered for his wisdom and said to have written over a thousand songs. The Hebrew wording can mean a song by Solomon, for him, or about him, so readers have long weighed how directly he wrote it. Traditionally Solomon is the author. Many scholars think the poems were written or gathered later by unnamed poets, perhaps over a long period, partly because of features in the Hebrew language.",
+  "audience": "Its first hearers were ordinary Israelites who knew vineyards, flocks, gardens and wild hill country, the world the poems are full of. The songs may have been sung at weddings and celebrations, and later Jewish communities read the whole book aloud each year during Passover, the spring festival remembering the escape from Egypt.",
+  "era": "If written in Solomon's day, it comes from Israel's golden age: peace, wealth, the building of the first temple in Jerusalem, and trade with Egypt, Phoenicia and Arabia. Love poetry was well known across the ancient Middle East, and Egyptian love songs from roughly the same period use similar images. The poems name real places across the land, from Jerusalem and En-gedi to Lebanon, Gilead and Carmel.",
+  "notes": {
+    "1:5": "Kedar was a nomadic Arabian tribe known for tents woven from black goat hair, a familiar sight on the desert edges east of Israel.",
+    "1:9": "En-gedi was a lush spring-fed oasis beside the Dead Sea, and Egypt's pharaohs were famous for their fine chariot horses, which Solomon reportedly traded in.",
+    "3:6": "This section pictures King Solomon's wedding procession arriving from the wilderness, with a royal carriage made of cedar wood from Lebanon and an armed guard.",
+    "4:8": "Lebanon, Amana, Senir and Hermon are mountains in the far north, beyond Israel's usual borders, where lions and leopards still roamed in ancient times.",
+    "6:4": "Tirzah was a beautiful city that later became the first capital of the northern kingdom of Israel, here placed alongside Jerusalem.",
+    "6:11": "The poem names Heshbon, a town east of the Jordan known for its pools, along with Mount Carmel on the coast and the city of Damascus."
+  },
+  "flags": [
+    {
+      "where": "1:9",
+      "problem": "En-gedi is not mentioned at 1:9. It appears at 1:14. Verse 1:9 is the comparison to a mare among Pharaoh's chariots, so the En-gedi detail is attached to the wrong verse.",
+      "suggestion": "Keep only the Egyptian chariot horses detail at 1:9, and move the En-gedi oasis description to a separate note at 1:14."
+    },
+    {
+      "where": "6:4",
+      "problem": "Tirzah was not the first capital of the northern kingdom. Jeroboam first ruled from Shechem (and also Penuel), and Tirzah became the capital later. Also, 'later' assumes the poem dates from Solomon's time, which the author section treats as disputed.",
+      "suggestion": "Say Tirzah was a beautiful city that served for a time as the capital of the northern kingdom of Israel, and drop 'first' and 'later'."
+    },
+    {
+      "where": "6:11",
+      "problem": "Heshbon's pools, Carmel and Damascus are named in 7:4–5, not 6:11. Verse 6:11 is about going down to a nut orchard, so the note is attached to the wrong verse.",
+      "suggestion": "Move this note to 7:4."
+    },
+    {
+      "where": "era",
+      "problem": "The surviving Egyptian love songs mostly date from about 1300–1100 BC. That is a few centuries before Solomon, and further still if the Song is later, so 'roughly the same period' overstates the overlap.",
+      "suggestion": "Say Egyptian love songs from a few centuries earlier use similar images."
+    },
+    {
+      "where": "4:8",
+      "problem": "Senir is another name for Mount Hermon (an older name used by the Amorites), though one passage may treat it as a separate peak. Listing Senir and Hermon as four separate mountains could mislead readers.",
+      "suggestion": "Say Senir is another name for Hermon, or for part of the Hermon range, for example: 'Lebanon and Amana, and Senir and Hermon (two names for the same great mountain or range)'."
+    }
+  ]
+}

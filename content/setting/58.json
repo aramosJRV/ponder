@@ -1,0 +1,33 @@
+{
+  "book_number": 58,
+  "name": "Hebrews",
+  "author": "No one knows for certain who wrote Hebrews, because the writer never gives a name. Early Christians in the East often credited it to the apostle Paul. Many scholars today doubt this because the style and vocabulary differ from his letters, and other suggestions include Paul's companions Barnabas or Apollos, or the teacher Priscilla. What is clear is that the writer was a skilled teacher and preacher, wrote some of the most polished Greek in the New Testament, knew the Jewish scriptures deeply, and was a friend of Timothy.",
+  "audience": "The first readers were a particular community of Christians the writer knew well. They are traditionally thought to be Jewish believers, though some scholars think the group was mixed. They had once stood firm through public insults, the imprisonment of friends and the seizure of property, but were now weary and tempted to drift away. A closing greeting from believers 'from Italy' leads many to link them with Rome.",
+  "era": "The letter was written within the Roman Empire, probably in the AD 60s, while the Jerusalem temple and its sacrifices still stood. Some scholars date it later, to the AD 80s, but it must be earlier than about AD 96, when a church leader in Rome quoted it. Christians were increasingly seen as separate from Judaism and therefore lost some of the protection Jewish communities enjoyed. In Rome, Emperor Claudius had expelled Jews around AD 49, and Emperor Nero turned violently on Christians after the great fire of AD 64.",
+  "notes": {
+    "3:7": "The writer draws on Psalm 95, which recalls Israel complaining in the desert after leaving Egypt, a generation that never entered the promised land of Canaan.",
+    "5:11": "This section addresses readers who had been believers for some time but, in the writer's view, had stalled and grown sluggish in understanding.",
+    "6:13": "Melchizedek was a priest-king of Salem, probably early Jerusalem, who blessed Abraham; he appears only briefly in Genesis and in Psalm 110.",
+    "9:1": "The writer describes the tabernacle, the portable worship tent of Moses' day, and the yearly Day of Atonement, when the high priest entered its innermost room.",
+    "12:18": "The scene recalls Mount Sinai, where Israel received God's law amid fire, darkness and trembling, alongside Mount Zion, the hill of Jerusalem.",
+    "13:7": "The leaders remembered here were probably the community's first teachers, possibly now dead, while its current leaders are mentioned separately later.",
+    "13:18": "The closing mentions Timothy, Paul's younger co-worker, recently released from prison, and sends greetings from believers from Italy."
+  },
+  "flags": [
+    {
+      "where": "audience",
+      "problem": "The phrase 'from Italy' is in quotation marks, which presents it as a direct quotation of scripture. The rules forbid quoting scripture.",
+      "suggestion": "Drop the quotation marks and paraphrase, e.g. 'A closing greeting from believers from Italy leads many to link them with Rome.'"
+    },
+    {
+      "where": "6:13",
+      "problem": "Hebrews 6:13 is about God's promise and oath to Abraham. Melchizedek is not named until 6:20 and is discussed in chapter 7, so a reader tapping 6:13 would find a note about someone missing from the passage.",
+      "suggestion": "Move the Melchizedek note to 6:20 or 7:1. If a note is wanted at 6:13, describe God's promise to Abraham instead."
+    },
+    {
+      "where": "13:18",
+      "problem": "'Recently released from prison' states more than the text does. The letter says only that Timothy had been released or set free. Most scholars take this to mean prison, but it is not explicit.",
+      "suggestion": "Soften it to 'recently released, probably from prison'."
+    }
+  ]
+}

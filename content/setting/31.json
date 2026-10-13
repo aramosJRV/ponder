@@ -1,0 +1,30 @@
+{
+  "book_number": 31,
+  "name": "Obadiah",
+  "author": "The book is credited to Obadiah, whose name means 'servant of the Lord'. He was a prophet, someone who brought God's messages to the people, but nothing else is known about his family, hometown or life. Several other Old Testament figures share the name, though there is no good reason to link him with any of them.",
+  "audience": "The message is addressed to Edom, a neighbouring nation descended from Esau, Jacob's brother. Its real first hearers, however, were the people of Judah, many of them grieving, displaced or in exile after Jerusalem had been attacked and plundered while the Edomites looked on and joined in.",
+  "era": "Most scholars connect the book to the Babylonian destruction of Jerusalem in 586 BC, when Edom sided with the invaders and took advantage of Judah's collapse. Some instead date it earlier, to around 845 BC, when Philistines and Arabs raided Jerusalem during King Jehoram's reign. Either way, Israel and Edom had a long history of bitter rivalry stretching back centuries, despite their shared ancestry.",
+  "notes": {
+    "1:1": "Edom's homeland lay in the rugged red-rock mountains south-east of the Dead Sea, where cliff-top settlements made its people feel safe from attack. This passage closely parallels Jeremiah 49.",
+    "1:5": "Teman was a region of Edom, and Edom was famous in the ancient world for its wise men and advisers.",
+    "1:10": "This section is widely linked to Jerusalem's fall in 586 BC; Psalm 137 also remembers Edomites cheering the city's destruction.",
+    "1:17": "The places named span Israel's old lands and beyond; Sepharad is uncertain but often identified with Sardis, a city in what is now western Turkey."
+  },
+  "flags": [
+    {
+      "where": "audience",
+      "problem": "The audience is described as people 'in exile' after Jerusalem's fall. That only fits the 586 BC dating. The era section rightly presents the earlier 845 BC raid as an alternative, and in that case there was no exile. The audience therefore treats a disputed setting as settled.",
+      "suggestion": "Soften the wording so it fits both datings, e.g. 'many of them grieving or displaced after Jerusalem had been attacked and plundered', or add 'and, if the later date is right, in exile'."
+    },
+    {
+      "where": "1:5",
+      "problem": "The note is attached to the wrong verse. Verse 5 is about thieves and grape-pickers. Edom's wise men are mentioned in verse 8 and Teman in verse 9.",
+      "suggestion": "Move this note to 1:8 (or 1:9)."
+    },
+    {
+      "where": "1:17",
+      "problem": "The note is attached to the wrong verse. Verse 17 is about Mount Zion. The list of places, including Sepharad, comes in verses 19–20.",
+      "suggestion": "Move this note to 1:19 (or 1:20, where Sepharad appears)."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "book_number": 33,
+  "name": "Micah",
+  "author": "The book is linked to Micah of Moresheth, a small town in the low hill country of Judah about 25 miles southwest of Jerusalem. He was a prophet, someone who brought messages from God to the people. He came from the countryside, not the royal court, and spoke up for small farmers. Traditionally Micah wrote the whole book; many scholars think his words were later gathered and expanded by followers, especially the hopeful passages in chapters 4–7.",
+  "audience": "Micah's messages were first spoken to the people of Judah and its capital Jerusalem, and also to the northern kingdom of Israel and its capital Samaria. He spoke especially to rulers, judges, priests and prophets, and to wealthy landowners who were taking land and homes from poorer families.",
+  "era": "Micah prophesied around 740–700 BC, during the reigns of Judah's kings Jotham, Ahaz and Hezekiah, at the same time as the prophet Isaiah. The Assyrian Empire, based in what is now northern Iraq, was conquering the region. Assyria destroyed Samaria in 722 BC, and in 701 BC its king Sennacherib invaded Judah, capturing many towns near Micah's home.",
+  "notes": {
+    "1:2": "This warning is aimed at Samaria, capital of the northern kingdom, which Assyria besieged and destroyed in 722 BC.",
+    "1:8": "This lament names towns in Micah's home region, including Lachish and Moresheth, many with wordplay on their names; it is often linked to Assyria's advance through Judah.",
+    "3:9": "About a century later, Jeremiah 26 records elders recalling this warning about Jerusalem, saying King Hezekiah responded by turning to God.",
+    "4:1": "A nearly identical passage appears in Isaiah 2; scholars debate whether one prophet borrowed from the other or both drew on an older saying.",
+    "4:9": "This section mentions Babylon, which became the great power a century later; some scholars date it after the exile, while others see it as Micah's prediction.",
+    "5:2": "Bethlehem Ephrathah was the small hometown of King David's family; centuries later Matthew's Gospel recalls this passage in telling of Jesus' birth.",
+    "6:1": "Written like a courtroom case, it recalls Moses, Aaron and Miriam, Balak king of Moab, and Israel's journey from Shittim across the Jordan to Gilgal.",
+    "6:6": "Child sacrifice was practised among neighbouring peoples, and the Bible records that King Ahaz of Judah, in Micah's own day, sacrificed his son.",
+    "6:9": "Omri and Ahab were northern Israelite kings over a century earlier, remembered for Baal worship and for Ahab seizing Naboth's vineyard.",
+    "7:14": "Bashan and Gilead were rich grazing lands east of the Jordan, taken from Israel by Assyria around 733 BC."
+  },
+  "flags": [
+    {
+      "where": "1:2",
+      "problem": "Micah 1:2 summons all peoples and the whole earth, not Samaria specifically. The section that follows names both Samaria and Jerusalem (1:5), and the judgement on Samaria comes in 1:6–7. Saying 1:2 is 'aimed at Samaria' misdescribes the verse a reader is looking at.",
+      "suggestion": "Reword along these lines: 'This opening summons all the nations as witnesses, then turns to Samaria, capital of the northern kingdom, and to Jerusalem. Assyria besieged and destroyed Samaria in 722 BC.'"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "book_number": 32,
+  "name": "Jonah",
+  "author": "The book does not name its writer. Traditionally it is linked to Jonah son of Amittai himself, a prophet from the village of Gath-hepher in Galilee who served in the northern kingdom of Israel under King Jeroboam II, around 780–750 BC. Many scholars think an unknown Israelite writer told Jonah's story much later, perhaps after the Jews returned from exile in Babylon, around 500–400 BC, partly because the book always speaks about Jonah rather than in his voice.",
+  "audience": "On the traditional view, the first hearers were Israelites in the northern kingdom, who knew and feared Assyria as a cruel and powerful neighbour. If the book was written later, its readers were Jews rebuilding their life in and around Jerusalem after the exile, under Persian rule and living alongside many other peoples.",
+  "era": "In Jonah's day the northern kingdom of Israel was enjoying a rare stretch of peace and prosperity under Jeroboam II, regaining land it had lost. To the east lay Assyria, a great empire known for its brutal warfare, and Nineveh, on the River Tigris near modern Mosul in Iraq, was one of its greatest cities. A few decades later, in 722 BC, Assyria would conquer Israel and carry many of its people away.",
+  "notes": {
+    "1:1": "Joppa was a port on Israel's Mediterranean coast; Tarshish was a distant trading place far to the west, often linked with southern Spain, the opposite direction from Nineveh.",
+    "1:17": "Jonah's prayer is written as a poem in the style of the thanksgiving psalms that Israelites sang at the temple in Jerusalem."
+  },
+  "flags": [
+    {
+      "where": "author",
+      "problem": "Saying the book 'always' speaks about Jonah rather than in his voice is inaccurate. The prayer in chapter 2 is in Jonah's own voice. Third-person telling is also only one of the reasons scholars give for a later date, and not the main one; others include features of the Hebrew and the way Nineveh is described as a city that 'was' great.",
+      "suggestion": "Soften to something like: 'partly because the story is told about Jonah rather than by him, and because of features of its language.' Or drop the reason clause."
+    },
+    {
+      "where": "audience",
+      "problem": "Doubtful as history. During Jeroboam II's reign, Assyria was going through a period of weakness, which is partly why Israel could regain land. Calling it a feared, powerful 'neighbour' at that moment is somewhat anachronistic, and Aram (Syria) lay between the two.",
+      "suggestion": "Rephrase to something like 'who knew Assyria as a powerful and brutal empire to the north-east, whose armies had troubled the region before and would soon return.'"
+    },
+    {
+      "where": "1:1",
+      "problem": "Joppa and Tarshish are first mentioned in 1:3, not 1:1, so a reader on 1:1 would be confused by the note.",
+      "suggestion": "Move this note to 1:3."
+    },
+    {
+      "where": "1:17",
+      "problem": "In English Bibles, 1:17 is where the fish swallows Jonah. The prayer begins at 2:1 (2:2 in Hebrew numbering), so the note is attached to the wrong verse.",
+      "suggestion": "Move this note to 2:1, or to 2:2 if the poem itself is meant."
+    }
+  ]
+}

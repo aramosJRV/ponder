@@ -1,0 +1,25 @@
+{
+  "book_number": 56,
+  "name": "Titus",
+  "author": "The letter opens in the name of Paul, a Jewish teacher from Tarsus (in modern Turkey) who was trained in the law, earned a living as a tentmaker, and became a travelling missionary who started churches across the Roman world. It is addressed to Titus, a non-Jewish (Greek) believer who had worked alongside Paul for years. Traditionally Paul wrote it himself; many scholars think a later follower wrote it in his name, together with 1 and 2 Timothy, which are similar letters known as the Pastoral Letters.",
+  "audience": "The letter went first to Titus, whom Paul had left on the island of Crete to organise young churches in its towns and appoint leaders for them. These small groups of believers, meeting in homes, were being unsettled by rival teachers, and Titus was meant to share the letter's instructions with them.",
+  "era": "Crete, a large island south of Greece, had been a Roman province since 67 BC, and ancient writers gave its people a reputation for lying and unruliness. If Paul wrote the letter, it likely dates to the early or mid 60s AD, under the emperor Nero, after Paul's first imprisonment in Rome; those who see it as a later work usually place it near the end of the first century. Christian groups were still small, met in private households, and were often viewed with suspicion by their neighbours.",
+  "notes": {
+    "1:5": "Titus had been left on Crete to appoint elders, trusted church leaders also called overseers, in each town, where churches seem to have lacked formal leadership.",
+    "1:10": "The troublemakers included Jewish-background teachers pressing Jewish law and myths; the insulting line about Cretans is traditionally credited to Epimenides, a Cretan poet of around 600 BC.",
+    "2:1": "Early churches met in homes whose households included older and younger members and slaves, and Greek moral writers of the day often gave guidance arranged by household role.",
+    "3:12": "Nicopolis was probably the city in western Greece where Paul planned to winter; Artemas, Tychicus, Zenas the lawyer and Apollos were fellow workers, possibly carrying the letter."
+  },
+  "flags": [
+    {
+      "where": "era",
+      "problem": "The later-date view is too narrow. Scholars who think a follower wrote the Pastoral Letters commonly place them anywhere from about AD 80 to the early second century, often around AD 100 or later. 'Usually near the end of the first century' understates that range.",
+      "suggestion": "Say that those who see it as a later work place it somewhere between the late first century and the early second century."
+    },
+    {
+      "where": "3:12",
+      "problem": "It is doubtful that all four men might have carried the letter. Artemas or Tychicus was to be sent to Crete later, to take Titus's place so he could leave. Zenas and Apollos are the ones Titus is asked to help on their journey, and they are the ones usually suggested as the letter's carriers.",
+      "suggestion": "Say that Paul planned to send Artemas or Tychicus to Crete so Titus could join him, and that Zenas the lawyer and Apollos were travelling through, possibly carrying the letter."
+    }
+  ]
+}

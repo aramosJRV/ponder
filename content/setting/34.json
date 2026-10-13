@@ -1,0 +1,20 @@
+{
+  "book_number": 34,
+  "name": "Nahum",
+  "author": "The book is credited to Nahum, a prophet described only as coming from Elkosh, a village whose location is now unknown. Some suggest a site in Galilee or southern Judah, but nobody can be sure. A prophet was someone believed to carry messages from God to the people. Beyond his name and hometown, nothing else is known about his life or family.",
+  "audience": "Nahum's words were first heard by the people of Judah, the small southern kingdom centred on Jerusalem. For generations they had lived under the shadow of Assyria, paying it heavy tribute and fearing its armies. Assyria had already wiped out the northern kingdom of Israel and once besieged Jerusalem itself.",
+  "era": "Assyria, ruled from its capital Nineveh, was the greatest and most feared empire of its day, known for brutal punishment of conquered peoples. The book mentions the Assyrian sack of the Egyptian city of Thebes in about 663 BC, and Nineveh itself fell in 612 BC, so most date Nahum between these two events. Some place him soon after Thebes fell, while others place him closer to Nineveh's collapse. Over those decades Assyria weakened, Babylon and the Medes rose against it, and in Judah the long rule of King Manasseh gave way to the reforms of King Josiah.",
+  "notes": {
+    "1:1": "Nineveh, the subject of the whole book, was Assyria's capital, a vast walled city on the Tigris River near modern Mosul in northern Iraq.",
+    "2:3": "Nineveh fell in 612 BC to an alliance of Babylonians and Medes; the city's rivers and canals may lie behind this scene's mention of river gates.",
+    "2:11": "Assyrian kings prized the lion as a royal symbol, hunting lions for sport and carving lion hunts on the walls of their palaces at Nineveh.",
+    "3:8": "Thebes, called No-Amon here, was Egypt's great city on the Nile, sacked by the Assyrian king Ashurbanipal around 663 BC despite its powerful African allies."
+  },
+  "flags": [
+    {
+      "where": "2:3",
+      "problem": "The 'river gates' this note mentions are not in 2:3. They appear a few verses later, at 2:6. A reader opening this note at 2:3 will look for river gates in the verse and not find them. Verse 2:3 itself describes the attackers' red shields and flashing chariots.",
+      "suggestion": "Move the river-gates clause to a note at 2:6. Keep 2:3 to the fall of Nineveh in 612 BC to the Babylonians and Medes, or add a detail that fits that verse's warriors and chariots."
+    }
+  ]
+}

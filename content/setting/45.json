@@ -1,0 +1,24 @@
+{
+  "book_number": 45,
+  "name": "Romans",
+  "author": "The apostle Paul, one of the few New Testament authors whose authorship almost all scholars accept. He was a Jew from Tarsus, in what is now Turkey, trained as a Pharisee (a member of a strict Jewish group devoted to keeping God's law) and a tentmaker by trade. Once a fierce opponent of Jesus' followers, he became an apostle, a messenger sent to carry the news about Jesus, especially to Gentiles (non-Jewish people). He dictated this letter to a helper named Tertius, who wrote it down.",
+  "audience": "Christians in Rome, the capital of the empire, meeting in small groups in people's homes, a mix of Jewish believers and a growing number of Gentile believers. Paul had not founded this church and had never visited it. Around AD 49 the emperor Claudius expelled Jews from Rome, and many returned only after his death in AD 54, which may have left Jewish and Gentile believers adjusting to one another.",
+  "era": "Paul probably wrote around AD 56–58, most likely from the Greek city of Corinth near the end of his travels around the eastern Mediterranean. The young emperor Nero had come to power, and his early years were seen as calm and well governed, with Roman roads and peace making travel easier. Paul was collecting money from Gentile churches to carry to poor believers in Jerusalem, and he hoped afterwards to visit Rome on his way to preach in Spain.",
+  "notes": {
+    "2:17": "Paul writes here in a lively debating style familiar in his day, addressing an imagined questioner and answering objections, as teachers in the Greek world often did.",
+    "9:1": "By this time most of Paul's fellow Jews had not accepted Jesus as the Messiah, while Gentiles were joining the churches in growing numbers.",
+    "11:11": "Paul turns to speak directly to the Gentile believers in Rome, drawing on olive growing and grafting, a familiar part of Mediterranean farming life.",
+    "13:1": "Written under Nero's early rule; the Roman historian Tacitus records public complaints in Rome about tax collectors around AD 58.",
+    "14:1": "The Roman believers disagreed over food and special days, likely including Jewish food laws and meat from animals sacrificed in pagan temples and then sold in markets.",
+    "15:22": "Paul was about to take the gift from churches in Macedonia and Achaia (northern and southern Greece) to Jerusalem; Acts records he was arrested there and reached Rome later as a prisoner.",
+    "16:1": "Phoebe, from Cenchreae, Corinth's port, probably carried the letter; Priscilla and Aquila had earlier been expelled from Rome under Claudius. A few scholars think this chapter was first sent elsewhere.",
+    "16:21": "Tertius, who wrote the letter down, adds his own greeting; an inscription found in Corinth names an official called Erastus, possibly the city treasurer mentioned here."
+  },
+  "flags": [
+    {
+      "where": "14:1",
+      "problem": "The note says the Roman disagreement 'likely' included meat sacrificed in pagan temples. Romans 14 never mentions idols or temple sacrifice; that issue is explicit in 1 Corinthians 8–10. Whether it was in play at Rome is debated, so 'likely' overstates the case. Jewish food laws and sacred days are the more widely accepted background.",
+      "suggestion": "Hedge the second part, for example: 'likely including Jewish food laws and special days, and possibly worries about meat that had been offered in pagan temples before being sold in markets.'"
+    }
+  ]
+}

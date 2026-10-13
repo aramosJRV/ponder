@@ -1,0 +1,42 @@
+{
+  "book_number": 44,
+  "name": "Acts",
+  "author": "Acts is the second volume of a two-part work; the same writer produced the Gospel of Luke, and both are addressed to a man named Theophilus. Church tradition from the second century names the author as Luke, a doctor and travelling companion of the apostle Paul, probably a non-Jew with a good Greek education. Some passages switch from 'they' to 'we', which many take as the writer joining Paul's journeys. Many scholars accept Luke, while others think an unnamed later Christian wrote it, possibly drawing on a travel diary.",
+  "audience": "The book is formally addressed to Theophilus, possibly a well-placed patron or official, or simply a respected believer who wanted a reliable account. Beyond him, it was meant for the young churches scattered around the Mediterranean, a mix of Jewish and non-Jewish believers working out who they were and how they related to Judaism and to Rome.",
+  "era": "The events run from about AD 30 to around AD 62, under Roman emperors from Tiberius to Nero, when good roads and shipping lanes linked cities across the empire. Jewish communities with synagogues were found in almost every major city, and Judea was ruled by Roman governors and members of the Herod family amid rising unrest. The book was most likely written somewhere between the early 60s and the 80s AD, though some scholars place it later.",
+  "notes": {
+    "2:1": "Pentecost was a Jewish harvest festival held fifty days after Passover, when pilgrims from across the Jewish world crowded into Jerusalem.",
+    "3:1": "Three in the afternoon was a set time of daily prayer at the temple, matching the evening sacrifice, so the courts would have been busy.",
+    "3:11": "Solomon's Colonnade was a long covered walkway along the temple's east side; the Sadducees, a priestly party controlling the temple, rejected belief in resurrection.",
+    "5:33": "Gamaliel was a famous teacher among the Pharisees, a respected group devoted to careful keeping of God's law; Paul later says he trained under him.",
+    "6:1": "The 'Hellenists' were Jews raised abroad who spoke Greek, while the 'Hebrews' were local Jews speaking Aramaic, the everyday language of Judea.",
+    "8:4": "Samaritans lived between Judea and Galilee, sharing ancestry and the books of Moses with Jews, but the two groups had been bitterly divided for centuries.",
+    "8:26": "'Ethiopia' here means the kingdom of Kush, south of Egypt in today's Sudan; 'Candace' was a royal title for its queen, not a personal name.",
+    "10:1": "Caesarea was a grand port city on the coast, built by Herod the Great and serving as the seat of the Roman governor of Judea.",
+    "11:19": "Antioch in Syria was among the empire's largest cities; a serious famine struck Judea in the mid-40s AD during the reign of Emperor Claudius.",
+    "12:1": "This Herod is Herod Agrippa I, grandson of Herod the Great, who ruled Judea as king for Rome from about AD 41 to 44.",
+    "12:20": "The Jewish historian Josephus also records Herod Agrippa I's sudden death at Caesarea in AD 44, during public festivities.",
+    "13:13": "Pisidian Antioch was a Roman colony in the highlands of what is now central Turkey, a different city from Antioch in Syria.",
+    "14:8": "A local legend told of the gods Zeus and Hermes once visiting this region in human disguise, which may explain the crowd's reaction at Lystra.",
+    "15:1": "This meeting in Jerusalem, often called the Jerusalem Council, is usually dated around AD 49.",
+    "16:6": "Here the account switches to 'we', widely taken as the point where the writer joined Paul's group at Troas.",
+    "16:11": "Philippi was a Roman colony in Macedonia, settled by retired soldiers, proud of its Roman status, and apparently with too few Jews for a synagogue.",
+    "17:16": "Athens was past its political glory but still a famous centre of philosophy; the Areopagus was its ancient council, named after the Hill of Ares.",
+    "18:1": "Emperor Claudius expelled Jews from Rome around AD 49, and an inscription at Delphi dates Gallio's time as governor to about AD 51–52.",
+    "19:21": "Ephesus was home to the vast temple of Artemis, one of the wonders of the ancient world, and a busy trade in religious souvenirs.",
+    "21:27": "Non-Jews were barred from the temple's inner courts on pain of death, and Roman troops watched the crowds from the Antonia Fortress beside the temple.",
+    "21:37": "Josephus also mentions an Egyptian who led a large band of followers to the Mount of Olives around the 50s AD before Roman troops scattered them.",
+    "23:23": "Antonius Felix governed Judea from about AD 52 to 59; his wife Drusilla was a daughter of Herod Agrippa I.",
+    "25:1": "Porcius Festus replaced Felix around AD 59–60; Roman citizens could appeal to the emperor, at this time Nero.",
+    "25:13": "Agrippa II, son of Herod Agrippa I, ruled territories north of Judea; Bernice was his sister.",
+    "27:9": "'The Fast' is the Day of Atonement, in autumn; after mid-September Mediterranean sailing grew risky, and it largely stopped over winter.",
+    "28:17": "Paul's two years under house arrest in Rome are usually dated around AD 60–62, during the reign of Nero."
+  },
+  "flags": [
+    {
+      "where": "16:6",
+      "problem": "The note is attached to the wrong verse. The switch to 'we' happens at 16:10, after Paul's vision at Troas. At 16:6 the group is still passing through Phrygia and Galatia, and the narrative there still reads 'they', so readers would find this note confusing.",
+      "suggestion": "Move the note to 16:10 and keep the wording."
+    }
+  ]
+}

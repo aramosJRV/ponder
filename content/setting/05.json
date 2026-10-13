@@ -1,0 +1,48 @@
+{
+  "book_number": 5,
+  "name": "Deuteronomy",
+  "author": "Deuteronomy presents itself as the farewell speeches of Moses, the leader who brought Israel out of slavery in Egypt and received God's law at Mount Sinai. Raised in the Egyptian royal court, he spent forty years guiding the people through the wilderness as prophet, lawgiver and judge. Jewish and Christian tradition has long held Moses as its author, though the account of his death in the final chapter was added by someone else. Many scholars think the book drew on old traditions from Moses but was shaped into its present form centuries later by priests or scribes in Judah, around the time of King Josiah.",
+  "audience": "The speeches are addressed to the Israelites camped on the plains of Moab, just east of the Jordan River, after forty years in the wilderness. Most were the children of those who had left Egypt, and they were about to cross into Canaan without Moses to lead them. If the book took its final shape later, it also spoke to the people of Judah in Josiah's day and to those later carried into exile in Babylon.",
+  "era": "On the traditional dating, this is somewhere between about 1400 and 1250 BC, when Canaan was a patchwork of small walled cities and Egypt's grip on the region was loosening. Israel had just passed the lands of Edom, Moab and Ammon and defeated two Amorite kings, Sihon and Og, east of the Jordan. The book is laid out much like ancient treaties between a great king and a smaller nation. Scholars who favour a later date point to the seventh century BC, when Assyria dominated the region and King Josiah carried out sweeping religious reforms around 622 BC.",
+  "notes": {
+    "1:1": "The book dates these speeches to the eleventh month of the fortieth year after leaving Egypt, delivered in the land of Moab east of the Jordan.",
+    "2:1": "The Edomites were descended from Esau, Jacob's brother, so Israel regarded them as relatives; Moab and Ammon traced their ancestry to Abraham's nephew Lot.",
+    "3:1": "Bashan was a fertile highland region east of the Sea of Galilee, famous for its cattle and oak forests, roughly today's Golan Heights.",
+    "5:1": "Horeb is Deuteronomy's usual name for Mount Sinai, where the law was given about forty years earlier.",
+    "12:1": "The single place of worship was later understood to be Jerusalem; many scholars link these laws to King Josiah closing local shrines around 622 BC.",
+    "16:1": "Passover, the Feast of Weeks (later called Pentecost) and the Feast of Shelters were Israel's three yearly pilgrim festivals, tied to spring and autumn harvests.",
+    "25:17": "The Amalekites were a desert people who attacked Israel soon after the escape from Egypt, picking off stragglers at the rear.",
+    "27:1": "Mount Ebal and Mount Gerizim are twin peaks overlooking the town of Shechem in central Canaan, where Abraham had first camped in the land.",
+    "28:15": "Scholars have noticed that these curses closely resemble those in Assyrian treaties, including one made by King Esarhaddon in 672 BC.",
+    "31:24": "Many scholars think the Song of Moses that begins here is among the older poems in the Bible, possibly earlier than the speeches around it.",
+    "33:1": "This farewell blessing on each tribe echoes the deathbed blessing Jacob spoke over his twelve sons in Genesis.",
+    "34:1": "Mount Nebo, in today's Jordan, overlooks the Jordan valley and Dead Sea; Jewish tradition credits Joshua with writing this account of Moses' death."
+  },
+  "flags": [
+    {
+      "where": "era",
+      "problem": "'Egypt's grip on the region was loosening' does not fit 1400–1250 BC. For most of that span, under the Amarna-era pharaohs and then Seti I and Ramesses II, Egypt still controlled Canaan. Its hold weakened only after about 1200 BC.",
+      "suggestion": "Drop the clause, or say Canaan was a patchwork of small walled city-states under the overlordship of Egypt."
+    },
+    {
+      "where": "author",
+      "problem": "'Shaped into its present form… around the time of King Josiah' overstates the later-date view. Most such scholars place the core of the book in Josiah's time, with further editing during or after the exile. The audience section already assumes exiles as readers, so the two sections slightly contradict each other.",
+      "suggestion": "Say the core was shaped around the time of King Josiah (about 620 BC), with further additions during or after the exile in Babylon."
+    },
+    {
+      "where": "31:24",
+      "problem": "The Song of Moses does not begin at 31:24. That verse describes Moses finishing writing the law and having it placed beside the ark. The song is introduced at 31:30 and runs through chapter 32. Its dating is also debated: some scholars date it early, others to the 8th–6th centuries BC.",
+      "suggestion": "Move the note to 31:30 or 32:1. Add a brief clause that other scholars date the poem later. Optionally give 31:24 its own note on the written law being placed beside the ark of the covenant (the sacred chest)."
+    },
+    {
+      "where": "33:1",
+      "problem": "'Blessing on each tribe' is inaccurate. Moses' blessing in Deuteronomy 33 leaves out the tribe of Simeon.",
+      "suggestion": "Say 'on the tribes' or 'on the tribes of Israel', or note that Simeon is not mentioned."
+    },
+    {
+      "where": "3:1",
+      "problem": "'Roughly today's Golan Heights' understates Bashan's extent. The region stretched well east into the Hauran plateau of modern Syria, and the Golan was only its western part.",
+      "suggestion": "Say it covered today's Golan Heights and the lands east of it in southern Syria."
+    }
+  ]
+}

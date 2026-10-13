@@ -1,0 +1,19 @@
+{
+  "book_number": 62,
+  "name": "1 John",
+  "author": "The letter never names its writer, but from the second century Christians have traditionally credited it to John the apostle, a Galilean fisherman and son of Zebedee who became one of Jesus' closest disciples. Early tradition says John spent his old age leading churches around Ephesus, in what is now western Turkey. Many scholars instead think it was written by a respected leader in a circle of churches shaped by John's teaching, possibly the figure later known as 'John the Elder.' Whoever he was, he writes as an older, trusted pastor who claims a close link to the first eyewitnesses of Jesus.",
+  "audience": "It was most likely sent to a group of house churches, probably in or around Ephesus in the Roman province of Asia, whose members the writer knew well and cared for. These congregations had recently been shaken by a painful split over what to believe about Jesus, and those who remained were unsettled and needed reassurance.",
+  "era": "It is usually dated to around AD 90–100, though some place it a little earlier. The Roman Empire was at peace and its cities were full of temples to many gods, while the Jerusalem temple had been destroyed about twenty years before and most of the original apostles had died. Christianity was spreading in Greek-speaking cities, and some teachers there were blending the faith with popular ideas that the physical world was inferior to the spiritual.",
+  "notes": {
+    "1:1": "Unlike most letters of the time, it opens with no greeting or named sender, and its first lines closely echo the opening of John's Gospel.",
+    "2:18": "Here the letter speaks directly about the split: a group had recently walked out of the fellowship, and the writer addresses the believers they left behind.",
+    "4:1": "Travelling teachers moved between early churches, and the dispute here seems to concern those who denied that Jesus truly came in a real human body."
+  },
+  "flags": [
+    {
+      "where": "era",
+      "problem": "With the letter dated around AD 90–100, the temple's destruction in AD 70 was twenty to thirty years earlier. 'About twenty years before' fits only the earliest end of that range.",
+      "suggestion": "Say 'the Jerusalem temple had been destroyed in AD 70, some twenty to thirty years earlier'."
+    }
+  ]
+}

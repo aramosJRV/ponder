@@ -1,0 +1,26 @@
+{
+  "book_number": 7,
+  "name": "Judges",
+  "author": "Judges does not name its author. Jewish tradition, recorded in the Talmud (an ancient collection of Jewish teaching), credits the prophet Samuel, the last of Israel's leaders before the kings. Many scholars instead think the book was gathered from older stories and songs and shaped by later Israelite writers, possibly during the time of the kings or even after the exile. Either way, the writer was someone deeply concerned with Israel's loyalty to God and its need for good leadership.",
+  "audience": "The first readers were Israelites looking back on their nation's early, chaotic days in the land. The book's repeated remark that there was no king in Israel suggests they already lived under kings and could compare those times with their own. If the book reached its final form later, it would also have spoken to people facing defeat and exile.",
+  "era": "The stories cover roughly 1200 to 1050 BC, the generations between Joshua's conquest and the rise of King Saul. Israel was a loose group of twelve tribes with no capital, no king and no shared army. Canaanite city-states still held strong positions, and neighbouring peoples such as the Moabites, Midianites and Ammonites raided Israelite land. Around this time the Philistines settled on the southern coast and became Israel's most dangerous rivals.",
+  "notes": {
+    "1:21": "Jerusalem, then held by a people called the Jebusites, stayed outside Israelite control until King David captured it generations later.",
+    "5:1": "The Song of Deborah is widely regarded as one of the oldest pieces of Hebrew poetry in the Bible, likely composed close to the events it celebrates.",
+    "13:1": "The Philistines, newcomers from the Aegean region (the seas around Greece), ruled five coastal cities: Gaza, Ashkelon, Ashdod, Gath and Ekron.",
+    "18:11": "The passage ends by mentioning priests serving at Dan until the land's captivity, which many readers take as a clue to when the book was completed.",
+    "19:1": "Gibeah, a town in the tribe of Benjamin where much of this story unfolds, later became the hometown of Saul, Israel's first king."
+  },
+  "flags": [
+    {
+      "where": "18:11",
+      "problem": "The remark about priests serving at Dan until the land's captivity comes at the end of chapter 18 (verse 30), not verse 11. Verse 11 describes six hundred Danite warriors setting out, so the note is attached to the wrong verse and 'The passage ends' would confuse a reader. 'The land's captivity' is also left unexplained.",
+      "suggestion": "Move the note to 18:30. Briefly explain that the captivity probably refers to the Assyrian conquest of northern Israel in the 700s BC, so readers understand why it is a clue to dating."
+    },
+    {
+      "where": "era",
+      "problem": "The dates 1200 to 1050 BC reflect the majority scholarly view but are given as settled. A traditional chronology, based on the biblical figure of 480 years from the Exodus to Solomon's temple, places the judges period earlier, beginning in the 1300s BC.",
+      "suggestion": "Add a short clause such as: 'Most scholars place these stories around 1200 to 1050 BC, though a traditional reckoning from biblical numbers starts the period earlier, in the 1300s BC.'"
+    }
+  ]
+}
