@@ -7,6 +7,7 @@
   "notes": {
     "1:1": "Dated to the fifth year of King Jehoiachin's exile, about 593 BC, by the Kebar canal in Babylonia; the 'thirtieth year' is often taken as Ezekiel's age.",
     "8:1": "Dated to about 592 BC, while the elders of the exiles sat in Ezekiel's house in Babylon.",
+    "8:5": "The god Tammuz, mourned in this vision, was a Mesopotamian god whose death was ritually lamented each year.",
     "14:12": "The Daniel named here may be the exile in Babylon or Danel, an ancient righteous king known from older Canaanite stories; scholars differ.",
     "16:1": "Jerusalem had been a Canaanite city, held by a people called the Jebusites, until King David captured it around 1000 BC.",
     "17:1": "Set against King Zedekiah breaking his sworn loyalty to Babylon and seeking military help from Egypt.",
@@ -44,6 +45,12 @@
       "suggestion": "Drop the quotation marks and describe it plainly, e.g. 'the cubit used here was a longer one, a handbreadth more than usual.'"
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "8:5",
+      "problem": "Tammuz is not mentioned in 8:5, which describes an idol at the temple's north gate. The women mourning Tammuz appear at 8:14, so a reader opening verse 8:5 will see a note about something not in the passage.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 8:14."
+    }
+  ],
   "fixed": true
 }

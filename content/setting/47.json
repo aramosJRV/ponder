@@ -6,6 +6,7 @@
   "era": "Paul probably wrote around AD 55–56 from Macedonia in northern Greece, during the early reign of the emperor Nero. Corinth was a wealthy, busy Roman colony and trading port, rebuilt by Julius Caesar a century earlier, full of temples, merchants and travelling speakers. Paul was also gathering money from his non-Jewish churches to help poor believers in Jerusalem.",
   "notes": {
     "1:1": "Paul names Timothy, his younger co-worker, as co-sender, and addresses believers throughout Achaia as well as the church in Corinth.",
+    "1:3": "Paul had recently faced deadly danger in the province of Asia, in today's western Turkey; the exact event is unknown, though some link it to trouble in Ephesus.",
     "1:15": "Paul had changed his announced travel plans to visit Corinth, and some there accused him of being unreliable.",
     "1:23": "After a painful visit, Paul sent a sorrowful letter instead of coming again; it is probably lost, though some think chapters 10–13 preserve it.",
     "2:5": "One church member had caused Paul and the church serious hurt and had been disciplined by the congregation; who he was is not known.",
@@ -14,6 +15,7 @@
     "3:7": "This section recalls Moses' face shining after he received the law on Mount Sinai, when he covered it with a veil.",
     "4:7": "Clay jars were cheap, everyday pottery, commonly used in the ancient world for storing goods and even valuables.",
     "6:14": "Corinth was full of temples to Greek and Roman gods; some scholars think this section came from another letter because it seems to interrupt the surrounding flow.",
+    "7:2": "Titus finally met Paul in Macedonia, bringing news of how the Corinthians had received his sorrowful letter.",
     "8:1": "The Macedonian churches, such as those at Philippi and Thessalonica, were themselves poor and under pressure, yet had given generously to the Jerusalem collection.",
     "8:16": "Paul sent Titus with two unnamed fellow believers, one chosen by the churches, to oversee the collection openly and honestly.",
     "9:1": "Paul had told the Macedonians that the believers of Achaia had been preparing their gift since the previous year.",
@@ -31,6 +33,17 @@
       "suggestion": "Rephrase to something like 'when an official of King Aretas IV of Nabatea, an Arab kingdom to the south and east, was watching the city to arrest him.'"
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "1:3",
+      "problem": "The deadly danger in Asia is described from 1:8. Verses 1:3–7 speak of comfort in suffering in general, so the note does not match what the reader is looking at.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Re-key this note to 1:8."
+    },
+    {
+      "where": "7:2",
+      "problem": "Titus reaching Paul in Macedonia is told from 7:5. Verses 7:2–4 are Paul's appeal for the Corinthians' affection, so the note sits a few verses early.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Re-key this note to 7:5."
+    }
+  ],
   "fixed": true
 }

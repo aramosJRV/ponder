@@ -17,6 +17,7 @@
     "7:37": "Later Jewish writings describe priests carrying water from the Pool of Siloam each day of this festival and pouring it out at the temple altar.",
     "7:53": "This story does not appear in the earliest surviving manuscripts of John, and many Bibles mark it off; it was likely an early account added later.",
     "8:12": "During Tabernacles, great lamps were lit in the temple courts, reportedly lighting up much of Jerusalem; the treasury was in this same area.",
+    "8:48": "The Pool of Siloam lay in the southern part of Jerusalem; its remains were rediscovered by archaeologists in 2004.",
     "10:22": "The Festival of Dedication, now called Hanukkah, remembered the temple's rededication in 164 BC after Jewish rebels freed it from a foreign king who had defiled it.",
     "11:45": "Caiaphas served as high priest from about AD 18 to 36, holding office with Roman approval; the council was the Sanhedrin, Jerusalem's highest Jewish court.",
     "12:12": "Palm branches had been a symbol of Jewish national hope and victory since the Jewish revolt against foreign rule in the 160s BC.",
@@ -37,6 +38,12 @@
       "suggestion": "Say 'Matthew and Mark call it Gethsemane' instead of 'the other Gospels'."
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "8:48",
+      "problem": "The Pool of Siloam does not appear at 8:48. It first appears in the healing of the man born blind in chapter 9 (around 9:7), so the note is attached to the wrong passage and would confuse readers. The fact itself (rediscovered in 2004) is correct.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 9:1 or 9:7."
+    }
+  ],
   "fixed": true
 }

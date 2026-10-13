@@ -5,9 +5,11 @@
   "audience": "His first hearers were the people of Judah, the small southern kingdom centred on Jerusalem. At home they lived with violence, unfair courts and powerful people exploiting the weak, while a new and frightening empire was rising in the east.",
   "era": "Habakkuk is usually dated to the years around 600 BC, probably between about 609 and 597 BC. The old Assyrian empire had collapsed, its capital Nineveh falling in 612 BC, and Babylon was rising quickly, defeating Egypt at the battle of Carchemish in 605 BC. In Judah, good King Josiah had been killed in 609 BC, and his son Jehoiakim's rule is remembered as harsh and unjust. Within a few years Babylon would invade Judah, carrying off captives in 597 BC and destroying Jerusalem in 586 BC.",
   "notes": {
+    "1:5": "The 'Chaldeans' named here are the Babylonians, named after the region of southern Mesopotamia, modern Iraq, from which their ruling family came.",
     "2:6": "This begins a series of five 'woe' sayings, shaped like a mocking song imagined on the lips of the nations a conqueror had plundered.",
     "3:1": "The heading calls this a prayer set to 'Shigionoth', a musical term whose exact meaning is now uncertain, suggesting it was sung in worship.",
-    "3:3": "Teman and Mount Paran were places in the wild southern lands toward Edom and Sinai, the region older Israelite songs linked with God's coming."
+    "3:3": "Teman and Mount Paran were places in the wild southern lands toward Edom and Sinai, the region older Israelite songs linked with God's coming.",
+    "3:16": "The prayer closes with an instruction to the choir leader to accompany it on stringed instruments, like many headings in the Psalms."
   },
   "flags": [
     {
@@ -16,6 +18,17 @@
       "suggestion": "Add a light hedge, e.g. 'Many readers understand the book's opening complaint to describe life in Judah itself: violence, unfair courts and powerful people exploiting the weak.' Or add a short clause noting the alternative view."
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "1:5",
+      "problem": "The Chaldeans are first named in 1:6, not 1:5. Verse 5 is the call to look among the nations and be astonished, so the note is attached to the wrong verse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 1:6."
+    },
+    {
+      "where": "3:16",
+      "problem": "The instruction to the choir leader about stringed instruments comes at the very end of the prayer, in 3:19, not 3:16.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 3:19."
+    }
+  ],
   "fixed": true
 }

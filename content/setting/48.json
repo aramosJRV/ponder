@@ -5,6 +5,7 @@
   "audience": "It went to several churches in Galatia, a region in the middle of modern Turkey. Scholars disagree on which: traditionally the Celtic Galatian people in the north, though many think it means towns in the south such as Iconium, Lystra and Derbe, which Paul visited on his first journey. These were mostly non-Jewish believers, and new teachers had arrived insisting they be circumcised and keep the Jewish law to belong fully to God's people.",
   "era": "Paul probably wrote around AD 48–55, while Rome ruled the whole Mediterranean world under Emperor Claudius and then, from AD 54, Nero. Some date it very early, before the church leaders met in Jerusalem to settle this question around AD 49; others date it a few years later. It was a time when the young church, which began among Jews, was working out whether non-Jewish believers had to follow Jewish customs.",
   "notes": {
+    "1:11": "Arabia here probably means the Nabataean kingdom, east of the Jordan River and south of Damascus, where Paul went soon after his conversion near Damascus.",
     "1:18": "Paul describes visits to Jerusalem to meet Peter and James, Jesus' brother; scholars debate whether the second matches the Jerusalem meeting or an earlier famine-relief visit.",
     "2:11": "Antioch in Syria was a large city with one of the first churches mixing Jews and non-Jews, where shared meals raised questions about Jewish food laws.",
     "4:12": "Paul recalls his first visit to the Galatians, when some illness or physical weakness led to his preaching among them.",
@@ -22,6 +23,12 @@
       "suggestion": "Soften to 'Paul often dictated his letters to a scribe' or 'Paul seems to have usually dictated his letters'."
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "1:11",
+      "problem": "This note is about Arabia, but Paul mentions going to Arabia in 1:17, not 1:11. Readers will see it on the wrong verse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note's start reference to 1:17."
+    }
+  ],
   "fixed": true
 }

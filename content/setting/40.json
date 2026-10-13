@@ -9,6 +9,7 @@
     "2:13": "After Herod died, his son Archelaus ruled Judea so harshly that Rome removed him in AD 6; Galilee, where Nazareth lay, went to another son, Herod Antipas.",
     "3:1": "John baptised in the Jordan River near the Judean desert, probably around AD 28. Pharisees were strict keepers of Jewish law; Sadducees were the wealthy priestly party.",
     "4:12": "Capernaum was a busy fishing town on the north shore of the Sea of Galilee, in the territory of Herod Antipas, who had arrested John.",
+    "4:23": "This teaching is traditionally placed on the hills above the northwest shore of the Sea of Galilee, near Capernaum.",
     "5:38": "Under Roman rule, soldiers could force civilians to carry their gear for a distance.",
     "8:5": "A centurion was an army officer over about a hundred men, probably a non-Jew serving Herod Antipas or Rome at Capernaum.",
     "8:28": "The region of the Gadarenes lay on the southeast side of the Sea of Galilee, a largely non-Jewish area, which is why pigs were kept there.",
@@ -18,6 +19,7 @@
     "15:21": "Tyre and Sidon were non-Jewish coastal cities in what is now Lebanon, northwest of Galilee.",
     "16:13": "Caesarea Philippi lay near the foot of Mount Hermon, by a spring with a shrine to the Greek god Pan; Herod's son Philip renamed it honouring Caesar.",
     "17:1": "The mountain is not named; it is traditionally identified as Mount Tabor in Galilee, though some suggest Mount Hermon.",
+    "17:22": "The temple tax was a yearly payment of two drachmas, about two days' wages, expected of Jewish men to support the Jerusalem temple.",
     "19:1": "Jewish teachers of the day were divided on divorce: one school allowed it for many reasons, another, stricter school mainly for unfaithfulness.",
     "20:29": "Jericho was the last town on the pilgrim road before the steep climb of about fifteen miles up to Jerusalem.",
     "21:1": "Jerusalem was crowded with pilgrims arriving for Passover. Bethphage and the Mount of Olives lay just east of the city.",
@@ -40,6 +42,17 @@
       "suggestion": "Re-anchor this note at 2:22, where Archelaus and the move to Galilee are mentioned. If 2:13 needs a note, describe Egypt as a nearby Roman province with large Jewish communities, a common place of refuge."
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "4:23",
+      "problem": "Matthew 4:23 is about Jesus touring Galilee, teaching in synagogues and healing. The note is about where the Sermon on the Mount was given, which begins at 5:1. A reader at 4:23 won't know what 'this teaching' refers to.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 5:1, or rewrite it for 4:23 (for example, Galilee's towns and their synagogues)."
+    },
+    {
+      "where": "17:22",
+      "problem": "Verses 17:22–23 are Jesus predicting his death. The temple tax episode starts at 17:24, so a reader at 17:22 will find the note unrelated to the verse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the temple tax note to 17:24."
+    }
+  ],
   "fixed": true
 }

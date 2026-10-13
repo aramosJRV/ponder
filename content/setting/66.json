@@ -12,9 +12,28 @@
     "2:18": "Thyatira was a trading town known for its craft guilds, such as dyers and bronze workers; guild banquets usually honoured pagan gods. Lydia, Paul's convert, came from here.",
     "3:1": "Sardis, once the rich capital of the kingdom of Lydia, had a hilltop fortress twice captured by surprise; it was rebuilt after a severe earthquake in AD 17.",
     "3:7": "Philadelphia was a smaller city on an important trade road, badly damaged by the AD 17 earthquake and shaken by tremors for years afterwards.",
-    "3:14": "Laodicea was a wealthy banking city known for black wool and eye ointment; its water was piped in from a distance, and nearby Hierapolis had hot springs."
+    "3:14": "Laodicea was a wealthy banking city known for black wool and eye ointment; its water was piped in from a distance, and nearby Hierapolis had hot springs.",
+    "13:11": "In the ancient world letters of the alphabet also served as numbers, so adding up the value of a name was a familiar kind of puzzle.",
+    "17:7": "Rome was famously known as the city built on seven hills, a detail John's first readers would likely have recognised.",
+    "18:9": "Rome drew luxury goods such as silk, spices, ivory and fine wood from across the empire and beyond, much of it shipped by sea through busy ports."
   },
   "flags": [],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "13:11",
+      "problem": "The note about letters doubling as numbers explains the number of the beast, which comes at 13:18. Verse 11 introduces the second beast, so readers at 13:11 will not see the connection.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 13:18."
+    },
+    {
+      "where": "17:7",
+      "problem": "The seven hills/mountains detail is in 17:9. Verse 7 is only the angel offering to explain the mystery, so the note is anchored to the wrong verse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 17:9."
+    },
+    {
+      "where": "18:9",
+      "problem": "The list of luxury cargoes (silk, spices, ivory, fine wood) is in the merchants' lament, 18:11–13. Verse 9 is about the kings of the earth mourning, so the note does not match its verse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 18:11."
+    }
+  ],
   "fixed": true
 }

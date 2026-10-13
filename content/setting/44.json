@@ -19,6 +19,7 @@
     "13:13": "Pisidian Antioch was a Roman colony in the highlands of what is now central Turkey, a different city from Antioch in Syria.",
     "14:8": "A local legend told of the gods Zeus and Hermes once visiting this region in human disguise, which may explain the crowd's reaction at Lystra.",
     "15:1": "This meeting in Jerusalem, often called the Jerusalem Council, is usually dated around AD 49.",
+    "16:6": "Here the account switches to 'we', widely taken as the point where the writer joined Paul's group at Troas.",
     "16:11": "Philippi was a Roman colony in Macedonia, settled by retired soldiers, proud of its Roman status, and apparently with too few Jews for a synagogue.",
     "17:16": "Athens was past its political glory but still a famous centre of philosophy; the Areopagus was its ancient council, named after the Hill of Ares.",
     "18:1": "Emperor Claudius expelled Jews from Rome around AD 49, and an inscription at Delphi dates Gallio's time as governor to about AD 51–52.",
@@ -32,6 +33,12 @@
     "28:17": "Paul's two years under house arrest in Rome are usually dated around AD 60–62, during the reign of Nero."
   },
   "flags": [],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "16:6",
+      "problem": "The note is attached to the wrong verse. The switch to 'we' happens at 16:10, after Paul's vision at Troas. At 16:6 the group is still passing through Phrygia and Galatia, and the narrative there still reads 'they', so readers would find this note confusing.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 16:10 and keep the wording."
+    }
+  ],
   "fixed": true
 }

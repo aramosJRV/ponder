@@ -5,6 +5,7 @@
   "audience": "The letter is addressed to \"the chosen lady and her children.\" Most think this is a warm way of naming a particular local church and its members, though some think it was a real woman and her family who hosted believers in her home. The church faced travelling teachers whose ideas about Jesus differed from what the elder had taught.",
   "era": "It was likely written in the late first century AD, perhaps around AD 90, when the Roman Empire ruled the Mediterranean world and Christians were a small, scattered minority. Churches met in private homes, and travelling preachers moved from town to town, relying on believers to give them food and lodging. Some of these teachers claimed that Jesus had not truly come as a flesh-and-blood human, an idea that was dividing congregations in the region.",
   "notes": {
+    "1:7": "Welcoming a travelling teacher into one's home, often where the church met, was seen as publicly backing their message, which is the situation this section addresses.",
     "1:12": "The letter is short enough to fit a single sheet of papyrus, a common writing material, and the \"chosen sister\" is likely the church where the elder lived."
   },
   "flags": [
@@ -19,6 +20,11 @@
       "where": "1:12",
       "problem": "Not flagged, so left unchanged: the \"chosen sister\" is mentioned in verse 13, not verse 12, so readers on 1:12 may not find her in their verse.",
       "suggestion": "A person should decide whether to move the \"chosen sister\" point to its own note at 1:13 and keep only the papyrus detail at 1:12."
+    },
+    {
+      "where": "1:7",
+      "problem": "Verse 7 is about deceivers who deny Jesus came in the flesh. The instruction about not welcoming such teachers into one's home comes in verses 10–11. A reader on 1:7 would get a note about hospitality that doesn't match their verse, which may confuse them.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 1:10. Alternatively, open it with a sentence on 1:7's setting, such as the travelling teachers described in the era section, before the point about hospitality."
     }
   ],
   "fixed": true

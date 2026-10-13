@@ -7,6 +7,7 @@
   "notes": {
     "1:1": "Nehemiah is at Susa, a royal Persian capital, in the month of Kislev (November–December), around 445 BC.",
     "2:1": "The month of Nisan (March–April) falls about four months after Nehemiah first heard the news from Jerusalem.",
+    "2:9": "Sanballat was governor of neighbouring Samaria, known also from ancient letters found in Egypt; Tobiah was an Ammonite official, and Geshem an Arab leader.",
     "5:14": "Nehemiah served as governor for twelve years, from about 445 to 433 BC.",
     "6:15": "The month of Elul falls in August–September, so the wall was finished in late summer, around 445 BC.",
     "7:6": "This list closely matches one in Ezra. It records families who returned from exile, with Zerubbabel among their leaders, in the decades after 538 BC, nearly a century earlier.",
@@ -27,6 +28,12 @@
       "suggestion": "Briefly identify Ezra, for example 'Ezra, a priest and teacher of the law'. Consider splitting the festival detail and the Ezra–Nehemiah order debate into separate sentences."
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "2:9",
+      "problem": "In 2:9 Nehemiah reaches the governors of the region with the king's letters. Sanballat and Tobiah are first named at 2:10, and Geshem not until 2:19. A reader on 2:9 will find these names explained a verse too early.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 2:10 and mention Geshem there or at 2:19. Alternatively, rewrite the 2:9 note about the king's letters and the regional governors."
+    }
+  ],
   "fixed": true
 }

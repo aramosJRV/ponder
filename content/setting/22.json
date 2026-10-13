@@ -9,7 +9,8 @@
     "1:9": "Egypt's pharaohs were famous for their fine chariot horses, which Solomon reportedly traded in.",
     "3:6": "This section pictures King Solomon's wedding procession arriving from the wilderness, with a royal carriage made of cedar wood from Lebanon and an armed guard.",
     "4:8": "Lebanon and Amana, along with Senir and Hermon (two names for the same great mountain or range), are peaks in the far north, beyond Israel's usual borders, where lions and leopards still roamed in ancient times.",
-    "6:4": "Tirzah was a beautiful city that served for a time as the capital of the northern kingdom of Israel, here placed alongside Jerusalem."
+    "6:4": "Tirzah was a beautiful city that served for a time as the capital of the northern kingdom of Israel, here placed alongside Jerusalem.",
+    "6:11": "The poem names Heshbon, a town east of the Jordan known for its pools, along with Mount Carmel on the coast and the city of Damascus."
   },
   "flags": [
     {
@@ -23,6 +24,12 @@
       "suggestion": "Give an approximate date instead, e.g. 'Egyptian love songs from around 1300–1100 BC use similar images.'"
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "6:11",
+      "problem": "Heshbon's pools, Carmel and Damascus are named in 7:4–5, not 6:11. Verse 6:11 is about going down to a nut orchard, so the note is attached to the wrong verse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 7:4."
+    }
+  ],
   "fixed": true
 }

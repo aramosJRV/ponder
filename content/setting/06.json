@@ -9,12 +9,31 @@
     "7:1": "Ai's name means 'the ruin'; it is often placed at a site called et-Tell near Bethel, though that identification and its dating are debated.",
     "8:30": "Mount Ebal overlooks Shechem in the central hills; a stone structure found there in the 1980s was identified by its excavator as an altar, though others disagree.",
     "9:1": "Gibeon lay a few miles north of Jerusalem; excavations there uncovered jar handles inscribed with the town's name.",
+    "10:1": "The Book of Jashar mentioned here was an ancient collection of Israelite poems, now lost, which is also quoted in 2 Samuel.",
     "11:1": "Hazor, in the far north, was the largest city in Canaan; excavations found it destroyed by a great fire in the 1200s BC.",
+    "13:1": "The five Philistine cities listed here lay on the southern coastal plain; the Philistines were sea peoples who settled there around 1200 BC.",
+    "15:45": "Jerusalem stayed in Jebusite hands until King David captured it around 1000 BC and made it his capital.",
     "18:1": "Shiloh, in the hills of Ephraim, became Israel's main place of worship and remained so until the days of the prophet Samuel.",
     "19:40": "The tribe of Dan's move north to capture Leshem, also called Laish, is told in fuller detail in Judges 18.",
     "24:1": "Shechem, between Mounts Ebal and Gerizim, was where Abraham first built an altar in Canaan and where Jacob later bought land."
   },
   "flags": [],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "10:1",
+      "problem": "The Book of Jashar is mentioned at Joshua 10:13, not 10:1. Verse 10:1 introduces Adoni-Zedek, king of Jerusalem. A reader on 10:1 would see 'mentioned here' and find nothing about it.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 10:13."
+    },
+    {
+      "where": "13:1",
+      "problem": "The five Philistine cities are listed at 13:3, not 13:1. The note says 'listed here', which a reader on the 13:1 verse will not see.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 13:3, or reword it so it doesn't say 'listed here'."
+    },
+    {
+      "where": "15:45",
+      "problem": "Joshua 15:45 is about Ekron and its villages. The Jebusites holding Jerusalem appears at 15:63. The note is attached to the wrong verse and would confuse a reader.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 15:63."
+    }
+  ],
   "fixed": true
 }

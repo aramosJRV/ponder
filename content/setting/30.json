@@ -17,15 +17,40 @@
     "3:9": "Samaria, Israel's hilltop capital, had grand houses; archaeologists there have found carved ivory panels like the ivory-decorated homes mentioned in this passage.",
     "4:1": "Bashan was rich pastureland east of the Jordan known for well-fed cattle; the words are aimed at wealthy women of Samaria.",
     "4:4": "Bethel and Gilgal were the best-known worship sites in northern Israel; Bethel had been a royal shrine since the kingdom split around 930 BC.",
+    "5:4": "Beersheba, a pilgrimage site in the far south of Judah, drew worshippers from the north as well as Bethel and Gilgal.",
     "5:18": "People in Amos's day looked forward to 'the day of the Lord', a time they expected God to step in and defeat Israel's enemies.",
+    "6:1": "Calneh and Hamath in Syria and the Philistine city of Gath were places Amos's hearers knew had already been conquered or humbled.",
+    "6:8": "Lo-debar and Karnaim were towns east of the Jordan captured in Jeroboam II's campaigns, which had pushed Israel's borders north toward Hamath.",
     "7:1": "The 'king's mowing' probably refers to the first cut of hay taken for the royal herds, before the farmers' own spring crop grew.",
     "8:4": "Trade stopped on the new moon festival and the Sabbath; merchants measured grain by the ephah, a dry measure, and weighed silver in shekels.",
     "8:9": "A major eclipse of the sun in 763 BC, total in Assyria and seen as a partial eclipse in Israel, may have been fresh in people's memories, some scholars think.",
+    "8:11": "Dan, in the far north, was another royal shrine, set up alongside Bethel when the kingdom divided.",
     "9:1": "The altar in this vision is usually understood to be the one at Bethel, the shrine where Amos had preached.",
     "9:7": "Cush was the land south of Egypt; Caphtor is usually identified with Crete, the Philistines' homeland; Kir was the Arameans' place of origin.",
     "9:11": "Many scholars think this hopeful ending was added after Jerusalem fell in 586 BC; others hold that it comes from Amos himself."
   },
   "flags": [],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "5:4",
+      "problem": "The wording is confusing. 'Drew worshippers from the north as well as Bethel and Gilgal' reads as if Bethel and Gilgal sent worshippers to Beersheba. The intended point is that northerners went to Beersheba as well as to Bethel and Gilgal. Beersheba is also named in 5:5, not 5:4.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 5:5 and reword: 'Beersheba, a pilgrimage site in the far south of Judah, drew worshippers from the north, who travelled there as well as to Bethel and Gilgal.'"
+    },
+    {
+      "where": "6:1",
+      "problem": "It is stated as settled fact that the hearers already knew Calneh, Hamath and Gath as conquered. Scholars disagree. Some link these defeats to earlier events, such as Aramean attacks or Uzziah's campaign against Gath. Others link them to Assyrian conquests after 740 BC, which would make the verse a later addition. The places are also named in 6:2, not 6:1.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 6:2 and add a short clause: 'Calneh and Hamath in Syria and the Philistine city of Gath were cities that had suffered defeat; some scholars think this refers to setbacks before Amos's time, others to Assyrian conquests a few decades later.'"
+    },
+    {
+      "where": "6:8",
+      "problem": "Lo-debar and Karnaim are mentioned in 6:13, not 6:8, so the note is attached to the wrong verse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 6:13. If you want to cover the reference to Hamath, place that part at 6:14."
+    },
+    {
+      "where": "8:11",
+      "problem": "Dan is mentioned in 8:14, not 8:11, so the note is attached to the wrong verse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 8:14."
+    }
+  ],
   "fixed": true
 }

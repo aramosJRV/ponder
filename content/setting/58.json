@@ -7,6 +7,7 @@
   "notes": {
     "3:7": "The writer draws on Psalm 95, which recalls Israel complaining in the desert after leaving Egypt, a generation that never entered the promised land of Canaan.",
     "5:11": "This section addresses readers who had been believers for some time but, in the writer's view, had stalled and grown sluggish in understanding.",
+    "6:13": "Melchizedek was a priest-king of Salem, probably early Jerusalem, who blessed Abraham; he appears only briefly in Genesis and in Psalm 110.",
     "9:1": "The writer describes the tabernacle, the portable worship tent of Moses' day, and the yearly Day of Atonement, when the high priest entered its innermost room.",
     "12:18": "The scene recalls Mount Sinai, where Israel received God's law amid fire, darkness and trembling, alongside Mount Zion, the hill of Jerusalem.",
     "13:7": "The leaders remembered here were probably the community's first teachers, possibly now dead, while its current leaders are mentioned separately later.",
@@ -19,6 +20,12 @@
       "suggestion": "Soften the claim, e.g. 'but it was known by the time a church leader in Rome, usually dated to around AD 96, drew heavily on it in a letter of his own.'"
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "6:13",
+      "problem": "Hebrews 6:13 is about God's promise and oath to Abraham. Melchizedek is not named until 6:20 and is discussed in chapter 7, so a reader tapping 6:13 would find a note about someone missing from the passage.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the Melchizedek note to 6:20 or 7:1. If a note is wanted at 6:13, describe God's promise to Abraham instead."
+    }
+  ],
   "fixed": true
 }

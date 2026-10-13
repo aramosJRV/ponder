@@ -6,12 +6,25 @@
   "era": "The story is set in an older world much like the days of Abraham. Wealth is counted in flocks, herds and servants, Job offers sacrifices himself as head of his family, and there is no mention of Israel, its law or its temple. Job lives in the land of Uz, probably in Edom or northern Arabia, east of Israel. When the book was actually written is uncertain. The Jewish tradition that Moses wrote it places it very early; other proposals range from Solomon's time, around 950 BC, to after the exile, around 500–400 BC, with many scholars favouring the later period.",
   "notes": {
     "1:6": "The Hebrew calls this figure 'the satan,' meaning 'the accuser,' who appears among heavenly beings gathered before God like courtiers before a king.",
+    "1:13": "The Sabeans were raiders from southern Arabia, and the Chaldeans were raiders from Mesopotamia. Both groups were known in the ancient world for sweeping attacks on herds and camps.",
     "2:11": "Eliphaz came from Teman in Edom, a place famed for its wise men. Bildad was a Shuhite and Zophar a Naamathite, peoples probably living in the Arabian or Edomite region.",
     "28:1": "This poem describes ancient mining, with shafts cut into rock and tunnels lit in darkness, much like the copper and other mines worked in the lands south of the Dead Sea.",
     "32:1": "Elihu is a Buzite, a name linked to Buz, a relative of Abraham. Some scholars think his speeches were added later, since he is not mentioned elsewhere in the book.",
-    "40:15": "Behemoth is often identified with the hippopotamus, though some see it as a legendary beast of great power from ancient Near Eastern imagination."
+    "40:15": "Behemoth is often identified with the hippopotamus, though some see it as a legendary beast of great power from ancient Near Eastern imagination.",
+    "41:12": "Leviathan is often identified with the crocodile, but the name also belongs to a fearsome sea monster in ancient Canaanite poems known to Israel's neighbours."
   },
   "flags": [],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "1:13",
+      "problem": "The note is anchored at the wrong verse. Verse 13 describes Job's children feasting. The Sabeans first appear at 1:15 and the Chaldeans at 1:17.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to start at 1:15."
+    },
+    {
+      "where": "41:12",
+      "problem": "The note is anchored mid-passage. Leviathan is introduced at the start of the chapter, 41:1 in English Bibles (40:25 in Hebrew). Verse 12 is in the middle of the description.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to start at 41:1."
+    }
+  ],
   "fixed": true
 }

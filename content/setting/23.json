@@ -10,6 +10,7 @@
     "6:1": "This vision is set in the Jerusalem temple and dated to the year King Uzziah died, around 740 BC, after his long reign of about fifty years.",
     "7:1": "Around 735 BC the kings of Aram (Syria) and northern Israel marched on Jerusalem to force King Ahaz to join their alliance against Assyria.",
     "8:1": "This passage comes from the same crisis; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.",
+    "8:16": "Zebulun and Naphtali, in Galilee in the far north, were among the first areas Assyria took from Israel, around 732 BC.",
     "9:8": "This section is aimed at the northern kingdom of Israel, also called Ephraim, whose capital was Samaria, in the years before Assyria destroyed it in 722 BC.",
     "10:5": "The cities listed, such as Carchemish, Hamath, Arpad and Damascus, all fell to Assyria's armies during the decades of Isaiah's ministry.",
     "10:28": "The towns named trace an army's march from the north toward Jerusalem, ending at Nob, a hill within sight of the city.",
@@ -60,6 +61,12 @@
       "suggestion": "Add a short gloss, e.g. 'often called the \"Isaiah Apocalypse\" because, like the book of Revelation, they describe judgment and renewal on a worldwide scale.'"
     }
   ],
-  "unsure": [],
+  "unsure": [
+    {
+      "where": "8:16",
+      "problem": "Zebulun and Naphtali are not named until 9:1 in English Bibles (8:23 in Hebrew). A reader tapping 8:16 gets a note about places that do not appear for several verses, which may confuse.",
+      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 9:1, or give 8:16 a note about the passage it actually opens."
+    }
+  ],
   "fixed": true
 }
