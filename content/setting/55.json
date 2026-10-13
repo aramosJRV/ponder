@@ -12,22 +12,5 @@
     "4:9": "The \"first defence\" probably means an initial hearing before a Roman court; Dalmatia was a region on the coast of modern Croatia.",
     "4:19": "Priscilla and Aquila were a tentmaking married couple who had worked alongside Paul in Corinth and Ephesus years earlier."
   },
-  "flags": [],
-  "unsure": [
-    {
-      "where": "3:1",
-      "problem": "The flag says the note sits at 3:1 while Jannes and Jambres are named at 3:8, and suggests moving the note's start to 3:8.",
-      "suggestion": "Not applied: the note covers the whole passage 3:1–9 and is shown on every verse in it, so a detail at 3:8 is in the right place. Notes cannot be moved to another verse, and the note does not read as if it were only about 3:1."
-    },
-    {
-      "where": "4:9",
-      "problem": "The flag says Dalmatia (4:10) and the \"first defence\" (4:16) come after the note's start, and suggests re-anchoring or splitting the note.",
-      "suggestion": "Not applied: the note covers 4:9–18, which includes both 4:10 and 4:16, so both details are within its passage. Notes cannot be moved or re-anchored, and the note does not read as if it were only about 4:9."
-    },
-    {
-      "where": "1:15",
-      "problem": "The flag says Onesiphorus first appears at 1:16, just after the note's start.",
-      "suggestion": "Not applied: the note covers 1:15–18, so a detail at 1:16 is within its passage, and the note does not read as if it were only about 1:15. No change is needed."
-    }
-  ]
+  "flags": []
 }

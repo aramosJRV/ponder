@@ -11,15 +11,8 @@
     "13:1": "Written under Nero's early rule; the Roman historian Tacitus records public complaints in Rome about tax collectors around AD 58.",
     "14:1": "The Roman believers disagreed over food and the keeping of special days. Jewish food laws and holy days were likely part of this, and possibly also worries about meat that had been offered in pagan temples before being sold in markets.",
     "15:22": "Paul was about to take the gift from churches in Macedonia and Achaia (northern and southern Greece) to Jerusalem; Acts records he was arrested there and reached Rome later as a prisoner.",
-    "16:1": "Phoebe, from Cenchreae, Corinth's port, probably carried the letter; Priscilla and Aquila had earlier been expelled from Rome under Claudius. A few scholars think this chapter was first sent elsewhere.",
+    "16:1": "Phoebe, from Cenchreae, Corinth's port, probably carried the letter; Prisca (also called Priscilla) and Aquila had earlier been expelled from Rome under Claudius. A few scholars think this chapter was first sent elsewhere.",
     "16:21": "In these closing greetings, Tertius, who wrote the letter down, adds his own greeting; an inscription found in Corinth names an official called Erastus, possibly the city treasurer mentioned here."
   },
-  "flags": [
-    {
-      "where": "16:1",
-      "problem": "Romans 16 calls her \"Prisca\" in many Bibles (ESV, NRSV and others), while the note says \"Priscilla\". A reader seeing only \"Prisca\" in this passage may not realise it is the same person.",
-      "suggestion": "Write \"Prisca (also called Priscilla) and Aquila\" so readers of any translation recognise her."
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

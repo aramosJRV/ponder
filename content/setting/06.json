@@ -11,18 +11,11 @@
     "9:1": "Gibeon lay a few miles north of Jerusalem; excavations there uncovered jar handles inscribed with the town's name.",
     "10:1": "The Book of Jashar, mentioned later in this passage, was an ancient collection of Israelite poems, now lost, which is also quoted in 2 Samuel.",
     "11:1": "Hazor, in the far north, was the largest city in Canaan; excavations found it destroyed by a great fire in the 1200s BC.",
-    "13:1": "The five Philistine cities named in this passage lay on the southern coastal plain; the Philistines were sea peoples who settled there around 1200 BC.",
+    "13:1": "The five Philistine cities named in this passage lay on the southern coastal plain. The Philistines were seafaring newcomers, probably from the Aegean region; most historians think their main settlement came around 1200 BC.",
     "15:45": "Jerusalem, mentioned at the end of this passage, stayed in Jebusite hands until King David captured it around 1000 BC and made it his capital.",
     "18:1": "Shiloh, in the hills of Ephraim, became Israel's main place of worship and remained so until the days of the prophet Samuel.",
     "19:40": "The tribe of Dan's move north to capture Leshem, also called Laish, is told in fuller detail in Judges 18.",
     "24:1": "Shechem, between Mounts Ebal and Gerizim, was where Abraham first built an altar in Canaan and where Jacob later bought land."
   },
-  "flags": [
-    {
-      "where": "13:1",
-      "problem": "'Sea peoples' is a scholarly label that an ordinary reader won't know, and the note doesn't explain it. The note also states the 1200 BC arrival as plain fact. That sits awkwardly with the traditional dating of around 1400 BC given in the era section, and the reader is not told how the two fit.",
-      "suggestion": "Briefly explain the term, for example 'part of a wave of seafaring newcomers from the Aegean region, often called the Sea Peoples'. Soften the date: 'most historians think the main Philistine settlement came around 1200 BC.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

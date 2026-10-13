@@ -6,15 +6,9 @@
   "era": "The story is set in the days of the judges, roughly 1200–1050 BC, before Israel had a king, when the tribes were loosely bound together and times were often unsettled. Life in a small town like Bethlehem revolved around farming, family land and the harvest seasons, and relatives were expected to look after kin who fell on hard times. Moab, Ruth's homeland, lay east of the Dead Sea and was a long-standing neighbour of Israel and sometimes its enemy. The book itself was written down later, perhaps near the end of this period, or anywhere up to several centuries afterwards, depending on who wrote it.",
   "notes": {
     "2:1": "Israel's law told landowners to leave grain at the field edges and not gather what reapers dropped, so poor people, foreigners and widows could collect it, called gleaning.",
+    "2:14": "Later in this passage Naomi calls Boaz one of the family's redeemers: a close male relative who had the right to buy back family land and protect the family name.",
     "3:1": "A threshing floor was a hard, open patch where harvested grain was beaten and tossed into the evening breeze to separate it from husks; workers often slept there to guard it.",
     "4:1": "The town gate was where elders met to settle legal business in public. A close male relative, called a kinsman-redeemer, had the right to buy back family land and protect the family name."
   },
-  "flags": [],
-  "unsure": [
-    {
-      "where": "4:1",
-      "problem": "The term 'kinsman-redeemer' is first explained in the 4:1 note, but the idea appears earlier in the story (2:20 and 3:9), where readers get no explanation.",
-      "suggestion": "Not applied. Notes cannot be moved to another verse, and neither earlier verse is covered by an existing note: the 2:1 note covers 2:1–13 and the 3:1 note covers 3:1–5. Adding the explanation to either would place it outside the verses where the word appears. Creating a new note at 2:20 or 3:9, or redrawing the passage ranges, is an editorial decision for a person to make. The 4:1 note is left unchanged."
-    }
-  ]
+  "flags": []
 }

@@ -28,15 +28,8 @@
     "18:28": "Pontius Pilate governed Judea for Rome from about AD 26 to 36; Rome generally kept the power to carry out executions in the governor's hands, though historians debate how strictly this applied.",
     "19:17": "Crucifixion was a Roman punishment for slaves, rebels and criminals, carried out publicly outside city walls as a warning to others.",
     "19:38": "Wealthy families buried their dead in tombs cut into rock, wrapping the body in linen with spices; the amount described here was lavish.",
-    "21:1": "Many scholars think this final chapter was added as an epilogue, possibly by the author's circle, after the book's first ending.",
+    "21:1": "Traditionally this final chapter has been read as part of the author's own work; many scholars think it was added as an epilogue, possibly by the author's circle, after the book's first ending.",
     "21:20": "The closing verses are partly written as 'we'. Traditionally they have been read as the author's own words; many scholars think his community added them, possibly after the beloved disciple's death, to address a rumour about him."
   },
-  "flags": [
-    {
-      "where": "21:1",
-      "problem": "Only the scholarly view is given. The rules ask for the traditional view alongside the main alternative, and many readers and some scholars hold that chapter 21 is by the same author as the rest of the book.",
-      "suggestion": "Add a short clause giving both views, e.g. 'Traditionally this final chapter has been read as part of the author's own work; many scholars think it was added as an epilogue, possibly by the author's circle, after the book's first ending.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

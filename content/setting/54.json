@@ -9,29 +9,11 @@
     "1:18": "Paul names two men, Hymenaeus and Alexander, probably known to Timothy in Ephesus, whose faith had collapsed; a Hymenaeus is mentioned again in 2 Timothy.",
     "3:1": "\"Overseer\" translates a Greek word for a local church leader; Acts describes Paul meeting the leaders of the Ephesus church earlier at the nearby port of Miletus.",
     "3:14": "Paul writes hoping to visit Timothy soon, but sends these instructions in case he is delayed.",
-    "4:1": "This section answers teachers in Ephesus who were telling believers to avoid marriage and certain foods.",
-    "4:11": "Timothy was young by the standards of the day to be guiding older believers, and church leaders had earlier laid hands on him to commission him.",
+    "4:1": "This section warns against teachers, probably already active in Ephesus, who told believers to avoid marriage and certain foods.",
+    "4:11": "Timothy was young by the standards of the day to be guiding older believers, and church leaders had earlier laid hands on him (placing their hands on him while praying) to commission him.",
     "5:3": "With no state support, widows without family often faced poverty, and the Ephesus church kept a list of widows it supported.",
     "6:1": "Some members of the church were slaves, and some of them served masters who were themselves believers.",
     "6:17": "Ephesus was a wealthy trading city, and the church there included some well-off members."
   },
-  "flags": [
-    {
-      "where": "4:1",
-      "problem": "In 4:1–5 the letter frames these teachings as a warning about what some people will do in later times. The note states as fact that it answers specific teachers already active in Ephesus. Many scholars read it that way, but stating it flatly overstates certainty.",
-      "suggestion": "Soften the wording, e.g. \"This section warns against teachers, probably already active in Ephesus, who told believers to avoid marriage and certain foods.\""
-    },
-    {
-      "where": "4:11",
-      "problem": "\"Laid hands on him\" is church language an ordinary reader may not understand.",
-      "suggestion": "Add a brief explanation, e.g. \"…had earlier laid hands on him (placing their hands on him while praying) to commission him.\""
-    }
-  ],
-  "unsure": [
-    {
-      "where": "1:18",
-      "problem": "The flag notes that Hymenaeus and Alexander are named at 1:20, not 1:18, and raises moving the note's anchor to 1:20.",
-      "suggestion": "Left unchanged. The note covers the whole passage 1:18–20, so a detail at 1:20 is correctly placed, and notes cannot be moved to another verse in any case. The wording does not read as if it were only about 1:18, so no rewording is needed. The flag also says a softer wording was applied, but no wording change is specified, so there is nothing to apply."
-    }
-  ]
+  "flags": []
 }

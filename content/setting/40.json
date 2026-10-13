@@ -13,7 +13,7 @@
     "5:38": "Under Roman rule, soldiers could force civilians to carry their gear for a distance.",
     "8:5": "A centurion was an army officer over about a hundred men, probably a non-Jew serving Herod Antipas or Rome at Capernaum.",
     "8:28": "The region of the Gadarenes lay on the southeast side of the Sea of Galilee, a largely non-Jewish area, which is why pigs were kept there.",
-    "9:9": "This is the call of the man tradition names as the gospel's author, sitting at a toll booth, probably in Capernaum.",
+    "9:9": "This passage opens with the call of the man tradition names as the gospel's author, sitting at a toll booth, probably in Capernaum.",
     "11:20": "Chorazin, Bethsaida and Capernaum were Jewish towns near the north end of the lake; Tyre and Sidon were wealthy non-Jewish ports on the Mediterranean coast.",
     "14:1": "Herod Antipas ruled Galilee for Rome. The Jewish historian Josephus says John was held at Machaerus, a fortress east of the Dead Sea.",
     "15:21": "Tyre and Sidon were non-Jewish coastal cities in what is now Lebanon, northwest of Galilee.",
@@ -35,12 +35,5 @@
     "27:32": "Crucifixion took place outside the city walls, probably around AD 30 or 33. Cyrene was a city in North Africa, in present-day Libya.",
     "27:57": "Arimathea was a Judean town. Wealthy families had tombs cut into rock, sealed with a large stone rolled across the entrance."
   },
-  "flags": [
-    {
-      "where": "9:9",
-      "problem": "The note opens with \"This is the call…\", so it reads as if it covers only verse 9. The passage runs to verse 13 and includes the meal that follows, so a reader on verses 10–13 may be confused.",
-      "suggestion": "Word it for the whole passage, e.g. \"This passage opens with the call of the man tradition names as the gospel's author, sitting at a toll booth, probably in Capernaum.\""
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

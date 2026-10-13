@@ -6,16 +6,9 @@
   "era": "The date of Joel is unclear because the book names no king. Traditionally it has been placed early, around 800 BC, perhaps while the boy-king Joash ruled Judah under the guidance of priests. Many scholars today date it later, around 500–350 BC, after the Jews returned from exile in Babylon and rebuilt the temple, when Judah was a small province under Persian rule. Either way, Judah was a small land whose people lived mostly by farming and whose survival depended on rain and harvest, and locust swarms were a dreaded and familiar disaster.",
   "notes": {
     "1:13": "Priests offered grain and wine to God at the temple every morning and evening; the famine meant these daily offerings could no longer be made.",
-    "2:1": "The trumpet here is the shofar, a ram's horn blown from Zion, Jerusalem's temple hill, to sound an alarm or call people together.",
+    "2:1": "At the start of this passage a trumpet is blown: the shofar, a ram's horn sounded from Zion, Jerusalem's temple hill, to raise an alarm or call people together.",
     "2:12": "In this passage the people are called to a fast and a sacred assembly, a recognised public response to national disaster, and the priests are to stand between the temple porch and the altar to pray.",
     "3:1": "Later in this passage the valley of Jehoshaphat is named. The name means \"the LORD judges,\" and the place is not clearly located; later tradition linked it to the Kidron Valley beside Jerusalem."
   },
-  "flags": [
-    {
-      "where": "2:1",
-      "problem": "'The trumpet here' reads as if it is about one verse. The trumpet appears only in 2:1, so a reader on 2:5 or 2:9 will not find it in their verse.",
-      "suggestion": "Word it for the passage: 'At the start of this passage a trumpet is blown: the shofar, a ram's horn sounded from Zion, Jerusalem's temple hill, to raise an alarm or call people together.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

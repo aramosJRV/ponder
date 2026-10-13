@@ -9,21 +9,9 @@
     "5:11": "This section addresses readers who had been believers for some time but, in the writer's view, had stalled and grown sluggish in understanding.",
     "6:13": "This passage opens with God's promise to Abraham, then turns to Melchizedek, a priest-king of Salem, probably early Jerusalem, who blessed Abraham. Melchizedek appears only briefly in Genesis and in Psalm 110.",
     "9:1": "The writer describes the tabernacle, the portable worship tent of Moses' day, and the yearly Day of Atonement, when the high priest entered its innermost room.",
-    "12:18": "The scene recalls Mount Sinai, where Israel received God's law amid fire, darkness and trembling, alongside Mount Zion, the hill of Jerusalem.",
+    "12:18": "The scene recalls Mount Sinai, where Israel received God's law amid fire, darkness and trembling, alongside Mount Zion, the hill of Jerusalem, which the writer pictures here as a heavenly city.",
     "13:7": "The leaders remembered here were probably the community's first teachers, possibly now dead, while its current leaders are mentioned separately later.",
-    "13:18": "The closing mentions Timothy, Paul's younger co-worker, who had recently been released, probably from prison, and sends greetings from believers from Italy."
+    "13:18": "The closing mentions Timothy, Paul's younger co-worker, who had recently been released, probably from prison. The writer also passes on greetings from believers from Italy."
   },
-  "flags": [
-    {
-      "where": "13:18",
-      "problem": "The sentence structure makes Timothy the one who 'sends greetings from believers from Italy'. In fact the writer passes on those greetings. An ordinary reader could easily misread this.",
-      "suggestion": "Split the sentence, e.g. 'The closing mentions Timothy, Paul's younger co-worker, who had recently been released, probably from prison. The writer also passes on greetings from believers from Italy.'"
-    },
-    {
-      "where": "12:18",
-      "problem": "Calling Mount Zion simply 'the hill of Jerusalem' may confuse readers. In this passage the writer pictures Zion as the heavenly Jerusalem, not the physical hill.",
-      "suggestion": "Add a short descriptive clause, e.g. '…alongside Mount Zion, the hill of Jerusalem, which the writer pictures here as a heavenly city.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

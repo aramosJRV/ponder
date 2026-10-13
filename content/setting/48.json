@@ -1,7 +1,7 @@
 {
   "book_number": 48,
   "name": "Galatians",
-  "author": "The letter comes from Paul, and almost all scholars agree he wrote it. He was a Jew from Tarsus, in what is now southern Turkey, trained as a Pharisee (a strict teacher of Jewish law), and once fiercely opposed to the followers of Jesus. After meeting the risen Jesus, he became an apostle, a messenger sent to spread the good news, travelling from city to city founding churches and often supporting himself as a tentmaker.",
+  "author": "The letter comes from Paul, and almost all scholars agree he wrote it. He was a Jew from Tarsus, in what is now southern Turkey, trained as a Pharisee (a member of a Jewish group devoted to strictly keeping God's law), and once fiercely opposed to the followers of Jesus. After meeting the risen Jesus, he became an apostle, a messenger sent to spread the good news, travelling from city to city founding churches and often supporting himself as a tentmaker.",
   "audience": "It went to several churches in Galatia, a region in the middle of modern Turkey. Scholars disagree on which: traditionally the Celtic Galatian people in the north, though many think it means towns in the south such as Iconium, Lystra and Derbe, which Paul visited on his first journey. These were mostly non-Jewish believers, and new teachers had arrived insisting they be circumcised and keep the Jewish law to belong fully to God's people.",
   "era": "Paul probably wrote around AD 48–55, while Rome ruled the whole Mediterranean world under Emperor Claudius and then, from AD 54, Nero. Some date it very early, before the church leaders met in Jerusalem to settle this question around AD 49; others date it a few years later. It was a time when the young church, which began among Jews, was working out whether non-Jewish believers had to follow Jewish customs.",
   "notes": {
@@ -11,18 +11,5 @@
     "4:12": "Paul recalls his first visit to the Galatians, when some illness or physical weakness led to his preaching among them.",
     "6:11": "Paul often dictated his letters to a scribe; here he takes the pen himself to write the closing lines in large letters."
   },
-  "flags": [
-    {
-      "where": "author",
-      "problem": "The gloss 'a strict teacher of Jewish law' slightly misdefines 'Pharisee'. The Pharisees were a Jewish religious group known for careful keeping of the law, not a class of teachers, though some were teachers. Paul calls himself a Pharisee, not a teacher.",
-      "suggestion": "Reword the gloss, e.g. 'a Pharisee (a member of a Jewish group devoted to strictly keeping God's law)'."
-    }
-  ],
-  "unsure": [
-    {
-      "where": "1:18",
-      "problem": "The flag said the second visit is not mentioned until chapter 2 and that 'the Jerusalem meeting' was unexplained; it suggested adding that the first visit was 'three years after his conversion'.",
-      "suggestion": "I clarified the two visits and explained the meeting, but the second visit falls within this note's passage (1:18–2:10), so it is in the right place. I left out 'three years after his conversion' because it is unclear whether Paul counts the three years from his conversion or from his return to Damascus. A person may wish to decide whether to add a time reference."
-    }
-  ]
+  "flags": []
 }

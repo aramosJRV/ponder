@@ -19,7 +19,7 @@
     "4:4": "Bethel and Gilgal were the best-known worship sites in northern Israel; Bethel had been a royal shrine since the kingdom split around 930 BC.",
     "5:4": "This passage names Beersheba, a pilgrimage site in the far south of Judah, alongside Bethel and Gilgal. People from the northern kingdom travelled there to worship as well as going to Bethel and Gilgal.",
     "5:18": "People in Amos's day looked forward to 'the day of the Lord', a time they expected God to step in and defeat Israel's enemies.",
-    "6:1": "This passage names Calneh and Hamath in Syria and the Philistine city of Gath, cities that had suffered defeat. Some scholars think this refers to setbacks before Amos's time; others think it refers to Assyrian conquests a few decades later.",
+    "6:1": "This passage names Calneh and Hamath in Syria and the Philistine city of Gath, cities that had suffered defeat. Some scholars think this refers to setbacks before Amos's time; others think it refers to Assyrian conquests a few decades later, which would mean these lines were added after Amos.",
     "6:8": "Later in this passage, Lo-debar and Karnaim are named; they were towns east of the Jordan captured in Jeroboam II's campaigns, which had pushed Israel's borders north toward Hamath.",
     "7:1": "The 'king's mowing' probably refers to the first cut of hay taken for the royal herds, before the farmers' own spring crop grew.",
     "8:4": "Trade stopped on the new moon festival and the Sabbath; merchants measured grain by the ephah, a dry measure, and weighed silver in shekels.",
@@ -29,12 +29,5 @@
     "9:7": "Cush was the land south of Egypt; Caphtor is usually identified with Crete, the Philistines' homeland; Kir was the Arameans' place of origin.",
     "9:11": "Many scholars think this hopeful ending was added after Jerusalem fell in 586 BC; others hold that it comes from Amos himself."
   },
-  "flags": [
-    {
-      "where": "6:1",
-      "problem": "The note says some scholars think these lines refer to Assyrian conquests a few decades after Amos, but never says what that implies. A reader may wonder how Amos could speak of events after his own time. The point of the disagreement, that these lines may have been added later, is left unstated.",
-      "suggestion": "Add a short clause, e.g. '…others think it refers to Assyrian conquests a few decades later, which would mean these lines were added after Amos's time.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

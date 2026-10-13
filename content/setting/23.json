@@ -9,11 +9,11 @@
     "2:1": "An almost identical passage appears in Micah, a prophet working in Judah at the same time; scholars debate who borrowed from whom, or whether both drew on an older source.",
     "6:1": "This vision is set in the Jerusalem temple and dated to the year King Uzziah died, around 740 BC, after his long reign of about fifty years.",
     "7:1": "Around 735 BC the kings of Aram (Syria) and northern Israel marched on Jerusalem to force King Ahaz to join their alliance against Assyria.",
-    "8:1": "This passage comes from the same crisis; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.",
+    "8:1": "This passage comes from the time around 735 BC when Aram (Syria) and northern Israel threatened Jerusalem; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.",
     "8:16": "Later in this passage, Zebulun and Naphtali are named; these areas, in Galilee in the far north, were among the first Assyria took from Israel, around 732 BC.",
     "9:8": "This section is aimed at the northern kingdom of Israel, also called Ephraim, whose capital was Samaria, in the years before Assyria destroyed it in 722 BC.",
     "10:5": "The cities listed, such as Carchemish, Hamath, Arpad and Damascus, all fell to Assyria's armies during the decades of Isaiah's ministry.",
-    "10:28": "The towns named trace an army's march from the north toward Jerusalem, ending at Nob, a hill within sight of the city.",
+    "10:28": "The towns named trace an army's march from the north toward Jerusalem, ending at Nob, probably a hill within sight of the city.",
     "11:1": "Jesse was the father of King David, so this passage looks to David's royal family, which still ruled Judah in Isaiah's day.",
     "13:1": "This oracle concerns Babylon; some scholars place it in Isaiah's day, when Babylon was resisting Assyria, while many date it later, when Babylon itself ruled the region.",
     "14:28": "This oracle is dated to the year King Ahaz died, around 727 or 715 BC (scholars differ on which), and addressed to Philistia, Judah's neighbour on the Mediterranean coast.",
@@ -38,38 +38,16 @@
     "38:9": "The heading presents this poem as written by King Hezekiah himself after he recovered from his illness.",
     "39:1": "Merodach-baladan was a Babylonian leader who repeatedly rebelled against Assyria; his envoys were likely seeking Judah's support.",
     "40:1": "Many scholars think chapters 40–66 were written for Jews exiled in Babylon around 550–540 BC; the traditional view is that Isaiah foresaw that time.",
-    "41:1": "The conqueror stirred up from the east is widely identified as Cyrus, the Persian king whose armies were sweeping across the region.",
+    "41:1": "The conqueror stirred up from the east is widely identified as Cyrus, the Persian king who conquered much of the region in the 540s BC.",
     "42:1": "This is the first of four passages scholars call the 'Servant Songs', which centre on a figure called the Lord's servant.",
     "44:24": "Cyrus is named here: the Persian king who captured Babylon in 539 BC and allowed exiled Jews to return home.",
     "46:1": "Bel and Nebo were leading gods of Babylon, whose statues were carried through the city in great religious processions.",
     "47:1": "Babylon was famous for its astrologers and stargazers, whom its kings consulted to read the future.",
-    "52:13": "This is the last and longest of the four 'Servant Songs'.",
+    "52:13": "This is the last and longest of four passages scholars call the \"Servant Songs\", which centre on a figure called the Lord's servant.",
     "56:1": "Many scholars link chapters 56–66 to the years after exiles began returning to Jerusalem in 538 BC; others keep them with Isaiah's own work.",
     "63:1": "Bozrah was a chief city of Edom, Judah's south-eastern neighbour and old rival.",
     "63:15": "The burned temple and ruined cities described here are widely linked to Babylon's destruction of Jerusalem in 587 BC.",
     "66:1": "Many scholars connect this passage to the period of rebuilding the temple, which was finished around 515 BC."
   },
-  "flags": [
-    {
-      "where": "8:1",
-      "problem": "'The same crisis' points back to the 7:1 note, which a reader on this passage may never have seen. On its own the note doesn't say which crisis is meant.",
-      "suggestion": "Name the crisis: 'This passage comes from the time around 735 BC when Aram (Syria) and northern Israel threatened Jerusalem; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.'"
-    },
-    {
-      "where": "52:13",
-      "problem": "The note assumes the reader knows what the 'Servant Songs' are. That term is only explained in the 42:1 note, which the reader may not have seen.",
-      "suggestion": "Add a short explanation: 'This is the last and longest of four passages scholars call the \"Servant Songs\", which centre on a figure called the Lord's servant.'"
-    },
-    {
-      "where": "10:28",
-      "problem": "Nob's exact location is not known for certain. The note states as fact that it was a hill within sight of Jerusalem.",
-      "suggestion": "Soften it: '…ending at Nob, probably a hill within sight of the city.'"
-    },
-    {
-      "where": "41:1",
-      "problem": "'Whose armies were sweeping across the region' assumes the passage was written while Cyrus was campaigning. That is the scholarly later dating, not the traditional view that Isaiah foresaw it. The disputed setting reads as settled fact.",
-      "suggestion": "Reword without presuming the date: 'The conqueror stirred up from the east is widely identified as Cyrus, the Persian king who conquered much of the region in the 540s BC.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

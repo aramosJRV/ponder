@@ -6,23 +6,11 @@
   "era": "If written in Solomon's day, it comes from Israel's golden age: peace, wealth, the building of the first temple in Jerusalem, and trade with Egypt, Phoenicia and Arabia. Love poetry was well known across the ancient Middle East, and Egyptian love songs from around 1300–1100 BC use similar images. The poems name real places across the land, from Jerusalem and En-gedi to Lebanon, Gilead and Carmel.",
   "notes": {
     "1:5": "Kedar was a nomadic Arabian tribe known for tents woven from black goat hair, a familiar sight on the desert edges east of Israel.",
-    "1:9": "Egypt's pharaohs were famous for their fine chariot horses, which Solomon reportedly traded in.",
-    "3:6": "This section pictures King Solomon's wedding procession arriving from the wilderness, with a royal carriage made of cedar wood from Lebanon and an armed guard.",
+    "1:9": "This passage opens by comparing the woman to a mare among Pharaoh's chariots. Egypt's pharaohs were famous for their fine chariot horses, which Solomon reportedly traded in.",
+    "3:6": "This section pictures King Solomon's wedding procession arriving from the wilderness, with a royal carriage made of wood from Lebanon, famous for its cedars, and an armed guard.",
     "4:8": "Lebanon and Amana, along with Senir and Hermon (two names for the same great mountain or range), are peaks in the far north, beyond Israel's usual borders, where lions and leopards still roamed in ancient times.",
     "6:4": "Tirzah was a beautiful city that served for a time as the capital of the northern kingdom of Israel, here placed alongside Jerusalem.",
     "6:11": "Later in this passage, the poem names Heshbon, a town east of the Jordan known for its pools, along with Mount Carmel on the coast and the city of Damascus."
   },
-  "flags": [
-    {
-      "where": "1:9",
-      "problem": "The note never says why horses matter. A reader on a later verse, such as 2:3 or 2:7, gets a horse fact with nothing linking it to what they are reading.",
-      "suggestion": "Tie it to the passage, e.g. \"This passage opens by comparing the woman to a mare among Pharaoh's chariots. Egypt's pharaohs were famous for their fine chariot horses, which Solomon reportedly traded in.\""
-    },
-    {
-      "where": "3:6",
-      "problem": "The text says the carriage was made of wood from Lebanon but does not name the tree. \"Cedar\" is a likely guess, stated as fact.",
-      "suggestion": "Say \"a royal carriage made of wood from Lebanon, famous for its cedars\", or simply \"wood from Lebanon\"."
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

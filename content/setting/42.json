@@ -34,7 +34,7 @@
     "20:20": "Paying the Roman tax was a bitterly divisive question; the denarius, a silver coin, carried the emperor's image and title.",
     "20:27": "The Sadducees were a wealthy priestly party linked with temple leadership who did not believe in a resurrection of the dead.",
     "21:5": "Herod the Great began rebuilding the temple on a grand scale around 20 BC; the Romans destroyed it in AD 70.",
-    "21:20": "Roman armies besieged and destroyed Jerusalem in AD 70, one reason many scholars date Luke's writing after that event.",
+    "21:20": "Roman armies besieged and destroyed Jerusalem in AD 70; scholars differ on whether Luke wrote before or after this event.",
     "22:1": "Passover recalled Israel's escape from Egypt and ran into the week-long Festival of Unleavened Bread, when Jerusalem filled with pilgrims.",
     "22:63": "The council, often called the Sanhedrin, was the Jewish ruling body of priests and elders, led by the high priest.",
     "23:1": "Only the Roman governor could order an execution; Herod Antipas was in Jerusalem for Passover, and only Luke records his part in the trial.",
@@ -44,18 +44,5 @@
     "24:13": "The exact site of Emmaus is uncertain; it lay about seven miles from Jerusalem.",
     "24:50": "Bethany lay on the eastern slope of the Mount of Olives, about two miles from Jerusalem."
   },
-  "flags": [
-    {
-      "where": "21:20",
-      "problem": "The note gives only the later-date view ('one reason many scholars date Luke's writing after that event'). Readers on these verses never see the traditional early-60s dating, so the dating debate is presented one-sidedly. It also implies a scholarly judgement about the passage's origin rather than simply describing its setting.",
-      "suggestion": "Either drop the dating clause and keep only the historical fact ('Roman armies besieged and destroyed Jerusalem in AD 70'), or balance it, e.g. '…in AD 70; scholars differ on whether Luke wrote before or after this event.'"
-    }
-  ],
-  "unsure": [
-    {
-      "where": "2:21",
-      "problem": "The flag says the note is pinned to 2:21 (Jesus' circumcision and naming) but describes the purification offering, which begins at 2:22, so a reader on 2:21 sees background for a different event.",
-      "suggestion": "Not applied. The note covers the whole passage 2:21–40, and the purification offering falls within that passage, so the detail is in the right place. Notes cannot be moved, and the note does not read as if it were only about 2:21. Adding a clause on circumcision and naming on the eighth day would be optional enrichment, not a correction, so that is left for an editor to decide."
-    }
-  ]
+  "flags": []
 }

@@ -7,24 +7,12 @@
   "notes": {
     "1:1": "The opening title names Solomon, son of David, king of Israel, and begins a long section (chapters 1–9) of speeches from a parent or teacher to a young man.",
     "10:1": "A fresh heading credits what follows to Solomon, starting the book's main collection of short two-line sayings, which runs through to the middle of chapter 22.",
-    "22:1": "From verse 17 a new collection, 'the words of the wise,' begins; scholars widely note close parallels with an ancient Egyptian teaching text called the Instruction of Amenemope.",
-    "24:1": "The 'words of the wise' continue here, and verse 23 opens a short extra collection also credited simply to 'the wise.'",
+    "22:1": "From verse 17 a new collection begins, credited to unnamed wise teachers; scholars widely note close parallels with an ancient Egyptian teaching text called the Instruction of Amenemope.",
+    "24:1": "The collection of sayings from unnamed wise teachers continues here, and verse 23 opens a short extra collection also credited to them.",
     "25:1": "The heading says these Solomon sayings were copied out by the men of Hezekiah, king of Judah, around 700 BC, likely royal scribes at his court.",
     "30:1": "These are credited to Agur son of Jakeh, otherwise unknown. The Hebrew word massa in the heading can be read as the name of a people in northern Arabia, suggesting he came from there, or as 'oracle' (a solemn message), so translations differ.",
     "31:1": "These words are credited to King Lemuel, otherwise unknown, as teaching his mother gave him; like Agur, he may have come from Massa in northern Arabia.",
     "31:10": "This closing poem is an acrostic: in Hebrew, each verse begins with the next letter of the alphabet, a form that may have helped memory and gave a sense of completeness, from first letter to last."
   },
-  "flags": [
-    {
-      "where": "22:1",
-      "problem": "'the words of the wise' is a direct quotation of the heading in 22:17, which breaks the no-quoting rule.",
-      "suggestion": "Paraphrase without quotation marks, e.g. 'From verse 17 a new collection begins, credited to unnamed wise teachers; scholars widely note close parallels with an ancient Egyptian teaching text called the Instruction of Amenemope.'"
-    },
-    {
-      "where": "24:1",
-      "problem": "The note repeats the quoted heading phrases 'words of the wise' and 'the wise' from 22:17 and 24:23, which again quotes scripture.",
-      "suggestion": "Paraphrase, e.g. 'The collection of sayings from unnamed wise teachers continues here, and verse 23 opens a short extra collection also credited to these teachers.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

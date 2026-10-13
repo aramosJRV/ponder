@@ -42,7 +42,7 @@
     "49:1": "Ammon lay east of the Jordan River, around Rabbah, the site of modern Amman in Jordan.",
     "49:7": "Edom lay south-east of the Dead Sea; Teman and Bozrah were among its chief places.",
     "49:23": "Damascus was the capital of Aram, Israel's northern neighbour, with Hamath and Arpad farther north in Syria.",
-    "49:28": "Kedar and Hazor here refer to Arab tribes of the desert east of Judah, living in tents and herding camels.",
+    "49:28": "Kedar was an Arab tribe of the desert east of Judah, known for tents and herding. Hazor here is not the famous northern city but probably refers to Arab settlements in the same region.",
     "49:34": "Elam was a kingdom east of Babylon, in what is now south-western Iran; this message is dated to early in Zedekiah's reign.",
     "50:1": "Chapters 50–51 concern Babylon itself, the empire then dominating Judah; some scholars date parts to later in the exile.",
     "51:59": "Dated to Zedekiah's fourth year, around 593 BC, when royal official Seraiah, Baruch's brother, travelled to Babylon with the king.",
@@ -50,18 +50,5 @@
     "52:28": "These deportation figures, smaller than those in 2 Kings, may count only adult men or a particular group.",
     "52:31": "Around 561 BC, the new Babylonian king Evil-merodach (Amel-Marduk) released Jehoiachin after thirty-seven years in prison."
   },
-  "flags": [
-    {
-      "where": "49:28",
-      "problem": "Calling Hazor an Arab tribe living in tents is doubtful. Kedar is a known tribe, but 'Hazor' here is uncertain and is often taken as settled villages or encampments rather than a tent-dwelling tribe. Readers may also confuse it with the well-known city of Hazor in northern Israel.",
-      "suggestion": "Reword along these lines: 'Kedar was an Arab tribe of the desert east of Judah, known for tents and herding. \"Hazor\" here is not the famous northern city but probably refers to Arab settlements or villages in the same region.'"
-    }
-  ],
-  "unsure": [
-    {
-      "where": "author (as it bears on note 1:1)",
-      "problem": "The flag says the 627 BC call date is presented as settled in both the author field and note 1:1.",
-      "suggestion": "Not applied. The author field already gives the traditional date and the main alternative (that 627 BC marks his birth, with public work beginning nearer 609 BC), so no change is needed there. Note 1:1 says the call 'is dated to' Josiah's thirteenth year, which accurately reports the book's own heading. Whether note 1:1 should also mention the scholarly debate is a judgement call for a person."
-    }
-  ]
+  "flags": []
 }

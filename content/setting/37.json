@@ -11,12 +11,5 @@
     "2:10": "Dated to the twenty-fourth day of the ninth month, around December 520 BC, three months after rebuilding resumed, and includes questions put to the priests about rules of ritual cleanness, that is, whether a person or thing counted as fit to take part in worship.",
     "2:20": "Given on the same December day as the previous message and addressed to Zerubbabel alone, a grandson of King Jehoiachin and so a descendant of King David."
   },
-  "flags": [],
-  "unsure": [
-    {
-      "where": "1:12",
-      "problem": "The date for resumed work (the twenty-fourth day of the sixth month) comes from 1:15, not 1:12, so a reader looking at 1:12 will not find it in that verse.",
-      "suggestion": "Not applied because the flag appears mistaken. The note covers the whole passage 1:12–15, so a date given in 1:15 is in the right place. The note also does not read as if it describes 1:12 alone; it simply states when the work resumed. Adding \"Later in this passage…\" is optional and is a judgement call for an editor."
-    }
-  ]
+  "flags": []
 }

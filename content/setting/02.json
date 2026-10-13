@@ -10,7 +10,7 @@
     "3:1": "Horeb is another name for Mount Sinai; its exact location is debated, traditionally placed at Jebel Musa in southern Sinai, though some suggest north-western Arabia.",
     "12:1": "This marks the start of Passover, the spring festival Israel kept every year in the month of Abib, roughly March to April.",
     "13:17": "The shorter route through Philistine territory was the main coastal highway to Canaan, guarded by a line of Egyptian army forts.",
-    "14:1": "The Hebrew name for this sea means \"Sea of Reeds\"; its exact location, whether a lake, marsh or arm of the Red Sea, is uncertain.",
+    "14:1": "The sea Israel camps beside is called in Hebrew Yam Suph, usually translated \"Red Sea\" but literally \"Sea of Reeds\"; its exact location, whether a lake, marsh or arm of the Red Sea, is uncertain.",
     "15:1": "Many scholars regard this victory song, sung by Moses and then by his sister Miriam with tambourines, as one of the oldest poems in the Bible.",
     "17:8": "The Amalekites were a nomadic desert people of the Sinai and the dry Negev region south of Canaan.",
     "19:1": "Israel arrives at Mount Sinai in the third month after leaving Egypt, roughly seven weeks after setting out, and camps there for nearly a year, until the people move on in Numbers chapter 10.",
@@ -25,12 +25,5 @@
     "38:21": "A talent was a large weight of metal, roughly 34 kilograms, so these totals describe a very great quantity of gold, silver and bronze.",
     "40:17": "The tabernacle is set up on the first day of the second year after leaving Egypt, almost exactly a year after the first Passover."
   },
-  "flags": [
-    {
-      "where": "14:1",
-      "problem": "In 14:1–14 the text only says 'the sea'. The Hebrew name Yam Suph, which most English Bibles translate 'Red Sea', appears just before (13:18) and just after (15:4) this passage. A reader on these verses may not know which name 'this sea' refers to, or that 'Sea of Reeds' and 'Red Sea' are the same body of water.",
-      "suggestion": "Name the sea and link it to the familiar English name, e.g. 'The sea Israel camps beside is called in Hebrew Yam Suph, usually translated \"Red Sea\" but literally \"Sea of Reeds\"; its exact location, whether a lake, marsh or arm of the Red Sea, is uncertain.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

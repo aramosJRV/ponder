@@ -14,15 +14,8 @@
     "3:7": "Philadelphia was a smaller city on an important trade road, badly damaged by the AD 17 earthquake and shaken by tremors for years afterwards.",
     "3:14": "Laodicea was a wealthy banking city known for black wool and eye ointment; its water was piped in from a distance, and nearby Hierapolis had hot springs.",
     "13:11": "Near the end of this passage a number appears. In the ancient world letters of the alphabet also served as numbers, so adding up the value of a name was a familiar kind of puzzle.",
-    "17:7": "Later in this passage seven hills, or mountains, are mentioned. Rome was famously known as the city built on seven hills, a detail John's first readers would likely have recognised.",
+    "17:7": "Later in this passage seven hills, or mountains, are mentioned. In the ancient world Rome was famously known as the city built on seven hills.",
     "18:9": "Later in this passage merchants list the cargoes they once sold. Rome drew luxury goods such as silk, spices, ivory and fine wood from across the empire and beyond, much of it shipped by sea through busy ports."
   },
-  "flags": [
-    {
-      "where": "17:7",
-      "problem": "The closing clause, saying John's first readers would likely have recognised the detail, implies the hills point to Rome. That reads the passage rather than describing its setting, and readers of Revelation disagree about this identification.",
-      "suggestion": "Keep the background fact and drop the implied identification, e.g. 'Later in this passage seven hills, or mountains, are mentioned. In the ancient world Rome was famously known as the city built on seven hills.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

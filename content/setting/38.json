@@ -3,7 +3,7 @@
   "name": "Zechariah",
   "author": "Zechariah was a prophet, a man who brought messages he believed came from God. He was the son of Berechiah and grandson of Iddo, and he likely came from a priestly family that had returned from exile in Babylon. He worked alongside the prophet Haggai, beginning around 520 BC. Chapters 1–8 are widely accepted as his, but many scholars think chapters 9–14 come from a later writer or writers, while others hold that Zechariah wrote the whole book.",
   "audience": "The first hearers were Jews who had come back to Jerusalem and Judah after decades of exile in Babylon. They lived in a small, poor community among ruins, and their work rebuilding God's temple had stalled for years amid hardship, opposition and discouragement.",
-  "era": "The Persian Empire ruled the region after defeating Babylon, and in 538 BC the Persian king Cyrus allowed exiled Jews to return home. Foundations for a new temple were laid, but work stopped for nearly two decades. King Darius I took the throne in 522 BC after a period of revolts across the empire, and under the encouragement of Haggai and Zechariah the temple was finally completed around 516 BC.",
+  "era": "The Persian Empire ruled the region after defeating Babylon, and in 538 BC the Persian king Cyrus allowed exiled Jews to return home. Foundations for a new temple were laid, but work stalled until 520 BC. King Darius I seized the throne in 522 BC and spent his first years putting down revolts across the empire. Under the encouragement of Haggai and Zechariah the temple was finally completed around 516 BC.",
   "notes": {
     "1:1": "Dated to the eighth month of Darius's second year, around October or November 520 BC, shortly after Haggai began urging the people to rebuild.",
     "1:7": "Dated to the twenty-fourth day of the eleventh month, around February 519 BC; this opens a series of eight visions Zechariah saw in a single night.",
@@ -19,23 +19,5 @@
     "14:1": "Later in this passage there is a reference to an earthquake in the days of King Uzziah of Judah, around 760 BC, which Israel remembered for centuries afterward.",
     "14:16": "The Feast of Tabernacles, or Booths, was an autumn harvest festival when Israelites lived in temporary shelters, remembering their wilderness journey after leaving Egypt."
   },
-  "flags": [
-    {
-      "where": "era",
-      "problem": "'Work stopped for nearly two decades' overstates the gap. Foundations were laid around 536 BC and work resumed in 520 BC, about sixteen years later. The exact date of the foundation-laying is itself debated.",
-      "suggestion": "Say the work 'stalled for many years' or 'stalled until 520 BC' rather than 'nearly two decades'."
-    },
-    {
-      "where": "era",
-      "problem": "'Took the throne in 522 BC after a period of revolts' gets the order slightly wrong. Darius seized power in 522 BC, and most of the widespread revolts broke out after he took the throne. He spent his first year or so putting them down.",
-      "suggestion": "Reword to something like 'King Darius I took the throne in 522 BC and spent his first years putting down revolts across the empire.'"
-    }
-  ],
-  "unsure": [
-    {
-      "where": "9:11",
-      "problem": "The mention of Greece is in 9:13, not 9:11, so the flag suggests moving the note to 9:13.",
-      "suggestion": "Not changed. Notes cannot be moved, and this note covers 9:11–17, which includes 9:13. It already says \"This passage mentions Greece\", so it is worded for the whole passage and is correct as it stands."
-    }
-  ]
+  "flags": []
 }

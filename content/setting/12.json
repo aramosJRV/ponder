@@ -2,7 +2,7 @@
   "book_number": 12,
   "name": "2 Kings",
   "author": "The writer of 2 Kings is not named; 1 and 2 Kings were originally one book. Jewish tradition credits the prophet Jeremiah. Many scholars instead see it as the work of unnamed editors, possibly priests or scribes, who shaped a larger history running from Deuteronomy through Kings, perhaps with a first edition under King Josiah and a final one during the exile. Either way, the writer drew on older royal records and stories of the prophets, some of which are named in the book.",
-  "audience": "The finished book was first read by Jewish people after the Babylonians destroyed Jerusalem in 586 BC, many of them living as exiles in Babylon and others among the ruins at home. With no king, no temple and no land of their own, they were asking how their nation had come to fall.",
+  "audience": "The finished book was first read by Jewish people after the Babylonians destroyed Jerusalem in 586 BC (some date it 587), many of them living as exiles in Babylon and others among the ruins at home. With no king, no temple and no land of their own, they were asking how their nation had come to fall.",
   "era": "The book covers roughly 850 to 560 BC, when God's people were split into two kingdoms: Israel in the north, with its capital at Samaria, and Judah in the south, ruled from Jerusalem by kings descended from David. Great empires pressed in on them. Assyria conquered Israel in 722 BC, and Babylon later destroyed Jerusalem and its temple. The book's last event, around 561 BC, shows it was completed during the exile.",
   "notes": {
     "3:4": "A Moabite inscription known as the Mesha Stone, found in 1868, records King Mesha's own account of throwing off Israel's rule.",
@@ -33,18 +33,5 @@
     "25:22": "Jeremiah 40–43 tells this episode more fully, including the prophet himself being taken to Egypt afterwards.",
     "25:27": "Evil-merodach (Amel-Marduk) began ruling around 562 BC. Years earlier, Babylonian ration tablets already listed Jehoiachin as king of Judah and recorded food allowances for him and his sons while he was a captive."
   },
-  "flags": [
-    {
-      "where": "audience",
-      "problem": "States 586 BC as the settled date of Jerusalem's destruction. Scholars are divided between 587 and 586, and the 25:8 note already says so ('some date it 587'). A reader may notice the mismatch.",
-      "suggestion": "Word it as 'after the Babylonians destroyed Jerusalem in 586 BC (some date it 587)', or use 'around 586 BC', to match the 25:8 note."
-    }
-  ],
-  "unsure": [
-    {
-      "where": "19:35",
-      "problem": "The note is about Sennacherib's murder in 19:37 but is attached to 19:35, and 'confirm' overstates the match since the chronicle mentions one son while the passage names two.",
-      "suggestion": "Notes cannot be moved, and 19:37 already falls within this note's passage (19:35–37), so I did not move it. Instead I reworded the note to say the murder comes at the end of this passage, and replaced 'confirm' with wording that reports what the chronicle says."
-    }
-  ]
+  "flags": []
 }

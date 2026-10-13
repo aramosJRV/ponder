@@ -11,7 +11,7 @@
     "12:1": "Shishak is the Egyptian pharaoh Sheshonq I, whose invasion around 925 BC is recorded in a list of conquered towns carved on a temple wall in Egypt.",
     "26:16": "Uzziah died around 740 BC; the prophet Isaiah began his work around the year of his death.",
     "28:16": "The Assyrian king here is Tiglath-pileser III, who around 734 BC was expanding his empire westward across Syria and Israel.",
-    "30:1": "Assyria had conquered the northern kingdom of Israel around 722 BC, so Hezekiah's messengers were inviting the people left behind in its land.",
+    "30:1": "Assyria had been carrying off people from the northern kingdom of Israel and conquered it completely around 722 BC, so Hezekiah's messengers were inviting those left behind in its land.",
     "32:1": "The Assyrian king Sennacherib invaded Judah in 701 BC; his own records boast of shutting Hezekiah up in Jerusalem 'like a bird in a cage'.",
     "32:27": "The water tunnel Hezekiah dug under Jerusalem, mentioned later in this passage, still survives and can be walked through today; an ancient inscription found inside describes its digging.",
     "33:10": "Assyrian records name Manasseh among kings paying tribute to Assyria; his captivity and return are told only in Chronicles.",
@@ -20,12 +20,5 @@
     "36:15": "The Babylonian army under Nebuchadnezzar destroyed Jerusalem and its temple in 586 BC, and many survivors were taken into exile in Babylon.",
     "36:22": "Cyrus, king of Persia, conquered Babylon in 539 BC and soon let exiles return home; the book of Ezra opens with these same words."
   },
-  "flags": [
-    {
-      "where": "30:1",
-      "problem": "The note says it is settled that Assyria had already conquered the northern kingdom when Hezekiah sent his messengers. Chronicles places this Passover in Hezekiah's first year, and scholars disagree about when he became king (around 727 or around 715 BC). So it is uncertain whether the invitation came before or after Samaria fell around 722 BC. Assyria had also deported many northerners earlier, around 732 BC.",
-      "suggestion": "Soften the timing, e.g. 'Assyria had been carrying off people from the northern kingdom of Israel and conquered it completely around 722 BC, so Hezekiah's messengers were inviting those left behind in its land.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

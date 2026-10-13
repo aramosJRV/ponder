@@ -12,16 +12,9 @@
     "4:9": "This section mentions Babylon, which became the great power a century later; some scholars date it after the exile, while others see it as Micah's prediction.",
     "5:2": "Bethlehem Ephrathah was the small hometown of King David's family; centuries later Matthew's Gospel recalls this passage in telling of Jesus' birth.",
     "6:1": "Written like a courtroom case, it recalls Moses, Aaron and Miriam, Balak king of Moab, and Israel's journey from Shittim across the Jordan to Gilgal.",
-    "6:6": "Child sacrifice was practised among neighbouring peoples, and the Bible records that King Ahaz of Judah, in Micah's own day, sacrificed his son.",
+    "6:6": "Later in this passage the speaker wonders about offering even a firstborn child. Child sacrifice was practised among neighbouring peoples, and the Bible records that King Ahaz of Judah, in Micah's own day, sacrificed his son.",
     "6:9": "Omri and Ahab were northern Israelite kings over a century earlier; Ahab was remembered for Baal worship and for seizing Naboth's vineyard.",
     "7:14": "Bashan and Gilead were rich grazing lands east of the Jordan, taken from Israel by Assyria around 733 BC."
   },
-  "flags": [
-    {
-      "where": "6:6",
-      "problem": "The note never says the passage mentions offering a child. A reader on 6:6 or 6:8, which do not mention it, gets an unexplained note about child sacrifice and may be confused.",
-      "suggestion": "Tie it to the passage, e.g. 'Later in this passage the speaker wonders about offering even a firstborn child. Child sacrifice was practised among neighbouring peoples, and the Bible records that King Ahaz of Judah, in Micah's own day, sacrificed his son.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

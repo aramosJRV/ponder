@@ -18,11 +18,11 @@
     "12:20": "The Jewish historian Josephus also records Herod Agrippa I's sudden death at Caesarea in AD 44, during public festivities.",
     "13:13": "Pisidian Antioch was a Roman colony in the highlands of what is now central Turkey, a different city from Antioch in Syria.",
     "14:8": "A local legend told of the gods Zeus and Hermes once visiting this region in human disguise, which may explain the crowd's reaction at Lystra.",
-    "15:1": "This meeting in Jerusalem, often called the Jerusalem Council, is usually dated around AD 49.",
+    "15:1": "This passage leads into a meeting in Jerusalem, often called the Jerusalem Council, usually dated around AD 49.",
     "16:6": "Near the end of this passage, after Paul's vision at Troas, the account switches from 'they' to 'we', widely taken as the point where the writer joined Paul's group.",
     "16:11": "Philippi was a Roman colony in Macedonia, settled by retired soldiers, proud of its Roman status, and apparently with too few Jews for a synagogue.",
     "17:16": "Athens was past its political glory but still a famous centre of philosophy; the Areopagus was its ancient council, named after the Hill of Ares.",
-    "18:1": "Emperor Claudius expelled Jews from Rome around AD 49, and an inscription at Delphi dates Gallio's time as governor to about AD 51–52.",
+    "18:1": "Emperor Claudius expelled Jews from Rome, usually dated around AD 49 though some place it earlier, and an inscription at Delphi dates Gallio's time as governor to about AD 51–52.",
     "19:21": "Ephesus was home to the vast temple of Artemis, one of the wonders of the ancient world, and a busy trade in religious souvenirs.",
     "21:27": "Non-Jews were barred from the temple's inner courts on pain of death, and Roman troops watched the crowds from the Antonia Fortress beside the temple.",
     "21:37": "Josephus also mentions an Egyptian who led a large band of followers to the Mount of Olives around the 50s AD before Roman troops scattered them.",
@@ -32,17 +32,5 @@
     "27:9": "'The Fast' is the Day of Atonement, in autumn; after mid-September Mediterranean sailing grew risky, and it largely stopped over winter.",
     "28:17": "Paul's two years under house arrest in Rome are usually dated around AD 60–62, during the reign of Nero."
   },
-  "flags": [
-    {
-      "where": "15:1",
-      "problem": "In 15:1–5 the dispute arises and the delegates travel to Jerusalem; the meeting itself begins at 15:6. 'This meeting' reads as if the meeting happens in this passage, which may confuse a reader on 15:1 or 15:2.",
-      "suggestion": "Word it for the passage, e.g. 'This passage leads into a meeting in Jerusalem, often called the Jerusalem Council, usually dated around AD 49.'"
-    },
-    {
-      "where": "18:1",
-      "problem": "The date of Claudius's expulsion of Jews from Rome is disputed. AD 49 rests on a late source, and some scholars argue for AD 41. The note states it as settled.",
-      "suggestion": "Hedge it, e.g. 'Emperor Claudius expelled Jews from Rome, usually dated around AD 49, though some place it earlier…'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

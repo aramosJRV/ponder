@@ -3,42 +3,20 @@
   "name": "Deuteronomy",
   "author": "Deuteronomy presents itself as the farewell speeches of Moses, the leader who brought Israel out of slavery in Egypt and received God's law at Mount Sinai. Raised in the Egyptian royal court, he spent forty years guiding the people through the wilderness as prophet, lawgiver and judge. Jewish and Christian tradition has long held Moses as its author, though the account of his death in the final chapter was added by someone else. Many scholars think the book drew on old traditions from Moses, but that its core was shaped centuries later by priests or scribes in Judah around the time of King Josiah (about 620 BC), with further additions during or after the exile in Babylon.",
   "audience": "The speeches are addressed to the Israelites camped on the plains of Moab, just east of the Jordan River, after forty years in the wilderness. Most were the children of those who had left Egypt, and they were about to cross into Canaan without Moses to lead them. If the book took its final shape later, it also spoke to the people of Judah in Josiah's day and to those later carried into exile in Babylon.",
-  "era": "On the traditional dating, this is somewhere between about 1400 and 1250 BC, when Canaan was a patchwork of small walled city-states whose local kings answered to Egypt. Israel had just passed the lands of Edom, Moab and Ammon and defeated two Amorite kings, Sihon and Og, east of the Jordan. The book is laid out much like ancient treaties between a great king and a smaller nation. Scholars who favour a later date point to the seventh century BC, when Assyria dominated the region and King Josiah carried out sweeping religious reforms around 622 BC.",
+  "era": "On the traditional dating, this is somewhere between about 1400 and 1200 BC, when Canaan was a patchwork of small walled city-states whose local kings answered to Egypt. Israel had just passed the lands of Edom, Moab and Ammon and defeated two Amorite kings, Sihon and Og, east of the Jordan. The book is laid out much like ancient treaties between a great king and a smaller nation. Scholars who favour a later date point to the seventh century BC, when Assyria dominated the region and King Josiah carried out sweeping religious reforms around 622 BC.",
   "notes": {
     "1:1": "The book dates these speeches to the eleventh month of the fortieth year after leaving Egypt, delivered in the land of Moab east of the Jordan.",
     "2:1": "The Edomites were descended from Esau, Jacob's brother, so Israel regarded them as relatives; Moab and Ammon traced their ancestry to Abraham's nephew Lot.",
     "3:1": "Bashan was a fertile highland region east of the Sea of Galilee, famous for its cattle and oak forests, covering today's Golan Heights and the lands east of it in southern Syria.",
     "5:1": "Horeb is Deuteronomy's usual name for Mount Sinai, where the law was given about forty years earlier.",
     "12:1": "In this passage Israel is told to bring its sacrifices to one place God would choose, rather than to the many local shrines. That place was later understood to be Jerusalem; many scholars link these laws to King Josiah closing local shrines around 622 BC.",
-    "16:1": "Passover, the Feast of Weeks (later called Pentecost) and the Feast of Shelters were Israel's three yearly pilgrim festivals, tied to spring and autumn harvests.",
+    "16:1": "This chapter sets out Israel's three yearly pilgrim festivals, tied to spring and autumn harvests: Passover, the Feast of Weeks (later called Pentecost) and the Feast of Shelters (also called Tabernacles or Booths).",
     "25:17": "The Amalekites were a desert people who attacked Israel soon after the escape from Egypt, picking off stragglers at the rear.",
     "27:1": "Mount Ebal and Mount Gerizim are twin peaks overlooking the town of Shechem in central Canaan, where Abraham had first camped in the land.",
-    "28:15": "Scholars have noticed that these curses closely resemble those in Assyrian treaties, including one made by King Esarhaddon in 672 BC.",
-    "31:24": "Here Moses finishes writing down the law, and the scroll is placed beside the ark of the covenant, the sacred gold-covered chest the Israelites carried with them.",
+    "28:15": "The curses in this chapter, especially later on, closely resemble those in Assyrian treaties, including one made by King Esarhaddon in 672 BC; other scholars point to similarities with older Hittite treaties as well.",
+    "31:24": "Here Moses finishes writing down the law, and the scroll is placed beside the ark of the covenant, the sacred gold-covered chest the Israelites carried with them. Later in this passage Moses begins a long song, recited before the whole assembly.",
     "33:1": "This farewell blessing on the tribes of Israel echoes the deathbed blessing Jacob spoke over his twelve sons in Genesis, though the tribe of Simeon is not named here.",
     "34:1": "Mount Nebo, in today's Jordan, overlooks the Jordan valley and Dead Sea; Jewish tradition credits Joshua with writing this account of Moses' death."
   },
-  "flags": [
-    {
-      "where": "era",
-      "problem": "The range 'between about 1400 and 1250 BC' slightly misstates the later of the two traditional datings. On that view the exodus is placed around 1260 BC, which puts the plains of Moab around 1220 BC, not 1250.",
-      "suggestion": "Widen the range, e.g. 'somewhere between about 1400 and 1200 BC'."
-    },
-    {
-      "where": "16:1",
-      "problem": "'Feast of Shelters' is unfamiliar to many churchgoers, who know this festival as Tabernacles or Booths. Also, this passage deals only with Passover; the other two festivals come later in the chapter, so a reader on these verses may be puzzled.",
-      "suggestion": "Write 'the Feast of Shelters (also called Tabernacles or Booths)'. Consider framing it as 'This chapter covers Israel's three yearly pilgrim festivals; this passage deals with Passover…'."
-    },
-    {
-      "where": "28:15",
-      "problem": "The close parallels with Esarhaddon's treaty are mainly in the curses later in the chapter (from about verse 20 on), not the short opening curses in verses 15–19. The note also presents the parallel without noting that other scholars compare Deuteronomy's layout to older, second-millennium treaties, which bears on the dating dispute.",
-      "suggestion": "Reword to 'The curses in this chapter, especially later on, closely resemble those in Assyrian treaties, including one made by King Esarhaddon in 672 BC; other scholars note similarities to older Hittite treaties as well.'"
-    },
-    {
-      "where": "31:24",
-      "problem": "The passage runs to 32:14, but the note describes only its first few verses. It says nothing about the Song of Moses, which takes up most of the range, so it reads as being only about the opening verses.",
-      "suggestion": "Add a clause covering the rest, e.g. '…the Israelites carried with them. Later in this passage Moses begins a long song, recited before the whole assembly.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

@@ -29,16 +29,9 @@
     "33:21": "Dated to about January 585 BC, when a refugee reached the exiles in Babylon with news that Jerusalem had fallen.",
     "35:1": "Mount Seir is the hill country of Edom, south of the Dead Sea; Edom was remembered for joining in Jerusalem's downfall.",
     "38:1": "Gog's identity is uncertain; some link the name to Gyges, a king of Lydia in modern Turkey, while others see a symbolic figure.",
-    "40:1": "Dated to about 573 BC, fourteen years after Jerusalem's fall and twenty-five years into the exile.",
+    "40:1": "Dated to about 573 BC, which the passage counts as the fourteenth year after Jerusalem's fall and the twenty-fifth year of the exile.",
     "40:5": "A cubit was a measure of about half a metre; the cubit used for measuring here was a longer one, a handbreadth more than usual.",
     "44:15": "Zadok was chief priest under King David and King Solomon; his descendants had led the priesthood in Jerusalem's temple."
   },
-  "flags": [
-    {
-      "where": "40:1",
-      "problem": "The note says 573 BC was fourteen years after Jerusalem's fall. The author, audience and era notes all date the fall to 586 BC, which would make 573 BC only thirteen years later. A careful reader may notice the arithmetic doesn't work. The underlying issue is that scholars genuinely disagree whether Jerusalem fell in 587 or 586 BC, and the other notes treat 586 as settled.",
-      "suggestion": "Avoid the conflicting arithmetic, e.g. 'Dated to about 573 BC, which the passage counts as the fourteenth year after Jerusalem's fall and the twenty-fifth year of the exile.' Alternatively, note the 587/586 BC uncertainty in the era section."
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

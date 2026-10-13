@@ -12,26 +12,14 @@
     "9:1": "This list of people resettling Jerusalem after the exile closely parallels a similar list in Nehemiah 11.",
     "10:1": "Saul's final battle on Mount Gilboa, in northern Israel, is usually dated around 1010 BC; the account parallels 1 Samuel 31.",
     "11:4": "David's capture of Jerusalem, then a Jebusite (Canaanite) stronghold, is usually dated around 1000 BC.",
-    "13:1": "The ark, Israel's sacred gold-covered chest, had stayed at Kiriath-jearim for many years, right through Saul's reign, ever since the Philistines returned it.",
+    "13:1": "The ark, Israel's sacred gold-covered chest, had stayed at Kiriath-jearim for many years, largely neglected in Saul's day, ever since the Philistines returned it.",
     "16:7": "This song of thanks shares its opening section with Psalm 105.",
     "16:23": "This part of the song matches Psalm 96, with closing lines found in Psalm 106.",
     "19:1": "The Ammonites lived east of the Jordan River, around the city of Rabbah, today's Amman in Jordan.",
     "21:18": "Ornan's threshing floor, where grain was separated from husks, became the site of Solomon's temple, which Chronicles elsewhere links with Mount Moriah.",
     "24:1": "These twenty-four priestly divisions were still serving in turns in New Testament times; Zechariah, father of John the Baptist, belonged to Abijah's division.",
     "25:1": "Asaph, Heman and Jeduthun are names also found in the headings of several psalms, linking those songs with these temple musician families.",
-    "29:26": "David's reign is usually dated around 1010–970 BC; the records of Samuel, Nathan and Gad mentioned here have not survived."
+    "29:26": "David's reign is usually dated around 1010–970 BC. The records of Samuel, Nathan and Gad mentioned here do not survive as separate books, though some scholars think they refer to material now in 1 and 2 Samuel."
   },
-  "flags": [
-    {
-      "where": "13:1",
-      "problem": "'Right through Saul's reign' is stronger than the sources allow. 1 Samuel gives twenty years at Kiriath-jearim, and one verse in 1 Samuel 14 (in the Hebrew text) places the ark with Saul's army. The timeline is uncertain, so the claim risks inventing a specific.",
-      "suggestion": "Soften it, e.g. 'had stayed at Kiriath-jearim for many years, largely neglected in Saul's day, ever since the Philistines returned it.'"
-    },
-    {
-      "where": "29:26",
-      "problem": "Saying the records of Samuel, Nathan and Gad 'have not survived' presents a debated point as settled. Many scholars think these titles may refer to material now found in the books of Samuel rather than to lost works.",
-      "suggestion": "Reword, e.g. 'the records of Samuel, Nathan and Gad mentioned here do not survive as separate books, though some scholars think they refer to material now in 1 and 2 Samuel.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

@@ -5,18 +5,11 @@
   "audience": "His first hearers were the people of Judah, the small southern kingdom centred on Jerusalem, at a time when a new and frightening empire was rising in the east. Most readers take the book's opening complaint to describe life in Judah itself: violence, unfair courts and powerful people exploiting the weak. Some scholars think it instead describes the cruelty of a foreign oppressor such as Assyria or Babylon.",
   "era": "Habakkuk is usually dated to the years around 600 BC, probably between about 609 and 597 BC. The old Assyrian empire had collapsed, its capital Nineveh falling in 612 BC, and Babylon was rising quickly, defeating Egypt at the battle of Carchemish in 605 BC. In Judah, good King Josiah had been killed in 609 BC, and his son Jehoiakim's rule is remembered as harsh and unjust. Within a few years Babylon would invade Judah, carrying off captives in 597 BC and destroying Jerusalem in 586 BC.",
   "notes": {
-    "1:5": "The 'Chaldeans' named in this passage are the Babylonians, named after the region of southern Mesopotamia, modern Iraq, from which their ruling family came.",
+    "1:5": "The Chaldeans named in this passage are the Babylonians. The name comes from the Chaldean peoples of southern Mesopotamia, modern Iraq, and became a common name for Babylon's rulers and armies.",
     "2:6": "This begins a series of five 'woe' sayings, shaped like a mocking song imagined on the lips of the nations a conqueror had plundered.",
     "3:1": "The heading calls this a prayer set to 'Shigionoth', a musical term whose exact meaning is now uncertain, suggesting it was sung in worship.",
     "3:3": "Teman and Mount Paran were places in the wild southern lands toward Edom and Sinai, the region older Israelite songs linked with God's coming.",
     "3:16": "At the end of this passage, the prayer closes with an instruction to the choir leader to accompany it on stringed instruments, like many headings in the Psalms."
   },
-  "flags": [
-    {
-      "where": "1:5",
-      "problem": "The claim that Babylon's ruling family came from the Chaldean region is uncertain. The background of Nabopolassar, founder of the dynasty, is debated. The wording also implies the people were named after the region, when the region (Chaldea) is usually said to take its name from the Chaldean tribes.",
-      "suggestion": "Avoid the uncertain dynastic detail, e.g.: \"The 'Chaldeans' named in this passage are the Babylonians. The name comes from the Chaldean peoples of southern Mesopotamia, modern Iraq, and became a common name for Babylon's rulers and armies.\""
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

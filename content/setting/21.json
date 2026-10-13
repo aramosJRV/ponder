@@ -1,26 +1,14 @@
 {
   "book_number": 21,
   "name": "Ecclesiastes",
-  "author": "The book names its writer as 'the Teacher' (in Hebrew, Qoheleth, someone who gathers people to teach them), a son of David and king in Jerusalem. Jewish and Christian tradition has long identified him as King Solomon, famed for his wisdom and wealth. Many scholars think it was written later by a wise teacher who spoke in Solomon's voice, partly because its Hebrew resembles later writings. Either way, the writer belonged to Israel's tradition of wise men who taught through sayings and reflections on life.",
+  "author": "The book names its writer as 'the Teacher' (in Hebrew, Qoheleth, a word linked to gathering, probably someone who gathers people to teach them), a son of David and king in Jerusalem. Jewish and Christian tradition has long identified him as King Solomon, famed for his wisdom and wealth. Many scholars think it was written later by a wise teacher who spoke in Solomon's voice, partly because its Hebrew resembles later writings. Either way, the writer belonged to Israel's tradition of wise men who taught through sayings and reflections on life.",
   "audience": "It was written for Israelites who wanted to think carefully about work, wealth, pleasure, injustice and death. If written by Solomon, its first readers lived in Israel's prosperous golden age. If written later, they were Jews in the small province of Judah, living under foreign rulers and dealing with taxes, officials and trade.",
   "era": "On the traditional view, the setting is Solomon's reign, around 970–930 BC, a time of peace, great building projects, international trade and royal splendour in Jerusalem. On the later view, it comes from around 450–250 BC, when Judah was ruled by the Persian Empire and then by Greek kings after Alexander the Great. Throughout this whole period, nations across the Middle East had their own traditions of wisdom writing about how to live well.",
   "notes": {
-    "2:1": "Later in this passage, the houses, vineyards, parks, pools, servants and singers the Teacher describes echo the famous wealth and building projects of Solomon's court recorded in 1 Kings.",
+    "2:1": "Later in this passage, the houses, vineyards, parks, pools, servants and singers the Teacher describes echo the famous wealth and building projects of Solomon's court described in the books of Kings and Chronicles.",
     "5:1": "'The house of God' is the temple in Jerusalem, where worshippers offered sacrifices and made vows, solemn promises to give God something.",
     "8:1": "This section reflects life at a royal court, where advisers and officials served at the king's pleasure and had to handle his commands carefully.",
     "12:9": "These closing verses speak about the Teacher rather than in his voice. Many think they were added by a student or editor who gathered his words; others think the author himself wrote them as a closing summary."
   },
-  "flags": [
-    {
-      "where": "2:1",
-      "problem": "1 Kings records Solomon's palaces and building works, his servants, and instruments for singers. It does not describe vineyards, parks or pools. Saying all of these are 'recorded in 1 Kings' overstates the source.",
-      "suggestion": "Loosen the attribution, e.g. 'echo the famous wealth and building projects of Solomon's court described in the Bible's books of Kings and Chronicles,' or drop the specific book reference."
-    },
-    {
-      "where": "author",
-      "problem": "The meaning of 'Qoheleth' is uncertain. It is usually linked to a word for gathering or assembling, but scholars debate whether it means one who gathers people, one who addresses an assembly, or one who collects sayings. The note presents one reading as settled.",
-      "suggestion": "Hedge it, e.g. 'Qoheleth, a word linked to gathering, probably someone who gathers people to teach them.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

@@ -5,7 +5,7 @@
   "audience": "The letter went to the church in Philippi, a city in Macedonia (northern Greece), which Paul had founded around AD 49–50; its first members included a businesswoman named Lydia and a local jailer. It was a small, mostly non-Jewish congregation that faced opposition from outsiders and had generously supported Paul, recently sending him a gift by a messenger named Epaphroditus.",
   "era": "The Roman Empire ruled the Mediterranean world, with Nero as emperor at the likely time of writing. Philippi was a Roman colony, resettled with retired army veterans after a famous battle there in 42 BC, and its people were proud of their Roman citizenship and customs. Honouring the emperor was part of civic life, and a group that worshipped another Lord could draw suspicion. Prisoners like Paul often relied on friends to bring food and support while they waited, sometimes for years, for their cases to be heard.",
   "notes": {
-    "1:1": "Paul greets the church's leaders, called overseers, and its deacons, helpers who served practical needs, an early glimpse of how local churches were organised.",
+    "1:1": "Paul greets all the believers in Philippi, together with the church's overseers (leaders) and deacons (helpers who served practical needs), an early glimpse of how local churches were organised.",
     "1:12": "Paul reports that his imprisonment had become known among the guard, possibly the emperor's elite Praetorian Guard, while other preachers, some rivals, spoke freely.",
     "1:19": "Paul writes while awaiting a court verdict that could mean either release or execution.",
     "1:27": "Later in this passage, many scholars think the lines in 2:6–11 come from an early Christian hymn or poem, perhaps already sung in churches before Paul wrote.",
@@ -16,12 +16,5 @@
     "4:10": "Paul thanks the Philippians for the gift Epaphroditus brought, recalling that they alone had supported him earlier, including while he was in Thessalonica.",
     "4:21": "Greetings come from believers in the emperor's household, meaning slaves and freed servants working in imperial service rather than the emperor's family."
   },
-  "flags": [
-    {
-      "where": "1:1",
-      "problem": "Saying Paul 'greets the church's leaders' misstates the greeting. The letter is addressed to all the believers in Philippi, with the overseers and deacons mentioned alongside them. A reader could think the letter was written mainly to the leaders.",
-      "suggestion": "Reword, e.g. 'Paul greets all the believers in Philippi, together with the church's overseers (leaders) and deacons (helpers who served practical needs), an early glimpse of how local churches were organised.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

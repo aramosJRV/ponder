@@ -5,23 +5,11 @@
   "audience": "The first readers were Israelites looking back on their nation's early, chaotic days in the land. The book's repeated remark that there was no king in Israel suggests they already lived under kings and could compare those times with their own. If the book reached its final form later, it would also have spoken to people facing defeat and exile.",
   "era": "The stories cover the generations between Joshua's conquest and the rise of King Saul. Most scholars place them around 1200 to 1050 BC, though a traditional reckoning based on numbers given in the Bible starts the period earlier, in the 1300s BC. Israel was a loose group of twelve tribes with no capital, no king and no shared army. Canaanite city-states still held strong positions, and neighbouring peoples such as the Moabites, Midianites and Ammonites raided Israelite land. Around this time the Philistines settled on the southern coast and became Israel's most dangerous rivals.",
   "notes": {
-    "1:21": "Jerusalem, home of a people called the Jebusites, was never securely held by Israel in this period; King David finally captured it generations later.",
+    "1:21": "Jerusalem, home of a people called the Jebusites, was never securely held by Israel in this period; King David finally captured it generations later. The passage then turns to the town of Bethel, once called Luz.",
     "5:1": "The Song of Deborah is widely regarded as one of the oldest pieces of Hebrew poetry in the Bible, likely composed close to the events it celebrates.",
     "13:1": "The Philistines, newcomers from the Aegean region (the seas around Greece), ruled five coastal cities: Gaza, Ashkelon, Ashdod, Gath and Ekron.",
     "18:11": "Near the end of this passage, the writer mentions priests serving at Dan until the land's captivity. This most likely refers to the Assyrian conquest of northern Israel in the 700s BC, when many people were carried off, so many readers take it as a clue that the book was completed after that time.",
-    "19:1": "Gibeah, a town in the tribe of Benjamin where much of this story unfolds, later became the hometown of Saul, Israel's first king."
+    "19:1": "Later in this passage the travellers stop for the night at Gibeah, a town in the tribe of Benjamin, which later became the hometown of Saul, Israel's first king."
   },
-  "flags": [
-    {
-      "where": "19:1",
-      "problem": "The note says much of the story in this passage unfolds at Gibeah. In 19:1–15 most of the action is in Bethlehem and on the road; the travellers only reach Gibeah in the last couple of verses. The wider story in chapters 19–21 is centred on Gibeah, but this passage is not.",
-      "suggestion": "Reword for the passage, e.g. 'Later in this passage the travellers stop for the night at Gibeah, a town in the tribe of Benjamin, which later became the hometown of Saul, Israel's first king.'"
-    },
-    {
-      "where": "1:21",
-      "problem": "The note covers 1:21–26 but speaks only of Jerusalem (verse 21). Most of the passage (verses 22–26) is about the capture of Bethel, formerly called Luz. A reader on those verses may be puzzled by a note only about Jerusalem.",
-      "suggestion": "Word it for the whole passage, e.g. 'In this passage, the tribe of Benjamin fails to drive the Jebusites out of Jerusalem, which Israel never securely held in this period; King David finally captured it generations later. The passage then turns to the town of Bethel, once called Luz.'"
-    }
-  ],
-  "unsure": []
+  "flags": []
 }

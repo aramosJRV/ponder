@@ -314,6 +314,8 @@ async function report(): Promise<void> {
     ``,
     `Read: every book below, every flagged item, and the random sample.`,
     ``,
+    // Hand-edit notes from whoever resolved the last flags, if any.
+    await Deno.readTextFile(`${DIR}/decisions.md`).catch(() => ""),
     `## For you to decide`,
     ``,
     `What the fix step left alone, then anything the re-check found.`,
