@@ -7,43 +7,37 @@
   "notes": {
     "1:1": "Shiloh, in the hill country north of Jerusalem, was then Israel's main place of worship, where Israel's sanctuary stood and the ark of the covenant was kept.",
     "4:2": "The ark of the covenant was a gold-covered wooden chest holding the stone tablets of the law, Israel's most sacred object, seen as the place of God's presence.",
-    "4:12": "Shiloh itself seems to have been destroyed around this time, since later prophets such as Jeremiah recalled its ruin as a warning.",
+    "4:12": "Shiloh itself seems to have been destroyed around this time, since the prophet Jeremiah, and also Psalm 78, later recalled its ruin as a warning.",
     "5:1": "Ashdod was one of the five chief Philistine cities, along with Gaza, Ashkelon, Gath and Ekron; Dagon was a god the Philistines worshipped.",
     "15:1": "The Amalekites were desert raiders of the far south, remembered as Israel's enemies since they attacked the Israelites on their journey out of Egypt.",
     "19:8": "The heading of Psalm 59 links that psalm to the night Saul sent men to watch David's house to kill him.",
     "21:10": "The headings of Psalms 34 and 56 link them to David's time in the Philistine city of Gath; Psalm 34's heading calls the king Abimelech, perhaps a royal title.",
     "22:6": "The heading of Psalm 52 links it to Doeg the Edomite reporting to Saul that David had visited the priests at Nob.",
     "23:19": "Psalm 54's heading links it to the men of Ziph betraying David; Psalms 57 and 142 are traditionally tied to his hiding in a cave, either at Adullam or at En Gedi.",
-    "25:1": "This Carmel was a small town in the hill country of Judah, south of Hebron, not the well-known Mount Carmel in the north."
+    "25:1": "The Carmel mentioned in this passage was a small town in the hill country of Judah, south of Hebron, not the well-known Mount Carmel in the north."
   },
   "flags": [
     {
-      "where": "4:12",
-      "problem": "'Later prophets such as Jeremiah' implies several prophets recalled Shiloh's ruin. Jeremiah is the only prophet who does (Jeremiah 7 and 26). The other main witness is Psalm 78, which is not a prophetic book.",
-      "suggestion": "Reword to something like 'since the prophet Jeremiah, and also Psalm 78, later recalled its ruin as a warning.'"
+      "where": "21:10",
+      "problem": "The note says Psalm 34's heading calls the king Abimelech but never says that this passage names him Achish. A reader comparing the two may not see why the different name matters or what the 'royal title' remark explains.",
+      "suggestion": "Name the king as this passage does, e.g. 'Psalm 34's heading calls the king Abimelech, though this passage names him Achish; Abimelech may have been a royal title.'"
     }
   ],
   "unsure": [
     {
       "where": "4:2",
-      "problem": "The ark is first mentioned at 4:3, when it is brought from Shiloh. Verse 4:2 is only the first defeat.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 4:3."
+      "problem": "The ark is first mentioned at 4:3, not 4:2, which records only the first defeat.",
+      "suggestion": "Not changed: the note covers 4:2–11, so the ark appearing at 4:3 is within its passage. The note is a general description of the ark and does not read as if it were about verse 4:2 alone, so no rewording is needed."
     },
     {
       "where": "19:8",
-      "problem": "Wrong reference. 19:8 is about war with the Philistines. Saul sends men to watch David's house at 19:11.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 19:11."
+      "problem": "19:8 is about war with the Philistines; Saul sends men to watch David's house at 19:11.",
+      "suggestion": "Not changed: the note covers 19:8–17, which includes 19:11. It describes 'the night Saul sent men' as an event, not as what verse 19:8 says, so it already fits its passage."
     },
     {
       "where": "22:6",
       "problem": "Doeg makes his report to Saul at 22:9, not 22:6.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 22:9."
-    },
-    {
-      "where": "25:1",
-      "problem": "Carmel is first mentioned at 25:2. Verse 25:1 records Samuel's death.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 25:2."
+      "suggestion": "Not changed: the note covers 22:6–19, which includes 22:9. It describes Doeg's report as an event in the passage and does not claim it happens at 22:6, so no rewording is needed."
     }
-  ],
-  "fixed": true
+  ]
 }

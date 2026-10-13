@@ -9,7 +9,7 @@
     "2:1": "The Edomites were descended from Esau, Jacob's brother, so Israel regarded them as relatives; Moab and Ammon traced their ancestry to Abraham's nephew Lot.",
     "3:1": "Bashan was a fertile highland region east of the Sea of Galilee, famous for its cattle and oak forests, covering today's Golan Heights and the lands east of it in southern Syria.",
     "5:1": "Horeb is Deuteronomy's usual name for Mount Sinai, where the law was given about forty years earlier.",
-    "12:1": "The single place of worship was later understood to be Jerusalem; many scholars link these laws to King Josiah closing local shrines around 622 BC.",
+    "12:1": "In this passage Israel is told to bring its sacrifices to one place God would choose, rather than to the many local shrines. That place was later understood to be Jerusalem; many scholars link these laws to King Josiah closing local shrines around 622 BC.",
     "16:1": "Passover, the Feast of Weeks (later called Pentecost) and the Feast of Shelters were Israel's three yearly pilgrim festivals, tied to spring and autumn harvests.",
     "25:17": "The Amalekites were a desert people who attacked Israel soon after the escape from Egypt, picking off stragglers at the rear.",
     "27:1": "Mount Ebal and Mount Gerizim are twin peaks overlooking the town of Shechem in central Canaan, where Abraham had first camped in the land.",
@@ -20,11 +20,25 @@
   },
   "flags": [
     {
-      "where": "12:1",
-      "problem": "The note opens with \"The single place of worship\" as if the reader already knows about it. Verse 12:1 is only a heading about the laws to follow; the instruction to worship at one chosen place comes a few verses later. A reader of 12:1 alone may not know what this refers to.",
-      "suggestion": "Introduce the idea first, e.g. \"This chapter tells Israel to bring its sacrifices to one place God would choose, rather than to local shrines. That place was later understood to be Jerusalem…\""
+      "where": "era",
+      "problem": "The range 'between about 1400 and 1250 BC' slightly misstates the later of the two traditional datings. On that view the exodus is placed around 1260 BC, which puts the plains of Moab around 1220 BC, not 1250.",
+      "suggestion": "Widen the range, e.g. 'somewhere between about 1400 and 1200 BC'."
+    },
+    {
+      "where": "16:1",
+      "problem": "'Feast of Shelters' is unfamiliar to many churchgoers, who know this festival as Tabernacles or Booths. Also, this passage deals only with Passover; the other two festivals come later in the chapter, so a reader on these verses may be puzzled.",
+      "suggestion": "Write 'the Feast of Shelters (also called Tabernacles or Booths)'. Consider framing it as 'This chapter covers Israel's three yearly pilgrim festivals; this passage deals with Passover…'."
+    },
+    {
+      "where": "28:15",
+      "problem": "The close parallels with Esarhaddon's treaty are mainly in the curses later in the chapter (from about verse 20 on), not the short opening curses in verses 15–19. The note also presents the parallel without noting that other scholars compare Deuteronomy's layout to older, second-millennium treaties, which bears on the dating dispute.",
+      "suggestion": "Reword to 'The curses in this chapter, especially later on, closely resemble those in Assyrian treaties, including one made by King Esarhaddon in 672 BC; other scholars note similarities to older Hittite treaties as well.'"
+    },
+    {
+      "where": "31:24",
+      "problem": "The passage runs to 32:14, but the note describes only its first few verses. It says nothing about the Song of Moses, which takes up most of the range, so it reads as being only about the opening verses.",
+      "suggestion": "Add a clause covering the rest, e.g. '…the Israelites carried with them. Later in this passage Moses begins a long song, recited before the whole assembly.'"
     }
   ],
-  "unsure": [],
-  "fixed": true
+  "unsure": []
 }

@@ -5,30 +5,24 @@
   "audience": "It went to several churches in Galatia, a region in the middle of modern Turkey. Scholars disagree on which: traditionally the Celtic Galatian people in the north, though many think it means towns in the south such as Iconium, Lystra and Derbe, which Paul visited on his first journey. These were mostly non-Jewish believers, and new teachers had arrived insisting they be circumcised and keep the Jewish law to belong fully to God's people.",
   "era": "Paul probably wrote around AD 48–55, while Rome ruled the whole Mediterranean world under Emperor Claudius and then, from AD 54, Nero. Some date it very early, before the church leaders met in Jerusalem to settle this question around AD 49; others date it a few years later. It was a time when the young church, which began among Jews, was working out whether non-Jewish believers had to follow Jewish customs.",
   "notes": {
-    "1:11": "Arabia here probably means the Nabataean kingdom, east of the Jordan River and south of Damascus, where Paul went soon after his conversion near Damascus.",
-    "1:18": "Paul describes visits to Jerusalem to meet Peter and James, Jesus' brother; scholars debate whether the second matches the Jerusalem meeting or an earlier famine-relief visit.",
+    "1:11": "Later in this passage Paul mentions going to Arabia soon after his conversion near Damascus. This probably means the Nabataean kingdom, east of the Jordan River and south of Damascus.",
+    "1:18": "In this passage Paul describes two visits to Jerusalem: a first to meet Peter and James, Jesus' brother, and a second some years later, told in chapter 2. Scholars debate whether that second visit matches the church leaders' meeting in Jerusalem around AD 49 or an earlier visit to bring famine relief.",
     "2:11": "Antioch in Syria was a large city with one of the first churches mixing Jews and non-Jews, where shared meals raised questions about Jewish food laws.",
     "4:12": "Paul recalls his first visit to the Galatians, when some illness or physical weakness led to his preaching among them.",
-    "6:11": "Paul usually dictated letters to a scribe; here he takes the pen himself to write the closing lines in large letters."
+    "6:11": "Paul often dictated his letters to a scribe; here he takes the pen himself to write the closing lines in large letters."
   },
   "flags": [
     {
-      "where": "1:18",
-      "problem": "This verse describes Paul's first visit to Jerusalem, but the note jumps to 'the second', a visit not mentioned until chapter 2. Readers on this verse won't know which visit is meant, and 'the Jerusalem meeting' is not explained in the note itself.",
-      "suggestion": "Make the sequence explicit. For example: 'Here Paul describes his first visit to Jerusalem, three years after his conversion, to meet Peter and James, Jesus' brother. He later describes a second visit (in chapter 2), and scholars debate whether that matches the church leaders' meeting in Jerusalem around AD 49 or an earlier visit to bring famine relief.'"
-    },
-    {
-      "where": "6:11",
-      "problem": "'Usually dictated' is stated a little too firmly. It is a widely held inference from a few letters, such as Romans, which names a scribe, and others where Paul adds a greeting in his own hand. It is not a documented habit across all his letters.",
-      "suggestion": "Soften to 'Paul often dictated his letters to a scribe' or 'Paul seems to have usually dictated his letters'."
+      "where": "author",
+      "problem": "The gloss 'a strict teacher of Jewish law' slightly misdefines 'Pharisee'. The Pharisees were a Jewish religious group known for careful keeping of the law, not a class of teachers, though some were teachers. Paul calls himself a Pharisee, not a teacher.",
+      "suggestion": "Reword the gloss, e.g. 'a Pharisee (a member of a Jewish group devoted to strictly keeping God's law)'."
     }
   ],
   "unsure": [
     {
-      "where": "1:11",
-      "problem": "This note is about Arabia, but Paul mentions going to Arabia in 1:17, not 1:11. Readers will see it on the wrong verse.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note's start reference to 1:17."
+      "where": "1:18",
+      "problem": "The flag said the second visit is not mentioned until chapter 2 and that 'the Jerusalem meeting' was unexplained; it suggested adding that the first visit was 'three years after his conversion'.",
+      "suggestion": "I clarified the two visits and explained the meeting, but the second visit falls within this note's passage (1:18–2:10), so it is in the right place. I left out 'three years after his conversion' because it is unclear whether Paul counts the three years from his conversion or from his return to Damascus. A person may wish to decide whether to add a time reference."
     }
-  ],
-  "fixed": true
+  ]
 }

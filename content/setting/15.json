@@ -6,7 +6,7 @@
   "era": "In 539 BC the Persian king Cyrus conquered Babylon, and he soon allowed exiled peoples, including the Jews, to return home. Judah became a small district in a Persian province, governed under a king who lived far away. The book covers eighty years or more: the first return and the rebuilding of the temple, completed around 515 BC, and then, after a long gap (nearly sixty years on the traditional dating), Ezra's own journey to Jerusalem.",
   "notes": {
     "1:1": "Cyrus issued this decree in his first year ruling Babylon, around 538 BC; a surviving clay cylinder records his policy of letting conquered peoples return and restore their shrines.",
-    "1:5": "Sheshbazzar, called the prince of Judah, led this first return; some identify him with Zerubbabel, while others think he was a different leader, perhaps a relative.",
+    "1:5": "Later in this passage, Sheshbazzar, called the prince of Judah, is named as the leader of this first return; some identify him with Zerubbabel, while others think he was a different leader, perhaps a relative.",
     "2:1": "This list of returning families appears again, with small differences, in Nehemiah chapter 7.",
     "3:1": "The seventh month fell in early autumn, the season of the Festival of Shelters; Zerubbabel descended from Judah's royal family, and Jeshua was the high priest.",
     "3:7": "The temple foundation was laid around 536 BC, with cedar from Lebanon supplied by the people of the coastal cities of Tyre and Sidon and brought by sea to the port of Joppa, as had been done for Solomon's temple.",
@@ -25,12 +25,5 @@
     "10:9": "The ninth month fell around late November and December, the cold rainy season in Jerusalem, so the crowd gathered in the open square before the temple during winter rains."
   },
   "flags": [],
-  "unsure": [
-    {
-      "where": "1:5",
-      "problem": "Sheshbazzar is not mentioned at 1:5. He first appears, and is called the prince of Judah, at 1:8. A reader of 1:5 will see family heads preparing to go but no Sheshbazzar.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 1:8."
-    }
-  ],
-  "fixed": true
+  "unsure": []
 }

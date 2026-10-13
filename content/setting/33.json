@@ -5,7 +5,7 @@
   "audience": "Micah's messages were first spoken to the people of Judah and its capital Jerusalem, and also to the northern kingdom of Israel and its capital Samaria. He spoke especially to rulers, judges, priests and prophets, and to wealthy landowners who were taking land and homes from poorer families.",
   "era": "Micah prophesied around 740–700 BC, during the reigns of Judah's kings Jotham, Ahaz and Hezekiah, at the same time as the prophet Isaiah. The Assyrian Empire, based in what is now northern Iraq, was conquering the region. Assyria destroyed Samaria in 722 BC, and in 701 BC its king Sennacherib invaded Judah, capturing many towns near Micah's home.",
   "notes": {
-    "1:2": "This opening calls all the nations to listen as witnesses, then turns to Samaria, capital of the northern kingdom, and to Jerusalem. Assyria besieged and destroyed Samaria in 722 BC.",
+    "1:2": "This opening calls all peoples to listen, with God himself as witness against them, then turns to Samaria, capital of the northern kingdom, and to Jerusalem. Assyria besieged and destroyed Samaria in 722 BC.",
     "1:8": "This lament names towns in Micah's home region, including Lachish and Moresheth, many with wordplay on their names; it is often linked to Assyria's advance through Judah.",
     "3:9": "About a century later, Jeremiah 26 records elders recalling this warning about Jerusalem, saying King Hezekiah responded by turning to God.",
     "4:1": "A nearly identical passage appears in Isaiah 2; scholars debate whether one prophet borrowed from the other or both drew on an older saying.",
@@ -13,21 +13,15 @@
     "5:2": "Bethlehem Ephrathah was the small hometown of King David's family; centuries later Matthew's Gospel recalls this passage in telling of Jesus' birth.",
     "6:1": "Written like a courtroom case, it recalls Moses, Aaron and Miriam, Balak king of Moab, and Israel's journey from Shittim across the Jordan to Gilgal.",
     "6:6": "Child sacrifice was practised among neighbouring peoples, and the Bible records that King Ahaz of Judah, in Micah's own day, sacrificed his son.",
-    "6:9": "Omri and Ahab were northern Israelite kings over a century earlier, remembered for Baal worship and for Ahab seizing Naboth's vineyard.",
+    "6:9": "Omri and Ahab were northern Israelite kings over a century earlier; Ahab was remembered for Baal worship and for seizing Naboth's vineyard.",
     "7:14": "Bashan and Gilead were rich grazing lands east of the Jordan, taken from Israel by Assyria around 733 BC."
   },
   "flags": [
     {
-      "where": "1:2",
-      "problem": "The opening does not call the nations to act as witnesses. It calls the peoples to listen and says the Lord himself will be witness against them. Casting the nations as witnesses misdescribes the passage.",
-      "suggestion": "Rephrase to: 'This opening calls all peoples to listen, with God as witness, then turns to Samaria, capital of the northern kingdom, and to Jerusalem.'"
-    },
-    {
-      "where": "6:9",
-      "problem": "The Bible ties Baal worship to Ahab (and Jezebel), not to Omri. Omri is condemned for doing evil in general, so 'remembered for Baal worship' slightly misstates the record for both kings.",
-      "suggestion": "Rephrase to: 'Omri and Ahab were northern Israelite kings over a century earlier; Ahab was remembered for Baal worship and for seizing Naboth's vineyard.'"
+      "where": "6:6",
+      "problem": "The note never says the passage mentions offering a child. A reader on 6:6 or 6:8, which do not mention it, gets an unexplained note about child sacrifice and may be confused.",
+      "suggestion": "Tie it to the passage, e.g. 'Later in this passage the speaker wonders about offering even a firstborn child. Child sacrifice was practised among neighbouring peoples, and the Bible records that King Ahaz of Judah, in Micah's own day, sacrificed his son.'"
     }
   ],
-  "unsure": [],
-  "fixed": true
+  "unsure": []
 }

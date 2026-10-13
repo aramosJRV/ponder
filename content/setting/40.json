@@ -6,10 +6,10 @@
   "era": "Jesus lived under Roman rule, with local kings from Herod's family and Roman governors such as Pontius Pilate in charge. The gospel was most likely written around AD 70–90, though some date it to the 60s. In AD 66 the Jews revolted against Rome, and in AD 70 Roman armies destroyed Jerusalem and its temple. Afterwards, Jewish life regrouped largely around the synagogue and the teaching of the Pharisees.",
   "notes": {
     "2:1": "Herod the Great, Rome's appointed king of Judea, died around 4 BC. The magi were likely learned star-watchers from the east, perhaps Persia or Babylon.",
-    "2:13": "After Herod died, his son Archelaus ruled Judea so harshly that Rome removed him in AD 6; Galilee, where Nazareth lay, went to another son, Herod Antipas.",
+    "2:13": "Egypt, a Roman province outside Herod's kingdom, had large Jewish communities, especially in the city of Alexandria. Later in this passage, after Herod died, his son Archelaus ruled Judea so harshly that Rome removed him in AD 6; Galilee, where Nazareth lay, went to another son, Herod Antipas.",
     "3:1": "John baptised in the Jordan River near the Judean desert, probably around AD 28. Pharisees were strict keepers of Jewish law; Sadducees were the wealthy priestly party.",
     "4:12": "Capernaum was a busy fishing town on the north shore of the Sea of Galilee, in the territory of Herod Antipas, who had arrested John.",
-    "4:23": "This teaching is traditionally placed on the hills above the northwest shore of the Sea of Galilee, near Capernaum.",
+    "4:23": "This passage moves from Jesus travelling Galilee's towns, teaching in their synagogues (local meeting houses where Jews gathered to pray and hear the Scriptures read), to the start of his teaching on a hillside. That hillside is traditionally placed above the northwest shore of the Sea of Galilee, near Capernaum.",
     "5:38": "Under Roman rule, soldiers could force civilians to carry their gear for a distance.",
     "8:5": "A centurion was an army officer over about a hundred men, probably a non-Jew serving Herod Antipas or Rome at Capernaum.",
     "8:28": "The region of the Gadarenes lay on the southeast side of the Sea of Galilee, a largely non-Jewish area, which is why pigs were kept there.",
@@ -19,7 +19,7 @@
     "15:21": "Tyre and Sidon were non-Jewish coastal cities in what is now Lebanon, northwest of Galilee.",
     "16:13": "Caesarea Philippi lay near the foot of Mount Hermon, by a spring with a shrine to the Greek god Pan; Herod's son Philip renamed it honouring Caesar.",
     "17:1": "The mountain is not named; it is traditionally identified as Mount Tabor in Galilee, though some suggest Mount Hermon.",
-    "17:22": "The temple tax was a yearly payment of two drachmas, about two days' wages, expected of Jewish men to support the Jerusalem temple.",
+    "17:22": "Later in this passage, collectors ask about the temple tax, a yearly payment of two drachmas, about two days' wages, expected of Jewish men to support the Jerusalem temple.",
     "19:1": "Jewish teachers of the day were divided on divorce: one school allowed it for many reasons, another, stricter school mainly for unfaithfulness.",
     "20:29": "Jericho was the last town on the pilgrim road before the steep climb of about fifteen miles up to Jerusalem.",
     "21:1": "Jerusalem was crowded with pilgrims arriving for Passover. Bethphage and the Mount of Olives lay just east of the city.",
@@ -37,22 +37,10 @@
   },
   "flags": [
     {
-      "where": "2:13",
-      "problem": "This verse is the warning to flee to Egypt, while Herod is still alive and hunting the child. A note that opens 'After Herod died' and describes Archelaus's rule reads out of order here and could confuse a reader. Archelaus and the move to Galilee belong to the family's return later in the chapter.",
-      "suggestion": "Re-anchor this note at 2:22, where Archelaus and the move to Galilee are mentioned. If 2:13 needs a note, describe Egypt as a nearby Roman province with large Jewish communities, a common place of refuge."
+      "where": "9:9",
+      "problem": "The note opens with \"This is the call…\", so it reads as if it covers only verse 9. The passage runs to verse 13 and includes the meal that follows, so a reader on verses 10–13 may be confused.",
+      "suggestion": "Word it for the whole passage, e.g. \"This passage opens with the call of the man tradition names as the gospel's author, sitting at a toll booth, probably in Capernaum.\""
     }
   ],
-  "unsure": [
-    {
-      "where": "4:23",
-      "problem": "Matthew 4:23 is about Jesus touring Galilee, teaching in synagogues and healing. The note is about where the Sermon on the Mount was given, which begins at 5:1. A reader at 4:23 won't know what 'this teaching' refers to.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 5:1, or rewrite it for 4:23 (for example, Galilee's towns and their synagogues)."
-    },
-    {
-      "where": "17:22",
-      "problem": "Verses 17:22–23 are Jesus predicting his death. The temple tax episode starts at 17:24, so a reader at 17:22 will find the note unrelated to the verse.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the temple tax note to 17:24."
-    }
-  ],
-  "fixed": true
+  "unsure": []
 }

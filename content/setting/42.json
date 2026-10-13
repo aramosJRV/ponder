@@ -46,11 +46,16 @@
   },
   "flags": [
     {
-      "where": "2:21",
-      "problem": "This note is pinned to 2:21, the verse about Jesus' circumcision and naming, but it describes the mother's purification offering, which begins at 2:22. A reader on 2:21 would see background for a different event.",
-      "suggestion": "Move the note to start at 2:22. Alternatively, keep it at 2:21 and open with a short clause on circumcision and naming on the eighth day before turning to the purification offering."
+      "where": "21:20",
+      "problem": "The note gives only the later-date view ('one reason many scholars date Luke's writing after that event'). Readers on these verses never see the traditional early-60s dating, so the dating debate is presented one-sidedly. It also implies a scholarly judgement about the passage's origin rather than simply describing its setting.",
+      "suggestion": "Either drop the dating clause and keep only the historical fact ('Roman armies besieged and destroyed Jerusalem in AD 70'), or balance it, e.g. '…in AD 70; scholars differ on whether Luke wrote before or after this event.'"
     }
   ],
-  "unsure": [],
-  "fixed": true
+  "unsure": [
+    {
+      "where": "2:21",
+      "problem": "The flag says the note is pinned to 2:21 (Jesus' circumcision and naming) but describes the purification offering, which begins at 2:22, so a reader on 2:21 sees background for a different event.",
+      "suggestion": "Not applied. The note covers the whole passage 2:21–40, and the purification offering falls within that passage, so the detail is in the right place. Notes cannot be moved, and the note does not read as if it were only about 2:21. Adding a clause on circumcision and naming on the eighth day would be optional enrichment, not a correction, so that is left for an editor to decide."
+    }
+  ]
 }

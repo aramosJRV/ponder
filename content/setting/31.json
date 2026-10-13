@@ -2,32 +2,25 @@
   "book_number": 31,
   "name": "Obadiah",
   "author": "The book is credited to Obadiah, whose name means 'servant of the Lord'. He was a prophet, someone who brought God's messages to the people, but nothing else is known about his family, hometown or life. Several other Old Testament figures share the name, though there is no good reason to link him with any of them.",
-  "audience": "The message is addressed to Edom, a neighbouring nation descended from Esau, Jacob's brother. Its real first hearers, however, were the people of Judah, many of them grieving or displaced after Jerusalem had been attacked and plundered while the Edomites looked on and joined in.",
+  "audience": "The message is addressed to Edom, a neighbouring nation descended from Esau, Jacob's brother. Its real first hearers, however, were the people of Judah, stung by the way the Edomites had looked on and joined in when Jerusalem was attacked and plundered, at a time whose exact date is still debated.",
   "era": "Most scholars connect the book to the Babylonian destruction of Jerusalem in 586 BC, when Edom sided with the invaders and took advantage of Judah's collapse. Some instead date it earlier, to around 845 BC, when Philistines and Arabs raided Jerusalem during King Jehoram's reign. Either way, Israel and Edom had a long history of bitter rivalry stretching back centuries, despite their shared ancestry.",
   "notes": {
     "1:1": "Edom's homeland lay in the rugged red-rock mountains south-east of the Dead Sea, where cliff-top settlements made its people feel safe from attack. This passage closely parallels Jeremiah 49.",
-    "1:5": "Teman was a region of Edom, and Edom was famous in the ancient world for its wise men and advisers.",
+    "1:5": "Later in this passage Teman is mentioned. It was a region of Edom, and Edom was famous in the ancient world for its wise men and advisers.",
     "1:10": "This section is widely linked to Jerusalem's fall in 586 BC; Psalm 137 also remembers Edomites cheering the city's destruction.",
-    "1:17": "The places named span Israel's old lands and beyond; Sepharad is uncertain but often identified with Sardis, a city in what is now western Turkey."
+    "1:17": "Later in this passage a list of places is named, spanning Israel's old lands and beyond. One of them, Sepharad, is uncertain but often identified with Sardis, a city in what is now western Turkey."
   },
   "flags": [
     {
-      "where": "audience",
-      "problem": "This describes the first hearers as grieving or displaced after Jerusalem's plunder, with Edom joining in. That presents the 586 BC setting as settled fact. The era section rightly says the date is disputed, and that some place the book around 845 BC, when the circumstances were quite different.",
-      "suggestion": "Make it conditional to match the era section, e.g. 'the people of Judah, stung by Edom's behaviour when Jerusalem was attacked and plundered (see The era for when this may have been)', and drop 'grieving or displaced'."
-    }
-  ],
-  "unsure": [
-    {
-      "where": "1:5",
-      "problem": "The note is attached to the wrong verse. Verse 5 is about thieves and grape-pickers. Edom's wise men are mentioned in verse 8 and Teman in verse 9.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 1:8 (or 1:9)."
+      "where": "author",
+      "problem": "'There is no good reason to link him with any of them' dismisses a long-standing traditional view. Ancient Jewish tradition (the Talmud) identified this Obadiah with the Obadiah who served King Ahab's household and hid prophets from Jezebel.",
+      "suggestion": "Present both views fairly, for example: 'Ancient Jewish tradition identified him with the Obadiah who served in King Ahab's household, though most scholars today think this is unlikely.'"
     },
     {
-      "where": "1:17",
-      "problem": "The note is attached to the wrong verse. Verse 17 is about Mount Zion. The list of places, including Sepharad, comes in verses 19–20.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 1:19 (or 1:20, where Sepharad appears)."
+      "where": "1:10",
+      "problem": "This note covers 1:10–14 and the next note starts at 1:17, so verses 15–16 have no setting note. Readers on those verses will see nothing.",
+      "suggestion": "Check whether the gap is intentional. If not, extend this note's range to 1:10–16 or add a short note for 1:15–16."
     }
   ],
-  "fixed": true
+  "unsure": []
 }

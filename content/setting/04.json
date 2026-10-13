@@ -18,19 +18,12 @@
     "28:26": "The Festival of Weeks came seven weeks after Passover at the wheat harvest; Greek-speaking Jews later called it Pentecost, meaning fiftieth.",
     "29:1": "This first-day-of-the-seventh-month gathering, marked by trumpet blasts, became the Jewish New Year, Rosh Hashanah, in later times.",
     "29:7": "The tenth day of the seventh month is the Day of Atonement, Yom Kippur, Israel's most solemn day of fasting and cleansing.",
-    "29:12": "This week-long feast is the Festival of Shelters, or Tabernacles, an autumn harvest celebration when Israelites later lived in temporary huts.",
+    "29:12": "This week-long feast is the Festival of Shelters, or Tabernacles, an autumn harvest celebration when Israelites lived in temporary huts for the week.",
     "31:1": "The Midianites were a desert people living around the edges of Israel's route; Moses' own wife Zipporah and father-in-law Jethro were Midianites.",
     "32:1": "Gilead and Jazer were rich grazing lands east of the Jordan River, in what is now Jordan, outside the land of Canaan proper.",
     "33:1": "This list of camping places traces the whole desert journey; many of the sites named can no longer be identified with certainty today.",
     "35:9": "The book of Joshua later names the six cities of refuge, three on each side of the Jordan River."
   },
-  "flags": [
-    {
-      "where": "29:12",
-      "problem": "'When Israelites later lived in temporary huts' suggests the huts were a later development. The Law itself, in Leviticus, already prescribes living in shelters during this feast.",
-      "suggestion": "Drop 'later': '...an autumn harvest celebration when Israelites lived in temporary huts for the week.'"
-    }
-  ],
-  "unsure": [],
-  "fixed": true
+  "flags": [],
+  "unsure": []
 }

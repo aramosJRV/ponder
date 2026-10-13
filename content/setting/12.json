@@ -19,7 +19,7 @@
     "17:24": "Jewish tradition traced the later Samaritans partly to these resettled peoples, though the Samaritans themselves trace their roots to the old northern tribes.",
     "18:13": "This invasion took place in 701 BC; Sennacherib's own annals describe the campaign and boast of shutting Hezekiah up in Jerusalem.",
     "18:17": "Lachish, Sennacherib's base, was besieged and taken; carved stone panels in his palace at Nineveh show the siege. Isaiah 36–37 tells this same story.",
-    "19:35": "Babylonian records confirm Sennacherib was murdered by a son in 681 BC, about twenty years after this campaign.",
+    "19:35": "Sennacherib's murder, told at the end of this passage, is also recorded in a Babylonian chronicle, which says he was killed by his son in a rebellion in 681 BC, about twenty years after this campaign.",
     "20:12": "Merodach-baladan was a Babylonian leader who repeatedly rebelled against Assyria, so his envoys may have been seeking allies.",
     "20:20": "Hezekiah's water tunnel still runs beneath Jerusalem; an inscription carved by its diggers was discovered inside it in 1880.",
     "21:1": "Assyrian records list Manasseh of Judah among the subject kings who sent tribute and building materials to Assyrian rulers.",
@@ -31,20 +31,20 @@
     "24:18": "Throughout Zedekiah's reign the prophet Jeremiah urged surrender to Babylon, as the book of Jeremiah records.",
     "25:8": "Jerusalem and its temple fell in 586 BC (some date it 587); the book of Lamentations traditionally mourns this destruction.",
     "25:22": "Jeremiah 40–43 tells this episode more fully, including the prophet himself being taken to Egypt afterwards.",
-    "25:27": "Evil-merodach (Amel-Marduk) began ruling around 562 BC. Babylonian ration tablets from years earlier in Jehoiachin's captivity already name him as king of Judah and record him and his sons receiving food allowances."
+    "25:27": "Evil-merodach (Amel-Marduk) began ruling around 562 BC. Years earlier, Babylonian ration tablets already listed Jehoiachin as king of Judah and recorded food allowances for him and his sons while he was a captive."
   },
   "flags": [
     {
-      "where": "25:27",
-      "problem": "The pronouns are ambiguous. Because Evil-merodach is the subject of the first sentence, 'name him as king of Judah' reads as if the tablets call Evil-merodach king of Judah. In fact they name Jehoiachin.",
-      "suggestion": "Name Jehoiachin explicitly, e.g. 'Babylonian ration tablets from years earlier in his captivity already list Jehoiachin as king of Judah and record food allowances for him and his sons.'"
-    },
-    {
-      "where": "19:35",
-      "problem": "This note is about Sennacherib's murder, which happens in 19:37, but it is attached to 19:35, the verse about the deaths in the Assyrian camp. A reader may think the Babylonian records bear on the event in 19:35. 'Confirm' also overstates the match: the chronicle mentions one son, while the passage names two.",
-      "suggestion": "Move the note to 19:37. Replace 'confirm' with something like 'A Babylonian chronicle records that Sennacherib was killed by his son in a rebellion in 681 BC, about twenty years after this campaign.'"
+      "where": "audience",
+      "problem": "States 586 BC as the settled date of Jerusalem's destruction. Scholars are divided between 587 and 586, and the 25:8 note already says so ('some date it 587'). A reader may notice the mismatch.",
+      "suggestion": "Word it as 'after the Babylonians destroyed Jerusalem in 586 BC (some date it 587)', or use 'around 586 BC', to match the 25:8 note."
     }
   ],
-  "unsure": [],
-  "fixed": true
+  "unsure": [
+    {
+      "where": "19:35",
+      "problem": "The note is about Sennacherib's murder in 19:37 but is attached to 19:35, and 'confirm' overstates the match since the chronicle mentions one son while the passage names two.",
+      "suggestion": "Notes cannot be moved, and 19:37 already falls within this note's passage (19:35–37), so I did not move it. Instead I reworded the note to say the murder comes at the end of this passage, and replaced 'confirm' with wording that reports what the chronicle says."
+    }
+  ]
 }

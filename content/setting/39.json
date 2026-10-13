@@ -6,34 +6,11 @@
   "era": "The book is usually dated to around 460 to 430 BC, when Judah was a minor province of the vast Persian Empire, ruled by a Persian-appointed governor. Jewish exiles had been allowed home from Babylon about a century earlier, and the temple had been rebuilt by around 516 BC. Worship had resumed, but enthusiasm had faded. The book is often placed close to the time of Ezra and Nehemiah, leaders who faced many of the same problems.",
   "notes": {
     "1:2": "Edom, the neighbouring nation descended from Esau, had gloated over Jerusalem's fall in 586 BC and was itself being overrun and pushed from its homeland around this time.",
-    "1:6": "The governor mentioned here was the official appointed by the Persian king to oversee Judah, which is one reason the book is placed in the Persian period.",
-    "2:10": "Marriages to women who worshipped other gods, and the breakup of marriages, were problems Ezra and Nehemiah also confronted in Jerusalem during this era.",
-    "3:6": "Nehemiah's records describe the same problem: people stopped bringing tithes, a tenth of their produce, so temple storerooms stood empty and Levites left to farm their fields.",
-    "4:4": "Horeb is another name for Mount Sinai; these closing lines end the collection known as the Twelve Prophets and, in most Christian Bibles, the whole Old Testament."
+    "1:6": "The governor mentioned later in this passage was the official appointed by the Persian king to oversee Judah, which is one reason the book is placed in the Persian period.",
+    "2:10": "Marriages to women who worshipped other gods were a problem Ezra and Nehemiah also confronted in Jerusalem during this era. This passage also speaks of men divorcing their wives.",
+    "3:6": "Later in this passage the people are faulted over tithes, a tenth of their produce. Nehemiah's records describe the same problem: people stopped bringing tithes, so temple storerooms stood empty and Levites left to farm their fields.",
+    "4:4": "Horeb is another name for Mount Sinai. These closing lines end the collection known as the Twelve Prophets (often called the Minor Prophets, Hosea to Malachi) and, in most Christian Bibles, the whole Old Testament."
   },
-  "flags": [
-    {
-      "where": "2:10",
-      "problem": "Ezra and Nehemiah did confront marriages to women who worshipped other gods, but they did not confront 'the breakup of marriages' as a problem. Ezra in fact required men to send away their foreign wives. Pairing divorce with them as a shared problem is misleading.",
-      "suggestion": "Limit the Ezra–Nehemiah link to mixed marriages, e.g. 'Marriages to women who worshipped other gods were a problem Ezra and Nehemiah also confronted in Jerusalem during this era; the book also speaks of men divorcing their wives.'"
-    },
-    {
-      "where": "4:4",
-      "problem": "'The collection known as the Twelve Prophets' may puzzle ordinary readers, who usually know these books as the 'Minor Prophets' and may not realise they were once grouped as a single collection.",
-      "suggestion": "Add a short gloss, e.g. 'the collection known as the Twelve Prophets (often called the Minor Prophets, Hosea to Malachi)'."
-    }
-  ],
-  "unsure": [
-    {
-      "where": "1:6",
-      "problem": "The note is anchored to the wrong verse. The governor is mentioned in 1:8, not 1:6. Verse 6 opens the rebuke of the priests, so a reader tapping 1:6 will not find a governor there.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 1:8."
-    },
-    {
-      "where": "3:6",
-      "problem": "The note is anchored to the wrong verse. The tithe complaint comes in 3:8–10. Verse 6 is about God not changing, so the note will look unconnected to the reader.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 3:8, or to 3:7 where the section begins."
-    }
-  ],
-  "fixed": true
+  "flags": [],
+  "unsure": []
 }

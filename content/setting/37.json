@@ -15,9 +15,8 @@
   "unsure": [
     {
       "where": "1:12",
-      "problem": "The date for resumed work (the twenty-fourth day of the sixth month) comes from 1:15, not 1:12. A reader looking at 1:12 will not find it there.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Start the note at 1:14 or 1:15, or say the date is given a few verses later at the end of the chapter."
+      "problem": "The date for resumed work (the twenty-fourth day of the sixth month) comes from 1:15, not 1:12, so a reader looking at 1:12 will not find it in that verse.",
+      "suggestion": "Not applied because the flag appears mistaken. The note covers the whole passage 1:12–15, so a date given in 1:15 is in the right place. The note also does not read as if it describes 1:12 alone; it simply states when the work resumed. Adding \"Later in this passage…\" is optional and is a judgement call for an editor."
     }
-  ],
-  "fixed": true
+  ]
 }

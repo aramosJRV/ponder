@@ -8,15 +8,8 @@
     "1:3": "This section speaks to believers who were still enduring persecution and hardship from people around them in Thessalonica.",
     "2:1": "Some in the church had been alarmed by claims, possibly even a letter falsely said to be from Paul, that the 'day of the Lord' (the long-awaited day when God would act decisively and Jesus would return) had already arrived.",
     "3:6": "This addresses some church members who had stopped working and were living off the generosity of others.",
-    "3:14": "Letters were usually dictated to a scribe; here the writer adds a closing greeting in his own handwriting as a mark that the letter is genuine."
+    "3:14": "Letters were usually dictated to a scribe; near the end of this passage the writer adds a closing greeting in his own handwriting as a mark that the letter is genuine."
   },
   "flags": [],
-  "unsure": [
-    {
-      "where": "3:14",
-      "problem": "Wrong verse. The closing greeting in Paul's own hand is at 3:17. Verse 3:14 is about how to treat someone who ignores the letter's instructions, so a reader tapping this note at 3:14 would find it does not match the verse.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 3:17. If a note is wanted at 3:14, write a separate setting note for that verse or drop it."
-    }
-  ],
-  "fixed": true
+  "unsure": []
 }

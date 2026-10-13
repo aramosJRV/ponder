@@ -8,27 +8,14 @@
     "1:17": "This lament is said to come from the Book of Jashar, an ancient collection of Israelite poems and songs that has since been lost.",
     "2:1": "Hebron, an old town in the hills of Judah, was linked with Abraham's family burial place and became David's first capital.",
     "2:12": "Archaeologists have uncovered a large rock-cut pool at el-Jib, north of Jerusalem, which is often linked with the pool of Gibeon.",
-    "5:6": "Jerusalem was held by the Jebusites, a Canaanite people; its hilltop site lay on the border between the northern and southern tribes, and neither had ever captured it.",
+    "5:6": "Jerusalem was held by the Jebusites, a Canaanite people. It sat on the border between the tribes of Benjamin and Judah, and the Israelites had never managed to drive the Jebusites out.",
     "6:1": "The ark was a gold-covered chest holding the covenant stone tablets; it had stayed at Kiriath Jearim, here called by its other name, Baale Judah, for years after the Philistines returned it.",
-    "8:15": "The Kerethites and Pelethites were probably foreign soldiers serving as the king's bodyguard, possibly with links to Crete and the Philistines.",
+    "8:15": "This passage lists David's chief officials. Among them, the Kerethites and Pelethites were probably foreign soldiers serving as the king's bodyguard, possibly with links to Crete and the Philistines.",
     "11:1": "Spring, after the winter rains, was the usual season for war; Rabbah, the Ammonite capital, lies under modern Amman in Jordan.",
     "21:1": "Many scholars see chapters 21–24 as a collection of extra stories, lists and poems, not in time order; the Gibeonites were Canaanites protected by an old treaty.",
     "22:1": "This song appears again, almost word for word, as Psalm 18, whose heading also links it to David's rescue from Saul and his enemies.",
     "24:18": "The later book of 2 Chronicles names this threshing floor, an open flat area for separating grain, as the place where Solomon built the temple."
   },
-  "flags": [
-    {
-      "where": "5:6",
-      "problem": "The claim that neither the northern nor southern tribes had ever captured Jerusalem is doubtful. Judges 1:8 says the men of Judah attacked Jerusalem and set it on fire. Judges 1:21 says only that Benjamin failed to drive the Jebusites out. Calling the site a border 'between the northern and southern tribes' is also loose: it lay on the boundary between Benjamin and Judah.",
-      "suggestion": "Reword to something like: 'Jerusalem was held by the Jebusites, a Canaanite people. It sat on the border between the tribes of Benjamin and Judah, and the Israelites had never managed to drive the Jebusites out.'"
-    }
-  ],
-  "unsure": [
-    {
-      "where": "8:15",
-      "problem": "Wrong reference. The Kerethites and Pelethites are mentioned in 8:18, not 8:15, which is about David reigning over all Israel.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to start at 8:18."
-    }
-  ],
-  "fixed": true
+  "flags": [],
+  "unsure": []
 }

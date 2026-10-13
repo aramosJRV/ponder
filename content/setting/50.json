@@ -8,32 +8,20 @@
     "1:1": "Paul greets the church's leaders, called overseers, and its deacons, helpers who served practical needs, an early glimpse of how local churches were organised.",
     "1:12": "Paul reports that his imprisonment had become known among the guard, possibly the emperor's elite Praetorian Guard, while other preachers, some rivals, spoke freely.",
     "1:19": "Paul writes while awaiting a court verdict that could mean either release or execution.",
-    "1:27": "Many scholars think the lines in 2:6–11 come from an early Christian hymn or poem, perhaps already sung in churches before Paul wrote.",
+    "1:27": "Later in this passage, many scholars think the lines in 2:6–11 come from an early Christian hymn or poem, perhaps already sung in churches before Paul wrote.",
     "2:19": "Timothy, from Lystra in modern Turkey, had travelled with Paul for years and helped found the Philippian church; Paul planned to send him there.",
     "2:25": "Epaphroditus was the Philippians' own messenger who brought their gift; he fell gravely ill, nearly died, and Paul was now sending him home.",
-    "3:1": "Paul warns against teachers who insisted non-Jewish believers be circumcised and keep Jewish law, and recounts his own background as a Pharisee from the tribe of Benjamin.",
-    "3:12": "In 4:2 Paul names two women, Euodia and Syntyche, who had worked alongside him in Philippi but were now in disagreement.",
+    "3:1": "Paul warns against opponents, most likely teachers who insisted non-Jewish believers be circumcised and keep Jewish law, and recounts his own background as a Pharisee from the tribe of Benjamin.",
+    "3:12": "Later in this passage, in 4:2, Paul names two women, Euodia and Syntyche, who had worked alongside him in Philippi but were now in disagreement.",
     "4:10": "Paul thanks the Philippians for the gift Epaphroditus brought, recalling that they alone had supported him earlier, including while he was in Thessalonica.",
     "4:21": "Greetings come from believers in the emperor's household, meaning slaves and freed servants working in imperial service rather than the emperor's family."
   },
   "flags": [
     {
-      "where": "3:1",
-      "problem": "The note states the opponents' identity as settled fact. Scholars disagree about who Paul is warning against here. The most common view is Christian teachers urging circumcision on non-Jewish believers, but some think he means non-Christian Jews or another group.",
-      "suggestion": "Hedge slightly, e.g. 'Paul warns against opponents, most likely teachers who insisted non-Jewish believers be circumcised and keep Jewish law, ...'"
+      "where": "1:1",
+      "problem": "Saying Paul 'greets the church's leaders' misstates the greeting. The letter is addressed to all the believers in Philippi, with the overseers and deacons mentioned alongside them. A reader could think the letter was written mainly to the leaders.",
+      "suggestion": "Reword, e.g. 'Paul greets all the believers in Philippi, together with the church's overseers (leaders) and deacons (helpers who served practical needs), an early glimpse of how local churches were organised.'"
     }
   ],
-  "unsure": [
-    {
-      "where": "1:27",
-      "problem": "This note is pinned to 1:27 but is entirely about 2:6–11. A reader tapping 1:27 will get a note about different verses.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 2:5 or 2:6, or replace it with setting information relevant to 1:27."
-    },
-    {
-      "where": "3:12",
-      "problem": "This note is pinned to 3:12 but describes Euodia and Syntyche in 4:2, which is confusing for a reader on 3:12.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 4:2, or write a note that fits 3:12."
-    }
-  ],
-  "fixed": true
+  "unsure": []
 }

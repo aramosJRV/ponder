@@ -5,8 +5,8 @@
   "audience": "His first hearers were the people of Judah, the small southern kingdom of the Israelites, and especially the residents of its capital, Jerusalem. Many had drifted into worshipping other gods alongside the God of Israel, and the leaders and wealthy classes were comfortable and confident.",
   "era": "The book places Zephaniah in the reign of King Josiah, who ruled Judah from about 640 to 609 BC, and many think he spoke before Josiah's major religious reforms, which reached their height around 622 BC. Before Josiah, King Manasseh's long reign had filled Judah with the worship of foreign gods. The great empire of Assyria, which had dominated the region for a century, was weakening, and Babylon was rising; Assyria's capital, Nineveh, fell in 612 BC.",
   "notes": {
-    "1:2": "The practices named here, Baal worship, bowing to the stars on rooftops and honouring the god Milcom, flourished under Manasseh and were later removed by Josiah.",
-    "1:7": "The Fish Gate, the Second Quarter and the Mortar were real districts of Jerusalem, the last probably a hollow where merchants and traders did business.",
+    "1:2": "The practices named in this passage, Baal worship, bowing to the stars on rooftops and honouring Milcom, the god of the neighbouring Ammonites, flourished under Manasseh and were later removed by Josiah.",
+    "1:7": "Later in this passage, the Fish Gate was one of Jerusalem's city gates, while the Second Quarter and the Mortar were districts of the city, the last probably a hollow where merchants and traders did business.",
     "2:4": "Gaza, Ashkelon, Ashdod and Ekron were Philistine cities on the coastal plain west of Judah, long-standing rivals of the Israelites.",
     "2:8": "Moab and Ammon were neighbouring peoples east of the Jordan River and the Dead Sea, with a long history of hostility toward Israel and Judah.",
     "2:12": "Cush was the land along the upper Nile, south of Egypt; Assyria's capital Nineveh was the greatest city of the day, destroyed by Babylonians and Medes in 612 BC.",
@@ -14,22 +14,21 @@
   },
   "flags": [
     {
-      "where": "2:12",
-      "problem": "Verse 2:12 mentions only Cush. Nineveh and Assyria first appear in 2:13, so a reader on 2:12 gets Nineveh details that aren't in the verse in front of them.",
-      "suggestion": "Keep only the Cush sentence at 2:12 and move the Nineveh sentence to a separate note at 2:13."
+      "where": "1:2",
+      "problem": "The note says all three practices, including honouring Milcom, flourished under Manasseh. Kings records Baal and star worship under Manasseh, but the shrine to Milcom (Molech) dates back to Solomon and is not specifically tied to Manasseh. Josiah's removal of all three is recorded, so that part is fine.",
+      "suggestion": "Reword so the Manasseh link isn't claimed for Milcom, e.g. \"…practices that had taken root in Judah, especially under Manasseh, and that Josiah later tore down.\""
+    },
+    {
+      "where": "3:14",
+      "problem": "\"The exile to Babylon\" is never explained in the author, audience or era notes, so an ordinary reader may not know what it refers to or when it happened.",
+      "suggestion": "Add a short explanation, e.g. \"…perhaps after the exile, when many people of Judah were taken to Babylon following Jerusalem's fall around 586 BC.\""
     }
   ],
   "unsure": [
     {
-      "where": "1:2",
-      "problem": "Wrong anchor. Baal worship, bowing to the stars on rooftops and Milcom are named in 1:4–5, not 1:2. Readers who open 1:2 will see a note that doesn't match their verse. Milcom is also not identified, and an ordinary reader won't know who he was.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 1:4 and identify Milcom briefly, e.g. 'the god Milcom, worshipped by the neighbouring Ammonites'."
-    },
-    {
-      "where": "1:7",
-      "problem": "Wrong anchor. The Fish Gate, the Second Quarter and the Mortar appear in 1:10–11, not 1:7. The note also calls all three 'districts', but the Fish Gate was a city gate.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 1:10 and reword, e.g. 'The Fish Gate was one of Jerusalem's city gates; the Second Quarter and the Mortar were districts of the city, the last probably a hollow where merchants and traders did business.'"
+      "where": "2:12",
+      "problem": "Verse 2:12 mentions only Cush; Nineveh and Assyria first appear in 2:13, so the flag suggests keeping only the Cush sentence at 2:12 and moving the Nineveh sentence to a separate note at 2:13.",
+      "suggestion": "Not applied. The note covers the whole passage 2:12–15, so the Nineveh detail in 2:13 is in the right place, and notes cannot be moved or split into a new note at another verse. The note already names both places without implying they are in the same verse, so it was left unchanged."
     }
-  ],
-  "fixed": true
+  ]
 }

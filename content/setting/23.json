@@ -2,7 +2,7 @@
   "book_number": 23,
   "name": "Isaiah",
   "author": "Isaiah son of Amoz was a prophet in Jerusalem, active for about forty years, from around 740 to 700 BC, under Kings Uzziah, Jotham, Ahaz and Hezekiah. He moved in royal circles and spoke directly to kings. He was married, and he gave his sons names that carried messages. Tradition credits him with the whole book; many scholars think chapters 40–66 were added by later prophets in his tradition, writing during and after the exile in Babylon.",
-  "audience": "The first hearers were the people of Jerusalem and Judah, including their kings and leaders. They lived under constant threat from Assyria and were tempted to trust in foreign alliances. Chapters 40–66 speak to a later situation: Jews exiled in Babylon after Jerusalem's destruction, and then those returning to rebuild a ruined city.",
+  "audience": "The first hearers were the people of Jerusalem and Judah, including their kings and leaders. They lived under constant threat from Assyria and were tempted to trust in foreign alliances. Many scholars think chapters 40–66 were written for a later situation: Jews exiled in Babylon after Jerusalem's destruction, and then those returning to rebuild a ruined city. Traditionally, these chapters are read as Isaiah's own words, looking ahead to that time.",
   "era": "Isaiah lived as Assyria, a ruthless empire based in what is now northern Iraq, pushed west. In 722 BC Assyria destroyed the northern kingdom of Israel, and in 701 BC its king Sennacherib overran Judah and besieged Jerusalem. Judah's kings wavered between submitting to Assyria and seeking help from Egypt. The later chapters look to Babylon's destruction of Jerusalem in 587 BC, the exile that followed, and the rise of Cyrus of Persia, who let the exiles return from 538 BC.",
   "notes": {
     "1:2": "Many scholars link this picture of a land overrun and Jerusalem left isolated to the Assyrian invasion of Judah in 701 BC.",
@@ -10,7 +10,7 @@
     "6:1": "This vision is set in the Jerusalem temple and dated to the year King Uzziah died, around 740 BC, after his long reign of about fifty years.",
     "7:1": "Around 735 BC the kings of Aram (Syria) and northern Israel marched on Jerusalem to force King Ahaz to join their alliance against Assyria.",
     "8:1": "This passage comes from the same crisis; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.",
-    "8:16": "Zebulun and Naphtali, in Galilee in the far north, were among the first areas Assyria took from Israel, around 732 BC.",
+    "8:16": "Later in this passage, Zebulun and Naphtali are named; these areas, in Galilee in the far north, were among the first Assyria took from Israel, around 732 BC.",
     "9:8": "This section is aimed at the northern kingdom of Israel, also called Ephraim, whose capital was Samaria, in the years before Assyria destroyed it in 722 BC.",
     "10:5": "The cities listed, such as Carchemish, Hamath, Arpad and Damascus, all fell to Assyria's armies during the decades of Isaiah's ministry.",
     "10:28": "The towns named trace an army's march from the north toward Jerusalem, ending at Nob, a hill within sight of the city.",
@@ -28,7 +28,7 @@
     "22:1": "The 'Valley of Vision' refers to Jerusalem; the strengthening of walls and storing of water are widely linked to Hezekiah's preparations for the Assyrian siege around 701 BC.",
     "22:15": "Shebna was the senior official in charge of the royal palace; an ancient tomb inscription found near Jerusalem may belong to him.",
     "23:1": "Tyre and Sidon were wealthy Phoenician port cities on the coast of modern Lebanon, famous for sea trade across the Mediterranean.",
-    "24:1": "Chapters 24–27 are often called the 'Isaiah Apocalypse'; scholars debate their date, with suggestions ranging from Isaiah's own time to well after the exile.",
+    "24:1": "Chapters 24–27 are often called the 'Isaiah Apocalypse' because, like the book of Revelation, they describe judgment and renewal on a worldwide scale; scholars debate their date, with suggestions ranging from Isaiah's own time to well after the exile.",
     "28:1": "This is addressed first to Samaria, capital of the northern kingdom, before its fall to Assyria in 722 BC.",
     "28:14": "The 'covenant with death' is widely thought to refer to the Jerusalem leaders' alliance with Egypt against Assyria during Hezekiah's reign.",
     "29:1": "'Ariel' is a poetic name for Jerusalem, the city where King David had set up his camp.",
@@ -51,22 +51,25 @@
   },
   "flags": [
     {
-      "where": "audience",
-      "problem": "States as settled fact that chapters 40–66 address exiles in Babylon and returnees. That is the scholarly view. In the traditional view, Isaiah himself wrote these chapters, foreseeing that time, so the original hearers were still his own people. The author section and the 40:1 note handle this fairly, but here it reads as fact.",
-      "suggestion": "Hedge it, e.g. 'Many scholars think chapters 40–66 were written for a later situation… ; traditionally they are read as Isaiah's words looking ahead to that time.'"
+      "where": "8:1",
+      "problem": "'The same crisis' points back to the 7:1 note, which a reader on this passage may never have seen. On its own the note doesn't say which crisis is meant.",
+      "suggestion": "Name the crisis: 'This passage comes from the time around 735 BC when Aram (Syria) and northern Israel threatened Jerusalem; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.'"
     },
     {
-      "where": "24:1",
-      "problem": "Calls the section the 'Isaiah Apocalypse' without explaining 'apocalypse'. Ordinary readers may take it to mean simply 'disaster' or 'the end of the world'.",
-      "suggestion": "Add a short gloss, e.g. 'often called the \"Isaiah Apocalypse\" because, like the book of Revelation, they describe judgment and renewal on a worldwide scale.'"
-    }
-  ],
-  "unsure": [
+      "where": "52:13",
+      "problem": "The note assumes the reader knows what the 'Servant Songs' are. That term is only explained in the 42:1 note, which the reader may not have seen.",
+      "suggestion": "Add a short explanation: 'This is the last and longest of four passages scholars call the \"Servant Songs\", which centre on a figure called the Lord's servant.'"
+    },
     {
-      "where": "8:16",
-      "problem": "Zebulun and Naphtali are not named until 9:1 in English Bibles (8:23 in Hebrew). A reader tapping 8:16 gets a note about places that do not appear for several verses, which may confuse.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 9:1, or give 8:16 a note about the passage it actually opens."
+      "where": "10:28",
+      "problem": "Nob's exact location is not known for certain. The note states as fact that it was a hill within sight of Jerusalem.",
+      "suggestion": "Soften it: '…ending at Nob, probably a hill within sight of the city.'"
+    },
+    {
+      "where": "41:1",
+      "problem": "'Whose armies were sweeping across the region' assumes the passage was written while Cyrus was campaigning. That is the scholarly later dating, not the traditional view that Isaiah foresaw it. The disputed setting reads as settled fact.",
+      "suggestion": "Reword without presuming the date: 'The conqueror stirred up from the east is widely identified as Cyrus, the Persian king who conquered much of the region in the 540s BC.'"
     }
   ],
-  "fixed": true
+  "unsure": []
 }

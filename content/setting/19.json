@@ -38,7 +38,7 @@
     "80:1": "Its mention of Ephraim, Benjamin and Manasseh leads many to link it to the northern kingdom's collapse under Assyria around 722 BC.",
     "81:1": "It was sung at a festival marked by trumpet blasts at the new and full moon, probably the autumn Feast of Tabernacles (Booths).",
     "85:1": "Many think it comes from soon after the exiles returned from Babylon, when the land was poor and rebuilding was slow.",
-    "88:1": "The heading credits it to Heman the Ezrahite, a famous wise man and temple musician in the days of David and Solomon.",
+    "88:1": "The heading credits it to the sons of Korah and to Heman the Ezrahite. A Heman led temple music in David's day, and a famous wise man of that name is mentioned in Solomon's time, though they may not be the same man.",
     "89:1": "Credited to Ethan the Ezrahite, it mourns a defeat of a king from David's line, perhaps Jerusalem's fall; it closes Book Three.",
     "90:1": "The heading credits it to Moses, making it traditionally the oldest psalm; it opens Book Four.",
     "92:1": "The heading calls it a song for the Sabbath day, the weekly day of rest, when it was sung at the temple.",
@@ -68,11 +68,10 @@
   },
   "flags": [
     {
-      "where": "88:1",
-      "problem": "This treats two possibly different Hemans as one person. Heman the wise man (1 Kings 4) and Heman the Levite temple singer (1 Chronicles) may not be the same man, and scholars dispute it. The note also leaves out that the same heading credits the psalm to the sons of Korah, so readers get an incomplete picture of the attribution.",
-      "suggestion": "Say the heading credits it to the sons of Korah and to Heman the Ezrahite. Then either describe Heman only as a temple musician of David's time, or add that he may or may not be the wise man of the same name mentioned in Solomon's day."
+      "where": "37:1",
+      "problem": "The note says as settled fact that the alphabet pattern helped people memorise the psalm. That is a common scholarly guess, not a known fact. Others see the pattern as artistry or as a way of expressing completeness.",
+      "suggestion": "Soften to: 'This is an acrostic: each pair of verses begins with the next letter of the Hebrew alphabet, a pattern that may have helped people memorise it.'"
     }
   ],
-  "unsure": [],
-  "fixed": true
+  "unsure": []
 }

@@ -10,15 +10,8 @@
     "4:13": "Travelling merchants were common in the Roman world, moving between towns to trade for a season or a year.",
     "5:1": "In this period wealthy landowners often hired day labourers for harvest, and workers depended on being paid each evening to feed their families.",
     "5:7": "Farmers in the land of Israel depended on autumn rains to soften the ground for planting and spring rains to ripen the crops.",
-    "5:13": "Elders were the recognised leaders of a local church. Olive oil was widely used as a medicine and in prayer."
+    "5:13": "Later in this passage James mentions the elders, the recognised leaders of a local church. In his day olive oil was a common medicine, and anointing someone with oil was also a familiar religious act."
   },
   "flags": [],
-  "unsure": [
-    {
-      "where": "5:13",
-      "problem": "'Olive oil was widely used ... in prayer' is vague and doubtful. Oil was used to anoint people, as a medicine and as a religious sign, but saying it was 'widely used in prayer' may confuse readers. Also, the elders and oil appear at 5:14, not 5:13.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Reword as: 'Olive oil was a common medicine, and anointing someone with oil was also a familiar religious act.' Consider moving the note to 5:14."
-    }
-  ],
-  "fixed": true
+  "unsure": []
 }

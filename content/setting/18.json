@@ -6,25 +6,35 @@
   "era": "The story is set in an older world much like the days of Abraham. Wealth is counted in flocks, herds and servants, Job offers sacrifices himself as head of his family, and there is no mention of Israel, its law or its temple. Job lives in the land of Uz, probably in Edom or northern Arabia, east of Israel. When the book was actually written is uncertain. The Jewish tradition that Moses wrote it places it very early; other proposals range from Solomon's time, around 950 BC, to after the exile, around 500–400 BC, with many scholars favouring the later period.",
   "notes": {
     "1:6": "The Hebrew calls this figure 'the satan,' meaning 'the accuser,' who appears among heavenly beings gathered before God like courtiers before a king.",
-    "1:13": "The Sabeans were raiders from southern Arabia, and the Chaldeans were raiders from Mesopotamia. Both groups were known in the ancient world for sweeping attacks on herds and camps.",
+    "1:13": "Later in this passage, the Sabeans and the Chaldeans appear. The Sabeans were raiders from southern Arabia, and the Chaldeans were raiders from Mesopotamia. Both groups were known in the ancient world for sweeping attacks on herds and camps.",
     "2:11": "Eliphaz came from Teman in Edom, a place famed for its wise men. Bildad was a Shuhite and Zophar a Naamathite, peoples probably living in the Arabian or Edomite region.",
     "28:1": "This poem describes ancient mining, with shafts cut into rock and tunnels lit in darkness, much like the copper and other mines worked in the lands south of the Dead Sea.",
     "32:1": "Elihu is a Buzite, a name linked to Buz, a relative of Abraham. Some scholars think his speeches were added later, since he is not mentioned elsewhere in the book.",
     "40:15": "Behemoth is often identified with the hippopotamus, though some see it as a legendary beast of great power from ancient Near Eastern imagination.",
-    "41:12": "Leviathan is often identified with the crocodile, but the name also belongs to a fearsome sea monster in ancient Canaanite poems known to Israel's neighbours."
+    "41:12": "This passage continues the long description of Leviathan, a creature often identified with the crocodile. The name also belongs to a fearsome sea monster in ancient Canaanite poems known to Israel's neighbours."
   },
-  "flags": [],
-  "unsure": [
+  "flags": [
     {
       "where": "1:13",
-      "problem": "The note is anchored at the wrong verse. Verse 13 describes Job's children feasting. The Sabeans first appear at 1:15 and the Chaldeans at 1:17.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to start at 1:15."
+      "problem": "The note says the Sabeans and Chaldeans were both 'known in the ancient world for sweeping attacks on herds and camps.' That is invented and doubtful for the Sabeans, who were known mainly as long-distance traders in incense and spices, not as raiders. Placing these Sabeans in southern Arabia is also not certain, since Sabean groups also lived in northern Arabia.",
+      "suggestion": "Drop the claim that both groups were known for raids. Say something like: 'The Sabeans came from Sheba in Arabia, a people better known as traders. The Chaldeans were tribes from Mesopotamia. Here both appear as raiding bands.'"
     },
     {
-      "where": "41:12",
-      "problem": "The note is anchored mid-passage. Leviathan is introduced at the start of the chapter, 41:1 in English Bibles (40:25 in Hebrew). Verse 12 is in the middle of the description.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to start at 41:1."
+      "where": "32:1",
+      "problem": "Whether Elihu's speeches are original is disputed, but the note gives only the view that they were added later. It does not give the other side: many scholars, and traditional readers, see them as part of the book as first written.",
+      "suggestion": "Add a short clause for the other view, e.g. 'Some scholars think his speeches were added later, since he is not mentioned elsewhere in the book; others see them as part of the original design.'"
+    },
+    {
+      "where": "40:15",
+      "problem": "This passage runs to 41:11, and from 41:1 the description turns to Leviathan. A reader on 41:1–11 would see a note about Behemoth only, which is confusing. The next note says the description of Leviathan 'continues', but nothing has introduced it.",
+      "suggestion": "Add a sentence for the whole passage, e.g. 'Later in this passage the description turns to Leviathan, often identified with the crocodile, a name also given to a sea monster in ancient Canaanite poems.'"
     }
   ],
-  "fixed": true
+  "unsure": [
+    {
+      "where": "41:12",
+      "problem": "Leviathan is introduced at 41:1 (40:25 in Hebrew), but 41:1–11 falls inside the 40:15–41:11 passage, whose note mentions only Behemoth. Readers on 41:1–11 will see nothing about Leviathan.",
+      "suggestion": "I reworded the 41:12 note so it reads as a continuation of the Leviathan description, as flagged. The 40:15 note was not flagged, so I left it unchanged. A person may want to add a brief mention of Leviathan to that note, since the creature first appears in its range."
+    }
+  ]
 }

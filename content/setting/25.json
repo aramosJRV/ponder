@@ -5,17 +5,10 @@
   "audience": "The first hearers were survivors of Jerusalem's destruction, mostly people left behind among the ruins of Judah, and perhaps also those carried off to Babylon. Their city lay burned, their temple was gone, and many had lost family to war, famine and exile. The poems were likely recited at gatherings where people mourned the ruined temple, and Jewish communities still read them each year on a fast day remembering its destruction.",
   "era": "Around 588 BC the armies of Nebuchadnezzar, king of the powerful Babylonian empire, surrounded Jerusalem after Judah rebelled. The siege brought terrible famine, and in 587 or 586 BC the walls were broken, the temple Solomon had built was burned, and King Zedekiah was captured. Many leading citizens were marched into exile in Babylon, while neighbouring peoples looked on and some joined in the plunder.",
   "notes": {
-    "3:1": "Unlike the other chapters, this poem speaks as one suffering man; tradition has often linked it to Jeremiah, who was beaten, imprisoned and lowered into a muddy cistern, an underground tank for storing rainwater.",
+    "3:1": "Much of this poem speaks in the voice of a single suffering man, rather than of Jerusalem pictured as a grieving woman; tradition has often linked it to Jeremiah, who was beaten, imprisoned and lowered into a muddy cistern, an underground tank for storing rainwater.",
     "4:1": "This chapter's mention of the king's capture is widely taken to refer to Zedekiah, caught fleeing Jerusalem, and its closing lines address Edom, a neighbour that welcomed Judah's fall.",
     "5:1": "This closing prayer, spoken by the whole community, is not an alphabet poem and seems to look back from a time when Judah was living under foreign rule."
   },
-  "flags": [
-    {
-      "where": "3:1",
-      "problem": "\"Unlike the other chapters, this poem speaks as one suffering man\" overstates the contrast. Other chapters also use first-person voices: Jerusalem speaks as a grieving woman in chapter 1, and the poet speaks of his own weeping in chapter 2. Chapter 3 also shifts to \"we\" partway through. Readers who notice the earlier \"I\" passages may be confused.",
-      "suggestion": "Soften it, e.g. \"Much of this poem speaks in the voice of a single suffering man, rather than of Jerusalem pictured as a grieving woman.\""
-    }
-  ],
-  "unsure": [],
-  "fixed": true
+  "flags": [],
+  "unsure": []
 }

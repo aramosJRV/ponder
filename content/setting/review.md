@@ -1,6 +1,6 @@
 # The setting — review
 
-66 of 66 books drafted · 758 passage notes · 66 flagged by the check.
+66 of 66 books drafted · 820 passage notes · 76 flagged by the check.
 
 Read: every book below, every flagged item, and the random sample.
 
@@ -8,454 +8,514 @@ Read: every book below, every flagged item, and the random sample.
 
 What the fix step left alone, then anything the re-check found.
 
-**Exodus — 21:1**
-> Chapters 20 to 23 are often called the "Book of the Covenant"; its laws resemble other ancient codes, such as Babylon's famous laws of King Hammurabi.
+**Exodus — 14:1**
+> The Hebrew name for this sea means "Sea of Reeds"; its exact location, whether a lake, marsh or arm of the Red Sea, is uncertain.
 
-- Problem: Scholars usually define the "Book of the Covenant" as Exodus 20:22 to 23:33. Saying "chapters 20 to 23" suggests it includes the Ten Commandments (20:1–17), which it is not normally taken to include. A reader could easily be misled.
-- Suggested: Say: "The laws from the end of chapter 20 through chapter 23 are often called the 'Book of the Covenant'; they resemble other ancient codes, such as Babylon's famous laws of King Hammurabi."
+- Problem: In 14:1–14 the text only says 'the sea'. The Hebrew name Yam Suph, which most English Bibles translate 'Red Sea', appears just before (13:18) and just after (15:4) this passage. A reader on these verses may not know which name 'this sea' refers to, or that 'Sea of Reeds' and 'Red Sea' are the same body of water.
+- Suggested: Name the sea and link it to the familiar English name, e.g. 'The sea Israel camps beside is called in Hebrew Yam Suph, usually translated "Red Sea" but literally "Sea of Reeds"; its exact location, whether a lake, marsh or arm of the Red Sea, is uncertain.'
 
-**Numbers — 29:12**
-> This week-long feast is the Festival of Shelters, or Tabernacles, an autumn harvest celebration when Israelites later lived in temporary huts.
+**Deuteronomy — era**
+> On the traditional dating, this is somewhere between about 1400 and 1250 BC, when Canaan was a patchwork of small walled city-states whose local kings answered to Egypt. Israel had just passed the lands of Edom, Moab and Ammon and defeated two Amorite kings, Sihon and Og, east of the Jordan. The book is laid out much like ancient treaties between a great king and a smaller nation. Scholars who favour a later date point to the seventh century BC, when Assyria dominated the region and King Josiah carried out sweeping religious reforms around 622 BC.
 
-- Problem: 'When Israelites later lived in temporary huts' suggests the huts were a later development. The Law itself, in Leviticus, already prescribes living in shelters during this feast.
-- Suggested: Drop 'later': '...an autumn harvest celebration when Israelites lived in temporary huts for the week.'
+- Problem: The range 'between about 1400 and 1250 BC' slightly misstates the later of the two traditional datings. On that view the exodus is placed around 1260 BC, which puts the plains of Moab around 1220 BC, not 1250.
+- Suggested: Widen the range, e.g. 'somewhere between about 1400 and 1200 BC'.
 
-**Deuteronomy — 12:1**
-> The single place of worship was later understood to be Jerusalem; many scholars link these laws to King Josiah closing local shrines around 622 BC.
+**Deuteronomy — 16:1**
+> Passover, the Feast of Weeks (later called Pentecost) and the Feast of Shelters were Israel's three yearly pilgrim festivals, tied to spring and autumn harvests.
 
-- Problem: The note opens with "The single place of worship" as if the reader already knows about it. Verse 12:1 is only a heading about the laws to follow; the instruction to worship at one chosen place comes a few verses later. A reader of 12:1 alone may not know what this refers to.
-- Suggested: Introduce the idea first, e.g. "This chapter tells Israel to bring its sacrifices to one place God would choose, rather than to local shrines. That place was later understood to be Jerusalem…"
+- Problem: 'Feast of Shelters' is unfamiliar to many churchgoers, who know this festival as Tabernacles or Booths. Also, this passage deals only with Passover; the other two festivals come later in the chapter, so a reader on these verses may be puzzled.
+- Suggested: Write 'the Feast of Shelters (also called Tabernacles or Booths)'. Consider framing it as 'This chapter covers Israel's three yearly pilgrim festivals; this passage deals with Passover…'.
 
-**Judges — author**
-> Judges does not name its author. Jewish tradition, recorded in the Talmud (an ancient collection of Jewish teaching), credits the prophet Samuel, the last of Israel's leaders before the kings. Many scholars instead think the book was gathered from older stories and songs and shaped by later Israelite writers, possibly during the time of the kings or even after the exile. Either way, the writer was someone deeply concerned with Israel's loyalty to God and its need for good leadership.
+**Deuteronomy — 28:15**
+> Scholars have noticed that these curses closely resemble those in Assyrian treaties, including one made by King Esarhaddon in 672 BC.
 
-- Problem: The closing sentence ('the writer was someone deeply concerned with Israel's loyalty to God and its need for good leadership') describes the book's themes and message. That moves from setting into interpretation.
-- Suggested: Cut the sentence, or limit it to a neutral statement about how the book was put together (for example, that it gathers stories of several leaders into a repeating pattern) without describing its concerns or message.
+- Problem: The close parallels with Esarhaddon's treaty are mainly in the curses later in the chapter (from about verse 20 on), not the short opening curses in verses 15–19. The note also presents the parallel without noting that other scholars compare Deuteronomy's layout to older, second-millennium treaties, which bears on the dating dispute.
+- Suggested: Reword to 'The curses in this chapter, especially later on, closely resemble those in Assyrian treaties, including one made by King Esarhaddon in 672 BC; other scholars note similarities to older Hittite treaties as well.'
+
+**Deuteronomy — 31:24**
+> Here Moses finishes writing down the law, and the scroll is placed beside the ark of the covenant, the sacred gold-covered chest the Israelites carried with them.
+
+- Problem: The passage runs to 32:14, but the note describes only its first few verses. It says nothing about the Song of Moses, which takes up most of the range, so it reads as being only about the opening verses.
+- Suggested: Add a clause covering the rest, e.g. '…the Israelites carried with them. Later in this passage Moses begins a long song, recited before the whole assembly.'
+
+**Joshua — 13:1**
+> The five Philistine cities named in this passage lay on the southern coastal plain; the Philistines were sea peoples who settled there around 1200 BC.
+
+- Problem: 'Sea peoples' is a scholarly label that an ordinary reader won't know, and the note doesn't explain it. The note also states the 1200 BC arrival as plain fact. That sits awkwardly with the traditional dating of around 1400 BC given in the era section, and the reader is not told how the two fit.
+- Suggested: Briefly explain the term, for example 'part of a wave of seafaring newcomers from the Aegean region, often called the Sea Peoples'. Soften the date: 'most historians think the main Philistine settlement came around 1200 BC.'
+
+**Judges — 19:1**
+> Gibeah, a town in the tribe of Benjamin where much of this story unfolds, later became the hometown of Saul, Israel's first king.
+
+- Problem: The note says much of the story in this passage unfolds at Gibeah. In 19:1–15 most of the action is in Bethlehem and on the road; the travellers only reach Gibeah in the last couple of verses. The wider story in chapters 19–21 is centred on Gibeah, but this passage is not.
+- Suggested: Reword for the passage, e.g. 'Later in this passage the travellers stop for the night at Gibeah, a town in the tribe of Benjamin, which later became the hometown of Saul, Israel's first king.'
 
 **Judges — 1:21**
-> Jerusalem, then held by a people called the Jebusites, stayed outside Israelite control until King David captured it generations later.
+> Jerusalem, home of a people called the Jebusites, was never securely held by Israel in this period; King David finally captured it generations later.
 
-- Problem: Saying Jerusalem 'stayed outside Israelite control' may confuse readers who read Judges 1:8 shortly before, which reports that the men of Judah attacked Jerusalem and set it on fire.
-- Suggested: Soften it to something like: 'Jerusalem, home of a people called the Jebusites, was never securely held by Israel in this period; King David finally captured it generations later.'
-
-**Ruth — era**
-> The story is set in the days of the judges, roughly 1200–1050 BC, before Israel had a king, when the tribes were loosely bound together and times were often unsettled. Life in a small town like Bethlehem revolved around farming, family land and the harvest seasons, and relatives were expected to look after kin who fell on hard times. Moab, Ruth's homeland, lay east of the Dead Sea and was a long-standing neighbour of Israel and sometimes its enemy. The book itself was written down later, perhaps near the end of this period or several generations on, depending on who wrote it.
-
-- Problem: The closing sentence says the book was written 'perhaps near the end of this period or several generations on'. That understates the later view the author section gives: writing after the exile in Babylon would be roughly six centuries after the judges, not 'several generations'. The two sections don't match.
-- Suggested: Change to something like 'perhaps near the end of this period, or some centuries later, depending on who wrote it.'
+- Problem: The note covers 1:21–26 but speaks only of Jerusalem (verse 21). Most of the passage (verses 22–26) is about the capture of Bethel, formerly called Luz. A reader on those verses may be puzzled by a note only about Jerusalem.
+- Suggested: Word it for the whole passage, e.g. 'In this passage, the tribe of Benjamin fails to drive the Jebusites out of Jerusalem, which Israel never securely held in this period; King David finally captured it generations later. The passage then turns to the town of Bethel, once called Luz.'
 
 **Ruth — 4:1**
 > The town gate was where elders met to settle legal business in public. A close male relative, called a kinsman-redeemer, had the right to buy back family land and protect the family name.
 
-- Problem: The term 'kinsman-redeemer' is first explained here, but the idea comes up earlier in the story, when Naomi calls Boaz one of the family's redeemers (2:20) and Ruth uses the word to him (3:9). A reader meeting it at those verses gets no explanation.
-- Suggested: Move the kinsman-redeemer explanation to a note at 2:20, or add a short one there, and keep the town-gate explanation at 4:1.
+- Problem: The term 'kinsman-redeemer' is first explained in the 4:1 note, but the idea appears earlier in the story (2:20 and 3:9), where readers get no explanation.
+- Suggested: Not applied. Notes cannot be moved to another verse, and neither earlier verse is covered by an existing note: the 2:1 note covers 2:1–13 and the 3:1 note covers 3:1–5. Adding the explanation to either would place it outside the verses where the word appears. Creating a new note at 2:20 or 3:9, or redrawing the passage ranges, is an editorial decision for a person to make. The 4:1 note is left unchanged.
 
-**1 Samuel — 4:12**
-> Shiloh itself seems to have been destroyed around this time, since later prophets such as Jeremiah recalled its ruin as a warning.
+**1 Samuel — 4:2**
+> The ark of the covenant was a gold-covered wooden chest holding the stone tablets of the law, Israel's most sacred object, seen as the place of God's presence.
 
-- Problem: 'Later prophets such as Jeremiah' implies several prophets recalled Shiloh's ruin. Jeremiah is the only prophet who does (Jeremiah 7 and 26). The other main witness is Psalm 78, which is not a prophetic book.
-- Suggested: Reword to something like 'since the prophet Jeremiah, and also Psalm 78, later recalled its ruin as a warning.'
+- Problem: The ark is first mentioned at 4:3, not 4:2, which records only the first defeat.
+- Suggested: Not changed: the note covers 4:2–11, so the ark appearing at 4:3 is within its passage. The note is a general description of the ark and does not read as if it were about verse 4:2 alone, so no rewording is needed.
 
-**2 Samuel — 5:6**
-> Jerusalem was held by the Jebusites, a Canaanite people; its hilltop site lay on the border between the northern and southern tribes, and neither had ever captured it.
+**1 Samuel — 19:8**
+> The heading of Psalm 59 links that psalm to the night Saul sent men to watch David's house to kill him.
 
-- Problem: The claim that neither the northern nor southern tribes had ever captured Jerusalem is doubtful. Judges 1:8 says the men of Judah attacked Jerusalem and set it on fire. Judges 1:21 says only that Benjamin failed to drive the Jebusites out. Calling the site a border 'between the northern and southern tribes' is also loose: it lay on the boundary between Benjamin and Judah.
-- Suggested: Reword to something like: 'Jerusalem was held by the Jebusites, a Canaanite people. It sat on the border between the tribes of Benjamin and Judah, and the Israelites had never managed to drive the Jebusites out.'
+- Problem: 19:8 is about war with the Philistines; Saul sends men to watch David's house at 19:11.
+- Suggested: Not changed: the note covers 19:8–17, which includes 19:11. It describes 'the night Saul sent men' as an event, not as what verse 19:8 says, so it already fits its passage.
 
-**2 Kings — 25:27**
-> Evil-merodach (Amel-Marduk) began ruling around 562 BC. Babylonian ration tablets from years earlier in Jehoiachin's captivity already name him as king of Judah and record him and his sons receiving food allowances.
+**1 Samuel — 22:6**
+> The heading of Psalm 52 links it to Doeg the Edomite reporting to Saul that David had visited the priests at Nob.
 
-- Problem: The pronouns are ambiguous. Because Evil-merodach is the subject of the first sentence, 'name him as king of Judah' reads as if the tablets call Evil-merodach king of Judah. In fact they name Jehoiachin.
-- Suggested: Name Jehoiachin explicitly, e.g. 'Babylonian ration tablets from years earlier in his captivity already list Jehoiachin as king of Judah and record food allowances for him and his sons.'
+- Problem: Doeg makes his report to Saul at 22:9, not 22:6.
+- Suggested: Not changed: the note covers 22:6–19, which includes 22:9. It describes Doeg's report as an event in the passage and does not claim it happens at 22:6, so no rewording is needed.
+
+**1 Samuel — 21:10**
+> The headings of Psalms 34 and 56 link them to David's time in the Philistine city of Gath; Psalm 34's heading calls the king Abimelech, perhaps a royal title.
+
+- Problem: The note says Psalm 34's heading calls the king Abimelech but never says that this passage names him Achish. A reader comparing the two may not see why the different name matters or what the 'royal title' remark explains.
+- Suggested: Name the king as this passage does, e.g. 'Psalm 34's heading calls the king Abimelech, though this passage names him Achish; Abimelech may have been a royal title.'
 
 **2 Kings — 19:35**
-> Babylonian records confirm Sennacherib was murdered by a son in 681 BC, about twenty years after this campaign.
+> Sennacherib's murder, told at the end of this passage, is also recorded in a Babylonian chronicle, which says he was killed by his son in a rebellion in 681 BC, about twenty years after this campaign.
 
-- Problem: This note is about Sennacherib's murder, which happens in 19:37, but it is attached to 19:35, the verse about the deaths in the Assyrian camp. A reader may think the Babylonian records bear on the event in 19:35. 'Confirm' also overstates the match: the chronicle mentions one son, while the passage names two.
-- Suggested: Move the note to 19:37. Replace 'confirm' with something like 'A Babylonian chronicle records that Sennacherib was killed by his son in a rebellion in 681 BC, about twenty years after this campaign.'
+- Problem: The note is about Sennacherib's murder in 19:37 but is attached to 19:35, and 'confirm' overstates the match since the chronicle mentions one son while the passage names two.
+- Suggested: Notes cannot be moved, and 19:37 already falls within this note's passage (19:35–37), so I did not move it. Instead I reworded the note to say the murder comes at the end of this passage, and replaced 'confirm' with wording that reports what the chronicle says.
 
-**1 Chronicles — 5:23**
-> Tiglath-pileser III, also called Pul, was the Assyrian king who carried off the tribes east of the Jordan around the 730s BC.
+**2 Kings — audience**
+> The finished book was first read by Jewish people after the Babylonians destroyed Jerusalem in 586 BC, many of them living as exiles in Babylon and others among the ruins at home. With no king, no temple and no land of their own, they were asking how their nation had come to fall.
 
-- Problem: The note is keyed to the wrong verse. 5:23 describes the half-tribe of Manasseh settling east of the Jordan. Pul and Tiglath-pileser carrying off the eastern tribes is mentioned at 5:26 (with an earlier reference at 5:6). A reader opening 5:23 would find no Assyrian king there.
-- Suggested: Move the note to 5:26, or rewrite it so it fits 5:23.
+- Problem: States 586 BC as the settled date of Jerusalem's destruction. Scholars are divided between 587 and 586, and the 25:8 note already says so ('some date it 587'). A reader may notice the mismatch.
+- Suggested: Word it as 'after the Babylonians destroyed Jerusalem in 586 BC (some date it 587)', or use 'around 586 BC', to match the 25:8 note.
 
-**Nehemiah — audience**
-> It was first read by the small Jewish community in and around Jerusalem, descendants of exiles who had come back from Babylon, probably in the generation or so after Nehemiah. They were poor, few in number and surrounded by unfriendly neighbours, and their city's walls had been rebuilt within living memory.
+**1 Chronicles — 13:1**
+> The ark, Israel's sacred gold-covered chest, had stayed at Kiriath-jearim for many years, right through Saul's reign, ever since the Philistines returned it.
 
-- Problem: The date of the book's final form is disputed. 'Probably in the generation or so after Nehemiah' gives only one view; many scholars place the final editing later, around 400 BC or into the Greek period. The claim that the walls had been rebuilt 'within living memory' depends on the earlier date but is stated as fact.
-- Suggested: Add a short clause such as 'traditionally soon after Nehemiah's time, though many scholars think it reached its final form somewhat later'. Soften or drop 'within living memory'.
+- Problem: 'Right through Saul's reign' is stronger than the sources allow. 1 Samuel gives twenty years at Kiriath-jearim, and one verse in 1 Samuel 14 (in the Hebrew text) places the ark with Saul's army. The timeline is uncertain, so the claim risks inventing a specific.
+- Suggested: Soften it, e.g. 'had stayed at Kiriath-jearim for many years, largely neglected in Saul's day, ever since the Philistines returned it.'
 
-**Nehemiah — 8:1**
-> The seventh month (September–October) held Israel's major autumn festivals; scholars debate whether Ezra arrived in Jerusalem before Nehemiah, as traditionally held, or after.
+**1 Chronicles — 29:26**
+> David's reign is usually dated around 1010–970 BC; the records of Samuel, Nathan and Gad mentioned here have not survived.
 
-- Problem: Ezra appears suddenly in a scholarly debate without being introduced. The author section mentions him only as a possible compiler, so readers may not know he was a priest and scribe who taught the law. Pairing the festival month with the dating debate in one sentence also makes the note hard to follow.
-- Suggested: Briefly identify Ezra, for example 'Ezra, a priest and teacher of the law'. Consider splitting the festival detail and the Ezra–Nehemiah order debate into separate sentences.
+- Problem: Saying the records of Samuel, Nathan and Gad 'have not survived' presents a debated point as settled. Many scholars think these titles may refer to material now found in the books of Samuel rather than to lost works.
+- Suggested: Reword, e.g. 'the records of Samuel, Nathan and Gad mentioned here do not survive as separate books, though some scholars think they refer to material now in 1 and 2 Samuel.'
 
-**Esther — audience**
-> The first readers were Jews scattered across the Persian Empire, far from Jerusalem. They were a small minority living under foreign rulers, often exposed to suspicion and danger. The book also gave them the background to the yearly feast of Purim, which they kept together as a community.
+**2 Chronicles — 30:1**
+> Assyria had conquered the northern kingdom of Israel around 722 BC, so Hezekiah's messengers were inviting the people left behind in its land.
 
-- Problem: This states as settled that the first readers lived in the Persian Empire. The author entry allows the book may have been written 'a little after' the Persian period, when Persia no longer ruled.
-- Suggested: Hedge it, e.g. 'The first readers were Jews scattered far from Jerusalem, in the lands once ruled by Persia,' or note that they lived under Persian or later Greek rulers.
+- Problem: The note says it is settled that Assyria had already conquered the northern kingdom when Hezekiah sent his messengers. Chronicles places this Passover in Hezekiah's first year, and scholars disagree about when he became king (around 727 or around 715 BC). So it is uncertain whether the invitation came before or after Samaria fell around 722 BC. Assyria had also deported many northerners earlier, around 732 BC.
+- Suggested: Soften the timing, e.g. 'Assyria had been carrying off people from the northern kingdom of Israel and conquered it completely around 722 BC, so Hezekiah's messengers were inviting those left behind in its land.'
 
-**Esther — 1:1**
-> The great banquet falls in the king's third year, around 483 BC, a few years before Xerxes launched his invasion of Greece in 480 BC.
+**Job — 41:12**
+> This passage continues the long description of Leviathan, a creature often identified with the crocodile. The name also belongs to a fearsome sea monster in ancient Canaanite poems known to Israel's neighbours.
 
-- Problem: The banquet and 'the third year' come in 1:3, not 1:1. Someone reading 1:1 will see a note about a banquet their verse doesn't mention.
-- Suggested: Move the note to 1:3, or reword it to fit 1:1, e.g. 'The story opens in the reign of Xerxes; the great banquet a couple of verses later falls in his third year...'
+- Problem: Leviathan is introduced at 41:1 (40:25 in Hebrew), but 41:1–11 falls inside the 40:15–41:11 passage, whose note mentions only Behemoth. Readers on 41:1–11 will see nothing about Leviathan.
+- Suggested: I reworded the 41:12 note so it reads as a continuation of the Leviathan description, as flagged. The 40:15 note was not flagged, so I left it unchanged. A person may want to add a brief mention of Leviathan to that note, since the creature first appears in its range.
 
-**Psalms — 88:1**
-> The heading credits it to Heman the Ezrahite, a famous wise man and temple musician in the days of David and Solomon.
+**Job — 1:13**
+> Later in this passage, the Sabeans and the Chaldeans appear. The Sabeans were raiders from southern Arabia, and the Chaldeans were raiders from Mesopotamia. Both groups were known in the ancient world for sweeping attacks on herds and camps.
 
-- Problem: This treats two possibly different Hemans as one person. Heman the wise man (1 Kings 4) and Heman the Levite temple singer (1 Chronicles) may not be the same man, and scholars dispute it. The note also leaves out that the same heading credits the psalm to the sons of Korah, so readers get an incomplete picture of the attribution.
-- Suggested: Say the heading credits it to the sons of Korah and to Heman the Ezrahite. Then either describe Heman only as a temple musician of David's time, or add that he may or may not be the wise man of the same name mentioned in Solomon's day.
+- Problem: The note says the Sabeans and Chaldeans were both 'known in the ancient world for sweeping attacks on herds and camps.' That is invented and doubtful for the Sabeans, who were known mainly as long-distance traders in incense and spices, not as raiders. Placing these Sabeans in southern Arabia is also not certain, since Sabean groups also lived in northern Arabia.
+- Suggested: Drop the claim that both groups were known for raids. Say something like: 'The Sabeans came from Sheba in Arabia, a people better known as traders. The Chaldeans were tribes from Mesopotamia. Here both appear as raiding bands.'
 
-**Proverbs — 10:1**
-> A fresh heading, 'the proverbs of Solomon,' starts the book's main collection of short two-line sayings, running through to the middle of chapter 22.
+**Job — 32:1**
+> Elihu is a Buzite, a name linked to Buz, a relative of Abraham. Some scholars think his speeches were added later, since he is not mentioned elsewhere in the book.
 
-- Problem: The note puts a phrase from the verse in quotation marks ('the proverbs of Solomon'), which is a direct quotation of scripture. 22:1 ('the words of the wise') and 24:1 ('the wise') do the same.
-- Suggested: Paraphrase without quotation marks, e.g. 'A fresh heading credits what follows to Solomon…' and 'a new collection credited to unnamed wise teachers begins.'
+- Problem: Whether Elihu's speeches are original is disputed, but the note gives only the view that they were added later. It does not give the other side: many scholars, and traditional readers, see them as part of the book as first written.
+- Suggested: Add a short clause for the other view, e.g. 'Some scholars think his speeches were added later, since he is not mentioned elsewhere in the book; others see them as part of the original design.'
 
-**Proverbs — 30:1**
-> These are credited to Agur son of Jakeh, otherwise unknown; some think he came from Massa, a people in northern Arabia, while other translations read the word as 'oracle.'
+**Job — 40:15**
+> Behemoth is often identified with the hippopotamus, though some see it as a legendary beast of great power from ancient Near Eastern imagination.
 
-- Problem: 'Other translations read the word as oracle' doesn't say which word. An ordinary reader won't know that one Hebrew word (massa) can be read either as a place name or as 'oracle'.
-- Suggested: Make the link explicit, e.g. 'the same Hebrew word, massa, can be read as the name of a people in northern Arabia or as "oracle" (a solemn message), so translations differ.'
+- Problem: This passage runs to 41:11, and from 41:1 the description turns to Leviathan. A reader on 41:1–11 would see a note about Behemoth only, which is confusing. The next note says the description of Leviathan 'continues', but nothing has introduced it.
+- Suggested: Add a sentence for the whole passage, e.g. 'Later in this passage the description turns to Leviathan, often identified with the crocodile, a name also given to a sea monster in ancient Canaanite poems.'
 
-**Ecclesiastes — 12:9**
-> These closing verses speak about the Teacher rather than in his voice; many think they were added by a student or editor who gathered his words.
+**Psalms — 37:1**
+> This is an acrostic: each pair of verses begins with the next letter of the Hebrew alphabet, a pattern that helped people memorise it.
 
-- Problem: The note gives only the editor view ('many think... added by a student or editor'). It does not give the traditional or alternative view that the Teacher, or the book's author, wrote the closing words himself, speaking of himself in the third person. The guidelines ask for both views on disputed authorship.
-- Suggested: Add a short balancing clause, e.g. 'many think they were added by a student or editor who gathered his words; others think the author himself wrote them as a closing summary.'
+- Problem: The note says as settled fact that the alphabet pattern helped people memorise the psalm. That is a common scholarly guess, not a known fact. Others see the pattern as artistry or as a way of expressing completeness.
+- Suggested: Soften to: 'This is an acrostic: each pair of verses begins with the next letter of the Hebrew alphabet, a pattern that may have helped people memorise it.'
 
-**Song of Solomon — audience**
-> Its first hearers were ordinary Israelites who knew vineyards, flocks, gardens and wild hill country, the world the poems are full of. The songs may have been sung at weddings and celebrations, and later Jewish communities read the whole book aloud each year during Passover, the spring festival remembering the escape from Egypt.
+**Proverbs — 22:1**
+> From verse 17 a new collection, 'the words of the wise,' begins; scholars widely note close parallels with an ancient Egyptian teaching text called the Instruction of Amenemope.
 
-- Problem: It states as settled fact that the first hearers were 'ordinary Israelites'. Who first heard these poems is unknown and depends on the disputed date and authorship. Some scholars picture a royal court or educated circle rather than common folk.
-- Suggested: Hedge it, e.g. 'Its first hearers, whoever they were, knew vineyards, flocks, gardens and wild hill country…', or say it may have been enjoyed both at court and among ordinary people.
+- Problem: 'the words of the wise' is a direct quotation of the heading in 22:17, which breaks the no-quoting rule.
+- Suggested: Paraphrase without quotation marks, e.g. 'From verse 17 a new collection begins, credited to unnamed wise teachers; scholars widely note close parallels with an ancient Egyptian teaching text called the Instruction of Amenemope.'
 
-**Song of Solomon — era**
-> If written in Solomon's day, it comes from Israel's golden age: peace, wealth, the building of the first temple in Jerusalem, and trade with Egypt, Phoenicia and Arabia. Love poetry was well known across the ancient Middle East, and Egyptian love songs from a few centuries earlier use similar images. The poems name real places across the land, from Jerusalem and En-gedi to Lebanon, Gilead and Carmel.
+**Proverbs — 24:1**
+> The 'words of the wise' continue here, and verse 23 opens a short extra collection also credited simply to 'the wise.'
 
-- Problem: 'Egyptian love songs from a few centuries earlier' only holds if the book dates from Solomon's day. The surviving Egyptian love songs date from roughly 1300–1100 BC. If the poems were written or gathered later, as many scholars think, the gap is much longer. Because this sentence sits outside the 'If written in Solomon's day' clause, it reads as a general fact.
-- Suggested: Give an approximate date instead, e.g. 'Egyptian love songs from around 1300–1100 BC use similar images.'
+- Problem: The note repeats the quoted heading phrases 'words of the wise' and 'the wise' from 22:17 and 24:23, which again quotes scripture.
+- Suggested: Paraphrase, e.g. 'The collection of sayings from unnamed wise teachers continues here, and verse 23 opens a short extra collection also credited to these teachers.'
 
-**Isaiah — audience**
-> The first hearers were the people of Jerusalem and Judah, including their kings and leaders. They lived under constant threat from Assyria and were tempted to trust in foreign alliances. Chapters 40–66 speak to a later situation: Jews exiled in Babylon after Jerusalem's destruction, and then those returning to rebuild a ruined city.
+**Ecclesiastes — 2:1**
+> Later in this passage, the houses, vineyards, parks, pools, servants and singers the Teacher describes echo the famous wealth and building projects of Solomon's court recorded in 1 Kings.
 
-- Problem: States as settled fact that chapters 40–66 address exiles in Babylon and returnees. That is the scholarly view. In the traditional view, Isaiah himself wrote these chapters, foreseeing that time, so the original hearers were still his own people. The author section and the 40:1 note handle this fairly, but here it reads as fact.
-- Suggested: Hedge it, e.g. 'Many scholars think chapters 40–66 were written for a later situation… ; traditionally they are read as Isaiah's words looking ahead to that time.'
+- Problem: 1 Kings records Solomon's palaces and building works, his servants, and instruments for singers. It does not describe vineyards, parks or pools. Saying all of these are 'recorded in 1 Kings' overstates the source.
+- Suggested: Loosen the attribution, e.g. 'echo the famous wealth and building projects of Solomon's court described in the Bible's books of Kings and Chronicles,' or drop the specific book reference.
 
-**Isaiah — 24:1**
-> Chapters 24–27 are often called the 'Isaiah Apocalypse'; scholars debate their date, with suggestions ranging from Isaiah's own time to well after the exile.
+**Ecclesiastes — author**
+> The book names its writer as 'the Teacher' (in Hebrew, Qoheleth, someone who gathers people to teach them), a son of David and king in Jerusalem. Jewish and Christian tradition has long identified him as King Solomon, famed for his wisdom and wealth. Many scholars think it was written later by a wise teacher who spoke in Solomon's voice, partly because its Hebrew resembles later writings. Either way, the writer belonged to Israel's tradition of wise men who taught through sayings and reflections on life.
 
-- Problem: Calls the section the 'Isaiah Apocalypse' without explaining 'apocalypse'. Ordinary readers may take it to mean simply 'disaster' or 'the end of the world'.
-- Suggested: Add a short gloss, e.g. 'often called the "Isaiah Apocalypse" because, like the book of Revelation, they describe judgment and renewal on a worldwide scale.'
+- Problem: The meaning of 'Qoheleth' is uncertain. It is usually linked to a word for gathering or assembling, but scholars debate whether it means one who gathers people, one who addresses an assembly, or one who collects sayings. The note presents one reading as settled.
+- Suggested: Hedge it, e.g. 'Qoheleth, a word linked to gathering, probably someone who gathers people to teach them.'
+
+**Song of Solomon — 1:9**
+> Egypt's pharaohs were famous for their fine chariot horses, which Solomon reportedly traded in.
+
+- Problem: The note never says why horses matter. A reader on a later verse, such as 2:3 or 2:7, gets a horse fact with nothing linking it to what they are reading.
+- Suggested: Tie it to the passage, e.g. "This passage opens by comparing the woman to a mare among Pharaoh's chariots. Egypt's pharaohs were famous for their fine chariot horses, which Solomon reportedly traded in."
+
+**Song of Solomon — 3:6**
+> This section pictures King Solomon's wedding procession arriving from the wilderness, with a royal carriage made of cedar wood from Lebanon and an armed guard.
+
+- Problem: The text says the carriage was made of wood from Lebanon but does not name the tree. "Cedar" is a likely guess, stated as fact.
+- Suggested: Say "a royal carriage made of wood from Lebanon, famous for its cedars", or simply "wood from Lebanon".
+
+**Isaiah — 8:1**
+> This passage comes from the same crisis; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.
+
+- Problem: 'The same crisis' points back to the 7:1 note, which a reader on this passage may never have seen. On its own the note doesn't say which crisis is meant.
+- Suggested: Name the crisis: 'This passage comes from the time around 735 BC when Aram (Syria) and northern Israel threatened Jerusalem; Assyria went on to capture Damascus in 732 BC and Samaria in 722 BC.'
+
+**Isaiah — 52:13**
+> This is the last and longest of the four 'Servant Songs'.
+
+- Problem: The note assumes the reader knows what the 'Servant Songs' are. That term is only explained in the 42:1 note, which the reader may not have seen.
+- Suggested: Add a short explanation: 'This is the last and longest of four passages scholars call the "Servant Songs", which centre on a figure called the Lord's servant.'
+
+**Isaiah — 10:28**
+> The towns named trace an army's march from the north toward Jerusalem, ending at Nob, a hill within sight of the city.
+
+- Problem: Nob's exact location is not known for certain. The note states as fact that it was a hill within sight of Jerusalem.
+- Suggested: Soften it: '…ending at Nob, probably a hill within sight of the city.'
+
+**Isaiah — 41:1**
+> The conqueror stirred up from the east is widely identified as Cyrus, the Persian king whose armies were sweeping across the region.
+
+- Problem: 'Whose armies were sweeping across the region' assumes the passage was written while Cyrus was campaigning. That is the scholarly later dating, not the traditional view that Isaiah foresaw it. The disputed setting reads as settled fact.
+- Suggested: Reword without presuming the date: 'The conqueror stirred up from the east is widely identified as Cyrus, the Persian king who conquered much of the region in the 540s BC.'
 
 **Jeremiah — author (as it bears on note 1:1)**
 > (not found)
 
-- Problem: The flag says the 627 BC call date is presented as settled both in the author field and in note 1:1.
-- Suggested: I added the scholarly debate to the author field only. Note 1:1 says the call 'is dated to' Josiah's thirteenth year, which accurately reports the book's own heading, and the flag's suggested fix targeted the author field. Whether note 1:1 should also mention the debate is left for a person to decide.
+- Problem: The flag says the 627 BC call date is presented as settled in both the author field and note 1:1.
+- Suggested: Not applied. The author field already gives the traditional date and the main alternative (that 627 BC marks his birth, with public work beginning nearer 609 BC), so no change is needed there. Note 1:1 says the call 'is dated to' Josiah's thirteenth year, which accurately reports the book's own heading. Whether note 1:1 should also mention the scholarly debate is a judgement call for a person.
 
-**Lamentations — 3:1**
-> Unlike the other chapters, this poem speaks as one suffering man; tradition has often linked it to Jeremiah, who was beaten, imprisoned and lowered into a muddy cistern, an underground tank for storing rainwater.
+**Jeremiah — 49:28**
+> Kedar and Hazor here refer to Arab tribes of the desert east of Judah, living in tents and herding camels.
 
-- Problem: "Unlike the other chapters, this poem speaks as one suffering man" overstates the contrast. Other chapters also use first-person voices: Jerusalem speaks as a grieving woman in chapter 1, and the poet speaks of his own weeping in chapter 2. Chapter 3 also shifts to "we" partway through. Readers who notice the earlier "I" passages may be confused.
-- Suggested: Soften it, e.g. "Much of this poem speaks in the voice of a single suffering man, rather than of Jerusalem pictured as a grieving woman."
+- Problem: Calling Hazor an Arab tribe living in tents is doubtful. Kedar is a known tribe, but 'Hazor' here is uncertain and is often taken as settled villages or encampments rather than a tent-dwelling tribe. Readers may also confuse it with the well-known city of Hazor in northern Israel.
+- Suggested: Reword along these lines: 'Kedar was an Arab tribe of the desert east of Judah, known for tents and herding. "Hazor" here is not the famous northern city but probably refers to Arab settlements or villages in the same region.'
 
-**Ezekiel — 1:1**
-> Dated to the fifth year of King Jehoiachin's exile, about 593 BC, by the Kebar canal in Babylonia; the 'thirtieth year' is often taken as Ezekiel's age.
+**Ezekiel — 40:1**
+> Dated to about 573 BC, fourteen years after Jerusalem's fall and twenty-five years into the exile.
 
-- Problem: The words 'thirtieth year' in quotation marks are a direct quote of the verse, which breaks the no-quoting rule.
-- Suggested: Paraphrase without quotation marks, e.g. 'the book's opening reference to a thirtieth year is often taken as Ezekiel's age.'
-
-**Ezekiel — 40:5**
-> A cubit was a measure of about half a metre; the 'long cubit' used here was a handbreadth longer.
-
-- Problem: The words 'long cubit' in quotation marks repeat a specific translation's wording of the verse, which amounts to quoting scripture.
-- Suggested: Drop the quotation marks and describe it plainly, e.g. 'the cubit used here was a longer one, a handbreadth more than usual.'
-
-**Daniel — era**
-> The stories are set in the 500s BC, after the Babylonian king Nebuchadnezzar conquered Judah, destroyed Jerusalem and its Temple in 586 BC, and carried many of its people off to Babylon. In 539 BC Babylon fell to Cyrus of Persia, who soon allowed exiles to go home and rebuild. If the book was finished in the 160s BC, its writer lived under Greek rulers descended from Alexander the Great's generals, during Antiochus IV's persecution and the Jewish uprising led by the Maccabee family. In Jewish Bibles, Daniel sits among the Writings rather than the Prophets.
-
-- Problem: The stories are not all set after 586 BC or in the 500s BC. Chapter 1 opens around 605 BC, and the Nebuchadnezzar stories in chapters 1–4 fall in the late 600s and early 500s, before or around the destruction of Jerusalem. Saying the stories are set 'in the 500s BC, after' the 586 destruction is inaccurate and would confuse readers who just read the 605 BC date in the author section.
-- Suggested: Say the stories span from around 605 BC, when Nebuchadnezzar first took captives from Judah, through his destruction of Jerusalem and its Temple in 586 BC, to the early years of Persian rule after 539 BC.
-
-**Daniel — 11:40**
-> These details do not match known accounts of Antiochus IV's death in 164 BC; some scholars see the writer looking beyond his own day, others see a further future in view.
-
-- Problem: The two views offered are so alike that they read as the same view ('looking beyond his own day' versus 'a further future in view'). The main scholarly alternative is missing: that the writer, working before Antiochus died, was predicting how his end would come, and events turned out differently. That leaves readers confused and the debate unfairly presented.
-- Suggested: Name the two positions clearly. For example: many scholars think the writer was working just before Antiochus's death and expected it to happen this way; others, especially on the traditional view, think these verses look to a figure still further in the future.
+- Problem: The note says 573 BC was fourteen years after Jerusalem's fall. The author, audience and era notes all date the fall to 586 BC, which would make 573 BC only thirteen years later. A careful reader may notice the arithmetic doesn't work. The underlying issue is that scholars genuinely disagree whether Jerusalem fell in 587 or 586 BC, and the other notes treat 586 as settled.
+- Suggested: Avoid the conflicting arithmetic, e.g. 'Dated to about 573 BC, which the passage counts as the fourteenth year after Jerusalem's fall and the twenty-fifth year of the exile.' Alternatively, note the 587/586 BC uncertainty in the era section.
 
 **Daniel — audience**
-> On the traditional view, the first readers were Jews living in exile in Babylon and its aftermath, learning how to stay loyal to God while serving powerful foreign rulers far from home. On the later-date view, the book was written for Jews in Judea around 167–164 BC, when the Greek-Syrian king Antiochus IV outlawed their faith on pain of death. In both pictures, the readers were God's people living under hostile empires.
+> On the traditional view, the first readers were Jews living in exile in Babylon and afterwards, serving under powerful foreign rulers far from home. On the later-date view, the book was written for Jews in Judea around 167–164 BC, when the Greek-Syrian king Antiochus IV outlawed their faith on pain of death. In both pictures, the readers were God's people living under hostile empires.
 
-- Problem: 'Learning how to stay loyal to God while serving powerful foreign rulers' describes what the book teaches its readers rather than who they were and what they faced. It edges into interpretation.
-- Suggested: Keep to their situation. For example: 'Jews living in exile in Babylon and afterwards, serving under powerful foreign rulers far from home.'
+- Problem: Calling all the rulers 'hostile empires' is doubtful for the traditional view. Persian rule under Cyrus was fairly tolerant, and the era section itself says he let exiles go home. The book's own stories also include foreign kings who treat Daniel kindly.
+- Suggested: Say 'living under powerful foreign empires' rather than 'hostile empires'.
 
-**Hosea — author**
-> The book is named after Hosea son of Beeri, a prophet: someone believed to speak messages from God to his people. He is the only prophet with a book in the Bible who seems to have come from, and worked in, the northern kingdom of Israel. Little is known of his daily life beyond his troubled marriage to a woman named Gomer, which the book describes. Most take this as a real marriage, though some, both in church tradition and among scholars, have read it as a vision or symbolic story. Most agree the messages go back to Hosea himself, though many scholars think they were later collected and edited in the southern kingdom of Judah, with a few lines added for readers there.
+**Daniel — 11:40**
+> These details do not match known accounts of Antiochus IV's death in 164 BC. Many scholars think the writer was working shortly before that death and expected it to come about this way; others, especially those holding the traditional view, think these verses look ahead to a figure still further in the future.
 
-- Problem: The claim that Hosea is the only prophet with a book in the Bible who came from and worked in the northern kingdom is doubtful as worded. Jonah also came from a northern town (Gath-hepher) and is said to have prophesied for Jeroboam II, so a reader who knows this may be confused. Scholars usually make a narrower claim: Hosea is the only prophet from the north whose own messages to the north make up a book.
-- Suggested: Narrow the claim, e.g. 'He is the only prophet from the northern kingdom of Israel whose messages to his own people fill a book of the Bible.'
+- Problem: The note covers 11:40–12:4, but 'These details' points only to the account of a king's end in chapter 11. A reader on 12:1–4 may not know which details are meant.
+- Suggested: Word it for the whole passage, e.g. 'At the start of this passage, the account of a king's final campaign and death does not match known accounts of Antiochus IV's death in 164 BC…'
 
-**Joel — era**
-> The date of Joel is unclear because the book names no king. Traditionally it has been placed early, around 800 BC, perhaps while the boy-king Joash ruled Judah under the guidance of priests. Many scholars today date it later, around 500–350 BC, after the Jews returned from exile in Babylon and rebuilt the temple, when Judah was a small province under Persian rule. Either way, Judah was a small farming community whose survival depended on rain and harvest, and locust swarms were a dreaded and familiar disaster.
+**Hosea — era**
+> Hosea was active from roughly 750 to 720 BC. He began during the long, prosperous reign of King Jeroboam II, but after Jeroboam's death the northern kingdom fell into chaos, with six kings in about 25 years, four of them murdered. The mighty Assyrian empire, based in what is now Iraq, was expanding westward, and Israel's rulers swung between paying it off and seeking help from Egypt. In 722 BC Assyria captured Samaria and carried many Israelites into exile, ending the northern kingdom.
 
-- Problem: 'Judah was a small farming community' is misleading under the traditional early date, when Judah was an independent kingdom with its own king. 'Community' also suggests a village rather than a nation or province.
-- Suggested: Rephrase to cover both datings, e.g. 'Either way, Judah was a small land whose people lived mostly by farming, and whose survival depended on rain and harvest...'
+- Problem: 'Six kings in about 25 years' is a little short on most common dating. From Jeroboam II's death (usually put around 753 BC) to Hoshea's capture or Samaria's fall (724–722 BC) is closer to 30 years. Only some chronologies give about 25.
+- Suggested: Say 'six kings in about 30 years' or 'six kings in less than 30 years', or drop the figure.
 
-**Obadiah — audience**
-> The message is addressed to Edom, a neighbouring nation descended from Esau, Jacob's brother. Its real first hearers, however, were the people of Judah, many of them grieving or displaced after Jerusalem had been attacked and plundered while the Edomites looked on and joined in.
+**Joel — 2:1**
+> The trumpet here is the shofar, a ram's horn blown from Zion, Jerusalem's temple hill, to sound an alarm or call people together.
 
-- Problem: This describes the first hearers as grieving or displaced after Jerusalem's plunder, with Edom joining in. That presents the 586 BC setting as settled fact. The era section rightly says the date is disputed, and that some place the book around 845 BC, when the circumstances were quite different.
-- Suggested: Make it conditional to match the era section, e.g. 'the people of Judah, stung by Edom's behaviour when Jerusalem was attacked and plundered (see The era for when this may have been)', and drop 'grieving or displaced'.
+- Problem: 'The trumpet here' reads as if it is about one verse. The trumpet appears only in 2:1, so a reader on 2:5 or 2:9 will not find it in their verse.
+- Suggested: Word it for the passage: 'At the start of this passage a trumpet is blown: the shofar, a ram's horn sounded from Zion, Jerusalem's temple hill, to raise an alarm or call people together.'
 
-**Micah — 1:2**
-> This opening calls all the nations to listen as witnesses, then turns to Samaria, capital of the northern kingdom, and to Jerusalem. Assyria besieged and destroyed Samaria in 722 BC.
+**Amos — 6:1**
+> This passage names Calneh and Hamath in Syria and the Philistine city of Gath, cities that had suffered defeat. Some scholars think this refers to setbacks before Amos's time; others think it refers to Assyrian conquests a few decades later.
 
-- Problem: The opening does not call the nations to act as witnesses. It calls the peoples to listen and says the Lord himself will be witness against them. Casting the nations as witnesses misdescribes the passage.
-- Suggested: Rephrase to: 'This opening calls all peoples to listen, with God as witness, then turns to Samaria, capital of the northern kingdom, and to Jerusalem.'
+- Problem: The note says some scholars think these lines refer to Assyrian conquests a few decades after Amos, but never says what that implies. A reader may wonder how Amos could speak of events after his own time. The point of the disagreement, that these lines may have been added later, is left unstated.
+- Suggested: Add a short clause, e.g. '…others think it refers to Assyrian conquests a few decades later, which would mean these lines were added after Amos's time.'
 
-**Micah — 6:9**
-> Omri and Ahab were northern Israelite kings over a century earlier, remembered for Baal worship and for Ahab seizing Naboth's vineyard.
+**Obadiah — author**
+> The book is credited to Obadiah, whose name means 'servant of the Lord'. He was a prophet, someone who brought God's messages to the people, but nothing else is known about his family, hometown or life. Several other Old Testament figures share the name, though there is no good reason to link him with any of them.
 
-- Problem: The Bible ties Baal worship to Ahab (and Jezebel), not to Omri. Omri is condemned for doing evil in general, so 'remembered for Baal worship' slightly misstates the record for both kings.
-- Suggested: Rephrase to: 'Omri and Ahab were northern Israelite kings over a century earlier; Ahab was remembered for Baal worship and for seizing Naboth's vineyard.'
+- Problem: 'There is no good reason to link him with any of them' dismisses a long-standing traditional view. Ancient Jewish tradition (the Talmud) identified this Obadiah with the Obadiah who served King Ahab's household and hid prophets from Jezebel.
+- Suggested: Present both views fairly, for example: 'Ancient Jewish tradition identified him with the Obadiah who served in King Ahab's household, though most scholars today think this is unlikely.'
 
-**Habakkuk — audience**
-> His first hearers were the people of Judah, the small southern kingdom centred on Jerusalem. At home they lived with violence, unfair courts and powerful people exploiting the weak, while a new and frightening empire was rising in the east.
+**Obadiah — 1:10**
+> This section is widely linked to Jerusalem's fall in 586 BC; Psalm 137 also remembers Edomites cheering the city's destruction.
 
-- Problem: It states as settled fact that Habakkuk's first hearers suffered violence, unjust courts and exploitation 'at home'. This comes from reading the opening complaint as being about Judah's own leaders. That reading is the common one, but some scholars think the wrongdoers described are a foreign oppressor such as Assyria or Babylon.
-- Suggested: Add a light hedge, e.g. 'Many readers understand the book's opening complaint to describe life in Judah itself: violence, unfair courts and powerful people exploiting the weak.' Or add a short clause noting the alternative view.
+- Problem: This note covers 1:10–14 and the next note starts at 1:17, so verses 15–16 have no setting note. Readers on those verses will see nothing.
+- Suggested: Check whether the gap is intentional. If not, extend this note's range to 1:10–16 or add a short note for 1:15–16.
+
+**Micah — 6:6**
+> Child sacrifice was practised among neighbouring peoples, and the Bible records that King Ahaz of Judah, in Micah's own day, sacrificed his son.
+
+- Problem: The note never says the passage mentions offering a child. A reader on 6:6 or 6:8, which do not mention it, gets an unexplained note about child sacrifice and may be confused.
+- Suggested: Tie it to the passage, e.g. 'Later in this passage the speaker wonders about offering even a firstborn child. Child sacrifice was practised among neighbouring peoples, and the Bible records that King Ahaz of Judah, in Micah's own day, sacrificed his son.'
+
+**Habakkuk — 1:5**
+> The 'Chaldeans' named in this passage are the Babylonians, named after the region of southern Mesopotamia, modern Iraq, from which their ruling family came.
+
+- Problem: The claim that Babylon's ruling family came from the Chaldean region is uncertain. The background of Nabopolassar, founder of the dynasty, is debated. The wording also implies the people were named after the region, when the region (Chaldea) is usually said to take its name from the Chaldean tribes.
+- Suggested: Avoid the uncertain dynastic detail, e.g.: "The 'Chaldeans' named in this passage are the Babylonians. The name comes from the Chaldean peoples of southern Mesopotamia, modern Iraq, and became a common name for Babylon's rulers and armies."
 
 **Zephaniah — 2:12**
 > Cush was the land along the upper Nile, south of Egypt; Assyria's capital Nineveh was the greatest city of the day, destroyed by Babylonians and Medes in 612 BC.
 
-- Problem: Verse 2:12 mentions only Cush. Nineveh and Assyria first appear in 2:13, so a reader on 2:12 gets Nineveh details that aren't in the verse in front of them.
-- Suggested: Keep only the Cush sentence at 2:12 and move the Nineveh sentence to a separate note at 2:13.
+- Problem: Verse 2:12 mentions only Cush; Nineveh and Assyria first appear in 2:13, so the flag suggests keeping only the Cush sentence at 2:12 and moving the Nineveh sentence to a separate note at 2:13.
+- Suggested: Not applied. The note covers the whole passage 2:12–15, so the Nineveh detail in 2:13 is in the right place, and notes cannot be moved or split into a new note at another verse. The note already names both places without implying they are in the same verse, so it was left unchanged.
 
-**Zechariah — audience**
-> The first hearers were Jews who had come back to Jerusalem and Judah after about seventy years of exile in Babylon. They lived in a small, poor community among ruins, and their work rebuilding God's temple had stalled for years amid hardship, opposition and discouragement.
+**Zephaniah — 1:2**
+> The practices named in this passage, Baal worship, bowing to the stars on rooftops and honouring Milcom, the god of the neighbouring Ammonites, flourished under Manasseh and were later removed by Josiah.
 
-- Problem: "About seventy years of exile" is doubtful as a historical figure. Seventy years is the traditional prophetic number, which Zechariah himself uses. But Jerusalem fell in 586 BC and the first return came in 538 BC, which is under fifty years. Many of the returnees had been born in Babylon.
-- Suggested: Write "after decades of exile in Babylon" or "after about fifty years of exile in Babylon". Or note that seventy years was the traditional reckoning.
+- Problem: The note says all three practices, including honouring Milcom, flourished under Manasseh. Kings records Baal and star worship under Manasseh, but the shrine to Milcom (Molech) dates back to Solomon and is not specifically tied to Manasseh. Josiah's removal of all three is recorded, so that part is fine.
+- Suggested: Reword so the Manasseh link isn't claimed for Milcom, e.g. "…practices that had taken root in Judah, especially under Manasseh, and that Josiah later tore down."
+
+**Zephaniah — 3:14**
+> Traditionally this closing song is read as Zephaniah's own; some scholars think it was added later, perhaps after the exile to Babylon.
+
+- Problem: "The exile to Babylon" is never explained in the author, audience or era notes, so an ordinary reader may not know what it refers to or when it happened.
+- Suggested: Add a short explanation, e.g. "…perhaps after the exile, when many people of Judah were taken to Babylon following Jerusalem's fall around 586 BC."
+
+**Haggai — 1:12**
+> Work on the temple resumed on the twenty-fourth day of that same month, around September 520 BC, just over three weeks after Haggai's first message.
+
+- Problem: The date for resumed work (the twenty-fourth day of the sixth month) comes from 1:15, not 1:12, so a reader looking at 1:12 will not find it in that verse.
+- Suggested: Not applied because the flag appears mistaken. The note covers the whole passage 1:12–15, so a date given in 1:15 is in the right place. The note also does not read as if it describes 1:12 alone; it simply states when the work resumed. Adding "Later in this passage…" is optional and is a judgement call for an editor.
 
 **Zechariah — 9:11**
 > This passage mentions Greece, one reason some scholars date these later chapters to a time when Greek power was rising.
 
-- Problem: The mention of Greece is in 9:13, not 9:11. Verse 9:11 is about something else, so a reader tapping this note will not find what it describes.
-- Suggested: Move the note to 9:13.
+- Problem: The mention of Greece is in 9:13, not 9:11, so the flag suggests moving the note to 9:13.
+- Suggested: Not changed. Notes cannot be moved, and this note covers 9:11–17, which includes 9:13. It already says "This passage mentions Greece", so it is worded for the whole passage and is correct as it stands.
 
-**Zechariah — 12:10**
-> It refers to mourning at Hadad-rimmon near Megiddo, often linked to the grief after good King Josiah was killed in battle there in 609 BC.
+**Zechariah — era**
+> The Persian Empire ruled the region after defeating Babylon, and in 538 BC the Persian king Cyrus allowed exiled Jews to return home. Foundations for a new temple were laid, but work stopped for nearly two decades. King Darius I took the throne in 522 BC after a period of revolts across the empire, and under the encouragement of Haggai and Zechariah the temple was finally completed around 516 BC.
 
-- Problem: The mourning at Hadad-rimmon near Megiddo is in 12:11, not 12:10. Verse 12:10 is a well-known verse on a different subject, so attaching this note to it could confuse readers.
-- Suggested: Move the note to 12:11.
+- Problem: 'Work stopped for nearly two decades' overstates the gap. Foundations were laid around 536 BC and work resumed in 520 BC, about sixteen years later. The exact date of the foundation-laying is itself debated.
+- Suggested: Say the work 'stalled for many years' or 'stalled until 520 BC' rather than 'nearly two decades'.
 
-**Zechariah — 14:1**
-> It recalls an earthquake in the days of King Uzziah of Judah, around 760 BC, which Israel remembered for centuries afterward.
+**Zechariah — era**
+> The Persian Empire ruled the region after defeating Babylon, and in 538 BC the Persian king Cyrus allowed exiled Jews to return home. Foundations for a new temple were laid, but work stopped for nearly two decades. King Darius I took the throne in 522 BC after a period of revolts across the empire, and under the encouragement of Haggai and Zechariah the temple was finally completed around 516 BC.
 
-- Problem: The earthquake in the days of King Uzziah is mentioned in 14:5, not 14:1. Verse 14:1 does not mention it, so "It recalls an earthquake" is wrong for that verse.
-- Suggested: Move the note to 14:5.
+- Problem: 'Took the throne in 522 BC after a period of revolts' gets the order slightly wrong. Darius seized power in 522 BC, and most of the widespread revolts broke out after he took the throne. He spent his first year or so putting them down.
+- Suggested: Reword to something like 'King Darius I took the throne in 522 BC and spent his first years putting down revolts across the empire.'
 
-**Malachi — 2:10**
-> Marriages to women who worshipped other gods, and the breakup of marriages, were problems Ezra and Nehemiah also confronted in Jerusalem during this era.
+**Matthew — 9:9**
+> This is the call of the man tradition names as the gospel's author, sitting at a toll booth, probably in Capernaum.
 
-- Problem: Ezra and Nehemiah did confront marriages to women who worshipped other gods, but they did not confront 'the breakup of marriages' as a problem. Ezra in fact required men to send away their foreign wives. Pairing divorce with them as a shared problem is misleading.
-- Suggested: Limit the Ezra–Nehemiah link to mixed marriages, e.g. 'Marriages to women who worshipped other gods were a problem Ezra and Nehemiah also confronted in Jerusalem during this era; the book also speaks of men divorcing their wives.'
-
-**Malachi — 4:4**
-> Horeb is another name for Mount Sinai; these closing lines end the collection known as the Twelve Prophets and, in most Christian Bibles, the whole Old Testament.
-
-- Problem: 'The collection known as the Twelve Prophets' may puzzle ordinary readers, who usually know these books as the 'Minor Prophets' and may not realise they were once grouped as a single collection.
-- Suggested: Add a short gloss, e.g. 'the collection known as the Twelve Prophets (often called the Minor Prophets, Hosea to Malachi)'.
-
-**Matthew — 2:13**
-> After Herod died, his son Archelaus ruled Judea so harshly that Rome removed him in AD 6; Galilee, where Nazareth lay, went to another son, Herod Antipas.
-
-- Problem: This verse is the warning to flee to Egypt, while Herod is still alive and hunting the child. A note that opens 'After Herod died' and describes Archelaus's rule reads out of order here and could confuse a reader. Archelaus and the move to Galilee belong to the family's return later in the chapter.
-- Suggested: Re-anchor this note at 2:22, where Archelaus and the move to Galilee are mentioned. If 2:13 needs a note, describe Egypt as a nearby Roman province with large Jewish communities, a common place of refuge.
+- Problem: The note opens with "This is the call…", so it reads as if it covers only verse 9. The passage runs to verse 13 and includes the meal that follows, so a reader on verses 10–13 may be confused.
+- Suggested: Word it for the whole passage, e.g. "This passage opens with the call of the man tradition names as the gospel's author, sitting at a toll booth, probably in Capernaum."
 
 **Mark — 14:43**
 > Some have long suggested the young man who ran away was Mark himself, though the Gospel never says so.
 
-- Problem: The note is about the young man who ran away, but he appears at 14:51–52, not 14:43, where the arrest begins. A reader on 14:43 will meet a detail that isn't in their verse.
-- Suggested: Move this note to start at 14:51.
+- Problem: The note is about the young man who ran away (14:51–52), not the start of the arrest at 14:43, so a reader on 14:43 meets a detail not in their verse.
+- Suggested: Not applied. Notes cannot be moved, and this note covers the whole passage 14:43–52, so the young man is correctly placed within it. The wording ('the young man who ran away') does not read as if it describes verse 43 alone, so no rewording was needed. An editor could add 'Later in this passage' if they want extra clarity.
+
+**Mark — author**
+> The Gospel itself never names its writer, but from the early second century Christians credited it to John Mark, a Jewish believer from Jerusalem whose mother's house was a meeting place for the first church. He travelled with his cousin Barnabas and with Paul, and later worked alongside Peter, and an early church leader named Papias said Mark wrote down Peter's memories of Jesus. Many scholars accept this tradition, while others think the author was an unknown Christian teacher. Most agree it was probably the first of the four Gospels to be written.
+
+- Problem: Early tradition (Papias) credits the Gospel simply to 'Mark', Peter's interpreter. That this Mark is the John Mark of Acts, Barnabas's cousin whose mother hosted the Jerusalem church, is a later identification that some scholars question. The note presents it as part of the second-century attribution.
+- Suggested: Separate the two claims, e.g. 'from the early second century Christians credited it to Mark, traditionally identified with John Mark, a Jewish believer from Jerusalem…'
+
+**Mark — 14:12**
+> Passover lambs were sacrificed at the temple that afternoon, and the meal had to be eaten within Jerusalem after sunset.
+
+- Problem: 'That afternoon' has no clear reference point, especially for a reader on 14:13–16 who sees the note without verse 12. They may not know which afternoon is meant.
+- Suggested: Make the day explicit, e.g. 'Passover lambs were sacrificed at the temple on the afternoon before the Passover meal, and the meal had to be eaten within Jerusalem after sunset.'
 
 **Luke — 2:21**
 > Jewish law required a mother's purification offering about forty days after a birth; the two-bird offering was the option allowed for poorer families.
 
-- Problem: This note is pinned to 2:21, the verse about Jesus' circumcision and naming, but it describes the mother's purification offering, which begins at 2:22. A reader on 2:21 would see background for a different event.
-- Suggested: Move the note to start at 2:22. Alternatively, keep it at 2:21 and open with a short clause on circumcision and naming on the eighth day before turning to the purification offering.
+- Problem: The flag says the note is pinned to 2:21 (Jesus' circumcision and naming) but describes the purification offering, which begins at 2:22, so a reader on 2:21 sees background for a different event.
+- Suggested: Not applied. The note covers the whole passage 2:21–40, and the purification offering falls within that passage, so the detail is in the right place. Notes cannot be moved, and the note does not read as if it were only about 2:21. Adding a clause on circumcision and naming on the eighth day would be optional enrichment, not a correction, so that is left for an editor to decide.
 
-**John — 18:1**
-> The garden lay across the Kidron Valley on the Mount of Olives; the other Gospels call it Gethsemane.
+**Luke — 21:20**
+> Roman armies besieged and destroyed Jerusalem in AD 70, one reason many scholars date Luke's writing after that event.
 
-- Problem: 'The other Gospels call it Gethsemane' is not quite accurate. Matthew and Mark name Gethsemane. Luke only says Jesus went to the Mount of Olives and does not use the name.
-- Suggested: Say 'Matthew and Mark call it Gethsemane' instead of 'the other Gospels'.
+- Problem: The note gives only the later-date view ('one reason many scholars date Luke's writing after that event'). Readers on these verses never see the traditional early-60s dating, so the dating debate is presented one-sidedly. It also implies a scholarly judgement about the passage's origin rather than simply describing its setting.
+- Suggested: Either drop the dating clause and keep only the historical fact ('Roman armies besieged and destroyed Jerusalem in AD 70'), or balance it, e.g. '…in AD 70; scholars differ on whether Luke wrote before or after this event.'
 
-**Romans — 11:11**
-> Paul turns to speak directly to the Gentile believers in Rome, drawing on olive growing and grafting, a familiar part of Mediterranean farming life.
+**John — 21:1**
+> Many scholars think this final chapter was added as an epilogue, possibly by the author's circle, after the book's first ending.
 
-- Problem: Paul's direct address to the Gentile believers begins at 11:13, and the olive-grafting image starts at 11:17. At 11:11 he is still speaking about Israel's stumbling, so a reader may not find what the note describes in this verse.
-- Suggested: Move the note to 11:13, or reword it so it introduces what follows, e.g. 'In the verses that follow, Paul turns to…'.
+- Problem: Only the scholarly view is given. The rules ask for the traditional view alongside the main alternative, and many readers and some scholars hold that chapter 21 is by the same author as the rest of the book.
+- Suggested: Add a short clause giving both views, e.g. 'Traditionally this final chapter has been read as part of the author's own work; many scholars think it was added as an epilogue, possibly by the author's circle, after the book's first ending.'
 
-**Romans — 16:21**
-> Tertius, who wrote the letter down, adds his own greeting; an inscription found in Corinth names an official called Erastus, possibly the city treasurer mentioned here.
+**Acts — 15:1**
+> This meeting in Jerusalem, often called the Jerusalem Council, is usually dated around AD 49.
 
-- Problem: Tertius's greeting is in 16:22, and Erastus is mentioned in 16:23. Verse 16:21 sends greetings from Timothy and others, so the note does not match its verse.
-- Suggested: Move the note to 16:22, or open it with something like 'In the next verses…' so it clearly covers 16:21–23.
+- Problem: In 15:1–5 the dispute arises and the delegates travel to Jerusalem; the meeting itself begins at 15:6. 'This meeting' reads as if the meeting happens in this passage, which may confuse a reader on 15:1 or 15:2.
+- Suggested: Word it for the passage, e.g. 'This passage leads into a meeting in Jerusalem, often called the Jerusalem Council, usually dated around AD 49.'
 
-**2 Corinthians — 11:16**
-> Paul's escape from Damascus in a basket happened in the late 30s AD, when the city was under an official of King Aretas IV of Nabatea.
+**Acts — 18:1**
+> Emperor Claudius expelled Jews from Rome around AD 49, and an inscription at Delphi dates Gallio's time as governor to about AD 51–52.
 
-- Problem: Saying Damascus 'was under an official of King Aretas IV' presents Nabatean control of the city as settled. Historians debate whether the city was actually ruled by Aretas then, or whether this official only led the Nabatean community or guarded the city. 'Nabatea' is also unexplained for ordinary readers.
-- Suggested: Rephrase to something like 'when an official of King Aretas IV of Nabatea, an Arab kingdom to the south and east, was watching the city to arrest him.'
+- Problem: The date of Claudius's expulsion of Jews from Rome is disputed. AD 49 rests on a late source, and some scholars argue for AD 41. The note states it as settled.
+- Suggested: Hedge it, e.g. 'Emperor Claudius expelled Jews from Rome, usually dated around AD 49, though some place it earlier…'
+
+**Romans — 16:1**
+> Phoebe, from Cenchreae, Corinth's port, probably carried the letter; Priscilla and Aquila had earlier been expelled from Rome under Claudius. A few scholars think this chapter was first sent elsewhere.
+
+- Problem: Romans 16 calls her "Prisca" in many Bibles (ESV, NRSV and others), while the note says "Priscilla". A reader seeing only "Prisca" in this passage may not realise it is the same person.
+- Suggested: Write "Prisca (also called Priscilla) and Aquila" so readers of any translation recognise her.
 
 **Galatians — 1:18**
-> Paul describes visits to Jerusalem to meet Peter and James, Jesus' brother; scholars debate whether the second matches the Jerusalem meeting or an earlier famine-relief visit.
+> In this passage Paul describes two visits to Jerusalem: a first to meet Peter and James, Jesus' brother, and a second some years later, told in chapter 2. Scholars debate whether that second visit matches the church leaders' meeting in Jerusalem around AD 49 or an earlier visit to bring famine relief.
 
-- Problem: This verse describes Paul's first visit to Jerusalem, but the note jumps to 'the second', a visit not mentioned until chapter 2. Readers on this verse won't know which visit is meant, and 'the Jerusalem meeting' is not explained in the note itself.
-- Suggested: Make the sequence explicit. For example: 'Here Paul describes his first visit to Jerusalem, three years after his conversion, to meet Peter and James, Jesus' brother. He later describes a second visit (in chapter 2), and scholars debate whether that matches the church leaders' meeting in Jerusalem around AD 49 or an earlier visit to bring famine relief.'
+- Problem: The flag said the second visit is not mentioned until chapter 2 and that 'the Jerusalem meeting' was unexplained; it suggested adding that the first visit was 'three years after his conversion'.
+- Suggested: I clarified the two visits and explained the meeting, but the second visit falls within this note's passage (1:18–2:10), so it is in the right place. I left out 'three years after his conversion' because it is unclear whether Paul counts the three years from his conversion or from his return to Damascus. A person may wish to decide whether to add a time reference.
 
-**Galatians — 6:11**
-> Paul usually dictated letters to a scribe; here he takes the pen himself to write the closing lines in large letters.
+**Galatians — author**
+> The letter comes from Paul, and almost all scholars agree he wrote it. He was a Jew from Tarsus, in what is now southern Turkey, trained as a Pharisee (a strict teacher of Jewish law), and once fiercely opposed to the followers of Jesus. After meeting the risen Jesus, he became an apostle, a messenger sent to spread the good news, travelling from city to city founding churches and often supporting himself as a tentmaker.
 
-- Problem: 'Usually dictated' is stated a little too firmly. It is a widely held inference from a few letters, such as Romans, which names a scribe, and others where Paul adds a greeting in his own hand. It is not a documented habit across all his letters.
-- Suggested: Soften to 'Paul often dictated his letters to a scribe' or 'Paul seems to have usually dictated his letters'.
+- Problem: The gloss 'a strict teacher of Jewish law' slightly misdefines 'Pharisee'. The Pharisees were a Jewish religious group known for careful keeping of the law, not a class of teachers, though some were teachers. Paul calls himself a Pharisee, not a teacher.
+- Suggested: Reword the gloss, e.g. 'a Pharisee (a member of a Jewish group devoted to strictly keeping God's law)'.
 
-**Philippians — 3:1**
-> Paul warns against teachers who insisted non-Jewish believers be circumcised and keep Jewish law, and recounts his own background as a Pharisee from the tribe of Benjamin.
+**Philippians — 1:1**
+> Paul greets the church's leaders, called overseers, and its deacons, helpers who served practical needs, an early glimpse of how local churches were organised.
 
-- Problem: The note states the opponents' identity as settled fact. Scholars disagree about who Paul is warning against here. The most common view is Christian teachers urging circumcision on non-Jewish believers, but some think he means non-Christian Jews or another group.
-- Suggested: Hedge slightly, e.g. 'Paul warns against opponents, most likely teachers who insisted non-Jewish believers be circumcised and keep Jewish law, ...'
+- Problem: Saying Paul 'greets the church's leaders' misstates the greeting. The letter is addressed to all the believers in Philippi, with the overseers and deacons mentioned alongside them. A reader could think the letter was written mainly to the leaders.
+- Suggested: Reword, e.g. 'Paul greets all the believers in Philippi, together with the church's overseers (leaders) and deacons (helpers who served practical needs), an early glimpse of how local churches were organised.'
 
 **1 Timothy — 1:18**
 > Paul names two men, Hymenaeus and Alexander, probably known to Timothy in Ephesus, whose faith had collapsed; a Hymenaeus is mentioned again in 2 Timothy.
 
-- Problem: The names Hymenaeus and Alexander appear at 1:20, not 1:18, so the note could be anchored at 1:20 instead.
-- Suggested: I applied the softer wording but kept the note at 1:18. The note covers the passage that begins at 1:18 and runs through the names at 1:20, so moving the anchor is an editorial choice about where readers should first see the note. A person should decide that.
+- Problem: The flag notes that Hymenaeus and Alexander are named at 1:20, not 1:18, and raises moving the note's anchor to 1:20.
+- Suggested: Left unchanged. The note covers the whole passage 1:18–20, so a detail at 1:20 is correctly placed, and notes cannot be moved to another verse in any case. The wording does not read as if it were only about 1:18, so no rewording is needed. The flag also says a softer wording was applied, but no wording change is specified, so there is nothing to apply.
+
+**1 Timothy — 4:1**
+> This section answers teachers in Ephesus who were telling believers to avoid marriage and certain foods.
+
+- Problem: In 4:1–5 the letter frames these teachings as a warning about what some people will do in later times. The note states as fact that it answers specific teachers already active in Ephesus. Many scholars read it that way, but stating it flatly overstates certainty.
+- Suggested: Soften the wording, e.g. "This section warns against teachers, probably already active in Ephesus, who told believers to avoid marriage and certain foods."
+
+**1 Timothy — 4:11**
+> Timothy was young by the standards of the day to be guiding older believers, and church leaders had earlier laid hands on him to commission him.
+
+- Problem: "Laid hands on him" is church language an ordinary reader may not understand.
+- Suggested: Add a brief explanation, e.g. "…had earlier laid hands on him (placing their hands on him while praying) to commission him."
 
 **2 Timothy — 3:1**
 > Jannes and Jambres are names Jewish tradition gave to Pharaoh's magicians who opposed Moses; the book of Exodus itself does not name them.
 
-- Problem: Not flagged, but this note is anchored at 3:1 while Jannes and Jambres are named at 3:8, so readers starting at 3:1 meet the note several verses before the names appear.
-- Suggested: Left unchanged because it was not flagged; a person should consider moving the note's start to 3:8.
+- Problem: The flag says the note sits at 3:1 while Jannes and Jambres are named at 3:8, and suggests moving the note's start to 3:8.
+- Suggested: Not applied: the note covers the whole passage 3:1–9 and is shown on every verse in it, so a detail at 3:8 is in the right place. Notes cannot be moved to another verse, and the note does not read as if it were only about 3:1.
 
 **2 Timothy — 4:9**
 > The "first defence" probably means an initial hearing before a Roman court; Dalmatia was a region on the coast of modern Croatia.
 
-- Problem: Not flagged, but Dalmatia is mentioned at 4:10 and the "first defence" at 4:16, so this note sits ahead of both and also covers verses that 4:9 does not reach.
-- Suggested: Left unchanged because it was not flagged; a person should consider re-anchoring or splitting this note.
+- Problem: The flag says Dalmatia (4:10) and the "first defence" (4:16) come after the note's start, and suggests re-anchoring or splitting the note.
+- Suggested: Not applied: the note covers 4:9–18, which includes both 4:10 and 4:16, so both details are within its passage. Notes cannot be moved or re-anchored, and the note does not read as if it were only about 4:9.
 
 **2 Timothy — 1:15**
 > Asia here means the Roman province around Ephesus in western Turkey; Onesiphorus apparently came from Ephesus and searched Rome to find the imprisoned Paul.
 
-- Problem: Not flagged, but Onesiphorus first appears at 1:16, just after this note's start.
-- Suggested: Left unchanged because it was not flagged; probably acceptable as one note on the passage, but worth a quick check.
+- Problem: The flag says Onesiphorus first appears at 1:16, just after the note's start.
+- Suggested: Not applied: the note covers 1:15–18, so a detail at 1:16 is within its passage, and the note does not read as if it were only about 1:15. No change is needed.
 
-**2 Timothy — 4:6**
-> Paul writes expecting execution soon; early church tradition holds that he was beheaded outside Rome during Nero's reign.
+**Hebrews — 13:18**
+> The closing mentions Timothy, Paul's younger co-worker, who had recently been released, probably from prison, and sends greetings from believers from Italy.
 
-- Problem: 'Paul writes expecting execution soon' states Paul's authorship as settled, although the author section notes that many scholars think a later follower wrote the letter in his name.
-- Suggested: Reword to follow the letter's own framing, e.g. 'The letter pictures Paul expecting execution soon; early church tradition holds that he was beheaded outside Rome during Nero's reign.'
+- Problem: The sentence structure makes Timothy the one who 'sends greetings from believers from Italy'. In fact the writer passes on those greetings. An ordinary reader could easily misread this.
+- Suggested: Split the sentence, e.g. 'The closing mentions Timothy, Paul's younger co-worker, who had recently been released, probably from prison. The writer also passes on greetings from believers from Italy.'
 
-**Hebrews — era**
-> The letter was written within the Roman Empire, probably in the AD 60s, while the Jerusalem temple and its sacrifices still stood. Some scholars date it later, to the AD 80s, but it must be earlier than about AD 96, when a church leader in Rome quoted it. Christians were increasingly seen as separate from Judaism and therefore lost some of the protection Jewish communities enjoyed. In Rome, Emperor Claudius had expelled Jews around AD 49, and Emperor Nero turned violently on Christians after the great fire of AD 64.
+**Hebrews — 12:18**
+> The scene recalls Mount Sinai, where Israel received God's law amid fire, darkness and trembling, alongside Mount Zion, the hill of Jerusalem.
 
-- Problem: States as settled that Hebrews 'must be earlier than about AD 96, when a church leader in Rome quoted it.' The letter meant is 1 Clement, and its date of about AD 96 is itself debated, with some scholars placing it earlier or later. It also echoes Hebrews closely rather than quoting it by name. 'Must be' turns a disputed inference into fact.
-- Suggested: Soften the claim, e.g. 'but it was known by the time a church leader in Rome, usually dated to around AD 96, drew heavily on it in a letter of his own.'
-
-**2 Peter — 3:14**
-> This mention of Paul's letters is one of the earliest signs that they were already being gathered, circulated among churches, and read alongside the Jewish scriptures.
-
-- Problem: Paul's letters are mentioned in 3:15–16, not 3:14. A reader on 3:14 will see 'This mention of Paul's letters' and find no mention of Paul in that verse, which is confusing.
-- Suggested: Move the note to start at 3:15, or reword it so it does not imply that Paul is named in 3:14.
-
-**1 John — audience**
-> It was most likely sent to a group of house churches, probably in or around Ephesus in the Roman province of Asia, whose members the writer knew well and cared for. These congregations had recently been shaken by a painful split over what to believe about Jesus, and those who remained were unsettled and needed reassurance.
-
-- Problem: 'The Roman province of Asia' could make an ordinary reader think of the continent of Asia rather than a small Roman region on the Aegean coast.
-- Suggested: Add a brief gloss, e.g. 'the Roman province called Asia (the western edge of modern Turkey, not the continent)'.
+- Problem: Calling Mount Zion simply 'the hill of Jerusalem' may confuse readers. In this passage the writer pictures Zion as the heavenly Jerusalem, not the physical hill.
+- Suggested: Add a short descriptive clause, e.g. '…alongside Mount Zion, the hill of Jerusalem, which the writer pictures here as a heavenly city.'
 
 **2 John — 1:12**
-> The letter is short enough to fit a single sheet of papyrus, a common writing material, and the "chosen sister" is likely the church where the elder lived.
+> The letter is short enough to fit a single sheet of papyrus, a common writing material, written on in ink. Letters were carried by hand, and church leaders often travelled to visit congregations in person. The "chosen sister" mentioned at the end of the passage is probably the church where the elder lived, or, if the "lady" was a real woman, perhaps her actual sister.
 
-- Problem: Not flagged, so left unchanged: the "chosen sister" is mentioned in verse 13, not verse 12, so readers on 1:12 may not find her in their verse.
-- Suggested: A person should decide whether to move the "chosen sister" point to its own note at 1:13 and keep only the papyrus detail at 1:12.
+- Problem: The "chosen sister" is mentioned in verse 13, not verse 12, so the flag suggests moving that point to its own note at 1:13.
+- Suggested: Not applied: the note covers 1:12–13, so a detail from verse 13 is in the right place, and notes cannot be moved. I worded it as "at the end of the passage" so it reads as covering both verses.
 
 **2 John — 1:12**
-> The letter is short enough to fit a single sheet of papyrus, a common writing material, and the "chosen sister" is likely the church where the elder lived.
+> The letter is short enough to fit a single sheet of papyrus, a common writing material, written on in ink. Letters were carried by hand, and church leaders often travelled to visit congregations in person. The "chosen sister" mentioned at the end of the passage is probably the church where the elder lived, or, if the "lady" was a real woman, perhaps her actual sister.
 
-- Problem: The "chosen sister" appears in verse 13, not verse 12. Verse 12 is about the elder preferring not to write more with paper and ink and hoping to visit in person, which the note does not address. Calling the sister "likely" a church also leans past the dispute the audience section presents fairly: if the lady may be a real woman, the sister may be too.
-- Suggested: Move the "chosen sister" comment to a 1:13 note and phrase it to match the audience section (e.g. probably the elder's own church, or a real relative if the lady was an individual). Keep 1:12 to its own setting: the papyrus sheet and ink, and that travel to visit in person was how leaders often kept in touch.
+- Problem: The flag suggests moving the "chosen sister" comment into a separate 1:13 note.
+- Suggested: Not applied: notes cannot be moved or split, and the existing note already covers verse 13. I applied the rest of the flag: I reworded the sister to match the audience section's two views and added verse 12's setting, ink and papyrus and the practice of visiting in person.
 
-**Jude — era**
-> Jude was likely written in the second half of the first century AD, with suggested dates ranging from around AD 50–70 to as late as AD 90 or later. The young church was spreading across the Roman Empire through small household congregations, often visited by travelling teachers whose claims were hard to check. Letters like this one were carried by messengers and read aloud when believers gathered.
+**Revelation — 17:7**
+> Later in this passage seven hills, or mountains, are mentioned. Rome was famously known as the city built on seven hills, a detail John's first readers would likely have recognised.
 
-- Problem: The opening says Jude was 'likely written in the second half of the first century,' but the range that follows starts at AD 50 (mid-century) and runs to 'AD 90 or later' (possibly the second century). The framing and the range do not match, which could confuse readers and makes the 'likely' sound more settled than the spread of views allows.
-- Suggested: Drop the opening claim and give the range directly, e.g. 'Scholars date Jude anywhere from around AD 50–70, if Jude himself wrote it, to around AD 90 or a little later, if it was written in his name.'
-
-**Jude — author**
-> The writer calls himself Jude, a servant of Jesus Christ and brother of James. Traditionally he is identified as one of the brothers of Jesus named in the Gospels. Jesus' brothers did not believe in him during his ministry, but they are found among the believers after the resurrection, and Paul mentions the Lord's brothers travelling as missionaries. Beyond this, little is known about Jude himself. Many scholars accept the traditional view, while others think a later follower wrote in Jude's name to carry his authority.
-
-- Problem: 'Brother of James' is not explained. Ordinary readers may not know which James is meant, since several appear in the New Testament. The traditional link to Jesus' family depends on this James being the brother of Jesus who led the church in Jerusalem.
-- Suggested: Add a short clause, e.g. 'brother of James, usually taken to be the James who led the Jerusalem church and was himself a brother of Jesus.'
+- Problem: The closing clause, saying John's first readers would likely have recognised the detail, implies the hills point to Rome. That reads the passage rather than describing its setting, and readers of Revelation disagree about this identification.
+- Suggested: Keep the background fact and drop the implied identification, e.g. 'Later in this passage seven hills, or mountains, are mentioned. In the ancient world Rome was famously known as the city built on seven hills.'
 
 ## Random sample of passage notes
 
-- **Nehemiah 7:6** — This list closely matches one in Ezra. It records families who returned from exile, with Zerubbabel among their leaders, in the decades after 538 BC, nearly a century earlier.
-- **Matthew 4:12** — Capernaum was a busy fishing town on the north shore of the Sea of Galilee, in the territory of Herod Antipas, who had arrested John.
-- **Leviticus 8:1** — This ceremony carries out the instructions for ordaining Aaron and his sons that Moses had received earlier on the mountain, recorded in Exodus 29.
-- **2 Kings 10:29** — An Assyrian monument called the Black Obelisk shows Jehu or his envoy bowing and paying tribute to King Shalmaneser III around 841 BC.
-- **1 Kings 8:1** — The dedication took place in the seventh month, autumn, at the Festival of Shelters (Tabernacles), a week-long harvest celebration when crowds gathered in Jerusalem.
-- **Ezekiel 17:1** — Set against King Zedekiah breaking his sworn loyalty to Babylon and seeking military help from Egypt.
-- **Jeremiah 32:1** — Dated to Zedekiah's tenth year, around 587 BC, during the final siege, while Jeremiah was confined in the palace guardhouse.
-- **Mark 13:1** — Herod the Great began rebuilding the temple around 20 BC with enormous white stones, and work was still continuing in Jesus' day.
-- **Amos 9:7** — Cush was the land south of Egypt; Caphtor is usually identified with Crete, the Philistines' homeland; Kir was the Arameans' place of origin.
-- **2 Corinthians 2:14** — Paul draws on the Roman triumph, a grand victory parade through Rome for a conquering general, with his soldiers, captured prisoners led along the route, and sweet-smelling incense burning as the procession passed.
-- **Isaiah 63:1** — Bozrah was a chief city of Edom, Judah's south-eastern neighbour and old rival.
-- **Luke 19:1** — Jericho sat on a busy trade route, making it an important tax post where a chief tax collector could grow very rich.
-- **Jeremiah 35:1** — The Rekabites were a clan who lived in tents and avoided wine; under Jehoiakim they took refuge in Jerusalem from invading armies.
-- **Amos 1:13** — Ammon lay east of the Jordan, around today's Amman, and competed with Israel for control of Gilead.
-- **1 Kings 12:25** — Dan and Bethel stood near the northern and southern edges of Jeroboam's new kingdom, giving his people places to worship without travelling to Jerusalem.
-- **John 21:1** — Many scholars think this final chapter was added as an epilogue, possibly by the author's circle, after the book's first ending.
-- **Isaiah 41:1** — The conqueror stirred up from the east is widely identified as Cyrus, the Persian king whose armies were sweeping across the region.
-- **Psalms 1:1** — Psalm 1 opens Book One of the five 'books' Psalms is divided into, and many think it was placed first as a doorway into the whole collection.
-- **1 Corinthians 7:1** — Here Paul begins answering questions the Corinthians had sent him in a letter, starting with questions about marriage.
-- **Exodus 30:11** — A shekel was a weight of silver, roughly 11 grams; this half-shekel payment later became the yearly temple tax still collected in Jesus' day.
-- **Jeremiah 49:28** — Kedar and Hazor here refer to Arab tribes of the desert east of Judah, living in tents and herding camels.
-- **Nehemiah 8:13** — The Festival of Booths, or Tabernacles, was a week-long autumn harvest feast when families lived in shelters made of branches.
-- **Leviticus 25:8** — Whether the Jubilee, every fiftieth year, was ever fully practised is uncertain; the Old Testament records no clear example of it being kept.
 - **Mark 7:24** — Tyre was an ancient non-Jewish port city on the Mediterranean coast north of Galilee, in what is now Lebanon.
-- **Ezekiel 30:20** — Dated to about 587 BC, soon after an Egyptian army failed to break Babylon's siege of Jerusalem.
-- **Jeremiah 50:1** — Chapters 50–51 concern Babylon itself, the empire then dominating Judah; some scholars date parts to later in the exile.
-- **Haggai 2:10** — Dated to the twenty-fourth day of the ninth month, around December 520 BC, three months after rebuilding resumed, and includes questions put to the priests about rules of ritual cleanness, that is, whether a person or thing counted as fit to take part in worship.
-- **Luke 8:26** — The region of the Gerasenes lay across the lake in largely Gentile territory, which explains the herd of pigs, animals Jews did not keep.
-- **Jeremiah 30:1** — Chapters 30–33 are often called the 'Book of Consolation'; some think parts were first addressed to descendants of the long-conquered northern kingdom.
-- **Jeremiah 46:13** — Concerns Nebuchadnezzar's expected invasion of Egypt; Babylonian records mention a campaign against Egypt around 568 BC.
-- **Acts 21:37** — Josephus also mentions an Egyptian who led a large band of followers to the Mount of Olives around the 50s AD before Roman troops scattered them.
-- **1 Thessalonians 3:6** — Timothy had just rejoined Paul, likely in Corinth, bringing an encouraging report about the church; this news seems to have prompted the letter.
-- **Psalms 73:1** — Opening Book Three, this begins a group of eleven psalms credited to Asaph and the temple singers who carried on his name.
-- **Acts 17:16** — Athens was past its political glory but still a famous centre of philosophy; the Areopagus was its ancient council, named after the Hill of Ares.
-- **2 Corinthians 6:14** — Corinth was full of temples to Greek and Roman gods; some scholars think this section came from another letter because it seems to interrupt the surrounding flow.
-- **Acts 16:11** — Philippi was a Roman colony in Macedonia, settled by retired soldiers, proud of its Roman status, and apparently with too few Jews for a synagogue.
-- **1 Peter 5:12** — Silvanus is probably the Silas who travelled with Paul; Mark is probably the John Mark who appears in the book of Acts and travelled for a time with Paul, and whom early tradition links with the Gospel of Mark; and "Babylon" is widely understood as a code name for Rome.
-- **Zephaniah 2:8** — Moab and Ammon were neighbouring peoples east of the Jordan River and the Dead Sea, with a long history of hostility toward Israel and Judah.
-- **2 Kings 23:36** — Babylon defeated Egypt at Carchemish in 605 BC, bringing Judah under Babylonian control; Jeremiah 36 tells of Jehoiakim burning the prophet's scroll.
-- **Zechariah 4:1** — Zerubbabel was the Persian-appointed governor of Judah, a descendant of King David, and he led the work of rebuilding the temple.
-- **Romans 16:1** — Phoebe, from Cenchreae, Corinth's port, probably carried the letter; Priscilla and Aquila had earlier been expelled from Rome under Claudius. A few scholars think this chapter was first sent elsewhere.
-- **Ezekiel 31:1** — Dated to about 587 BC, during Babylon's siege of Jerusalem.
-- **John 5:1** — Archaeologists have uncovered a large pool complex near Jerusalem's Sheep Gate, widely identified as Bethesda, matching the description of pools surrounded by covered walkways.
+- **Numbers 31:1** — The Midianites were a desert people living around the edges of Israel's route; Moses' own wife Zipporah and father-in-law Jethro were Midianites.
+- **Ecclesiastes 5:1** — 'The house of God' is the temple in Jerusalem, where worshippers offered sacrifices and made vows, solemn promises to give God something.
+- **Deuteronomy 3:1** — Bashan was a fertile highland region east of the Sea of Galilee, famous for its cattle and oak forests, covering today's Golan Heights and the lands east of it in southern Syria.
+- **Ezra 8:31** — The journey from Babylonia to Jerusalem took about four months and covered roughly 900 miles along routes where travellers risked robbers.
+- **Psalms 59:1** — The heading links it to when Saul sent men to watch David's house to kill him, and his wife Michal helped him escape.
+- **Acts 13:13** — Pisidian Antioch was a Roman colony in the highlands of what is now central Turkey, a different city from Antioch in Syria.
+- **2 Kings 22:1** — The prophets Jeremiah and Zephaniah began their work during Josiah's reign, which started around 640 BC.
+- **Matthew 26:17** — Passover was the yearly meal remembering Israel's escape from Egypt, eaten in Jerusalem with lamb, unleavened bread and wine.
+- **Jeremiah 25:1** — Dated to Jehoiakim's fourth year, 605 BC, the year Nebuchadnezzar became king and Babylon defeated Egypt at Carchemish.
+- **Amos 2:6** — Here Amos turns to the northern kingdom of Israel itself, the very people he had come to address.
+- **2 Chronicles 36:15** — The Babylonian army under Nebuchadnezzar destroyed Jerusalem and its temple in 586 BC, and many survivors were taken into exile in Babylon.
+- **Leviticus 26:1** — Ending a set of laws with blessings and curses echoes ancient Near Eastern treaties between kings and their subjects, which usually closed the same way.
+- **2 Corinthians 8:16** — Paul sent Titus with two unnamed fellow believers, one chosen by the churches, to oversee the collection openly and honestly.
+- **John 3:1** — Pharisees were a respected Jewish group devoted to careful keeping of God's law; Nicodemus also sat on the ruling council in Jerusalem.
+- **Numbers 21:10** — This passage quotes the Book of the Wars of the Lord, an ancient collection of songs or poems that has since been lost.
+- **Luke 5:27** — Tax collectors gathered tolls and taxes for Herod Antipas or Rome, often overcharging, so they were widely despised as cheats and collaborators.
+- **Nehemiah 5:14** — Nehemiah served as governor for twelve years, from about 445 to 433 BC.
+- **Leviticus 17:1** — Scholars often call chapters 17 to 26 the "Holiness Code", a distinct collection of laws that may once have circulated on its own.
+- **Revelation 2:8** — Smyrna was a wealthy port city, proud of its long loyalty to Rome and an early temple to the emperor; the church there was poor and facing hostility.
+- **Ruth 3:1** — A threshing floor was a hard, open patch where harvested grain was beaten and tossed into the evening breeze to separate it from husks; workers often slept there to guard it.
+- **1 Thessalonians 2:1** — Paul arrived after being beaten and jailed in Philippi, and travelling speakers who sought money and praise were common, so he recalls working to support himself.
+- **Daniel 1:1** — The third year of King Jehoiakim of Judah is around 605 BC, when Nebuchadnezzar began to take control of the region; tradition places the first captives and Temple treasures being taken to Babylon at this time, though Babylonian records do not mention it.
+- **Psalms 80:1** — Its mention of Ephraim, Benjamin and Manasseh leads many to link it to the northern kingdom's collapse under Assyria around 722 BC.
+- **1 Corinthians 15:1** — Paul passes on an early summary of the faith he had received, including the oldest written list of people who saw the risen Jesus.
+- **1 Chronicles 3:17** — Jeconiah, also called Jehoiachin, was the king taken captive to Babylon in 597 BC; this list traces his descendants several generations beyond the exile.
+- **Isaiah 34:1** — Edom, south-east of the Dead Sea, was Judah's neighbour and long-standing rival; Bozrah was one of its chief cities.
+- **Joshua 24:1** — Shechem, between Mounts Ebal and Gerizim, was where Abraham first built an altar in Canaan and where Jacob later bought land.
+- **Luke 1:5** — Herod the Great ruled Judea for Rome until about 4 BC; priests served at the temple in rotating groups, and offering incense was a rare, lot-chosen honour.
+- **2 Samuel 2:1** — Hebron, an old town in the hills of Judah, was linked with Abraham's family burial place and became David's first capital.
 - **Leviticus 16:1** — This describes the yearly Day of Atonement, still observed by Jewish people today as Yom Kippur, usually falling in September or October.
-- **Zechariah 6:9** — Three men, Heldai, Tobijah and Jedaiah, had just arrived from the exiles in Babylon bringing gifts of silver and gold.
-- **Psalms 30:1** — The heading calls it a song for the dedication of 'the house', probably the temple or David's palace in Jerusalem.
-- **Revelation 2:1** — Ephesus was the province's greatest city and a major port, home to the famous temple of the goddess Artemis; Paul had worked there for over two years.
-- **Ezekiel 35:1** — Mount Seir is the hill country of Edom, south of the Dead Sea; Edom was remembered for joining in Jerusalem's downfall.
-- **Ezra 3:7** — The temple foundation was laid around 536 BC, with cedar from Lebanon supplied by the people of the coastal cities of Tyre and Sidon and brought by sea to the port of Joppa, as had been done for Solomon's temple.
-- **2 Thessalonians 2:1** — Some in the church had been alarmed by claims, possibly even a letter falsely said to be from Paul, that the 'day of the Lord' (the long-awaited day when God would act decisively and Jesus would return) had already arrived.
+- **Luke 17:11** — People with skin diseases were required by law to live apart from others and keep their distance, often in small outcast groups.
+- **1 Kings 2:26** — Anathoth, where Abiathar is sent, was a town of priests a few miles north-east of Jerusalem; centuries later it was the prophet Jeremiah's home town.
+- **Joshua 19:40** — The tribe of Dan's move north to capture Leshem, also called Laish, is told in fuller detail in Judges 18.
+- **Ezra 7:1** — Ezra travelled in the seventh year of Artaxerxes, traditionally dated 458 BC; some scholars instead place his journey in 398 BC, under a later Artaxerxes.
+- **1 Chronicles 9:1** — This list of people resettling Jerusalem after the exile closely parallels a similar list in Nehemiah 11.
+- **Proverbs 31:10** — This closing poem is an acrostic: in Hebrew, each verse begins with the next letter of the alphabet, a form that may have helped memory and gave a sense of completeness, from first letter to last.
+- **Ezekiel 33:21** — Dated to about January 585 BC, when a refugee reached the exiles in Babylon with news that Jerusalem had fallen.
+- **Psalms 113:1** — Psalms 113–118 form the 'Hallel' (praise), sung by Jewish families at Passover; Jesus and his disciples probably sang them at the Last Supper.
+- **Numbers 21:33** — Bashan was a fertile highland east of the Sea of Galilee, famous in ancient times for its rich pastures, strong cattle and oak trees.
+- **Matthew 4:12** — Capernaum was a busy fishing town on the north shore of the Sea of Galilee, in the territory of Herod Antipas, who had arrested John.
+- **Mark 10:46** — Jericho was the last town on the steep road up to Jerusalem, about fifteen miles away, and crowds of pilgrims passed through on their way to Passover.
+- **Nahum 3:8** — Thebes, called No-Amon here, was Egypt's great city on the Nile, sacked by the Assyrian king Ashurbanipal around 663 BC despite its powerful African allies.
+- **Lamentations 4:1** — This chapter's mention of the king's capture is widely taken to refer to Zedekiah, caught fleeing Jerusalem, and its closing lines address Edom, a neighbour that welcomed Judah's fall.
+- **1 Corinthians 15:12** — Some in the church were saying the dead would not be raised, an idea that fit common Greek thinking, which often looked down on the body.
+- **Mark 16:9** — The oldest surviving manuscripts end at verse 8; most scholars think these closing verses were added later, though some defend them and the church has long read them.
+- **1 Chronicles 21:18** — Ornan's threshing floor, where grain was separated from husks, became the site of Solomon's temple, which Chronicles elsewhere links with Mount Moriah.
+- **Deuteronomy 2:1** — The Edomites were descended from Esau, Jacob's brother, so Israel regarded them as relatives; Moab and Ammon traced their ancestry to Abraham's nephew Lot.
+- **1 Corinthians 5:9** — Paul refers to an earlier letter he had written to Corinth, which has not survived.
+- **Jeremiah 24:1** — Set just after 597 BC, when King Jehoiachin, Judah's officials and skilled craftsmen had been deported to Babylon.
 
 ## Books
 
@@ -509,7 +569,7 @@ What the fix step left alone, then anything the re-check found.
 
 ### Judges
 
-**Who wrote it.** Judges does not name its author. Jewish tradition, recorded in the Talmud (an ancient collection of Jewish teaching), credits the prophet Samuel, the last of Israel's leaders before the kings. Many scholars instead think the book was gathered from older stories and songs and shaped by later Israelite writers, possibly during the time of the kings or even after the exile. Either way, the writer was someone deeply concerned with Israel's loyalty to God and its need for good leadership.
+**Who wrote it.** Judges does not name its author. Jewish tradition, recorded in the Talmud (an ancient collection of Jewish teaching), credits the prophet Samuel, the last of Israel's leaders before the kings. Many scholars instead think the book was gathered from older stories and songs and shaped by later Israelite writers, possibly during the time of the kings or even after the exile.
 
 **Who first heard it.** The first readers were Israelites looking back on their nation's early, chaotic days in the land. The book's repeated remark that there was no king in Israel suggests they already lived under kings and could compare those times with their own. If the book reached its final form later, it would also have spoken to people facing defeat and exile.
 
@@ -521,7 +581,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who first heard it.** The first hearers were Israelites, and the book ends by tracing the family line of David, Israel's great king, back to Ruth. If Samuel wrote it, as Jewish tradition holds, David's reign still lay ahead for those first hearers. If it was written during the time of the kings, they knew David as their great king and were living under rulers from his family. If it was written after the exile, they were a small community rebuilding life in Judah and wrestling with questions about marriage to foreigners.
 
-**What was happening.** The story is set in the days of the judges, roughly 1200–1050 BC, before Israel had a king, when the tribes were loosely bound together and times were often unsettled. Life in a small town like Bethlehem revolved around farming, family land and the harvest seasons, and relatives were expected to look after kin who fell on hard times. Moab, Ruth's homeland, lay east of the Dead Sea and was a long-standing neighbour of Israel and sometimes its enemy. The book itself was written down later, perhaps near the end of this period or several generations on, depending on who wrote it.
+**What was happening.** The story is set in the days of the judges, roughly 1200–1050 BC, before Israel had a king, when the tribes were loosely bound together and times were often unsettled. Life in a small town like Bethlehem revolved around farming, family land and the harvest seasons, and relatives were expected to look after kin who fell on hard times. Moab, Ruth's homeland, lay east of the Dead Sea and was a long-standing neighbour of Israel and sometimes its enemy. The book itself was written down later, perhaps near the end of this period, or anywhere up to several centuries afterwards, depending on who wrote it.
 
 ### 1 Samuel
 
@@ -583,7 +643,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who wrote it.** Much of this book is the personal memoir of Nehemiah, a Jewish man living in exile who served as cupbearer to the Persian king Artaxerxes I. A cupbearer tasted and served the king's wine, a trusted post close to the throne. The king later appointed Nehemiah governor of Judah. Jewish tradition treats Ezra and Nehemiah as one book, possibly put together by Ezra, while many scholars think a later editor combined Nehemiah's memoir with other records and lists.
 
-**Who first heard it.** It was first read by the small Jewish community in and around Jerusalem, descendants of exiles who had come back from Babylon, probably in the generation or so after Nehemiah. They were poor, few in number and surrounded by unfriendly neighbours, and their city's walls had been rebuilt within living memory.
+**Who first heard it.** It was first read by the small Jewish community in and around Jerusalem, descendants of exiles who had come back from Babylon. Traditionally the book is placed soon after Nehemiah's time, though many scholars think it reached its final form somewhat later, around 400 BC or after. Its first readers were poor, few in number and surrounded by unfriendly neighbours, and their city's walls had been rebuilt in Nehemiah's day.
 
 **What was happening.** Judah was a small province of the vast Persian Empire. The Babylonians had destroyed Jerusalem around 586 BC, and from around 538 BC Persian kings allowed Jewish exiles to return. The temple was rebuilt by around 516 BC, but the city walls remained broken. Nehemiah's work begins around 445 BC, in the reign of Artaxerxes I.
 
@@ -591,7 +651,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who wrote it.** The writer of Esther is not named. Jewish tradition credits the book to the 'Men of the Great Assembly,' a council of Jewish leaders after the exile, and some have suggested Mordecai himself. Many scholars think an unknown Jewish author wrote it some decades or more after the events, in the later Persian period or a little after. Whoever it was knew the Persian royal court well and wrote as a skilled storyteller.
 
-**Who first heard it.** The first readers were Jews scattered across the Persian Empire, far from Jerusalem. They were a small minority living under foreign rulers, often exposed to suspicion and danger. The book also gave them the background to the yearly feast of Purim, which they kept together as a community.
+**Who first heard it.** The first readers were Jews scattered far from Jerusalem, in lands ruled by Persia or, if the book was written a little later, by the Greek kings who came after. They were a small minority living under foreign rulers, often exposed to suspicion and danger. The book also gave them the background to the yearly feast of Purim, which they kept together as a community.
 
 **What was happening.** The story takes place in Susa, one of the Persian Empire's royal capitals, during the reign of Ahasuerus, usually identified with Xerxes I (around 486–465 BC). Persia then ruled a vast territory stretching from India to Cush, the land south of Egypt (some Bibles translate it 'Ethiopia'). Decades earlier King Cyrus had allowed exiled Jews to return home, but many had stayed where they were, building lives in Persian cities. Many readers take the story as straightforward history; some scholars see it as a tale set in a real Persian court rather than a record of events, partly because no record outside the Bible mentions Esther and Greek historians give Xerxes a queen with a different name.
 
@@ -631,15 +691,15 @@ What the fix step left alone, then anything the re-check found.
 
 **Who wrote it.** The opening line links the book to Solomon, king of Israel around 970–930 BC, the son of King David, remembered for his wisdom and said to have written over a thousand songs. The Hebrew wording can mean a song by Solomon, for him, or about him, so readers have long weighed how directly he wrote it. Traditionally Solomon is the author. Many scholars think the poems were written or gathered later by unnamed poets, perhaps over a long period, partly because of features in the Hebrew language.
 
-**Who first heard it.** Its first hearers were ordinary Israelites who knew vineyards, flocks, gardens and wild hill country, the world the poems are full of. The songs may have been sung at weddings and celebrations, and later Jewish communities read the whole book aloud each year during Passover, the spring festival remembering the escape from Egypt.
+**Who first heard it.** No one knows exactly who first heard these poems. They may have been enjoyed at a royal court, among ordinary people, or both. Whoever they were, they knew vineyards, flocks, gardens and wild hill country, the world the poems are full of. The songs may have been sung at weddings and celebrations, and later Jewish communities read the whole book aloud each year during Passover, the spring festival remembering the escape from Egypt.
 
-**What was happening.** If written in Solomon's day, it comes from Israel's golden age: peace, wealth, the building of the first temple in Jerusalem, and trade with Egypt, Phoenicia and Arabia. Love poetry was well known across the ancient Middle East, and Egyptian love songs from a few centuries earlier use similar images. The poems name real places across the land, from Jerusalem and En-gedi to Lebanon, Gilead and Carmel.
+**What was happening.** If written in Solomon's day, it comes from Israel's golden age: peace, wealth, the building of the first temple in Jerusalem, and trade with Egypt, Phoenicia and Arabia. Love poetry was well known across the ancient Middle East, and Egyptian love songs from around 1300–1100 BC use similar images. The poems name real places across the land, from Jerusalem and En-gedi to Lebanon, Gilead and Carmel.
 
 ### Isaiah
 
 **Who wrote it.** Isaiah son of Amoz was a prophet in Jerusalem, active for about forty years, from around 740 to 700 BC, under Kings Uzziah, Jotham, Ahaz and Hezekiah. He moved in royal circles and spoke directly to kings. He was married, and he gave his sons names that carried messages. Tradition credits him with the whole book; many scholars think chapters 40–66 were added by later prophets in his tradition, writing during and after the exile in Babylon.
 
-**Who first heard it.** The first hearers were the people of Jerusalem and Judah, including their kings and leaders. They lived under constant threat from Assyria and were tempted to trust in foreign alliances. Chapters 40–66 speak to a later situation: Jews exiled in Babylon after Jerusalem's destruction, and then those returning to rebuild a ruined city.
+**Who first heard it.** The first hearers were the people of Jerusalem and Judah, including their kings and leaders. They lived under constant threat from Assyria and were tempted to trust in foreign alliances. Many scholars think chapters 40–66 were written for a later situation: Jews exiled in Babylon after Jerusalem's destruction, and then those returning to rebuild a ruined city. Traditionally, these chapters are read as Isaiah's own words, looking ahead to that time.
 
 **What was happening.** Isaiah lived as Assyria, a ruthless empire based in what is now northern Iraq, pushed west. In 722 BC Assyria destroyed the northern kingdom of Israel, and in 701 BC its king Sennacherib overran Judah and besieged Jerusalem. Judah's kings wavered between submitting to Assyria and seeking help from Egypt. The later chapters look to Babylon's destruction of Jerusalem in 587 BC, the exile that followed, and the rise of Cyrus of Persia, who let the exiles return from 538 BC.
 
@@ -671,13 +731,13 @@ What the fix step left alone, then anything the re-check found.
 
 **Who wrote it.** Traditionally the book is credited to Daniel, a young Jew from a noble or royal family who was taken from Jerusalem to Babylon as a teenager around 605 BC. He was trained to serve in the Babylonian court and rose to become a senior royal official and a trusted interpreter of dreams under both Babylonian and Persian kings. Chapters 1–6 tell stories about him in the third person, while chapters 7–12 record his visions in his own voice. Many modern scholars think the book reached its final form around 165 BC, when an unnamed faithful Jewish writer in Judea gathered older stories about Daniel and added the visions.
 
-**Who first heard it.** On the traditional view, the first readers were Jews living in exile in Babylon and its aftermath, learning how to stay loyal to God while serving powerful foreign rulers far from home. On the later-date view, the book was written for Jews in Judea around 167–164 BC, when the Greek-Syrian king Antiochus IV outlawed their faith on pain of death. In both pictures, the readers were God's people living under hostile empires.
+**Who first heard it.** On the traditional view, the first readers were Jews living in exile in Babylon and afterwards, serving under powerful foreign rulers far from home. On the later-date view, the book was written for Jews in Judea around 167–164 BC, when the Greek-Syrian king Antiochus IV outlawed their faith on pain of death. In both pictures, the readers were God's people living under hostile empires.
 
-**What was happening.** The stories are set in the 500s BC, after the Babylonian king Nebuchadnezzar conquered Judah, destroyed Jerusalem and its Temple in 586 BC, and carried many of its people off to Babylon. In 539 BC Babylon fell to Cyrus of Persia, who soon allowed exiles to go home and rebuild. If the book was finished in the 160s BC, its writer lived under Greek rulers descended from Alexander the Great's generals, during Antiochus IV's persecution and the Jewish uprising led by the Maccabee family. In Jewish Bibles, Daniel sits among the Writings rather than the Prophets.
+**What was happening.** The stories span from around 605 BC, when the Babylonian king Nebuchadnezzar first took captives from Judah, through his destruction of Jerusalem and its Temple in 586 BC, when many more of its people were carried off to Babylon, to the early years of Persian rule. In 539 BC Babylon fell to Cyrus of Persia, who soon allowed exiles to go home and rebuild. If the book was finished in the 160s BC, its writer lived under Greek rulers descended from Alexander the Great's generals, during Antiochus IV's persecution and the Jewish uprising led by the Maccabee family. In Jewish Bibles, Daniel sits among the Writings rather than the Prophets.
 
 ### Hosea
 
-**Who wrote it.** The book is named after Hosea son of Beeri, a prophet: someone believed to speak messages from God to his people. He is the only prophet with a book in the Bible who seems to have come from, and worked in, the northern kingdom of Israel. Little is known of his daily life beyond his troubled marriage to a woman named Gomer, which the book describes. Most take this as a real marriage, though some, both in church tradition and among scholars, have read it as a vision or symbolic story. Most agree the messages go back to Hosea himself, though many scholars think they were later collected and edited in the southern kingdom of Judah, with a few lines added for readers there.
+**Who wrote it.** The book is named after Hosea son of Beeri, a prophet: someone believed to speak messages from God to his people. He is the only prophet from the northern kingdom of Israel whose messages to his own people fill a book of the Bible. Little is known of his daily life beyond his troubled marriage to a woman named Gomer, which the book describes. Most take this as a real marriage, though some, both in church tradition and among scholars, have read it as a vision or symbolic story. Most agree the messages go back to Hosea himself, though many scholars think they were later collected and edited in the southern kingdom of Judah, with a few lines added for readers there.
 
 **Who first heard it.** Hosea first spoke to the people of the northern kingdom of Israel, which he often calls 'Ephraim' after its leading tribe, and to its leaders in the capital, Samaria. Many mixed worship of Israel's God with worship of Baal, a Canaanite god believed to bring rain and good harvests, and the kingdom's official shrines held golden calf statues. After the north fell, the collected messages were treasured by readers in Judah to the south.
 
@@ -689,7 +749,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who first heard it.** Joel spoke to the people of Judah and Jerusalem, including the priests who led worship at the temple and the elders who led the community. They had just been struck by a devastating swarm of locusts and a drought that stripped the fields, vineyards and orchards bare. Food was scarce, and even the grain and wine used in daily temple offerings had run out.
 
-**What was happening.** The date of Joel is unclear because the book names no king. Traditionally it has been placed early, around 800 BC, perhaps while the boy-king Joash ruled Judah under the guidance of priests. Many scholars today date it later, around 500–350 BC, after the Jews returned from exile in Babylon and rebuilt the temple, when Judah was a small province under Persian rule. Either way, Judah was a small farming community whose survival depended on rain and harvest, and locust swarms were a dreaded and familiar disaster.
+**What was happening.** The date of Joel is unclear because the book names no king. Traditionally it has been placed early, around 800 BC, perhaps while the boy-king Joash ruled Judah under the guidance of priests. Many scholars today date it later, around 500–350 BC, after the Jews returned from exile in Babylon and rebuilt the temple, when Judah was a small province under Persian rule. Either way, Judah was a small land whose people lived mostly by farming and whose survival depended on rain and harvest, and locust swarms were a dreaded and familiar disaster.
 
 ### Amos
 
@@ -703,7 +763,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who wrote it.** The book is credited to Obadiah, whose name means 'servant of the Lord'. He was a prophet, someone who brought God's messages to the people, but nothing else is known about his family, hometown or life. Several other Old Testament figures share the name, though there is no good reason to link him with any of them.
 
-**Who first heard it.** The message is addressed to Edom, a neighbouring nation descended from Esau, Jacob's brother. Its real first hearers, however, were the people of Judah, many of them grieving or displaced after Jerusalem had been attacked and plundered while the Edomites looked on and joined in.
+**Who first heard it.** The message is addressed to Edom, a neighbouring nation descended from Esau, Jacob's brother. Its real first hearers, however, were the people of Judah, stung by the way the Edomites had looked on and joined in when Jerusalem was attacked and plundered, at a time whose exact date is still debated.
 
 **What was happening.** Most scholars connect the book to the Babylonian destruction of Jerusalem in 586 BC, when Edom sided with the invaders and took advantage of Judah's collapse. Some instead date it earlier, to around 845 BC, when Philistines and Arabs raided Jerusalem during King Jehoram's reign. Either way, Israel and Edom had a long history of bitter rivalry stretching back centuries, despite their shared ancestry.
 
@@ -735,7 +795,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who wrote it.** The book is credited to Habakkuk, who is simply called 'the prophet', someone who received and passed on messages from God. Almost nothing is known about his family, hometown or life. Because the final chapter is a prayer set to music with instructions for a choir leader, many think he may have served among the prophets connected with worship at the temple in Jerusalem. Most scholars accept him as the source of the book, though some think the closing prayer was first a separate psalm that was later joined to it.
 
-**Who first heard it.** His first hearers were the people of Judah, the small southern kingdom centred on Jerusalem. At home they lived with violence, unfair courts and powerful people exploiting the weak, while a new and frightening empire was rising in the east.
+**Who first heard it.** His first hearers were the people of Judah, the small southern kingdom centred on Jerusalem, at a time when a new and frightening empire was rising in the east. Most readers take the book's opening complaint to describe life in Judah itself: violence, unfair courts and powerful people exploiting the weak. Some scholars think it instead describes the cruelty of a foreign oppressor such as Assyria or Babylon.
 
 **What was happening.** Habakkuk is usually dated to the years around 600 BC, probably between about 609 and 597 BC. The old Assyrian empire had collapsed, its capital Nineveh falling in 612 BC, and Babylon was rising quickly, defeating Egypt at the battle of Carchemish in 605 BC. In Judah, good King Josiah had been killed in 609 BC, and his son Jehoiakim's rule is remembered as harsh and unjust. Within a few years Babylon would invade Judah, carrying off captives in 597 BC and destroying Jerusalem in 586 BC.
 
@@ -759,7 +819,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who wrote it.** Zechariah was a prophet, a man who brought messages he believed came from God. He was the son of Berechiah and grandson of Iddo, and he likely came from a priestly family that had returned from exile in Babylon. He worked alongside the prophet Haggai, beginning around 520 BC. Chapters 1–8 are widely accepted as his, but many scholars think chapters 9–14 come from a later writer or writers, while others hold that Zechariah wrote the whole book.
 
-**Who first heard it.** The first hearers were Jews who had come back to Jerusalem and Judah after about seventy years of exile in Babylon. They lived in a small, poor community among ruins, and their work rebuilding God's temple had stalled for years amid hardship, opposition and discouragement.
+**Who first heard it.** The first hearers were Jews who had come back to Jerusalem and Judah after decades of exile in Babylon. They lived in a small, poor community among ruins, and their work rebuilding God's temple had stalled for years amid hardship, opposition and discouragement.
 
 **What was happening.** The Persian Empire ruled the region after defeating Babylon, and in 538 BC the Persian king Cyrus allowed exiled Jews to return home. Foundations for a new temple were laid, but work stopped for nearly two decades. King Darius I took the throne in 522 BC after a period of revolts across the empire, and under the encouragement of Haggai and Zechariah the temple was finally completed around 516 BC.
 
@@ -921,7 +981,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who first heard it.** The first readers were a particular community of Christians the writer knew well. They are traditionally thought to be Jewish believers, though some scholars think the group was mixed. They had once stood firm through public insults, the imprisonment of friends and the seizure of property, but were now weary and tempted to drift away. A closing greeting from believers from Italy leads many to link them with Rome.
 
-**What was happening.** The letter was written within the Roman Empire, probably in the AD 60s, while the Jerusalem temple and its sacrifices still stood. Some scholars date it later, to the AD 80s, but it must be earlier than about AD 96, when a church leader in Rome quoted it. Christians were increasingly seen as separate from Judaism and therefore lost some of the protection Jewish communities enjoyed. In Rome, Emperor Claudius had expelled Jews around AD 49, and Emperor Nero turned violently on Christians after the great fire of AD 64.
+**What was happening.** The letter was written within the Roman Empire, probably in the AD 60s, while the Jerusalem temple and its sacrifices still stood. Some scholars date it later, to the AD 80s, but it was already known when a church leader in Rome drew heavily on it in a letter of his own, usually dated to around AD 96. Christians were increasingly seen as separate from Judaism and therefore lost some of the protection Jewish communities enjoyed. In Rome, Emperor Claudius had expelled Jews around AD 49, and Emperor Nero turned violently on Christians after the great fire of AD 64.
 
 ### James
 
@@ -951,7 +1011,7 @@ What the fix step left alone, then anything the re-check found.
 
 **Who wrote it.** The letter never names its writer, but from the second century Christians have traditionally credited it to John the apostle, a Galilean fisherman and son of Zebedee who became one of Jesus' closest disciples. Early tradition says John spent his old age leading churches around Ephesus, in what is now western Turkey. Many scholars instead think it was written by a respected leader in a circle of churches shaped by John's teaching, possibly the figure later known as 'John the Elder.' Whoever he was, he writes as an older, trusted pastor who claims a close link to the first eyewitnesses of Jesus.
 
-**Who first heard it.** It was most likely sent to a group of house churches, probably in or around Ephesus in the Roman province of Asia, whose members the writer knew well and cared for. These congregations had recently been shaken by a painful split over what to believe about Jesus, and those who remained were unsettled and needed reassurance.
+**Who first heard it.** It was most likely sent to a group of house churches, probably in or around Ephesus in the Roman province called Asia (a region on the western edge of modern Turkey, not the continent), whose members the writer knew well and cared for. These congregations had recently been shaken by a painful split over what to believe about Jesus, and those who remained were unsettled and needed reassurance.
 
 **What was happening.** It is usually dated to around AD 90–100, though some place it a little earlier. The Roman Empire was at peace and its cities were full of temples to many gods, while the Jerusalem temple had been destroyed in AD 70, some twenty to thirty years earlier, and most of the original apostles had died. Christianity was spreading in Greek-speaking cities, and some teachers there were blending the faith with popular ideas that the physical world was inferior to the spiritual.
 
@@ -973,11 +1033,11 @@ What the fix step left alone, then anything the re-check found.
 
 ### Jude
 
-**Who wrote it.** The writer calls himself Jude, a servant of Jesus Christ and brother of James. Traditionally he is identified as one of the brothers of Jesus named in the Gospels. Jesus' brothers did not believe in him during his ministry, but they are found among the believers after the resurrection, and Paul mentions the Lord's brothers travelling as missionaries. Beyond this, little is known about Jude himself. Many scholars accept the traditional view, while others think a later follower wrote in Jude's name to carry his authority.
+**Who wrote it.** The writer calls himself Jude, a servant of Jesus Christ and brother of James, usually taken to be the James who led the church in Jerusalem and was himself a brother of Jesus. Traditionally Jude is identified as one of the brothers of Jesus named in the Gospels. Jesus' brothers did not believe in him during his ministry, but they are found among the believers after the resurrection, and Paul mentions the Lord's brothers travelling as missionaries. Beyond this, little is known about Jude himself. Many scholars accept the traditional view, while others think a later follower wrote in Jude's name to carry his authority.
 
 **Who first heard it.** The letter does not name its readers. They were probably believers steeped in Jewish Scripture and tradition, perhaps in Palestine or nearby, meeting in small house churches. Certain people had slipped into their gatherings, sharing their meals while living immorally and treating God's grace as a licence for it, and Jude writes urgently to warn the believers about them.
 
-**What was happening.** Jude was likely written in the second half of the first century AD, with suggested dates ranging from around AD 50–70 to as late as AD 90 or later. The young church was spreading across the Roman Empire through small household congregations, often visited by travelling teachers whose claims were hard to check. Letters like this one were carried by messengers and read aloud when believers gathered.
+**What was happening.** Scholars date Jude anywhere from around AD 50–70, if Jude himself wrote it, to around AD 90 or a little later, if it was written in his name. The young church was spreading across the Roman Empire through small household congregations, often visited by travelling teachers whose claims were hard to check. Letters like this one were carried by messengers and read aloud when believers gathered.
 
 ### Revelation
 

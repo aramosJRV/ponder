@@ -33,11 +33,21 @@
   },
   "flags": [
     {
-      "where": "14:43",
-      "problem": "The note is about the young man who ran away, but he appears at 14:51–52, not 14:43, where the arrest begins. A reader on 14:43 will meet a detail that isn't in their verse.",
-      "suggestion": "Move this note to start at 14:51."
+      "where": "author",
+      "problem": "Early tradition (Papias) credits the Gospel simply to 'Mark', Peter's interpreter. That this Mark is the John Mark of Acts, Barnabas's cousin whose mother hosted the Jerusalem church, is a later identification that some scholars question. The note presents it as part of the second-century attribution.",
+      "suggestion": "Separate the two claims, e.g. 'from the early second century Christians credited it to Mark, traditionally identified with John Mark, a Jewish believer from Jerusalem…'"
+    },
+    {
+      "where": "14:12",
+      "problem": "'That afternoon' has no clear reference point, especially for a reader on 14:13–16 who sees the note without verse 12. They may not know which afternoon is meant.",
+      "suggestion": "Make the day explicit, e.g. 'Passover lambs were sacrificed at the temple on the afternoon before the Passover meal, and the meal had to be eaten within Jerusalem after sunset.'"
     }
   ],
-  "unsure": [],
-  "fixed": true
+  "unsure": [
+    {
+      "where": "14:43",
+      "problem": "The note is about the young man who ran away (14:51–52), not the start of the arrest at 14:43, so a reader on 14:43 meets a detail not in their verse.",
+      "suggestion": "Not applied. Notes cannot be moved, and this note covers the whole passage 14:43–52, so the young man is correctly placed within it. The wording ('the young man who ran away') does not read as if it describes verse 43 alone, so no rewording was needed. An editor could add 'Later in this passage' if they want extra clarity."
+    }
+  ]
 }

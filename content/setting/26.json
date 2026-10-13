@@ -5,9 +5,9 @@
   "audience": "The first hearers were Judeans living as exiles (people forced from their homeland) in Babylon, far from Jerusalem and its temple. Many hoped for a quick return home and believed Jerusalem could never fall. After the city was destroyed in 586 BC, they were left grieving the loss of their city, their king and their temple.",
   "era": "The Babylonian empire under King Nebuchadnezzar dominated the region, and Judah was a subject kingdom paying tribute. After a first deportation in 597 BC, Babylon placed Zedekiah on Judah's throne, but he rebelled, hoping Egypt would help. Babylon besieged Jerusalem from about 588 BC and destroyed the city and Solomon's temple in 586 BC. Ezekiel's dated messages span roughly 593 to 571 BC.",
   "notes": {
-    "1:1": "Dated to the fifth year of King Jehoiachin's exile, about 593 BC, by the Kebar canal in Babylonia; the 'thirtieth year' is often taken as Ezekiel's age.",
+    "1:1": "Dated to the fifth year of King Jehoiachin's exile, about 593 BC, by the Kebar canal in Babylonia; the passage's mention of a thirtieth year is often taken as Ezekiel's age.",
     "8:1": "Dated to about 592 BC, while the elders of the exiles sat in Ezekiel's house in Babylon.",
-    "8:5": "The god Tammuz, mourned in this vision, was a Mesopotamian god whose death was ritually lamented each year.",
+    "8:5": "Later in this passage, the god Tammuz is mourned; he was a Mesopotamian god whose death was ritually lamented each year.",
     "14:12": "The Daniel named here may be the exile in Babylon or Danel, an ancient righteous king known from older Canaanite stories; scholars differ.",
     "16:1": "Jerusalem had been a Canaanite city, held by a people called the Jebusites, until King David captured it around 1000 BC.",
     "17:1": "Set against King Zedekiah breaking his sworn loyalty to Babylon and seeking military help from Egypt.",
@@ -30,27 +30,15 @@
     "35:1": "Mount Seir is the hill country of Edom, south of the Dead Sea; Edom was remembered for joining in Jerusalem's downfall.",
     "38:1": "Gog's identity is uncertain; some link the name to Gyges, a king of Lydia in modern Turkey, while others see a symbolic figure.",
     "40:1": "Dated to about 573 BC, fourteen years after Jerusalem's fall and twenty-five years into the exile.",
-    "40:5": "A cubit was a measure of about half a metre; the 'long cubit' used here was a handbreadth longer.",
+    "40:5": "A cubit was a measure of about half a metre; the cubit used for measuring here was a longer one, a handbreadth more than usual.",
     "44:15": "Zadok was chief priest under King David and King Solomon; his descendants had led the priesthood in Jerusalem's temple."
   },
   "flags": [
     {
-      "where": "1:1",
-      "problem": "The words 'thirtieth year' in quotation marks are a direct quote of the verse, which breaks the no-quoting rule.",
-      "suggestion": "Paraphrase without quotation marks, e.g. 'the book's opening reference to a thirtieth year is often taken as Ezekiel's age.'"
-    },
-    {
-      "where": "40:5",
-      "problem": "The words 'long cubit' in quotation marks repeat a specific translation's wording of the verse, which amounts to quoting scripture.",
-      "suggestion": "Drop the quotation marks and describe it plainly, e.g. 'the cubit used here was a longer one, a handbreadth more than usual.'"
+      "where": "40:1",
+      "problem": "The note says 573 BC was fourteen years after Jerusalem's fall. The author, audience and era notes all date the fall to 586 BC, which would make 573 BC only thirteen years later. A careful reader may notice the arithmetic doesn't work. The underlying issue is that scholars genuinely disagree whether Jerusalem fell in 587 or 586 BC, and the other notes treat 586 as settled.",
+      "suggestion": "Avoid the conflicting arithmetic, e.g. 'Dated to about 573 BC, which the passage counts as the fourteenth year after Jerusalem's fall and the twenty-fifth year of the exile.' Alternatively, note the 587/586 BC uncertainty in the era section."
     }
   ],
-  "unsure": [
-    {
-      "where": "8:5",
-      "problem": "Tammuz is not mentioned in 8:5, which describes an idol at the temple's north gate. The women mourning Tammuz appear at 8:14, so a reader opening verse 8:5 will see a note about something not in the passage.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 8:14."
-    }
-  ],
-  "fixed": true
+  "unsure": []
 }

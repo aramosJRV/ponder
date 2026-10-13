@@ -2,8 +2,8 @@
   "book_number": 27,
   "name": "Daniel",
   "author": "Traditionally the book is credited to Daniel, a young Jew from a noble or royal family who was taken from Jerusalem to Babylon as a teenager around 605 BC. He was trained to serve in the Babylonian court and rose to become a senior royal official and a trusted interpreter of dreams under both Babylonian and Persian kings. Chapters 1–6 tell stories about him in the third person, while chapters 7–12 record his visions in his own voice. Many modern scholars think the book reached its final form around 165 BC, when an unnamed faithful Jewish writer in Judea gathered older stories about Daniel and added the visions.",
-  "audience": "On the traditional view, the first readers were Jews living in exile in Babylon and its aftermath, learning how to stay loyal to God while serving powerful foreign rulers far from home. On the later-date view, the book was written for Jews in Judea around 167–164 BC, when the Greek-Syrian king Antiochus IV outlawed their faith on pain of death. In both pictures, the readers were God's people living under hostile empires.",
-  "era": "The stories are set in the 500s BC, after the Babylonian king Nebuchadnezzar conquered Judah, destroyed Jerusalem and its Temple in 586 BC, and carried many of its people off to Babylon. In 539 BC Babylon fell to Cyrus of Persia, who soon allowed exiles to go home and rebuild. If the book was finished in the 160s BC, its writer lived under Greek rulers descended from Alexander the Great's generals, during Antiochus IV's persecution and the Jewish uprising led by the Maccabee family. In Jewish Bibles, Daniel sits among the Writings rather than the Prophets.",
+  "audience": "On the traditional view, the first readers were Jews living in exile in Babylon and afterwards, serving under powerful foreign rulers far from home. On the later-date view, the book was written for Jews in Judea around 167–164 BC, when the Greek-Syrian king Antiochus IV outlawed their faith on pain of death. In both pictures, the readers were God's people living under hostile empires.",
+  "era": "The stories span from around 605 BC, when the Babylonian king Nebuchadnezzar first took captives from Judah, through his destruction of Jerusalem and its Temple in 586 BC, when many more of its people were carried off to Babylon, to the early years of Persian rule. In 539 BC Babylon fell to Cyrus of Persia, who soon allowed exiles to go home and rebuild. If the book was finished in the 160s BC, its writer lived under Greek rulers descended from Alexander the Great's generals, during Antiochus IV's persecution and the Jewish uprising led by the Maccabee family. In Jewish Bibles, Daniel sits among the Writings rather than the Prophets.",
   "notes": {
     "1:1": "The third year of King Jehoiakim of Judah is around 605 BC, when Nebuchadnezzar began to take control of the region; tradition places the first captives and Temple treasures being taken to Babylon at this time, though Babylonian records do not mention it.",
     "2:1": "At verse 4 the book switches from Hebrew to Aramaic, the common language of the Babylonian and Persian empires, and stays in Aramaic through chapter 7.",
@@ -17,25 +17,19 @@
     "10:1": "The third year of Cyrus is around 536 BC, shortly after the first group of exiles had been permitted to return to Jerusalem.",
     "11:5": "Most interpreters link the kings of the south and north here with the Ptolemy rulers of Egypt and the Seleucid rulers of Syria, around 320–175 BC.",
     "11:21": "These verses are widely linked to Antiochus IV, who in 167 BC banned Jewish worship and set up a pagan altar in the Jerusalem Temple.",
-    "11:40": "These details do not match known accounts of Antiochus IV's death in 164 BC; some scholars see the writer looking beyond his own day, others see a further future in view."
+    "11:40": "These details do not match known accounts of Antiochus IV's death in 164 BC. Many scholars think the writer was working shortly before that death and expected it to come about this way; others, especially those holding the traditional view, think these verses look ahead to a figure still further in the future."
   },
   "flags": [
     {
-      "where": "era",
-      "problem": "The stories are not all set after 586 BC or in the 500s BC. Chapter 1 opens around 605 BC, and the Nebuchadnezzar stories in chapters 1–4 fall in the late 600s and early 500s, before or around the destruction of Jerusalem. Saying the stories are set 'in the 500s BC, after' the 586 destruction is inaccurate and would confuse readers who just read the 605 BC date in the author section.",
-      "suggestion": "Say the stories span from around 605 BC, when Nebuchadnezzar first took captives from Judah, through his destruction of Jerusalem and its Temple in 586 BC, to the early years of Persian rule after 539 BC."
+      "where": "audience",
+      "problem": "Calling all the rulers 'hostile empires' is doubtful for the traditional view. Persian rule under Cyrus was fairly tolerant, and the era section itself says he let exiles go home. The book's own stories also include foreign kings who treat Daniel kindly.",
+      "suggestion": "Say 'living under powerful foreign empires' rather than 'hostile empires'."
     },
     {
       "where": "11:40",
-      "problem": "The two views offered are so alike that they read as the same view ('looking beyond his own day' versus 'a further future in view'). The main scholarly alternative is missing: that the writer, working before Antiochus died, was predicting how his end would come, and events turned out differently. That leaves readers confused and the debate unfairly presented.",
-      "suggestion": "Name the two positions clearly. For example: many scholars think the writer was working just before Antiochus's death and expected it to happen this way; others, especially on the traditional view, think these verses look to a figure still further in the future."
-    },
-    {
-      "where": "audience",
-      "problem": "'Learning how to stay loyal to God while serving powerful foreign rulers' describes what the book teaches its readers rather than who they were and what they faced. It edges into interpretation.",
-      "suggestion": "Keep to their situation. For example: 'Jews living in exile in Babylon and afterwards, serving under powerful foreign rulers far from home.'"
+      "problem": "The note covers 11:40–12:4, but 'These details' points only to the account of a king's end in chapter 11. A reader on 12:1–4 may not know which details are meant.",
+      "suggestion": "Word it for the whole passage, e.g. 'At the start of this passage, the account of a king's final campaign and death does not match known accounts of Antiochus IV's death in 164 BC…'"
     }
   ],
-  "unsure": [],
-  "fixed": true
+  "unsure": []
 }

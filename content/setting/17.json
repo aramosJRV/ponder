@@ -2,32 +2,14 @@
   "book_number": 17,
   "name": "Esther",
   "author": "The writer of Esther is not named. Jewish tradition credits the book to the 'Men of the Great Assembly,' a council of Jewish leaders after the exile, and some have suggested Mordecai himself. Many scholars think an unknown Jewish author wrote it some decades or more after the events, in the later Persian period or a little after. Whoever it was knew the Persian royal court well and wrote as a skilled storyteller.",
-  "audience": "The first readers were Jews scattered across the Persian Empire, far from Jerusalem. They were a small minority living under foreign rulers, often exposed to suspicion and danger. The book also gave them the background to the yearly feast of Purim, which they kept together as a community.",
+  "audience": "The first readers were Jews scattered far from Jerusalem, in lands ruled by Persia or, if the book was written a little later, by the Greek kings who came after. They were a small minority living under foreign rulers, often exposed to suspicion and danger. The book also gave them the background to the yearly feast of Purim, which they kept together as a community.",
   "era": "The story takes place in Susa, one of the Persian Empire's royal capitals, during the reign of Ahasuerus, usually identified with Xerxes I (around 486–465 BC). Persia then ruled a vast territory stretching from India to Cush, the land south of Egypt (some Bibles translate it 'Ethiopia'). Decades earlier King Cyrus had allowed exiled Jews to return home, but many had stayed where they were, building lives in Persian cities. Many readers take the story as straightforward history; some scholars see it as a tale set in a real Persian court rather than a record of events, partly because no record outside the Bible mentions Esther and Greek historians give Xerxes a queen with a different name.",
   "notes": {
-    "1:1": "The great banquet falls in the king's third year, around 483 BC, a few years before Xerxes launched his invasion of Greece in 480 BC.",
-    "2:12": "Esther is brought to the king in his seventh year, around 479 BC, shortly after his costly and failed campaign against Greece.",
+    "1:1": "The great banquet described in this passage falls in the king's third year, around 483 BC, a few years before Xerxes launched his invasion of Greece in 480 BC.",
+    "2:12": "Later in this passage, Esther is brought to the king in his seventh year, around 479 BC, shortly after his costly and failed campaign against Greece.",
     "3:7": "This is the king's twelfth year, around 474 BC. 'Pur' is an old Babylonian word for a lot, a small object cast to choose a day.",
     "9:20": "This section records how the feast of Purim began. Jews still celebrate it each year in the month of Adar, around February or March."
   },
-  "flags": [
-    {
-      "where": "audience",
-      "problem": "This states as settled that the first readers lived in the Persian Empire. The author entry allows the book may have been written 'a little after' the Persian period, when Persia no longer ruled.",
-      "suggestion": "Hedge it, e.g. 'The first readers were Jews scattered far from Jerusalem, in the lands once ruled by Persia,' or note that they lived under Persian or later Greek rulers."
-    },
-    {
-      "where": "1:1",
-      "problem": "The banquet and 'the third year' come in 1:3, not 1:1. Someone reading 1:1 will see a note about a banquet their verse doesn't mention.",
-      "suggestion": "Move the note to 1:3, or reword it to fit 1:1, e.g. 'The story opens in the reign of Xerxes; the great banquet a couple of verses later falls in his third year...'"
-    }
-  ],
-  "unsure": [
-    {
-      "where": "2:12",
-      "problem": "The note is attached to the wrong verse. Esther being taken to the king in his seventh year is described a few verses later, at 2:16. Verse 2:12 is about the twelve months of beauty treatment each young woman went through first, so a reader of 2:12 would see a note about an event their verse does not mention.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move the note to 2:16. Alternatively, keep a note at 2:12 that describes the year-long preparation, and put the seventh-year dating at 2:16."
-    }
-  ],
-  "fixed": true
+  "flags": [],
+  "unsure": []
 }

@@ -5,27 +5,20 @@
   "audience": "The letter is addressed to \"the chosen lady and her children.\" Most think this is a warm way of naming a particular local church and its members, though some think it was a real woman and her family who hosted believers in her home. The church faced travelling teachers whose ideas about Jesus differed from what the elder had taught.",
   "era": "It was likely written in the late first century AD, perhaps around AD 90, when the Roman Empire ruled the Mediterranean world and Christians were a small, scattered minority. Churches met in private homes, and travelling preachers moved from town to town, relying on believers to give them food and lodging. Some of these teachers claimed that Jesus had not truly come as a flesh-and-blood human, an idea that was dividing congregations in the region.",
   "notes": {
-    "1:7": "Welcoming a travelling teacher into one's home, often where the church met, was seen as publicly backing their message, which is the situation this section addresses.",
-    "1:12": "The letter is short enough to fit a single sheet of papyrus, a common writing material, and the \"chosen sister\" is likely the church where the elder lived."
+    "1:7": "This passage concerns the travelling teachers who claimed that Jesus had not truly come as a flesh-and-blood human. Later in the passage the elder turns to hospitality: welcoming a travelling teacher into one's home, often where the church met, was seen as publicly backing their message.",
+    "1:12": "The letter is short enough to fit a single sheet of papyrus, a common writing material, written on in ink. Letters were carried by hand, and church leaders often travelled to visit congregations in person. The \"chosen sister\" mentioned at the end of the passage is probably the church where the elder lived, or, if the \"lady\" was a real woman, perhaps her actual sister."
   },
-  "flags": [
-    {
-      "where": "1:12",
-      "problem": "The \"chosen sister\" appears in verse 13, not verse 12. Verse 12 is about the elder preferring not to write more with paper and ink and hoping to visit in person, which the note does not address. Calling the sister \"likely\" a church also leans past the dispute the audience section presents fairly: if the lady may be a real woman, the sister may be too.",
-      "suggestion": "Move the \"chosen sister\" comment to a 1:13 note and phrase it to match the audience section (e.g. probably the elder's own church, or a real relative if the lady was an individual). Keep 1:12 to its own setting: the papyrus sheet and ink, and that travel to visit in person was how leaders often kept in touch."
-    }
-  ],
+  "flags": [],
   "unsure": [
     {
       "where": "1:12",
-      "problem": "Not flagged, so left unchanged: the \"chosen sister\" is mentioned in verse 13, not verse 12, so readers on 1:12 may not find her in their verse.",
-      "suggestion": "A person should decide whether to move the \"chosen sister\" point to its own note at 1:13 and keep only the papyrus detail at 1:12."
+      "problem": "The \"chosen sister\" is mentioned in verse 13, not verse 12, so the flag suggests moving that point to its own note at 1:13.",
+      "suggestion": "Not applied: the note covers 1:12–13, so a detail from verse 13 is in the right place, and notes cannot be moved. I worded it as \"at the end of the passage\" so it reads as covering both verses."
     },
     {
-      "where": "1:7",
-      "problem": "Verse 7 is about deceivers who deny Jesus came in the flesh. The instruction about not welcoming such teachers into one's home comes in verses 10–11. A reader on 1:7 would get a note about hospitality that doesn't match their verse, which may confuse them.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 1:10. Alternatively, open it with a sentence on 1:7's setting, such as the travelling teachers described in the era section, before the point about hospitality."
+      "where": "1:12",
+      "problem": "The flag suggests moving the \"chosen sister\" comment into a separate 1:13 note.",
+      "suggestion": "Not applied: notes cannot be moved or split, and the existing note already covers verse 13. I applied the rest of the flag: I reworded the sister to match the audience section's two views and added verse 12's setting, ink and papyrus and the practice of visiting in person."
     }
-  ],
-  "fixed": true
+  ]
 }

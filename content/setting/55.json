@@ -8,33 +8,26 @@
     "1:15": "Asia here means the Roman province around Ephesus in western Turkey; Onesiphorus apparently came from Ephesus and searched Rome to find the imprisoned Paul.",
     "3:1": "Jannes and Jambres are names Jewish tradition gave to Pharaoh's magicians who opposed Moses; the book of Exodus itself does not name them.",
     "3:10": "Pisidian Antioch (not the larger Antioch in Syria), Iconium and Lystra were towns in south-central Turkey where Paul was attacked on his first missionary journey; Lystra was probably Timothy's hometown.",
-    "4:6": "Paul writes expecting execution soon; early church tradition holds that he was beheaded outside Rome during Nero's reign.",
+    "4:6": "The letter pictures Paul expecting execution soon; early church tradition holds that he was beheaded outside Rome during Nero's reign.",
     "4:9": "The \"first defence\" probably means an initial hearing before a Roman court; Dalmatia was a region on the coast of modern Croatia.",
     "4:19": "Priscilla and Aquila were a tentmaking married couple who had worked alongside Paul in Corinth and Ephesus years earlier."
   },
-  "flags": [
-    {
-      "where": "4:6",
-      "problem": "'Paul writes expecting execution soon' states Paul's authorship as settled, although the author section notes that many scholars think a later follower wrote the letter in his name.",
-      "suggestion": "Reword to follow the letter's own framing, e.g. 'The letter pictures Paul expecting execution soon; early church tradition holds that he was beheaded outside Rome during Nero's reign.'"
-    }
-  ],
+  "flags": [],
   "unsure": [
     {
       "where": "3:1",
-      "problem": "Not flagged, but this note is anchored at 3:1 while Jannes and Jambres are named at 3:8, so readers starting at 3:1 meet the note several verses before the names appear.",
-      "suggestion": "Left unchanged because it was not flagged; a person should consider moving the note's start to 3:8."
+      "problem": "The flag says the note sits at 3:1 while Jannes and Jambres are named at 3:8, and suggests moving the note's start to 3:8.",
+      "suggestion": "Not applied: the note covers the whole passage 3:1–9 and is shown on every verse in it, so a detail at 3:8 is in the right place. Notes cannot be moved to another verse, and the note does not read as if it were only about 3:1."
     },
     {
       "where": "4:9",
-      "problem": "Not flagged, but Dalmatia is mentioned at 4:10 and the \"first defence\" at 4:16, so this note sits ahead of both and also covers verses that 4:9 does not reach.",
-      "suggestion": "Left unchanged because it was not flagged; a person should consider re-anchoring or splitting this note."
+      "problem": "The flag says Dalmatia (4:10) and the \"first defence\" (4:16) come after the note's start, and suggests re-anchoring or splitting the note.",
+      "suggestion": "Not applied: the note covers 4:9–18, which includes both 4:10 and 4:16, so both details are within its passage. Notes cannot be moved or re-anchored, and the note does not read as if it were only about 4:9."
     },
     {
       "where": "1:15",
-      "problem": "Not flagged, but Onesiphorus first appears at 1:16, just after this note's start.",
-      "suggestion": "Left unchanged because it was not flagged; probably acceptable as one note on the passage, but worth a quick check."
+      "problem": "The flag says Onesiphorus first appears at 1:16, just after the note's start.",
+      "suggestion": "Not applied: the note covers 1:15–18, so a detail at 1:16 is within its passage, and the note does not read as if it were only about 1:15. No change is needed."
     }
-  ],
-  "fixed": true
+  ]
 }

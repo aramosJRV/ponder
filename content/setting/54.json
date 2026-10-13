@@ -15,13 +15,23 @@
     "6:1": "Some members of the church were slaves, and some of them served masters who were themselves believers.",
     "6:17": "Ephesus was a wealthy trading city, and the church there included some well-off members."
   },
-  "flags": [],
+  "flags": [
+    {
+      "where": "4:1",
+      "problem": "In 4:1–5 the letter frames these teachings as a warning about what some people will do in later times. The note states as fact that it answers specific teachers already active in Ephesus. Many scholars read it that way, but stating it flatly overstates certainty.",
+      "suggestion": "Soften the wording, e.g. \"This section warns against teachers, probably already active in Ephesus, who told believers to avoid marriage and certain foods.\""
+    },
+    {
+      "where": "4:11",
+      "problem": "\"Laid hands on him\" is church language an ordinary reader may not understand.",
+      "suggestion": "Add a brief explanation, e.g. \"…had earlier laid hands on him (placing their hands on him while praying) to commission him.\""
+    }
+  ],
   "unsure": [
     {
       "where": "1:18",
-      "problem": "The names Hymenaeus and Alexander appear at 1:20, not 1:18, so the note could be anchored at 1:20 instead.",
-      "suggestion": "I applied the softer wording but kept the note at 1:18. The note covers the passage that begins at 1:18 and runs through the names at 1:20, so moving the anchor is an editorial choice about where readers should first see the note. A person should decide that."
+      "problem": "The flag notes that Hymenaeus and Alexander are named at 1:20, not 1:18, and raises moving the note's anchor to 1:20.",
+      "suggestion": "Left unchanged. The note covers the whole passage 1:18–20, so a detail at 1:20 is correctly placed, and notes cannot be moved to another verse in any case. The wording does not read as if it were only about 1:18, so no rewording is needed. The flag also says a softer wording was applied, but no wording change is specified, so there is nothing to apply."
     }
-  ],
-  "fixed": true
+  ]
 }

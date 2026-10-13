@@ -17,13 +17,13 @@
     "7:37": "Later Jewish writings describe priests carrying water from the Pool of Siloam each day of this festival and pouring it out at the temple altar.",
     "7:53": "This story does not appear in the earliest surviving manuscripts of John, and many Bibles mark it off; it was likely an early account added later.",
     "8:12": "During Tabernacles, great lamps were lit in the temple courts, reportedly lighting up much of Jerusalem; the treasury was in this same area.",
-    "8:48": "The Pool of Siloam lay in the southern part of Jerusalem; its remains were rediscovered by archaeologists in 2004.",
+    "8:48": "Later in this passage, the Pool of Siloam is mentioned. It lay in the southern part of Jerusalem, and its remains were rediscovered by archaeologists in 2004.",
     "10:22": "The Festival of Dedication, now called Hanukkah, remembered the temple's rededication in 164 BC after Jewish rebels freed it from a foreign king who had defiled it.",
     "11:45": "Caiaphas served as high priest from about AD 18 to 36, holding office with Roman approval; the council was the Sanhedrin, Jerusalem's highest Jewish court.",
     "12:12": "Palm branches had been a symbol of Jewish national hope and victory since the Jewish revolt against foreign rule in the 160s BC.",
     "12:20": "These Greeks were probably non-Jews who worshipped Israel's God and had come to Jerusalem for the Passover festival.",
     "13:1": "Washing guests' dusty feet was normally a servant's task. John sets this meal just before Passover, a timing that differs slightly from the other Gospels.",
-    "18:1": "The garden lay across the Kidron Valley on the Mount of Olives; the other Gospels call it Gethsemane.",
+    "18:1": "The garden lay across the Kidron Valley on the Mount of Olives; Matthew and Mark call it Gethsemane.",
     "18:12": "Annas had been high priest around AD 6 to 15 and, as Caiaphas's father-in-law, remained a powerful figure in the priestly family.",
     "18:28": "Pontius Pilate governed Judea for Rome from about AD 26 to 36; Rome generally kept the power to carry out executions in the governor's hands, though historians debate how strictly this applied.",
     "19:17": "Crucifixion was a Roman punishment for slaves, rebels and criminals, carried out publicly outside city walls as a warning to others.",
@@ -33,17 +33,10 @@
   },
   "flags": [
     {
-      "where": "18:1",
-      "problem": "'The other Gospels call it Gethsemane' is not quite accurate. Matthew and Mark name Gethsemane. Luke only says Jesus went to the Mount of Olives and does not use the name.",
-      "suggestion": "Say 'Matthew and Mark call it Gethsemane' instead of 'the other Gospels'."
+      "where": "21:1",
+      "problem": "Only the scholarly view is given. The rules ask for the traditional view alongside the main alternative, and many readers and some scholars hold that chapter 21 is by the same author as the rest of the book.",
+      "suggestion": "Add a short clause giving both views, e.g. 'Traditionally this final chapter has been read as part of the author's own work; many scholars think it was added as an epilogue, possibly by the author's circle, after the book's first ending.'"
     }
   ],
-  "unsure": [
-    {
-      "where": "8:48",
-      "problem": "The Pool of Siloam does not appear at 8:48. It first appears in the healing of the man born blind in chapter 9 (around 9:7), so the note is attached to the wrong passage and would confuse readers. The fact itself (rediscovered in 2004) is correct.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 9:1 or 9:7."
-    }
-  ],
-  "fixed": true
+  "unsure": []
 }

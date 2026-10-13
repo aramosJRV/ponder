@@ -50,13 +50,18 @@
     "52:28": "These deportation figures, smaller than those in 2 Kings, may count only adult men or a particular group.",
     "52:31": "Around 561 BC, the new Babylonian king Evil-merodach (Amel-Marduk) released Jehoiachin after thirty-seven years in prison."
   },
-  "flags": [],
+  "flags": [
+    {
+      "where": "49:28",
+      "problem": "Calling Hazor an Arab tribe living in tents is doubtful. Kedar is a known tribe, but 'Hazor' here is uncertain and is often taken as settled villages or encampments rather than a tent-dwelling tribe. Readers may also confuse it with the well-known city of Hazor in northern Israel.",
+      "suggestion": "Reword along these lines: 'Kedar was an Arab tribe of the desert east of Judah, known for tents and herding. \"Hazor\" here is not the famous northern city but probably refers to Arab settlements or villages in the same region.'"
+    }
+  ],
   "unsure": [
     {
       "where": "author (as it bears on note 1:1)",
-      "problem": "The flag says the 627 BC call date is presented as settled both in the author field and in note 1:1.",
-      "suggestion": "I added the scholarly debate to the author field only. Note 1:1 says the call 'is dated to' Josiah's thirteenth year, which accurately reports the book's own heading, and the flag's suggested fix targeted the author field. Whether note 1:1 should also mention the debate is left for a person to decide."
+      "problem": "The flag says the 627 BC call date is presented as settled in both the author field and note 1:1.",
+      "suggestion": "Not applied. The author field already gives the traditional date and the main alternative (that 627 BC marks his birth, with public work beginning nearer 609 BC), so no change is needed there. Note 1:1 says the call 'is dated to' Josiah's thirteenth year, which accurately reports the book's own heading. Whether note 1:1 should also mention the scholarly debate is a judgement call for a person."
     }
-  ],
-  "fixed": true
+  ]
 }

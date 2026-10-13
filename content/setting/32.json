@@ -5,21 +5,9 @@
   "audience": "On the traditional view, the first hearers were Israelites in the northern kingdom, who knew Assyria as a powerful and brutal empire to the north-east, whose armies had troubled the region before and would soon return. If the book was written later, its readers were Jews rebuilding their life in and around Jerusalem after the exile, under Persian rule and living alongside many other peoples.",
   "era": "In Jonah's day the northern kingdom of Israel was enjoying a rare stretch of peace and prosperity under Jeroboam II, regaining land it had lost. To the east lay Assyria, a great empire known for its brutal warfare, and Nineveh, on the River Tigris near modern Mosul in Iraq, was one of its greatest cities. A few decades later, in 722 BC, Assyria would conquer Israel and carry many of its people away.",
   "notes": {
-    "1:1": "Joppa was a port on Israel's Mediterranean coast; Tarshish was a distant trading place far to the west, often linked with southern Spain, the opposite direction from Nineveh.",
-    "1:17": "Jonah's prayer is written as a poem in the style of the thanksgiving psalms that Israelites sang at the temple in Jerusalem."
+    "1:1": "Two places come up later in this passage: Joppa was a port on Israel's Mediterranean coast, and Tarshish was a distant trading place far to the west, often linked with southern Spain, the opposite direction from Nineveh.",
+    "1:17": "Later in this passage, Jonah's prayer is written as a poem in the style of the thanksgiving psalms that Israelites sang at the temple in Jerusalem."
   },
   "flags": [],
-  "unsure": [
-    {
-      "where": "1:1",
-      "problem": "Joppa and Tarshish are first mentioned in 1:3, not 1:1, so a reader on 1:1 would be confused by the note.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 1:3."
-    },
-    {
-      "where": "1:17",
-      "problem": "In English Bibles, 1:17 is where the fish swallows Jonah. The prayer begins at 2:1 (2:2 in Hebrew numbering), so the note is attached to the wrong verse.",
-      "suggestion": "Restored: notes cannot move. Word it for its passage. Original suggestion: Move this note to 2:1, or to 2:2 if the poem itself is meant."
-    }
-  ],
-  "fixed": true
+  "unsure": []
 }
