@@ -53,11 +53,16 @@ async function sql(query: string): Promise<Record<string, unknown>[]> {
   return JSON.parse(txt.slice(start));
 }
 
+// Fetched once, before any book starts: concurrent `supabase db query` calls
+// race on the CLI's temporary login role and fail.
+let allRows: Record<string, unknown>[] | null = null;
+
 async function passages(book: Book): Promise<Passage[]> {
-  const rows = await sql(
-    `select start_chapter, start_verse, end_chapter, end_verse
-     from bible_pericope_ranges where book_number = ${book.n} order by start_ord`,
+  allRows ??= await sql(
+    `select book_number, start_chapter, start_verse, end_chapter, end_verse
+     from bible_pericope_ranges order by book_number, start_ord`,
   );
+  const rows = allRows.filter((r) => Number(r.book_number) === book.n);
   return rows.map((r) => {
     const [sc, sv, ec, ev] = [r.start_chapter, r.start_verse, r.end_chapter, r.end_verse];
     const end = sc === ec ? `${ev}` : `${ec}:${ev}`;
@@ -174,7 +179,10 @@ async function draftBook(book: Book): Promise<void> {
     DRAFT_SCHEMA,
   );
   const notes: Record<string, string> = {};
-  for (const { start, note } of raw.notes) {
+  for (const n of raw.notes) {
+    // The model sometimes echoes the whole label ("3:1–7"); the start is before the dash.
+    const start = n.start.split(/[–-]/)[0].trim();
+    const note = n.note;
     if (valid.has(start) && note.trim()) notes[start] = note.trim();
     else console.warn(`  ${book.name}: dropped note for unknown passage "${start}"`);
   }
@@ -308,6 +316,7 @@ if (Deno.args.includes("--report")) {
   }
   // A few books at a time; a failure is logged and the rest carry on.
   // Rerun to pick up whatever failed.
+  if (todo.length) await passages(todo[0]);
   const queue = [...todo];
   await Promise.all(Array.from({ length: 4 }, async () => {
     for (let b = queue.shift(); b; b = queue.shift()) {
