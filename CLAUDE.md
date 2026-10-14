@@ -79,6 +79,15 @@ Order: backend/migration first, app build second.
   each step scrolls the lit phrase into view. The bar is portalled to
   `<body>`: EntryCard's `animate-rise` transform breaks `position: fixed`.
   `scripts/meditation-preview.ts` previews picks without writing anything.
+- "Context" button (code name "The setting", `SettingSheet.tsx`): who wrote
+  it / who first heard it / what was happening per book
+  (`bible_book_settings`) plus an optional one-line note per pericope
+  (`bible_pericope_settings`), served by `verse_setting()`. Same for every
+  reader, background only, never interpretation or belittling wording.
+  Source of truth is `content/setting/NN.json`, written offline by
+  `scripts/setting-draft.ts`; to change text, edit the JSON and run
+  `--sql <new migration path>` (it deletes and reinserts all content). Notes
+  are keyed to pericope starts and cannot move to another verse.
 - `generate-entry` imports `spotify.ts`; song lookup is dormant until
   `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` secrets are set.
 - Old build artefacts clutter the root (`vite.config.ts.timestamp-*`, deploy
