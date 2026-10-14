@@ -325,15 +325,15 @@ function VerseHero({
             onClick={onReadContext}
             className={pill}
           >
-            Read the full context
+            Passage
           </button>
           {onReadSlowly && (
             <button type="button" onClick={onReadSlowly} className={pill}>
-              Read it slowly
+              Read slowly
             </button>
           )}
           <button type="button" onClick={onReadSetting} className={pill}>
-            The setting
+            Context
           </button>
         </div>
 

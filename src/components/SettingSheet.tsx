@@ -83,21 +83,21 @@ export default function SettingSheet({
         role="dialog"
         aria-modal="true"
         tabIndex={-1}
-        aria-label={`The setting of ${book}`}
+        aria-label={`The context of ${book}`}
         onClick={(e) => e.stopPropagation()}
         className="flex max-h-[85vh] w-full max-w-lg animate-rise flex-col rounded-t-3xl bg-paper outline-none"
       >
         <header className="shrink-0 border-b border-hairline px-6 pb-4 pt-5">
           <h2 className="font-display text-xl font-medium">{book}</h2>
           <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-muted">
-            The setting
+            Context
           </p>
         </header>
 
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-5">
           {state.status === "loading" && (
             <p aria-busy="true" className="text-base text-muted">
-              Finding the setting…
+              Finding the context…
             </p>
           )}
 
