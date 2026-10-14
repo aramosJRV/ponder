@@ -1,0 +1,25 @@
+{
+  "book_number": 13,
+  "name": "1 Chronicles",
+  "author": "Jewish tradition names Ezra, the priest and scribe who led a group of exiles home from Babylon and taught God's law in Jerusalem. Many scholars instead think the author was an unnamed writer, or a circle of writers, probably Levites (temple assistants and musicians) connected to the rebuilt temple, often simply called 'the Chronicler.' Either way, the writer worked from older records, including the books of Samuel and Kings, genealogies and temple lists, retelling Israel's story with special attention to David and to worship.",
+  "audience": "It was written for Jews living in and around Jerusalem after the exile in Babylon, a small community rebuilding their lives under foreign rule. They had a temple again but no king of David's line, and many wondered whether they were still connected to the Israel of old and to God's promises.",
+  "era": "The book was most likely written in the Persian period, around 450–350 BC, though some scholars place it a little later, early in the Greek era. Judah was then a small province of the vast Persian Empire. The temple had been rebuilt around 516 BC, and leaders like Ezra and Nehemiah had worked to restore the community's worship, walls and identity. The events the book describes, chiefly David's reign, lay more than five hundred years in the past.",
+  "notes": {
+    "1:1": "The opening family lists, from Adam onward, are drawn largely from the book of Genesis, compressed into names alone.",
+    "3:17": "Jeconiah, also called Jehoiachin, was the king taken captive to Babylon in 597 BC; this list traces his descendants several generations beyond the exile.",
+    "5:23": "Later in this passage comes Tiglath-pileser III, also called Pul, the Assyrian king who carried off the tribes east of the Jordan around the 730s BC.",
+    "6:1": "The priestly line ends with Jehozadak, exiled in 586 BC; his son Joshua later became high priest among those who returned and rebuilt the temple.",
+    "9:1": "This list of people resettling Jerusalem after the exile closely parallels a similar list in Nehemiah 11.",
+    "10:1": "Saul's final battle on Mount Gilboa, in northern Israel, is usually dated around 1010 BC; the account parallels 1 Samuel 31.",
+    "11:4": "David's capture of Jerusalem, then a Jebusite (Canaanite) stronghold, is usually dated around 1000 BC.",
+    "13:1": "The ark, Israel's sacred gold-covered chest, had stayed at Kiriath-jearim for many years, largely neglected in Saul's day, ever since the Philistines returned it.",
+    "16:7": "This song of thanks shares its opening section with Psalm 105.",
+    "16:23": "This part of the song matches Psalm 96, with closing lines found in Psalm 106.",
+    "19:1": "The Ammonites lived east of the Jordan River, around the city of Rabbah, today's Amman in Jordan.",
+    "21:18": "Ornan's threshing floor, where grain was separated from husks, became the site of Solomon's temple, which Chronicles elsewhere links with Mount Moriah.",
+    "24:1": "These twenty-four priestly divisions were still serving in turns in New Testament times; Zechariah, father of John the Baptist, belonged to Abijah's division.",
+    "25:1": "Asaph, Heman and Jeduthun are names also found in the headings of several psalms, linking those songs with these temple musician families.",
+    "29:26": "David's reign is usually dated around 1010–970 BC. The records of Samuel, Nathan and Gad mentioned here do not survive as separate books, though some scholars think they refer to material now in 1 and 2 Samuel."
+  },
+  "flags": []
+}

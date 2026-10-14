@@ -73,7 +73,7 @@ Order: backend/migration first, app build second.
   (`inReadingOrder`) for older entries. The pool entries built before
   26 Sep 2026 had none; since v40 each is filled in the background the first
   time it is served (`fillServedMeditation`). Past days are not backfilled.
-  In the app it is "Read it slowly" in the verse hero (`VerseWalk.tsx`),
+  In the app it is "Read slowly" in the verse hero (first of Read slowly · Context · Full passage) (`VerseWalk.tsx`),
   lighting phrases in place; it is no longer part of the ponder flow.
   While walking, dots/Continue/× sit in a bar pinned above the tab bar and
   each step scrolls the lit phrase into view. The bar is portalled to

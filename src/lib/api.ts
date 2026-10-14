@@ -11,6 +11,7 @@ import type {
   DailyEntry,
   Note,
   PassageContextRow,
+  VerseSetting,
   Profile,
   ReportReason,
   ReportTarget,
@@ -326,6 +327,24 @@ export async function fetchPassageContext(
   });
   if (error) throw error;
   return (data ?? []) as PassageContextRow[];
+}
+
+/**
+ * "The setting" — historical background for a verse. Like
+ * fetchPassageContext() it takes the verse and the server picks the passage,
+ * so the setting is the same for every reader. Null when the book's setting
+ * isn't loaded.
+ */
+export async function fetchVerseSetting(
+  coords: Pick<DailyEntry, "book_number" | "chapter" | "verse_start">,
+): Promise<VerseSetting | null> {
+  const { data, error } = await supabase.rpc("verse_setting", {
+    p_book_number: coords.book_number,
+    p_chapter: coords.chapter,
+    p_verse: coords.verse_start,
+  });
+  if (error) throw error;
+  return ((data ?? []) as VerseSetting[])[0] ?? null;
 }
 
 export async function createTopic(input: {

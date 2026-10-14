@@ -1,0 +1,20 @@
+{
+  "book_number": 9,
+  "name": "1 Samuel",
+  "author": "The book never names its author. Jewish tradition credits Samuel, the prophet, priest and judge raised at the sanctuary of Shiloh, with the prophets Nathan and Gad finishing it, since Samuel dies partway through. Many scholars think it was compiled later from older records, songs and stories, perhaps as part of a longer history running from Joshua to Kings, shaped around the time of the Babylonian exile in the 500s BC. First and Second Samuel were originally a single book.",
+  "audience": "It was written for the people of Israel, telling how their nation came to have kings and how David's family came to the throne. If it reached its final form during the exile, its first readers were Judeans living in Babylon after Jerusalem fell in 586 BC, having lost their king, their temple and their land.",
+  "era": "The events took place roughly between 1100 and 1000 BC, as Israel moved from a loose group of tribes, led by occasional leaders called judges, to a single kingdom under Saul and then David. The Philistines, a seafaring people who had settled Canaan's southern coast in five strong cities, were pressing inland and, the book says, kept the Israelites from having blacksmiths of their own. The great powers of Egypt and Mesopotamia were weak at the time, leaving room for small nations to rise and fight over the land.",
+  "notes": {
+    "1:1": "Shiloh, in the hill country north of Jerusalem, was then Israel's main place of worship, where Israel's sanctuary stood and the ark of the covenant was kept.",
+    "4:2": "The ark of the covenant was a gold-covered wooden chest holding the stone tablets of the law, Israel's most sacred object, seen as the place of God's presence.",
+    "4:12": "Shiloh itself seems to have been destroyed around this time, since the prophet Jeremiah, and also Psalm 78, later recalled its ruin as a warning.",
+    "5:1": "Ashdod was one of the five chief Philistine cities, along with Gaza, Ashkelon, Gath and Ekron; Dagon was a god the Philistines worshipped.",
+    "15:1": "The Amalekites were desert raiders of the far south, remembered as Israel's enemies since they attacked the Israelites on their journey out of Egypt.",
+    "19:8": "The heading of Psalm 59 links that psalm to the night Saul sent men to watch David's house to kill him.",
+    "21:10": "The headings of Psalms 34 and 56 link them to David's time in the Philistine city of Gath. Psalm 34's heading calls the king Abimelech, though this passage names him Achish; Abimelech may have been a royal title.",
+    "22:6": "The heading of Psalm 52 links it to Doeg the Edomite reporting to Saul that David had visited the priests at Nob.",
+    "23:19": "Psalm 54's heading links it to the men of Ziph betraying David; Psalms 57 and 142 are traditionally tied to his hiding in a cave, either at Adullam or at En Gedi.",
+    "25:1": "The Carmel mentioned in this passage was a small town in the hill country of Judah, south of Hebron, not the well-known Mount Carmel in the north."
+  },
+  "flags": []
+}

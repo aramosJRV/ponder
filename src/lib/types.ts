@@ -104,6 +104,15 @@ export interface PassageContextRow {
   verse_text: string | null;
 }
 
+/** "The setting" for a verse. `note` is the passage's own line, null when
+ *  it has none — most passages don't. */
+export interface VerseSetting {
+  author: string;
+  audience: string;
+  era: string;
+  note: string | null;
+}
+
 export interface DailyEntry {
   id: string;
   topic_id: string;

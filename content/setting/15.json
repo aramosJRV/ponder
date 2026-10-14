@@ -1,0 +1,28 @@
+{
+  "book_number": 15,
+  "name": "Ezra",
+  "author": "Jewish tradition holds that Ezra himself wrote this book. He was a priest descended from Aaron, Israel's first high priest, and a scribe, meaning an expert who copied, studied and taught the law of Moses. Several chapters are told in his own voice, and the book also includes official Persian letters and lists of families. Many scholars think a later editor, possibly the same person or circle behind the books of Chronicles, put the book together, perhaps around 400 BC, using Ezra's own memoirs and these documents. Ezra and Nehemiah were originally counted as a single book.",
+  "audience": "The first readers were Jews living in and around Jerusalem after the exile, when many of their families had been taken captive to Babylon. They were a small, often poor community inside the vast Persian Empire. They were rebuilding their temple, their city and their life as a people, and often faced suspicious neighbours and distant officials.",
+  "era": "In 539 BC the Persian king Cyrus conquered Babylon, and he soon allowed exiled peoples, including the Jews, to return home. Judah became a small district in a Persian province, governed under a king who lived far away. The book covers eighty years or more: the first return and the rebuilding of the temple, completed around 515 BC, and then, after a long gap (nearly sixty years on the traditional dating), Ezra's own journey to Jerusalem.",
+  "notes": {
+    "1:1": "Cyrus issued this decree in his first year ruling Babylon, around 538 BC; a surviving clay cylinder records his policy of letting conquered peoples return and restore their shrines.",
+    "1:5": "Later in this passage, Sheshbazzar, called the prince of Judah, is named as the leader of this first return; some identify him with Zerubbabel, while others think he was a different leader, perhaps a relative.",
+    "2:1": "This list of returning families appears again, with small differences, in Nehemiah chapter 7.",
+    "3:1": "The seventh month fell in early autumn, the season of the Festival of Shelters; Zerubbabel descended from Judah's royal family, and Jeshua was the high priest.",
+    "3:7": "The temple foundation was laid around 536 BC, with cedar from Lebanon supplied by the people of the coastal cities of Tyre and Sidon and brought by sea to the port of Joppa, as had been done for Solomon's temple.",
+    "4:1": "These neighbours descended partly from peoples whom Assyrian kings had resettled in the north after 722 BC; they are often linked with the later Samaritans.",
+    "4:6": "This section jumps ahead to later kings, Xerxes and Artaxerxes, and concerns Jerusalem's walls; from 4:8 the text switches to Aramaic, the empire's official language.",
+    "4:24": "Work resumed in the second year of King Darius I, around 520 BC, urged on by the prophets Haggai and Zechariah, whose own books appear later in the Old Testament.",
+    "5:3": "Tattenai governed the large Persian province west of the Euphrates River, called Beyond the River; a Babylonian document from this period also names him as governor.",
+    "6:1": "Cyrus's record was found at Ecbatana, a Persian royal city in the hills of what is now western Iran, where kings often spent the summer.",
+    "6:13": "The temple was finished in Darius's sixth year, around 515 BC, roughly seventy years after Babylon destroyed Solomon's temple in 586 BC.",
+    "6:19": "The text returns to Hebrew here; Passover, the spring festival remembering Israel's escape from Egypt, was held in the first month of the year.",
+    "7:1": "Ezra travelled in the seventh year of Artaxerxes, traditionally dated 458 BC; some scholars instead place his journey in 398 BC, under a later Artaxerxes.",
+    "7:11": "This royal letter, written in Aramaic, gave Ezra official Persian authority to teach the law and appoint judges among the Jews of the province.",
+    "7:27": "Here the book shifts into Ezra's own first-person account, often called his memoirs, which continues through chapter 9.",
+    "8:15": "The Ahava canal and the place called Casiphia were somewhere in Babylonia, but their exact locations are unknown.",
+    "8:31": "The journey from Babylonia to Jerusalem took about four months and covered roughly 900 miles along routes where travellers risked robbers.",
+    "10:9": "The ninth month fell around late November and December, the cold rainy season in Jerusalem, so the crowd gathered in the open square before the temple during winter rains."
+  },
+  "flags": []
+}

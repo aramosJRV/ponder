@@ -10,6 +10,7 @@ import {
 } from "../lib/translations";
 import type { PassageState } from "../lib/translations";
 import PassageContextSheet from "./PassageContextSheet";
+import SettingSheet from "./SettingSheet";
 import PonderFlow from "./PonderFlow";
 import { WalkControls, WalkText, inReadingOrder, useFollowPhrase, useWalkStep } from "./VerseWalk";
 import type { Walk } from "./VerseWalk";
@@ -48,6 +49,7 @@ export default function EntryCard({
   const level = useContentLevel();
   const [expanded, setExpanded] = useState(false);
   const [contextOpen, setContextOpen] = useState(false);
+  const [settingOpen, setSettingOpen] = useState(false);
   const [walk, setWalk] = useState<Walk | null>(null);
 
   // A new entry starts folded again — otherwise switching threads on Today
@@ -55,6 +57,7 @@ export default function EntryCard({
   useEffect(() => {
     setExpanded(false);
     setContextOpen(false);
+    setSettingOpen(false);
     setWalk(null);
   }, [entry.id]);
 
@@ -130,6 +133,7 @@ export default function EntryCard({
           setTranslation(t);
         }}
         onReadContext={() => setContextOpen(true)}
+        onReadSetting={() => setSettingOpen(true)}
         onReadSlowly={walkable ? () => setWalk(walkable) : undefined}
         walk={walk}
         onEndWalk={() => setWalk(null)}
@@ -140,6 +144,12 @@ export default function EntryCard({
         translation={translation}
         open={contextOpen}
         onClose={() => setContextOpen(false)}
+      />
+
+      <SettingSheet
+        entry={entry}
+        open={settingOpen}
+        onClose={() => setSettingOpen(false)}
       />
 
       {shown >= 2 && (
@@ -233,6 +243,7 @@ function VerseHero({
   offline,
   onSelect,
   onReadContext,
+  onReadSetting,
   onReadSlowly,
   walk,
   onEndWalk,
@@ -244,6 +255,7 @@ function VerseHero({
   offline: boolean;
   onSelect: (t: Translation) => void;
   onReadContext: () => void;
+  onReadSetting: () => void;
   /** Opens the verse walk. Omitted when this version has no phrases. */
   onReadSlowly?: () => void;
   /** The walk in progress: the hero lights one phrase at a time. */
@@ -308,18 +320,21 @@ function VerseHero({
             verse actually sits in — often tighter than a chapter, and sometimes
             crossing one. */}
         <div className="mt-3 flex flex-wrap gap-2">
+          {onReadSlowly && (
+            <button type="button" onClick={onReadSlowly} className={pill}>
+              Read slowly
+            </button>
+          )}
+          <button type="button" onClick={onReadSetting} className={pill}>
+            Context
+          </button>
           <button
             type="button"
             onClick={onReadContext}
             className={pill}
           >
-            Read the full context
+            Full passage
           </button>
-          {onReadSlowly && (
-            <button type="button" onClick={onReadSlowly} className={pill}>
-              Read it slowly
-            </button>
-          )}
         </div>
 
         <div

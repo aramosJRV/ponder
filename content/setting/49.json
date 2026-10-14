@@ -1,0 +1,16 @@
+{
+  "book_number": 49,
+  "name": "Ephesians",
+  "author": "The letter names Paul as its author. He was a Jewish teacher from Tarsus, trained as a Pharisee (a strict group devoted to God's law), who worked as a tentmaker and became a travelling apostle, or messenger, of Jesus. He writes as a prisoner, traditionally while under house arrest in Rome around AD 60–62. Many scholars note differences in style and vocabulary from his other letters and think a close follower wrote it in his name, perhaps around AD 80–90.",
+  "audience": "The letter is addressed to Christians in Ephesus, a large port city in the Roman province of Asia, in what is now western Turkey, where Paul had spent about three years. Several of the oldest manuscripts leave out the words \"in Ephesus,\" so many think it was meant to circulate among several churches in the region. The readers were mostly non-Jewish believers, worshipping alongside Jewish Christians in small house churches.",
+  "era": "The Roman Empire ruled the whole Mediterranean world, and if Paul wrote it, Nero was emperor. Ephesus was one of the empire's greatest cities, famous for its huge temple to the goddess Artemis, one of the wonders of the ancient world, and known for magic and fortune-telling. Early Christians were still working out how Jews and non-Jews, long divided by custom and religious law, could belong to one community.",
+  "notes": {
+    "1:1": "Some of the earliest manuscripts lack the words naming Ephesus here, one reason many think this letter was copied and passed between several churches.",
+    "2:11": "In Jerusalem's temple a stone barrier, with signs threatening death, kept non-Jews out of the inner courts. Some readers think the letter has this barrier in mind; others think it refers to the religious law that set Jews apart. The Romans destroyed the temple in AD 70.",
+    "5:21": "Greek and Roman writers often set out the duties within a household: husbands and wives, parents and children, masters and slaves. Slavery was widespread throughout the empire.",
+    "6:10": "Roman soldiers were a familiar sight across the empire; if Paul wrote under house arrest, a soldier may have guarded him as he wrote.",
+    "6:21": "Tychicus, a trusted companion from the province of Asia, is also named in Colossians as carrying news, and probably delivered this letter."
+  },
+  "flags": [],
+  "fixed": true
+}

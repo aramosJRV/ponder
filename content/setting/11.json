@@ -1,0 +1,31 @@
+{
+  "book_number": 11,
+  "name": "1 Kings",
+  "author": "The writer is not named. Jewish tradition credits the prophet Jeremiah, while many scholars think an unnamed editor or circle of editors shaped the book during the exile in Babylon. Whoever it was drew on older royal records the book itself names, such as the annals of Solomon and the chronicles of the kings of Israel and Judah. First and Second Kings were originally one book, split later for convenience.",
+  "audience": "The first readers were most likely Jews living after the fall of Jerusalem in 586 BC, many of them exiles in Babylon. Their kings, temple and homeland were gone, and they were asking how their nation had come to this.",
+  "era": "The book covers roughly 970 to 850 BC, from King David's death and Solomon's reign to the split of the kingdom and the rival kings of Israel in the north and Judah in the south. Small kingdoms such as Tyre, Aram and Moab traded and fought around them, while Egypt and later Assyria loomed as great powers. The finished work, ending in 2 Kings, dates from after about 560 BC, when Babylon had destroyed Jerusalem and its temple.",
+  "notes": {
+    "1:28": "The Gihon spring, where Solomon is anointed, was the city's main water source, in the Kidron Valley just below the oldest part of Jerusalem, known as the City of David.",
+    "2:26": "Anathoth, where Abiathar is sent, was a town of priests a few miles north-east of Jerusalem; centuries later it was the prophet Jeremiah's home town.",
+    "3:4": "Gibeon was a town a few miles north-west of Jerusalem; according to Chronicles, the old tent of worship from Moses' time stood there.",
+    "5:1": "Hiram ruled Tyre, a wealthy Phoenician port in what is now Lebanon, with access to the famous cedar forests of the Lebanon mountains inland.",
+    "6:1": "Building began in Solomon's fourth year, usually dated around 966 BC; the month Ziv falls in spring, around April or May.",
+    "8:1": "The dedication took place in the seventh month, autumn, at the Festival of Shelters (Tabernacles), a week-long harvest celebration when crowds gathered in Jerusalem.",
+    "9:15": "Archaeologists have found large city gateways at Hazor, Megiddo and Gezer; some date them to Solomon's time, while others argue they were built later.",
+    "9:24": "Ezion-geber lay near Elath at the tip of the Gulf of Aqaba, giving Solomon a port onto the Red Sea.",
+    "10:1": "Sheba is usually identified with a kingdom in south-west Arabia, modern Yemen, known for the incense trade; Ethiopian tradition links the queen with Ethiopia.",
+    "11:23": "Damascus was the capital of Aram, a kingdom roughly in modern Syria that became Israel's frequent rival to the north.",
+    "12:1": "The split of the kingdom is usually dated around 930 BC; Shechem was an ancient meeting place in the central hill country.",
+    "12:25": "Dan and Bethel stood near the northern and southern edges of Jeroboam's new kingdom, giving his people places to worship without travelling to Jerusalem.",
+    "14:21": "Shishak is usually identified with Pharaoh Sheshonq I, whose own temple inscription in Egypt lists a military campaign through this region around 925 BC.",
+    "16:21": "Omri founded Samaria as Israel's capital; an ancient Moabite inscription names him, and Assyrian records later called Israel 'the house of Omri'.",
+    "16:29": "Ahab reigned around 874 to 853 BC; an Assyrian inscription records him sending 2,000 chariots against Assyria's king at the battle of Qarqar in 853 BC.",
+    "17:7": "Zarephath was a coastal town near Sidon in Phoenicia, the homeland of Queen Jezebel and a centre of Baal worship.",
+    "18:16": "Mount Carmel is a ridge running to the Mediterranean coast near modern Haifa, on the borderland between Israel and Phoenicia.",
+    "19:1": "Beersheba lay at Judah's southern edge; Horeb, Elijah's destination far to the south, is another name for Mount Sinai, where Moses received the law.",
+    "21:1": "Jezreel, in a fertile valley north of Samaria, was the site of a second royal residence for Ahab's family.",
+    "22:1": "Ramoth-gilead was a fortified town east of the Jordan, on the disputed border between Israel and Aram."
+  },
+  "flags": [],
+  "fixed": true
+}
