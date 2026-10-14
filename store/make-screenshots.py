@@ -6,12 +6,6 @@ INPUT   store/screenshots/raw/01.png … 06.png  (1320x2868 from iPhone 16/17 Pr
 OUTPUT  store/screenshots/appstore/  1320x2868  — Apple, one iPhone set
         store/screenshots/play/      1080x1920  — Play, portrait phone
 
-INSTAGRAM (optional) store/screenshots/raw-instagram/post1.png, post2.png …
-        ->  store/screenshots/instagram/  1080x1350 (4:5 feed post)
-Composed from the raw captures on its own canvas, never resized from the
-Apple or Play output. Posts listed in INSTAGRAM_OVERLAYS get a headline and
-a subline; any capture not listed there is set device-only.
-
 WHY TWO CANVASES
 Apple's 6.9" frame is 1320x2868, an aspect ratio of 1:2.17. Play rejects any
 image whose longest side is more than twice the shortest, so an Apple asset
@@ -43,8 +37,6 @@ OUT_PLAY = ROOT / "screenshots" / "play"
 OUT_IPAD = ROOT / "screenshots" / "ipad"
 OUT_PLAY_7 = ROOT / "screenshots" / "play-tablet-7"
 OUT_PLAY_10 = ROOT / "screenshots" / "play-tablet-10"
-RAW_INSTAGRAM = ROOT / "screenshots" / "raw-instagram"
-OUT_INSTAGRAM = ROOT / "screenshots" / "instagram"
 
 # Brand palette — lifted from tailwind.config.js, keep in sync.
 PAPER = (250, 246, 239)
@@ -85,26 +77,6 @@ CAPTIONS = [
     "See what's emerging\nover weeks, not days.",
     "You set the pace —\nand how hard it presses.",
 ]
-
-# Instagram posts for the Ponder section, keyed by raw-instagram/ file stem.
-# (headline, subline), in carousel order.
-INSTAGRAM_OVERLAYS = {
-    "post1": ("Ready to ponder?", "Pause. Slow down. See what stands out."),
-    "post2": ("One phrase. One question.", "Today's verse, slowed down."),
-    "post3": ("Not five questions. One.", "Answer, swipe, next."),
-    "post4": ("Your answers, kept.", "Each note stays with the question it answered."),
-}
-
-# Fraction of each capture to cut off the top before framing. The Ponder
-# section sits mid-page, so captures are taken scrolled and page text runs
-# under the status bar; trimming starts the post cleanly at "TO PONDER".
-# Tuned to the current captures — recheck if a post is retaken.
-INSTAGRAM_TRIM_TOP = {
-    "post1": 0.295,
-    "post2": 0.11,
-    "post3": 0.11,
-    "post4": 0.097,
-}
 
 
 def resolve_font() -> str:
@@ -273,7 +245,6 @@ def main() -> None:
     print(f"  Play  (1080x1920): {OUT_PLAY}")
 
     build_ipad()
-    build_instagram()
 
 
 def build_ipad() -> None:
@@ -350,92 +321,6 @@ def build_ipad() -> None:
     print(f"  Apple iPad 13\"  (2064x2752): {OUT_IPAD}")
     print(f"  Play 10\" tablet (1600x2560): {OUT_PLAY_10}")
     print(f"  Play 7\" tablet  (1200x1920): {OUT_PLAY_7}")
-
-
-def fit_font(draw: ImageDraw.ImageDraw, text: str, size: int, max_w: float) -> ImageFont.FreeTypeFont:
-    """Largest size <= `size` at which `text` fits on one line within max_w."""
-    font = load_font(size)
-    while size > 24 and draw.textlength(text, font=font) > max_w:
-        size -= 2
-        font = load_font(size)
-    return font
-
-
-def compose_instagram(
-    shot: Image.Image, overlay: Optional[tuple[str, str]], trim_top: float = 0.0
-) -> Image.Image:
-    """
-    1080x1350 feed post. A 4:5 canvas is far shorter than the 1:2.17 capture,
-    so the device is inset and runs off the bottom edge, showing the top of
-    the screen — which is where the Ponder question and phrase sit.
-    """
-    if trim_top:
-        shot = shot.crop((0, int(shot.height * trim_top), shot.width, shot.height))
-
-    cw, ch = 1080, 1350
-    canvas = Image.new("RGB", (cw, ch), PAPER)
-    draw = ImageDraw.Draw(canvas)
-    max_w = cw * 0.86
-
-    y = 96
-    if overlay:
-        headline, subline = overlay
-        hfont = fit_font(draw, headline, 72, max_w)
-        w = draw.textlength(headline, font=hfont)
-        draw.text(((cw - w) / 2, y), headline, font=hfont, fill=INK)
-        y += int(hfont.size * 1.28)
-
-        sfont = fit_font(draw, subline, 40, max_w)
-        w = draw.textlength(subline, font=sfont)
-        draw.text(((cw - w) / 2, y), subline, font=sfont, fill=MUTED)
-        y += int(sfont.size * 1.3)
-
-        y += 26
-        draw.line([((cw - 100) / 2, y), ((cw + 100) / 2, y)], fill=MOSS, width=3)
-        y += 56
-    else:
-        y = 110
-
-    dev_w = int(cw * 0.62)
-    dev_h = int(shot.height * (dev_w / shot.width))
-    device = rounded(shot.resize((dev_w, dev_h), Image.LANCZOS), radius=int(dev_w * 0.055))
-    dx = (cw - dev_w) // 2
-
-    spread = int(dev_w * 0.09)
-    shadow = drop_shadow(
-        (dev_w, dev_h), int(dev_w * 0.055), blur=int(dev_w * 0.035), spread=spread
-    )
-    canvas.paste(shadow, (dx - spread, y - spread + int(dev_w * 0.012)), shadow)
-    canvas.paste(device, (dx, y), device)
-    return canvas
-
-
-def build_instagram() -> None:
-    """
-    Instagram set — only if raw-instagram/ has captures, same as the iPad pass.
-    Files are named post1.png, post2.png … so the overlay mapping survives a
-    post being dropped or reordered.
-    """
-    if not RAW_INSTAGRAM.exists():
-        return
-    shots = sorted(RAW_INSTAGRAM.glob("post*.png"))
-    if not shots:
-        return
-
-    OUT_INSTAGRAM.mkdir(parents=True, exist_ok=True)
-    print(f"\nInstagram captures found in {RAW_INSTAGRAM.name}/ — building 1080x1350 posts.")
-
-    for path in shots:
-        overlay = INSTAGRAM_OVERLAYS.get(path.stem)
-        shot = Image.open(path).convert("RGB")
-        trim = INSTAGRAM_TRIM_TOP.get(path.stem, 0.0)
-        compose_instagram(shot, overlay, trim).save(OUT_INSTAGRAM / f"{path.stem}.png", "PNG", optimize=True)
-        print(f"  {path.name}  ->  instagram/{path.stem}.png{'' if overlay else '  (no overlay)'}")
-
-    missing = sorted(set(INSTAGRAM_OVERLAYS) - {p.stem for p in shots})
-    if missing:
-        print(f"  NOTE: no capture for {', '.join(missing)}")
-    print(f"  Instagram (1080x1350): {OUT_INSTAGRAM}")
 
 
 if __name__ == "__main__":

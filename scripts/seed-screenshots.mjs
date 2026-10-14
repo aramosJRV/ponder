@@ -120,26 +120,6 @@ async function resolve({ book, chapter, verse_start, verse_end }) {
   };
 }
 
-/**
- * Build the stored verse_question. The phrase is SLICED from the resolved
- * WEB text rather than written literally, so the stored value is exactly
- * the database's characters. Hard-fails if the phrase isn't in the verse —
- * same stance as resolve(): a broken highlight is caught here, not in a shot.
- */
-function anchorVerseQuestion(vq, verseText, ref) {
-  const at = verseText.indexOf(vq.phrase);
-  if (at < 0) {
-    throw new Error(`verse_question phrase "${vq.phrase}" not found in the WEB text of ${ref}.`);
-  }
-  return { question: vq.question, phrase: verseText.slice(at, at + vq.phrase.length) };
-}
-
-/**
- * Notes that answer a Ponder question are photographed for Instagram, so
- * they must never state or imply how long someone has been on a thread.
- */
-const PONDER_NOTE_BANNED = /\b(weeks?|days|months?|years?|lately|recently|for a while|so far|still not|anymore|again)\b/i;
-
 /** Build the validated cross_refs JSON the entry footnote renders from. */
 async function resolveCrossRefs(refs) {
   const out = [];
@@ -175,13 +155,6 @@ const STILLNESS = {
     {
       days_ago: 0,
       verse: { book: 'Psalms', chapter: 46, verse_start: 10, verse_end: 10 },
-      // The anchored opening question the Ponder section leads with. `phrase`
-      // is only a search key: the stored value is sliced out of the resolved
-      // WEB verse_text, and the seed hard-fails if it isn't found there.
-      verse_question: {
-        question: 'Where are you being asked to be still, and what makes that hard?',
-        phrase: 'Be still',
-      },
       entry_type: 'affirming',
       thought:
         'Stillness is not the absence of activity but the presence of trust. The psalmist ' +
@@ -341,38 +314,6 @@ const STILLNESS = {
       body:
         'The fallow field image landed. I think I have been treating rest as the reward at the ' +
         'end of the productive stretch, and the stretch never actually ends.',
-    },
-    // Answers to the Ponder questions on today's entry, one per question.
-    // ponder_index 0 = the verse_question above, 1..3 = ponder[0..2].
-    // No elapsed-time language (see PONDER_NOTE_BANNED) — these are shot for
-    // Instagram and must not imply how long anyone has been on the thread.
-    {
-      entry_days_ago: 0,
-      days_ago: 0,
-      ponder_index: 0,
-      body:
-        'In meetings, mostly. I try to steer them before they start. Being still there ' +
-        'feels like losing ground.',
-    },
-    {
-      entry_days_ago: 0,
-      days_ago: 0,
-      ponder_index: 1,
-      body: 'First thing in the morning. If I do not plan the day, it feels like the day will run me.',
-    },
-    {
-      entry_days_ago: 0,
-      days_ago: 0,
-      ponder_index: 2,
-      body:
-        'That something would slip and it would be my fault. Written down, it sounds ' +
-        'smaller than it feels.',
-    },
-    {
-      entry_days_ago: 0,
-      days_ago: 0,
-      ponder_index: 3,
-      body: 'Leave Saturday morning unplanned. No list, no catching up.',
     },
     {
       entry_days_ago: 1,
@@ -701,7 +642,6 @@ async function seedThread(userId, spec) {
     const v = await resolve(e.verse);
     const crossRefs = await resolveCrossRefs(e.cross_refs ?? []);
     const date = daysAgo(e.days_ago);
-    const verseQuestion = e.verse_question ? anchorVerseQuestion(e.verse_question, v.text, v.ref) : null;
 
     const { data: entry, error: entryErr } = await db
       .from('daily_entries')
@@ -721,27 +661,12 @@ async function seedThread(userId, spec) {
         prayer_prompts: e.prayer_prompts,
         entry_type: e.entry_type,
         cross_refs: crossRefs,
-        verse_question: verseQuestion,
         created_at: new Date(`${date}T04:00:00Z`).toISOString(),
       })
       .select('id')
       .single();
     if (entryErr) throw entryErr;
     entryIdByDaysAgo.set(e.days_ago, entry.id);
-  }
-
-  // Validate every note before inserting any, so a bad one can't leave the
-  // thread half-seeded.
-  for (const n of spec.notes ?? []) {
-    if (n.ponder_index == null) continue;
-    const e = spec.entries.find((x) => x.days_ago === n.entry_days_ago);
-    const count = (e?.ponder.length ?? 0) + (e?.verse_question ? 1 : 0);
-    const idx = e?.verse_question ? n.ponder_index : n.ponder_index - 1;
-    if (!e || idx < 0 || idx >= count) {
-      throw new Error(`Note ponder_index ${n.ponder_index} has no matching question (${spec.title}).`);
-    }
-    const hit = n.body.match(PONDER_NOTE_BANNED);
-    if (hit) throw new Error(`Ponder note uses elapsed-time language ("${hit[0]}"): ${n.body}`);
   }
 
   for (const n of spec.notes ?? []) {
@@ -754,7 +679,6 @@ async function seedThread(userId, spec) {
       topic_id: topic.id,
       user_id: userId,
       body: n.body,
-      ponder_index: n.ponder_index ?? null,
       created_at: created.toISOString(),
     });
     if (error) throw error;
