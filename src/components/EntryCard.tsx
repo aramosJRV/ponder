@@ -320,13 +320,6 @@ function VerseHero({
             verse actually sits in — often tighter than a chapter, and sometimes
             crossing one. */}
         <div className="mt-3 flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={onReadContext}
-            className={pill}
-          >
-            Passage
-          </button>
           {onReadSlowly && (
             <button type="button" onClick={onReadSlowly} className={pill}>
               Read slowly
@@ -334,6 +327,13 @@ function VerseHero({
           )}
           <button type="button" onClick={onReadSetting} className={pill}>
             Context
+          </button>
+          <button
+            type="button"
+            onClick={onReadContext}
+            className={pill}
+          >
+            Full passage
           </button>
         </div>
 
