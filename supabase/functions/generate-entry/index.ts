@@ -296,6 +296,8 @@ async function tryPool(
   topicId: string,
   date: string,
   entryType: string,
+  // Sync path: the app reloads once on reply, so phrases filled after it would never show.
+  waitForPhrases = false,
 ): Promise<boolean> {
   try {
     const { data: poolId, error } = await db.rpc("select_pool_entry", {
@@ -313,7 +315,10 @@ async function tryPool(
     if (serveErr) { console.warn(`serve_pool_entry: ${serveErr.message}`); return false; }
     // null means the day was already filled by someone else — also a success
     // from the caller's point of view: the user has an entry.
-    if (newId !== null) inBackground(fillServedMeditation(db, poolId as string, topicId, date));
+    if (newId !== null) {
+      const fill = fillServedMeditation(db, poolId as string, topicId, date);
+      if (waitForPhrases) await fill; else inBackground(fill);
+    }
     return newId !== null;
   } catch (e) {
     console.warn(`tryPool failed for ${topicId}: ${e}`);
@@ -1952,7 +1957,7 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
   // Pool first. Free, instant, already validated. Only threads whose theme
   // the classifier was confident about are eligible — see select_pool_entry().
   await ensureTheme(db, topic);
-  if (await tryPool(db, topicId, date, entryType)) {
+  if (await tryPool(db, topicId, date, entryType, true)) {
     return { topic_id: topicId, status: "created", date, source: "pool" };
   }
 
@@ -2000,7 +2005,7 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
     // entry type before giving up: a challenge entry when an affirming one
     // was wanted is a far better day than no entry at all.
     const other = entryType === "challenge" ? "affirming" : "challenge";
-    if (await tryPool(db, topicId, date, other)) {
+    if (await tryPool(db, topicId, date, other, true)) {
       return { topic_id: topicId, status: "created", date, source: "pool_fallback" };
     }
     return { topic_id: topicId, status: "failed", date, error: "model output unusable after retry" };
@@ -2010,11 +2015,11 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
   // resolve is now a gap to be filled from the pool, not a mismatched entry.
   const outcome = await finalizeEntry(db, topic, ctx, payload, modelUsed);
   if (outcome.status === "failed" && outcome.error === "verse_unresolved") {
-    if (await tryPool(db, topicId, date, entryType)) {
+    if (await tryPool(db, topicId, date, entryType, true)) {
       return { topic_id: topicId, status: "created", date, source: "pool_fallback" };
     }
     const other = entryType === "challenge" ? "affirming" : "challenge";
-    if (await tryPool(db, topicId, date, other)) {
+    if (await tryPool(db, topicId, date, other, true)) {
       return { topic_id: topicId, status: "created", date, source: "pool_fallback" };
     }
   }
