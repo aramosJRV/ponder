@@ -59,8 +59,14 @@ The same writing is shown to EVERY reader who reaches this section. You know not
 What to write:
 - thought: walk through the WHOLE section first, so the reader sees what happens or what is said and why it matters in the book, then slow down on ONE key verse (or two or three consecutive verses) from inside this section that carries its weight. Say plainly what that verse says before reflecting on it.
 - illustration: an image, analogy or ordinary scene that opens up the key verse. Clearly framed as illustration ("Imagine...", "Think of..."), or something true and commonly known.
-- ponder: two or three questions to sit with, each a single question ending in a question mark, different in angle from each other. Questions about the passage and about the reader's life with God, never quizzes.
-- prayer: two or three short directions for prayer, each one plain sentence that grows out of the passage.
+- ponder: two or three questions to sit with, each a single short question (under 25 words) ending in a question mark, different in angle from each other. Questions about the passage and about the reader's life with God, never quizzes.
+- prayer: two or three short directions for prayer, each one plain sentence (under 25 words) that grows out of the passage.
+
+Length: thought 130 to 190 words, illustration 90 to 160 words. Stay inside these.
+
+Accuracy: before writing, read the whole section in all three translations and notice who is present, what happens and how it ends. Say nothing the section does not say. Be careful with absolute words ("all", "none", "nothing", "only", "alone"): use one only when the passage says it. Do not leave out people who are still in the scene at the end, and do not import details from elsewhere in the book as if they were in this section. Describe each person from their own place in the story (a Moabite woman in Moab is not in a foreign land). Say who does what: never use a passive ("she was put outside") that hides who did it.
+
+Settled and unsettled: where Christians have long read a passage a particular way but others read it differently, give it as a reading ("many Christians have seen here..."), not as the plain meaning of the words. Do not take a position on how historical the earliest figures of Genesis are, or on the date and authorship of a book; speak of people and events as the text presents them.
 
 Non-negotiable:
 1. Never claim God is telling the reader something, and never direct their life decisions. Invite: "consider", "notice", "sit with".
@@ -102,10 +108,10 @@ const BOOK_DAY_TOOL = {
           verse_end: { type: "integer", description: "Same as verse_start for one verse; at most two more." },
         },
       },
-      thought: { type: "string", description: "130-200 words: the whole section, then the key verse." },
+      thought: { type: "string", description: "130-190 words: the whole section, then the key verse." },
       illustration: { type: "string", description: "90-160 words, clearly illustrative." },
       // Fixed slots, not arrays: see the note on DEVOTIONAL_TOOL in index.ts.
-      ponder_1: { type: "string", description: "One question, ending in a question mark." },
+      ponder_1: { type: "string", description: "One short question (under 25 words), ending in a question mark." },
       ponder_2: { type: "string", description: "A second question, different in angle." },
       ponder_3: { type: "string", description: "OPTIONAL third question. Omit rather than pad." },
       prayer_1: { type: "string", description: "One short prayer direction, one sentence." },

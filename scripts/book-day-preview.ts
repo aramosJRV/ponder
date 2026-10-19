@@ -159,7 +159,7 @@ const REVIEW_TOOL = {
 
 const REVIEW_SYSTEM = `You are reviewing a devotional reading written for a slow read-through of a book of the Bible. Below are the exact guidelines the writer was given, between the markers. Check the reading against every one of them, and also check that it describes the passage accurately: nothing the passage does not say, nothing important misread, no factual or theological error.
 
-List only real problems: a broken guideline, an inaccuracy, a claim about the reader's time or progress, belittling or interpretive wording about other peoples or faiths, a verdict about what God is telling the reader, self-improvement, or a hard passage handled glibly. Do not list matters of taste or ways it could be "even better". If there are no real problems, return an empty list.
+List only real problems: a broken guideline, an inaccuracy, a claim about the reader's time or progress, belittling or interpretive wording about other peoples or faiths, a verdict about what God is telling the reader, self-improvement, or a hard passage handled glibly. Do not list matters of taste or ways it could be "even better". Do not report length or word counts: those are checked by machine. If there are no real problems, return an empty list.
 
 === WRITER GUIDELINES ===
 ${BOOK_DAY_SYSTEM}
@@ -239,16 +239,27 @@ if (import.meta.main) {
   } else {
     const key = await loadKey();
     const specs = Deno.args.length ? Deno.args : SPECS;
-    samples = await Promise.all(specs.map(async (spec) => {
-      const section = await loadSection(spec);
-      const day = parseBookDay(await callTool(key, bookDayRequest(WRITER, section), "record_book_day"));
-      const machine = checkBookDay(day, section);
-      const review = ((await callTool(key, reviewRequest(section, day), "record_review")) as { problems?: string[] })
-        .problems ?? [];
-      console.log(`${sectionRef(section)}: machine ${machine.length}, reviewer ${review.length}`);
-      return { section, day, machine, review, writer: WRITER, reviewer: REVIEWER };
-    }));
+    // Sections are cached: one at a time, because parallel CLI logins collide
+    // (28P01), and only once, so later rounds never touch the database.
     await Deno.mkdir(OUT_DIR, { recursive: true });
+    const cacheUrl = new URL("sections.json", OUT_DIR);
+    const cache: Record<string, Section> = await Deno.readTextFile(cacheUrl).then(JSON.parse).catch(() => ({}));
+    for (const spec of specs) cache[spec] ??= await loadSection(spec);
+    await Deno.writeTextFile(cacheUrl, JSON.stringify(cache, null, 2));
+    samples = await Promise.all(specs.map(async (spec) => {
+      const section = cache[spec];
+      try {
+        const day = parseBookDay(await callTool(key, bookDayRequest(WRITER, section), "record_book_day"));
+        const machine = checkBookDay(day, section);
+        const review = ((await callTool(key, reviewRequest(section, day), "record_review")) as { problems?: string[] })
+          .problems ?? [];
+        console.log(`${sectionRef(section)}: machine ${machine.length}, reviewer ${review.length}`);
+        return { section, day, machine, review, writer: WRITER, reviewer: REVIEWER };
+      } catch (e) {
+        console.log(`${sectionRef(section)}: FAILED ${e}`);
+        return { section, day: parseBookDay({}), machine: [`generation failed: ${e}`], review: [], writer: WRITER, reviewer: REVIEWER };
+      }
+    }));
     await Deno.writeTextFile(JSON_OUT, JSON.stringify(samples, null, 2));
   }
   await Deno.writeTextFile(MD_OUT, render(samples));

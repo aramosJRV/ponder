@@ -1,0 +1,328 @@
+[
+  {
+    "section": {
+      "book": "Mark",
+      "index": 1,
+      "count": 87,
+      "chapter_start": 1,
+      "verse_start": 1,
+      "chapter_end": 1,
+      "verse_end": 8,
+      "texts": {
+        "WEB": "The beginning of the Good News of Jesus Christ, the Son of God. As it is written in the prophets, “Behold, I send my messenger before your face, who will prepare your way before you: the voice of one crying in the wilderness, ‘Make ready the way of the Lord! Make his paths straight!’ ” John came baptizing in the wilderness and preaching the baptism of repentance for forgiveness of sins. All the country of Judea and all those of Jerusalem went out to him. They were baptized by him in the Jordan river, confessing their sins. John was clothed with camel’s hair and a leather belt around his waist. He ate locusts and wild honey. He preached, saying, “After me comes he who is mightier than I, the thong of whose sandals I am not worthy to stoop down and loosen. I baptized you in water, but he will baptize you in the Holy Spirit.”",
+        "BSB": "This is the beginning of the gospel of Jesus Christ, the Son of God. As it is written in Isaiah the prophet: “Behold, I will send My messenger ahead of You, who will prepare Your way.” “A voice of one calling in the wilderness, ‘Prepare the way for the Lord, make straight paths for Him.’” John the Baptist appeared in the wilderness, preaching a baptism of repentance for the forgiveness of sins. People went out to him from all of Jerusalem and the countryside of Judea. Confessing their sins, they were baptized by him in the Jordan River. John was clothed in camel’s hair, with a leather belt around his waist. His food was locusts and wild honey. And he began to proclaim: “After me will come One more powerful than I, the straps of whose sandals I am not worthy to stoop down and untie. I baptize you with water, but He will baptize you with the Holy Spirit.”",
+        "KJV": "The beginning of the gospel of Jesus Christ, the Son of God; As it is written in the prophets, Behold, I send my messenger before thy face, which shall prepare thy way before thee. The voice of one crying in the wilderness, Prepare ye the way of the Lord, make his paths straight. John did baptize in the wilderness, and preach the baptism of repentance for the remission of sins. And there went out unto him all the land of Judea, and they of Jerusalem, and were all baptized of him in the river of Jordan, confessing their sins. And John was clothed with camel’s hair, and with a girdle of a skin about his loins; and he did eat locusts and wild honey; And preached, saying, There cometh one mightier than I after me, the latchet of whose shoes I am not worthy to stoop down and unloose. I indeed have baptized you with water: but he shall baptize you with the Holy Ghost."
+      }
+    },
+    "day": {
+      "key_verse": {
+        "chapter": 1,
+        "verse_start": 7,
+        "verse_end": 8
+      },
+      "thought": "Mark opens without a birth story or a family tree. His first line names his subject: this is the beginning of the good news about Jesus, the Christ, the Son of God. Then he reaches back to the prophets, to words about a messenger sent ahead and a voice in the wilderness calling people to prepare the Lord's way. John is that voice. In the wilderness he baptizes and preaches a baptism of repentance for the forgiveness of sins, and people come out from the Judean countryside and from Jerusalem to be baptized in the Jordan, confessing their sins. His camel's hair, leather belt, locusts and wild honey all belong to the wilderness. Yet for all the crowds, John points away from himself. In verses 7 and 8 he says someone more powerful is coming after him, someone whose sandal straps he counts himself unworthy to stoop and untie, a task often thought of as a servant's job. John baptizes with water; the coming one will baptize with the Holy Spirit. The man drawing the crowds spends his voice on someone not yet in the scene.",
+      "illustration": "Imagine standing at night where a road comes down out of dark hills. A man waits at the roadside with a lantern, and people gather around him because his is the only light for miles. They want to look at him, to hear him, to stay near the glow. But he keeps lifting the lantern toward the road and telling them to watch it, because someone is coming along that road whose light will make his own look small. His lantern is real, and it does real good: it shows people where they stand and where the road is. Still, anyone who stared only at the lantern would miss the reason it was lit. John's water and the repentance he preaches are real too, yet he speaks of them as making ready for someone greater, who will give what John himself cannot.",
+      "ponder": [
+        "Why might Mark begin his account of Jesus with John pointing ahead, rather than with Jesus himself speaking?",
+        "What might it mean for you to confess your sins as honestly as the people at the Jordan did?",
+        "Where do you find yourself wanting to be the light people look at rather than the one pointing beyond?"
+      ],
+      "prayer_prompts": [
+        "Thank God that the good news begins with Jesus, the Christ, the Son of God.",
+        "Ask for honesty to confess your sins and trust in the forgiveness John proclaimed.",
+        "Pray for something of John's humility, glad to point to the one who baptizes with the Holy Spirit."
+      ]
+    },
+    "machine": [],
+    "review": [],
+    "writer": "claude-opus-5-5",
+    "reviewer": "claude-opus-5-5"
+  },
+  {
+    "section": {
+      "book": "Psalms",
+      "index": 1,
+      "count": 171,
+      "chapter_start": 1,
+      "verse_start": 1,
+      "chapter_end": 1,
+      "verse_end": 6,
+      "texts": {
+        "WEB": "Blessed is the man who doesn’t walk in the counsel of the wicked, nor stand on the path of sinners, nor sit in the seat of scoffers; but his delight is in Yahweh’s law. On his law he meditates day and night. He will be like a tree planted by the streams of water, that produces its fruit in its season, whose leaf also does not wither. Whatever he does shall prosper. The wicked are not so, but are like the chaff which the wind drives away. Therefore the wicked shall not stand in the judgment, nor sinners in the congregation of the righteous. For Yahweh knows the way of the righteous, but the way of the wicked shall perish.",
+        "BSB": "Blessed is the man who does not walk in the counsel of the wicked, or set foot on the path of sinners, or sit in the seat of mockers. But his delight is in the Law of the LORD, and on His law he meditates day and night. He is like a tree planted by streams of water, yielding its fruit in season, whose leaf does not wither, and who prospers in all he does. Not so the wicked! For they are like chaff driven off by the wind. Therefore the wicked will not stand in the judgment, nor sinners in the assembly of the righteous. For the LORD guards the path of the righteous, but the way of the wicked will perish.",
+        "KJV": "Blessed is the man that walketh not in the counsel of the ungodly, nor standeth in the way of sinners, nor sitteth in the seat of the scornful. But his delight is in the law of the Lord; and in his law doth he meditate day and night. And he shall be like a tree planted by the rivers of water, that bringeth forth his fruit in his season; his leaf also shall not wither; and whatsoever he doeth shall prosper. The ungodly are not so: but are like the chaff which the wind driveth away. Therefore the ungodly shall not stand in the judgment, nor sinners in the congregation of the righteous. For the Lord knoweth the way of the righteous: but the way of the ungodly shall perish."
+      }
+    },
+    "day": {
+      "key_verse": {
+        "chapter": 1,
+        "verse_start": 2,
+        "verse_end": 3
+      },
+      "thought": "The book of Psalms opens with a picture of two ways rather than with a prayer. It pronounces a blessing on the person who does not follow the advice of the wicked, stand on the road sinners take, or sit down among mockers. Walking, then standing, then sitting: the verbs trace a slow settling in. This person delights in the Lord's law instead and ponders it day and night. They are like a well-watered tree, fruitful and green, and whatever they do prospers. The wicked are the opposite. They are chaff, light and rootless, driven off by the wind, and they will not stand in the judgment or in the assembly of the righteous. The psalm ends with the Lord himself, who knows and guards the way of the righteous, while the way of the wicked perishes.\n\nSlow down at verses 2 and 3. This person takes joy in God's instruction and keeps turning it over. The result is a tree planted beside streams. Notice that the tree did not plant itself. Someone set it where the water is. It bears fruit when fruit is due, not all at once. Its flourishing comes from being rooted close to what gives life.",
+      "illustration": "Imagine looking down on a dry valley at the end of a long, hot summer. The hillsides are brown, and the grass crackles underfoot. Down the middle of the valley runs a line of deep green trees. You cannot see the stream from up there, but you can trace exactly where it goes by the green. Those trees are not straining harder than the scrub on the slopes. Their roots simply reach water that the hillside plants cannot. Now picture a threshing floor on the same valley floor. Someone tosses the grain into the breeze. The heavy kernels drop back down, and the husks drift off and vanish. The psalm puts these two images side by side. One is rooted and keeps bearing fruit. The other has nothing to hold it in place.",
+      "ponder": [
+        "Whose counsel, which paths and which seats shape you without your quite noticing?",
+        "What would it mean for God's instruction to be a delight to you and not simply a duty?",
+        "What do you feel when you read that the Lord knows the way of the righteous?"
+      ],
+      "prayer_prompts": [
+        "Ask the Lord to root you near what gives life and to grow real delight in his instruction.",
+        "Thank God that he knows and guards the way of those who walk with him.",
+        "Bring before him any slow slide toward mockery that you recognise in yourself."
+      ]
+    },
+    "machine": [],
+    "review": [],
+    "writer": "claude-opus-5-5",
+    "reviewer": "claude-opus-5-5"
+  },
+  {
+    "section": {
+      "book": "Ruth",
+      "index": 1,
+      "count": 9,
+      "chapter_start": 1,
+      "verse_start": 1,
+      "chapter_end": 1,
+      "verse_end": 5,
+      "texts": {
+        "WEB": "In the days when the judges judged, there was a famine in the land. A certain man of Bethlehem Judah went to live in the country of Moab with his wife and his two sons. The name of the man was Elimelech, and the name of his wife Naomi. The names of his two sons were Mahlon and Chilion, Ephrathites of Bethlehem Judah. They came into the country of Moab and lived there. Elimelech, Naomi’s husband, died; and she was left with her two sons. They took for themselves wives of the women of Moab. The name of the one was Orpah, and the name of the other was Ruth. They lived there about ten years. Mahlon and Chilion both died, and the woman was bereaved of her two children and of her husband.",
+        "BSB": "In the days when the judges ruled, there was a famine in the land. And a certain man from Bethlehem in Judah, with his wife and two sons, went to reside in the land of Moab. The man’s name was Elimelech, his wife’s name was Naomi, and the names of his two sons were Mahlon and Chilion. They were Ephrathites from Bethlehem in Judah, and they entered the land of Moab and settled there. Then Naomi’s husband Elimelech died, and she was left with her two sons, who took Moabite women as their wives, one named Orpah and the other named Ruth. And after they had lived in Moab about ten years, both Mahlon and Chilion also died, and Naomi was left without her two sons and without her husband.",
+        "KJV": "Now it came to pass in the days when the judges ruled, that there was a famine in the land. And a certain man of Beth–lehem–judah went to sojourn in the country of Moab, he, and his wife, and his two sons. And the name of the man was Elimelech, and the name of his wife Naomi, and the name of his two sons Mahlon and Chilion, Ephrathites of Beth–lehem–judah. And they came into the country of Moab, and continued there. And Elimelech Naomi’s husband died; and she was left, and her two sons. And they took them wives of the women of Moab; the name of the one was Orpah, and the name of the other Ruth: and they dwelled there about ten years. And Mahlon and Chilion died also both of them; and the woman was left of her two sons and her husband."
+      }
+    },
+    "day": {
+      "key_verse": {
+        "chapter": 1,
+        "verse_start": 5,
+        "verse_end": 5
+      },
+      "thought": "Ruth opens in the time when the judges ruled, with famine in the land. Elimelech, a man from Bethlehem in Judah, takes his wife Naomi and their sons Mahlon and Chilion across to Moab and settles there. Then Elimelech dies. The sons marry two Moabite women, Orpah and Ruth, and the family stays about ten years. Then both sons die too. In five short verses the storyteller moves from a family of four leaving home to three widows: Naomi and her two daughters-in-law. No cause is given for any of the deaths, and God is not named once. The rest of the book will follow these women, but it begins here, with loss told plainly.\n\nVerse 5 says that Mahlon and Chilion both died, and Naomi was left without her two sons and without her husband. The verse does not hurry past this or try to explain it. It counts what is gone and lets the emptiness stand. Whatever happens later in Ruth, the book never asks us to pretend this did not happen. Hope, if it comes, will have to come into exactly this place.",
+      "illustration": "Think of a family photograph taken as they set out from Bethlehem: a man, a woman, two grown sons, bags at their feet. Later someone takes a second picture in Moab, and now two young wives stand in it as well, six people crowded into the frame. Then imagine the pictures that follow, each one with someone missing, until the last shows three women standing close together, with gaps around them where the men used to stand. Nobody in that last picture is posing. Verse 5 is something like that final photograph. It does not tell us what Naomi felt or what she said. It simply shows who is left, and lets us notice the spaces.",
+      "ponder": [
+        "Why might the storyteller begin this book with such stark, unexplained loss and no mention of God?",
+        "Where do you find it hard to name grief plainly before God without rushing to explain it?",
+        "What do you notice about Orpah and Ruth, also widowed, though the verse speaks of Naomi?"
+      ],
+      "prayer_prompts": [
+        "Bring before God people who, like Naomi, have lost the ones they leaned on.",
+        "Ask for honesty to name loss in God's presence without hurrying past it.",
+        "Pray for families who have left home because of hunger or hardship, as this family left Bethlehem."
+      ]
+    },
+    "machine": [],
+    "review": [
+      "The illustration misstates the order of events: \"now two young wives stand in it as well, six people crowded into the frame\" puts Elimelech in Moab alongside his sons' wives. The passage says Elimelech died before Mahlon and Chilion married, so the whole family of six was never alive together.",
+      "\"The rest of the book will follow these women\" says more than the book does. The thought has just named all three widows, but Orpah turns back later in chapter 1, and the rest of Ruth follows only Naomi and Ruth."
+    ],
+    "writer": "claude-opus-5-5",
+    "reviewer": "claude-opus-5-5"
+  },
+  {
+    "section": {
+      "book": "Philippians",
+      "index": 1,
+      "count": 12,
+      "chapter_start": 1,
+      "verse_start": 1,
+      "chapter_end": 1,
+      "verse_end": 2,
+      "texts": {
+        "WEB": "Paul and Timothy, servants of Jesus Christ; To all the saints in Christ Jesus who are at Philippi, with the overseers and servants: Grace to you, and peace from God our Father and the Lord Jesus Christ.",
+        "BSB": "Paul and Timothy, servants of Christ Jesus, To all the saints in Christ Jesus at Philippi, together with the overseers and deacons: Grace and peace to you from God our Father and the Lord Jesus Christ.",
+        "KJV": "Paul and Timotheus, the servants of Jesus Christ, to all the saints in Christ Jesus which are at Philippi, with the bishops and deacons: Grace be unto you, and peace, from God our Father, and from the Lord Jesus Christ."
+      }
+    },
+    "day": {
+      "key_verse": {
+        "chapter": 1,
+        "verse_start": 1,
+        "verse_end": 1
+      },
+      "thought": "The letter opens the way letters in its world usually did: who is writing, who is receiving, and a word of greeting. Christ shapes each part. Paul names Timothy beside him and calls them both servants of Christ, a word that can also mean slaves, and he claims no higher title. He writes to all the saints in Christ Jesus at Philippi, and he mentions the overseers and deacons as being with them, not above them. Then comes the greeting. Paul wishes them grace and peace, and he names God our Father and the Lord Jesus Christ together as where they come from.\n\nSlow down on the first verse. Two words set the tone. Paul and Timothy are servants. The believers are saints, people set apart as belonging to God. Neither word rests on achievement. Servants belong to their master, and the saints are holy because they are in Christ Jesus. Notice that being in Christ Jesus comes before being at Philippi. Their city is real, but it is not the deepest place they live. Later in the letter Paul urges them to look to the interests of others. Even here, before he gives any instruction, he has put everyone on the same ground, leaders included.",
+      "illustration": "Think of an envelope. On the front is a name, a street and a town, everything a postal worker needs to find the right door. Now imagine the letter inside is from a parent, and it opens with a few words that say who this person is to the one writing: loved, known, belonging. The address on the envelope is accurate, but it tells you very little about who the person is. The opening of Paul's letter carries both kinds of address at once. The believers really do live at Philippi, among its streets and neighbours and pressures. Before he mentions the town, though, Paul has already said who they are and to whom they belong. They are saints, and they are in Christ Jesus. The town tells you where to find them. Being in Christ tells you who they are.",
+      "ponder": [
+        "What changes when you think of yourself first as being in Christ, and only then by where you live?",
+        "Why might Paul introduce himself simply as a servant, sharing that title equally with Timothy?",
+        "What would it mean to receive grace and peace as gifts rather than things to earn?"
+      ],
+      "prayer_prompts": [
+        "Thank God that belonging to him rests on being in Christ, not on standing or achievement.",
+        "Pray for those who oversee and serve in your church, and for the whole community alongside them.",
+        "Ask God our Father and the Lord Jesus Christ for grace and peace for someone you know."
+      ]
+    },
+    "machine": [],
+    "review": [
+      "The thought says Paul mentions the overseers and deacons \"as being with them, not above them\" and that he \"has put everyone on the same ground, leaders included.\" The verse only says the letter goes to the saints together with the overseers and deacons. Saying the leaders are not above the others is an interpretation presented as what the verse plainly says, and it takes a side on how church leadership should be structured, where Christians disagree."
+    ],
+    "writer": "claude-opus-5-5",
+    "reviewer": "claude-opus-5-5"
+  },
+  {
+    "section": {
+      "book": "Leviticus",
+      "index": 1,
+      "count": 81,
+      "chapter_start": 1,
+      "verse_start": 1,
+      "chapter_end": 1,
+      "verse_end": 17,
+      "texts": {
+        "WEB": "Yahweh called to Moses, and spoke to him from the Tent of Meeting, saying, “Speak to the children of Israel, and tell them, ‘When anyone of you offers an offering to Yahweh, you shall offer your offering of the livestock, from the herd and from the flock. “ ‘If his offering is a burnt offering from the herd, he shall offer a male without defect. He shall offer it at the door of the Tent of Meeting, that he may be accepted before Yahweh. He shall lay his hand on the head of the burnt offering, and it shall be accepted for him to make atonement for him. He shall kill the bull before Yahweh. Aaron’s sons, the priests, shall present the blood and sprinkle the blood around on the altar that is at the door of the Tent of Meeting. He shall skin the burnt offering, and cut it into pieces. The sons of Aaron the priest shall put fire on the altar, and lay wood in order on the fire; and Aaron’s sons, the priests, shall lay the pieces, the head, and the fat in order on the wood that is on the fire which is on the altar; but he shall wash its innards and its legs with water. The priest shall burn all of it on the altar, for a burnt offering, an offering made by fire, of a pleasant aroma to Yahweh. “ ‘If his offering is from the flock, from the sheep or from the goats, for a burnt offering, he shall offer a male without defect. He shall kill it on the north side of the altar before Yahweh. Aaron’s sons, the priests, shall sprinkle its blood around on the altar. He shall cut it into its pieces, with its head and its fat. The priest shall lay them in order on the wood that is on the fire which is on the altar, but the innards and the legs he shall wash with water. The priest shall offer the whole, and burn it on the altar. It is a burnt offering, an offering made by fire, of a pleasant aroma to Yahweh. “ ‘If his offering to Yahweh is a burnt offering of birds, then he shall offer his offering from turtledoves or of young pigeons. The priest shall bring it to the altar, and wring off its head, and burn it on the altar; and its blood shall be drained out on the side of the altar; and he shall take away its crop and its feathers, and cast it beside the altar on the east part, in the place of the ashes. He shall tear it by its wings, but shall not divide it apart. The priest shall burn it on the altar, on the wood that is on the fire. It is a burnt offering, an offering made by fire, of a pleasant aroma to Yahweh.",
+        "BSB": "Then the LORD called to Moses and spoke to him from the Tent of Meeting, saying, “Speak to the Israelites and tell them: When any of you brings an offering to the LORD, you may bring as your offering an animal from the herd or the flock. If one’s offering is a burnt offering from the herd, he is to present an unblemished male. He must bring it to the entrance to the Tent of Meeting for its acceptance before the LORD. He is to lay his hand on the head of the burnt offering, so it can be accepted on his behalf to make atonement for him. And he shall slaughter the young bull before the LORD, and Aaron’s sons the priests are to present the blood and sprinkle it on all sides of the altar at the entrance to the Tent of Meeting. Next, he is to skin the burnt offering and cut it into pieces. The sons of Aaron the priest shall put a fire on the altar and arrange wood on the fire. Then Aaron’s sons the priests are to arrange the pieces, including the head and the fat, atop the burning wood on the altar. The entrails and legs must be washed with water, and the priest shall burn all of it on the altar as a burnt offering, an offering made by fire, a pleasing aroma to the LORD. If, however, one’s offering is a burnt offering from the flock—from the sheep or goats—he is to present an unblemished male. He shall slaughter it on the north side of the altar before the LORD, and Aaron’s sons the priests are to sprinkle its blood against the altar on all sides. He is to cut the animal into pieces, and the priest shall arrange them, including the head and fat, atop the burning wood that is on the altar. The entrails and legs must be washed with water, and the priest shall bring all of it and burn it on the altar; it is a burnt offering, an offering made by fire, a pleasing aroma to the LORD. If, instead, one’s offering to the LORD is a burnt offering of birds, he is to present a turtledove or a young pigeon. Then the priest shall bring it to the altar, twist off its head, and burn it on the altar; its blood should be drained out on the side of the altar. And he is to remove the crop with its contents and throw it to the east side of the altar, in the place for ashes. He shall tear it open by its wings, without dividing the bird completely. And the priest is to burn it on the altar atop the burning wood. It is a burnt offering, an offering made by fire, a pleasing aroma to the LORD.",
+        "KJV": "And the Lord called unto Moses, and spake unto him out of the tabernacle of the congregation, saying, Speak unto the children of Israel, and say unto them, If any man of you bring an offering unto the Lord, ye shall bring your offering of the cattle, even of the herd, and of the flock. If his offering be a burnt sacrifice of the herd, let him offer a male without blemish: he shall offer it of his own voluntary will at the door of the tabernacle of the congregation before the Lord. And he shall put his hand upon the head of the burnt offering; and it shall be accepted for him to make atonement for him. And he shall kill the bullock before the Lord: and the priests, Aaron’s sons, shall bring the blood, and sprinkle the blood round about upon the altar that is by the door of the tabernacle of the congregation. And he shall flay the burnt offering, and cut it into his pieces. And the sons of Aaron the priest shall put fire upon the altar, and lay the wood in order upon the fire: And the priests, Aaron’s sons, shall lay the parts, the head, and the fat, in order upon the wood that is on the fire which is upon the altar: But his inwards and his legs shall he wash in water: and the priest shall burn all on the altar, to be a burnt sacrifice, an offering made by fire, of a sweet savour unto the Lord. And if his offering be of the flocks, namely, of the sheep, or of the goats, for a burnt sacrifice; he shall bring it a male without blemish. And he shall kill it on the side of the altar northward before the Lord: and the priests, Aaron’s sons, shall sprinkle his blood round about upon the altar. And he shall cut it into his pieces, with his head and his fat: and the priest shall lay them in order on the wood that is on the fire which is upon the altar: But he shall wash the inwards and the legs with water: and the priest shall bring it all, and burn it upon the altar: it is a burnt sacrifice, an offering made by fire, of a sweet savour unto the Lord. And if the burnt sacrifice for his offering to the Lord be of fowls, then he shall bring his offering of turtledoves, or of young pigeons. And the priest shall bring it unto the altar, and wring off his head, and burn it on the altar; and the blood thereof shall be wrung out at the side of the altar: And he shall pluck away his crop with his feathers, and cast it beside the altar on the east part, by the place of the ashes: And he shall cleave it with the wings thereof, but shall not divide it asunder: and the priest shall burn it upon the altar, upon the wood that is upon the fire: it is a burnt sacrifice, an offering made by fire, of a sweet savour unto the Lord."
+      }
+    },
+    "day": {
+      "key_verse": {
+        "chapter": 1,
+        "verse_start": 4,
+        "verse_end": 4
+      },
+      "thought": "Leviticus opens with the LORD calling to Moses from the Tent of Meeting. His first words are about how an Israelite may come near with an offering. A burnt offering may be a bull, a sheep or goat, or a turtledove or young pigeon. When the offering is an animal from the herd or the flock, the worshipper kills, skins and cuts it, then washes its inner parts and legs. Aaron's sons the priests handle the blood, tend the fire and arrange the pieces on the altar. With birds, the priest does all of it. Each kind of offering ends the same way: the priest burns it on the altar as a pleasing aroma to the LORD. A dove ends just as a bull does.\n\nIn verse 4, the one bringing the animal lays his hand on its head, and it is accepted on his behalf to make atonement for him. He doesn't keep his distance from his gift. He rests his own hand on it, and God accepts it for him. Many Christians have seen here one life standing in for another, and have read it alongside the death of Jesus. At the very least, it shows this holy God setting out a way to draw near.",
+      "illustration": "Imagine a farmer standing at the entrance of the tent with a young bull from his own herd. He has fed it, watched it grow, and picked it because it had no flaw. Now he reaches out and presses his palm onto its broad head. He can feel how warm it is and the breath moving through it. Nothing about the moment is abstract. This isn't a payment sent from far away, or a form someone else signs for him. His own hand says that this animal is his, and that it comes before God for him. Think of how differently we hold something we are handing over when it costs us, and when it stands in our place. The hand on the head joins the giver to the gift, and the text says God accepts it for him.",
+      "ponder": [
+        "What does it suggest about God that a pair of birds gets the same closing words as a bull?",
+        "Why might the worshipper's own hand need to rest on the offering, rather than leaving it all to the priests?",
+        "What does it stir in you that this book begins with God explaining how to come near him?"
+      ],
+      "prayer_prompts": [
+        "Thank God that he speaks first and makes a way for people to come near him.",
+        "Offer God what you have to give, whether it seems large or small.",
+        "Give thanks for atonement, and for Jesus, whom many Christians have seen pictured in this offering."
+      ]
+    },
+    "machine": [],
+    "review": [
+      "The ponder question about God and \"a pair of birds\" that \"gets the same closing words as a bull\" adds something the section doesn't say. Leviticus 1 describes a single bird (\"a turtledove or a young pigeon\", wringing off \"its head\"), and offerings of two birds only come later in the book.",
+      "The thought says that for an animal \"from the herd or the flock, the worshipper kills, skins and cuts it\". The passage mentions skinning only for the bull from the herd. For the sheep or goat from the flock, it says only that the worshipper kills it and cuts it into pieces."
+    ],
+    "writer": "claude-opus-5-5",
+    "reviewer": "claude-opus-5-5"
+  },
+  {
+    "section": {
+      "book": "Judges",
+      "index": 41,
+      "count": 46,
+      "chapter_start": 19,
+      "verse_start": 16,
+      "chapter_end": 19,
+      "verse_end": 30,
+      "texts": {
+        "WEB": "Behold, an old man came from his work out of the field at evening. Now the man was from the hill country of Ephraim, and he lived in Gibeah; but the men of the place were Benjamites. He lifted up his eyes, and saw the wayfaring man in the street of the city; and the old man said, “Where are you going? Where did you come from?” He said to him, “We are passing from Bethlehem Judah to the farther side of the hill country of Ephraim. I am from there, and I went to Bethlehem Judah. I am going to Yahweh’s house; and there is no one who has taken me into his house. Yet there is both straw and feed for our donkeys; and there is bread and wine also for me, and for your servant, and for the young man who is with your servants. There is no lack of anything.” The old man said, “Peace be to you! Just let me supply all your needs, but don’t sleep in the street.” So he brought him into his house, and gave the donkeys fodder. Then they washed their feet, and ate and drank. As they were making their hearts merry, behold, the men of the city, certain wicked fellows, surrounded the house, beating at the door; and they spoke to the master of the house, the old man, saying, “Bring out the man who came into your house, that we can have sex with him!” The man, the master of the house, went out to them, and said to them, “No, my brothers, please don’t act so wickedly; since this man has come into my house, don’t do this folly. Behold, here is my virgin daughter and his concubine. I will bring them out now. Humble them, and do with them what seems good to you; but to this man don’t do any such folly.” But the men wouldn’t listen to him; so the man grabbed his concubine, and brought her out to them; and they had sex with her, and abused her all night until the morning. When the day began to dawn, they let her go. Then the woman came in the dawning of the day, and fell down at the door of the man’s house where her lord was, until it was light. Her lord rose up in the morning and opened the doors of the house, and went out to go his way; and behold, the woman his concubine had fallen down at the door of the house, with her hands on the threshold. He said to her, “Get up, and let’s get going!” but no one answered. Then he took her up on the donkey; and the man rose up, and went to his place. When he had come into his house, he took a knife and cut up his concubine, and divided her, limb by limb, into twelve pieces, and sent her throughout all the borders of Israel. It was so, that all who saw it said, “Such a deed has not been done or seen from the day that the children of Israel came up out of the land of Egypt to this day! Consider it, take counsel, and speak.”",
+        "BSB": "That evening an old man from the hill country of Ephraim, who was residing in Gibeah (the men of that place were Benjamites), came in from his work in the field. When he looked up and saw the traveler in the city square, the old man asked, “Where are you going, and where have you come from?” The Levite replied, “We are traveling from Bethlehem in Judah to the remote hill country of Ephraim, where I am from. I went to Bethlehem in Judah, and now I am going to the house of the LORD; but no one has taken me into his home, even though there is both straw and feed for our donkeys, and bread and wine for me and the maidservant and young man with me. There is nothing that we, your servants, lack.” “Peace to you,” said the old man. “Let me supply everything you need. Only do not spend the night in the square.” So he brought him to his house and fed his donkeys. And they washed their feet and ate and drank. While they were enjoying themselves, suddenly the wicked men of the city surrounded the house. Pounding on the door, they said to the old man who owned the house, “Bring out the man who came to your house, so we can have relations with him!” The owner of the house went out and said to them, “No, my brothers, do not do this wicked thing! After all, this man is a guest in my house. Do not commit this outrage. Look, let me bring out my virgin daughter and the man’s concubine, and you can use them and do with them as you wish. But do not do such a vile thing to this man.” But the men would not listen to him. So the Levite took his concubine and sent her outside to them, and they raped her and abused her throughout the night, and at dawn they let her go. Early that morning, the woman went back to the house where her master was staying, collapsed at the doorway, and lay there until it was light. In the morning, when her master got up and opened the doors of the house to go out on his journey, there was his concubine, collapsed in the doorway of the house, with her hands on the threshold. “Get up,” he told her. “Let us go.” But there was no response. So the man put her on his donkey and set out for home. When he reached his house, he picked up a knife, took hold of his concubine, cut her limb by limb into twelve pieces, and sent her throughout the territory of Israel. And everyone who saw it said, “Nothing like this has been seen or done from the day the Israelites came out of the land of Egypt until this day. Think it over, take counsel, and speak up!”",
+        "KJV": "And, behold, there came an old man from his work out of the field at even, which was also of mount Ephraim; and he sojourned in Gibeah: but the men of the place were Benjamites. And when he had lifted up his eyes, he saw a wayfaring man in the street of the city: and the old man said, Whither goest thou? and whence comest thou? And he said unto him, We are passing from Beth–lehem–judah toward the side of mount Ephraim; from thence am I: and I went to Beth–lehem–judah, but I am now going to the house of the Lord; and there is no man that receiveth me to house. Yet there is both straw and provender for our asses; and there is bread and wine also for me, and for thy handmaid, and for the young man which is with thy servants: there is no want of any thing. And the old man said, Peace be with thee; howsoever let all thy wants lie upon me; only lodge not in the street. So he brought him into his house, and gave provender unto the asses: and they washed their feet, and did eat and drink. Now as they were making their hearts merry, behold, the men of the city, certain sons of Belial, beset the house round about, and beat at the door, and spake to the master of the house, the old man, saying, Bring forth the man that came into thine house, that we may know him. And the man, the master of the house, went out unto them, and said unto them, Nay, my brethren, nay, I pray you, do not so wickedly; seeing that this man is come into mine house, do not this folly. Behold, here is my daughter a maiden, and his concubine; them I will bring out now, and humble ye them, and do with them what seemeth good unto you: but unto this man do not so vile a thing. But the men would not hearken to him: so the man took his concubine, and brought her forth unto them; and they knew her, and abused her all the night until the morning: and when the day began to spring, they let her go. Then came the woman in the dawning of the day, and fell down at the door of the man’s house where her lord was, till it was light. And her lord rose up in the morning, and opened the doors of the house, and went out to go his way: and, behold, the woman his concubine was fallen down at the door of the house, and her hands were upon the threshold. And he said unto her, Up, and let us be going. But none answered. Then the man took her up upon an ass, and the man rose up, and gat him unto his place. And when he was come into his house, he took a knife, and laid hold on his concubine, and divided her, together with her bones, into twelve pieces, and sent her into all the coasts of Israel. And it was so, that all that saw it said, There was no such deed done nor seen from the day that the children of Israel came up out of the land of Egypt unto this day: consider of it, take advice, and speak your minds."
+      }
+    },
+    "day": {
+      "key_verse": {
+        "chapter": 19,
+        "verse_start": 26,
+        "verse_end": 27
+      },
+      "thought": "An old man from Ephraim, living among Benjamites in Gibeah, takes the Levite and his party in from the square. Then men of the town surround the house and demand the guest. The host refuses, but he offers his own daughter and the concubine instead. When the men will not listen, the Levite puts his concubine out to them, and they rape and abuse her all night. At dawn she reaches the door and falls there. In the morning her master opens the door to leave and tells her to get up. No answer comes. He carries her home, cuts her body into twelve pieces and sends them through Israel. Those who see it say nothing like this has happened since Israel came out of Egypt.\n\nStay with verses 26 and 27. She comes back to the door of the house where her master was, and she lies there until it is light. The narrator notices her hands on the threshold, reaching toward the house whose men had handed her over. Her master's only words to her are about leaving. The text gives her no name and no voice, yet it will not let the reader step past her. Judges has been tracing Israel's collapse, and here it comes down to one doorway and one woman whom no one protected.",
+      "illustration": "Think of how a family often remembers a loss. It is not always the big facts that stay with them. Often it is one small detail that will not go away, like a coat still on its hook or a cup left on the table. That detail stops the person from turning into a case or a headline. The narrator does something like this with her hands on the threshold. Soon the Levite will turn her into a message to the tribes, a body cut into pieces and carried to every border. Before that happens, the story makes the reader look at her hands. Whatever the men of Gibeah did, and whatever her master did next, the narrator keeps one image of her as a person who reached for a door. The text does not look away here, and it does not invite its readers to look away either.",
+      "ponder": [
+        "Why might the narrator record her hands on the threshold, when it tells us so little else about her?",
+        "Where do you notice yourself wanting to look away from this story, and what might it mean to stay with it?",
+        "What does it show about a people when even the host who refuses the mob offers up the women instead?"
+      ],
+      "prayer_prompts": [
+        "Grieve before God for this woman, unnamed and unprotected, and for all who suffer violence like hers.",
+        "Ask God for eyes that see the vulnerable person whom others step past or hand over.",
+        "Pray for those who hold power in homes and communities, that they would protect the weak rather than give them up."
+      ]
+    },
+    "machine": [],
+    "review": [
+      "The thought says her hands were on the threshold \"reaching toward the house whose men had handed her over\", and the illustration calls her \"a person who reached for a door\". The passage only says her hands lay on the threshold. It says nothing about reaching, so this movement and intention are added to the text and presented as something the narrator records."
+    ],
+    "writer": "claude-opus-5-5",
+    "reviewer": "claude-opus-5-5"
+  },
+  {
+    "section": {
+      "book": "1 Chronicles",
+      "index": 1,
+      "count": 103,
+      "chapter_start": 1,
+      "verse_start": 1,
+      "chapter_end": 1,
+      "verse_end": 4,
+      "texts": {
+        "WEB": "Adam, Seth, Enosh, Kenan, Mahalalel, Jared, Enoch, Methuselah, Lamech, Noah, Shem, Ham, and Japheth.",
+        "BSB": "Adam, Seth, Enosh, Kenan, Mahalalel, Jared, Enoch, Methuselah, Lamech. The sons of Noah: Shem, Ham, and Japheth.",
+        "KJV": "Adam, Sheth, Enosh, Kenan, Mahalaleel, Jered, Henoch, Methuselah, Lamech, Noah, Shem, Ham, and Japheth."
+      }
+    },
+    "day": {
+      "key_verse": {
+        "chapter": 1,
+        "verse_start": 1,
+        "verse_end": 1
+      },
+      "thought": "Chronicles opens without a sentence. There is no setting, no speaker and no action, only names. It starts with Adam, and a single line of names runs from him to Noah. With Noah's three sons, Shem, Ham and Japheth, that one line divides into three. The chronicler tells none of their stories. He seems to trust that his readers know them from Genesis, so a whole life fits into one word. This book will go on to tell of David, his kingdom and his preparations for the temple in Jerusalem. Yet before Israel is mentioned at all, it begins with the first human being.\n\nSlow down on the first verse: Adam, then Seth, then Enosh. Three names with nothing added. Even so, the choice of a starting point says something. The history of God's people sits inside the history of humanity. It is not a private story walled off from everyone else. It belongs to one family that begins with Adam. The list offers no praise and no blame. Being named is enough. Each person is kept in the record and remembered as part of a line that leads somewhere.",
+      "illustration": "Imagine an old family Bible with names written in faded ink inside the front cover. Most of them carry no stories. Nobody now remembers what that great-great-grandmother laughed at, or what the man two lines above her did for work. Still, someone took care to write each name, and the list starts as far back as anyone could reach before it comes down to the present household. To the family that keeps it, those bare names say: you did not come from nowhere, and you are not alone. The opening of Chronicles does something like this, but on a far larger scale. It reaches back past any one household, tribe or nation to Adam. The family record of Israel's kings and temple begins at the very source of the human family.",
+      "ponder": [
+        "Why might a book about David and the temple begin with Adam instead of with Israel?",
+        "What changes when you see God's people as part of the whole human family, not set apart from it?",
+        "Whose names, with stories you will never know, stand somewhere behind your own life?"
+      ],
+      "prayer_prompts": [
+        "Thank God that the record of his people begins with the whole human family.",
+        "Pray for peoples beyond your own, whom this list holds together in one family.",
+        "Ask God for trust that he knows and remembers each person by name, even those whose stories go untold."
+      ]
+    },
+    "machine": [],
+    "review": [
+      "The second ponder question asks the reader to see God's people as part of the whole human family, \"not set apart from it\". That denies something Scripture plainly says: God's people are set apart, or holy. It also cuts against Chronicles itself, whose genealogies go on to narrow from all humanity down to Israel's chosen line. The passage places Israel within the human family; it does not say Israel is not set apart."
+    ],
+    "writer": "claude-opus-5-5",
+    "reviewer": "claude-opus-5-5"
+  },
+  {
+    "section": {
+      "book": "Song of Solomon",
+      "index": 1,
+      "count": 14,
+      "chapter_start": 1,
+      "verse_start": 1,
+      "chapter_end": 1,
+      "verse_end": 4,
+      "texts": {
+        "WEB": "The Song of songs, which is Solomon’s. Let him kiss me with the kisses of his mouth; for your love is better than wine. Your oils have a pleasing fragrance. Your name is oil poured out, therefore the virgins love you. Take me away with you. Let’s hurry. The king has brought me into his rooms. We will be glad and rejoice in you. We will praise your love more than wine! They are right to love you.",
+        "BSB": "This is Solomon’s Song of Songs. Let him kiss me with the kisses of his mouth! For your love is more delightful than wine. The fragrance of your perfume is pleasing; your name is like perfume poured out. No wonder the maidens adore you. Take me away with you—let us hurry! May the king bring me to his chambers. We will rejoice and delight in you; we will praise your love more than wine. It is only right that they adore you.",
+        "KJV": "The song of songs, which is Solomon’s. Let him kiss me with the kisses of his mouth: for thy love is better than wine. Because of the savour of thy good ointments thy name is as ointment poured forth, therefore do the virgins love thee. Draw me, we will run after thee: the king hath brought me into his chambers: we will be glad and rejoice in thee, we will remember thy love more than wine: the upright love thee."
+      }
+    },
+    "day": {
+      "key_verse": {
+        "chapter": 1,
+        "verse_start": 2,
+        "verse_end": 3
+      },
+      "thought": "A title names this the Song of Songs, a Hebrew way of saying the finest song, and links it with Solomon. Then, without introduction, a woman speaks, and her first words are desire: she wants his kiss. She moves between speaking about him and speaking to him, as lovers do. His love delights her more than wine, and his fragrance and his name are lovely. She urges him to take her away quickly, and she speaks of the king's chambers. Some translations give this as something already done and others as something hoped for. Then other voices, young women around her, gladly join in and agree that loving him is right. The Song opens with longing spoken openly and welcomed.\n\nStay with verses 2 and 3. She says his love is better than wine and his name is like perfume poured out. A name stands for the whole person, and poured perfume fills a room. Who he is reaches beyond him and draws others in. Read first as love poetry, this honours desire between a woman and a man as good. Many Christians have also heard here a picture of God's love, and the poem leaves room for both readings.",
+      "illustration": "Think of what happens when someone uncorks a bottle of fragrant oil in a closed room. Within moments everyone notices. Nobody has to be told it is there. The scent moves through the air and reaches each person. Once poured out, it cannot also be kept private. Or think of how the name of someone dearly loved can sound different from every other word. Hear it spoken across a crowded room and something in you turns toward it, because the name carries the whole person with it. The woman in the Song puts these two pictures together. Her beloved's name is like that poured oil: it fills the space and reaches others, and the young women around her are drawn to him too. Her love does not resent their admiration. It agrees with them that he is worth loving.",
+      "ponder": [
+        "What might it mean that this book opens with a woman voicing her own desire so openly?",
+        "When you hear the name of God, what does it carry for you?",
+        "Why might the gladness of her companions matter to the woman's love?"
+      ],
+      "prayer_prompts": [
+        "Give thanks for love between a woman and a man as a good gift from God.",
+        "Pray for couples you know, that their love would be tender, honest and glad.",
+        "Speak to God honestly about your own longings, trusting that he hears them without contempt."
+      ]
+    },
+    "machine": [],
+    "review": [
+      "The reading treats one interpretation of verse 4 as plain fact: \"Then other voices, young women around her, gladly join in and agree that loving him is right.\" The section never says who speaks the \"we\" lines. Many take them as the woman herself or as the woman with others. In the BSB, \"they adore you\" sets \"they\" apart from \"we\", which makes the speakers even less certain. This should be offered as one reading. The illustration builds on the same assumption with \"Her love does not resent their admiration\", which the passage does not say."
+    ],
+    "writer": "claude-opus-5-5",
+    "reviewer": "claude-opus-5-5"
+  }
+]
