@@ -158,7 +158,10 @@ export function bookLabel(verseRef: string): string {
  * chapter — which is the case this whole feature exists for, so the label
  * must show it rather than flattening to a chapter number.
  */
-export function rangeLabel(book: string, row: PassageContextRow): string {
+export function rangeLabel(
+  book: string,
+  row: Pick<PassageContextRow, "start_chapter" | "start_verse" | "end_chapter" | "end_verse">,
+): string {
   const { start_chapter, start_verse, end_chapter, end_verse } = row;
   if (start_chapter === end_chapter && start_verse === end_verse) {
     return `${book} ${start_chapter}:${start_verse}`;

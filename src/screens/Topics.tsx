@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   createTopic,
+  fetchBookCatalogue,
   generateEntryNow,
   fetchAllTopics,
   fetchTopicStats,
@@ -9,7 +10,7 @@ import {
   maxActiveThreadsForUser,
   type TopicStats,
 } from "../lib/api";
-import type { ResolvedVerseRef, Topic } from "../lib/types";
+import type { BookCatalogueRow, ResolvedVerseRef, Topic } from "../lib/types";
 import StatusChip from "../components/StatusChip";
 import ConclusionFlow from "../components/ConclusionFlow";
 import { useKeyboardInset } from "../lib/keyboardInset";
@@ -156,7 +157,9 @@ export default function Topics({
                   <StatusChip status={t.status} />
                 </div>
                 <p className="mt-1 text-sm text-muted">
-                  {s.entryCount} {s.entryCount === 1 ? "day" : "days"} of entries
+                  {t.book_number
+                    ? "Reading through the book"
+                    : `${s.entryCount} ${s.entryCount === 1 ? "day" : "days"} of entries`}
                 </p>
                 {s.lastNote && (
                   <p className="mt-3 border-l-2 border-hairline pl-3 text-sm italic leading-relaxed text-ink/80">
@@ -243,6 +246,7 @@ function CreateTopicSheet({
    *  "Generate today's entry" button they have to find and press. */
   firstThread?: boolean;
 }) {
+  const [kind, setKind] = useState<"question" | "book" | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [saving, setSaving] = useState(false);
@@ -336,6 +340,45 @@ function CreateTopicSheet({
       setSaving(false);
       setGenerating(false);
     }
+  }
+
+  if (kind !== "question") {
+    return (
+      <div className="fixed inset-0 z-30 flex items-end justify-center bg-ink/40" onClick={onClose}>
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="max-h-[calc(100dvh-2rem)] w-full max-w-lg animate-rise overflow-y-auto overscroll-contain rounded-t-3xl bg-paper p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+        >
+          {kind === "book" ? (
+            <BookPicker onBack={() => setKind(null)} onCreated={() => onCreated(firstThread)} />
+          ) : (
+            <>
+              <h2 className="font-display text-3xl font-medium">New thread</h2>
+              <p className="mt-1 text-sm text-muted">What would you like to follow?</p>
+              <div className="mt-5 space-y-3">
+                <KindChoice
+                  title="A question"
+                  body="Something you sense God may be speaking about. Each day brings a passage to sit with."
+                  onClick={() => setKind("question")}
+                />
+                <KindChoice
+                  title="A book"
+                  body="Read through a book of the Bible from the beginning, one passage at a time."
+                  onClick={() => setKind("book")}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="pressable mt-6 min-h-[48px] w-full rounded-xl border border-hairline bg-surface font-semibold"
+              >
+                Cancel
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -435,5 +478,103 @@ function CreateTopicSheet({
         </div>
       </form>
     </div>
+  );
+}
+
+function KindChoice({ title, body, onClick }: { title: string; body: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="pressable w-full rounded-2xl border border-hairline bg-surface p-5 text-left hover:border-moss"
+    >
+      <span className="block font-display text-2xl font-medium">{title}</span>
+      <span className="mt-1 block text-base leading-relaxed text-muted">{body}</span>
+    </button>
+  );
+}
+
+/** Suggested first books, by book_number, with a line each. */
+const STARTER_BOOKS: [number, string][] = [
+  [41, "The shortest Gospel, fast and vivid, with Jesus always on the move."],
+  [43, "Jesus through the eyes of a close friend, from the Word made flesh to the empty tomb."],
+  [50, "A warm letter from prison about joy, humility and pressing on."],
+  [8, "A short, quiet story of loss, loyalty and unexpected kindness."],
+  [19, "The Bible’s prayer book of praise, lament and trust."],
+];
+
+/**
+ * Choose a book. A book thread always starts at the beginning, counts toward
+ * the same thread limit, and its first section is already written, so the
+ * first reading is fetched straight away.
+ */
+function BookPicker({ onBack, onCreated }: { onBack: () => void; onCreated: () => void }) {
+  const [books, setBooks] = useState<BookCatalogueRow[] | null>(null);
+  const [busy, setBusy] = useState<number | null>(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetchBookCatalogue()
+      .then(setBooks)
+      .catch(() => setError("Couldn’t load the books. Check your connection and try again."));
+  }, []);
+
+  async function start(book: BookCatalogueRow) {
+    setBusy(book.book_number);
+    setError("");
+    try {
+      const created = await createTopic({ title: book.name, description: "", book_number: book.book_number });
+      try {
+        await generateEntryNow(created.id);
+      } catch {
+        /* non-fatal: Today fetches it again */
+      }
+      onCreated();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not start this book");
+      setBusy(null);
+    }
+  }
+
+  const byNumber = new Map((books ?? []).map((b) => [b.book_number, b]));
+  const row = (b: BookCatalogueRow, line?: string) => (
+    <li key={b.book_number}>
+      <button
+        type="button"
+        disabled={busy !== null}
+        onClick={() => void start(b)}
+        className="pressable w-full rounded-xl border border-hairline bg-surface px-4 py-3 text-left hover:border-moss disabled:opacity-60"
+      >
+        <span className="flex items-baseline justify-between gap-3">
+          <span className="font-display text-xl font-medium">{b.name}</span>
+          <span className="shrink-0 text-sm text-muted">
+            {busy === b.book_number ? "Starting…" : `${b.section_count} ${b.section_count === 1 ? "section" : "sections"}`}
+          </span>
+        </span>
+        {line && <span className="mt-1 block text-sm leading-relaxed text-muted">{line}</span>}
+      </button>
+    </li>
+  );
+
+  return (
+    <>
+      <button type="button" onClick={onBack} className="pressable min-h-[44px] text-sm font-semibold text-muted">
+        ← Back
+      </button>
+      <h2 className="font-display text-3xl font-medium">Choose a book</h2>
+      <p className="mt-1 text-sm text-muted">You’ll start at the beginning and read one passage at a time.</p>
+      {error && <p className="mt-3 text-sm text-rust">{error}</p>}
+      {!books && !error && <p className="mt-5 text-muted">Opening the library…</p>}
+      {books && (
+        <>
+          <h3 className="mb-2 mt-6 text-xs font-bold uppercase tracking-[0.18em] text-muted">A good place to start</h3>
+          <ul className="space-y-2">
+            {STARTER_BOOKS.map(([n, line]) => byNumber.get(n) && row(byNumber.get(n)!, line))}
+          </ul>
+          <h3 className="mb-2 mt-8 text-xs font-bold uppercase tracking-[0.18em] text-muted">Every book</h3>
+          <ul className="space-y-2">{books.map((b) => row(b))}</ul>
+        </>
+      )}
+    </>
   );
 }

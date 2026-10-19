@@ -55,6 +55,25 @@ export interface Topic {
   seed_verse_ref: string | null;
   /** WEB text, written server-side by trigger — never client-supplied. */
   seed_verse_text: string | null;
+  /** Set on a book thread (one section of this book a day); null on a question thread. */
+  book_number?: number | null;
+}
+
+/** Where a book day sits in its book. The verse_* fields hold only the key verse. */
+export interface BookSection {
+  start_chapter: number;
+  start_verse: number;
+  end_chapter: number;
+  end_verse: number;
+  /** 1-based position and the book's section count: "section 9 of 48". */
+  index: number;
+  count: number;
+}
+
+export interface BookCatalogueRow {
+  book_number: number;
+  name: string;
+  section_count: number;
 }
 
 /** Result of the parse_verse_ref RPC — a reference that exists in the
@@ -170,6 +189,10 @@ export interface DailyEntry {
    * backfill — so absence is the normal case: skip straight to the questions.
    */
   meditation?: Partial<Record<Translation, string[]>> | null;
+  /** Present only on a book day. */
+  book_section?: BookSection | null;
+  /** The reader's local date this entry was first shown; null until then. */
+  opened_on?: string | null;
   created_at: string;
 }
 
