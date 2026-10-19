@@ -180,6 +180,7 @@ as $$
    order by b.book_number;
 $$;
 
+revoke execute on function public.book_catalogue() from public, anon;
 grant execute on function public.book_catalogue() to authenticated;
 
 -- ------------------------------------------------------------
@@ -205,5 +206,8 @@ begin
   perform public.call_edge_function('generate_entry_url', jsonb_build_object('mode', 'book_build'));
 end;
 $$;
+
+-- Cron (postgres) only: from an app this would let anyone poke the writer.
+revoke execute on function public.run_book_build() from public, anon, authenticated;
 
 select cron.schedule('ponder-book-build', '*/5 * * * *', $$ select public.run_book_build(); $$);
