@@ -548,7 +548,7 @@ function BookPicker({ onBack, onCreated }: { onBack: () => void; onCreated: () =
         <span className="flex items-baseline justify-between gap-3">
           <span className="font-display text-xl font-medium">{b.name}</span>
           <span className="shrink-0 text-sm text-muted">
-            {busy === b.book_number ? "Starting…" : `${b.section_count} ${b.section_count === 1 ? "section" : "sections"}`}
+            {busy === b.book_number ? "Starting…" : `${b.section_count} ${b.section_count === 1 ? "passage" : "passages"}`}
           </span>
         </span>
         {line && <span className="mt-1 block text-sm leading-relaxed text-muted">{line}</span>}
