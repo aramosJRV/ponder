@@ -43,3 +43,4 @@ android/.idea/
 # Ponder ops dashboard — generated artefacts, rebuilt by ops/build-dashboard.mjs
 ops/stats.json
 ops/dashboard.html
+localdb/*.sql
