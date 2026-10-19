@@ -88,6 +88,20 @@ Order: backend/migration first, app build second.
   `scripts/setting-draft.ts`; to change text, edit the JSON and run
   `--sql <new migration path>` (it deletes and reinserts all content). Notes
   are keyed to pericope starts and cannot move to another verse.
+- Book threads (1.0.22): a thread with `topics.book_number` reads one
+  `bible_pericopes` section a day. Writing is shared by every reader, kept in
+  the service-only `book_section_content`, written by the 5-minute pg_cron job
+  `ponder-book-build` → `generate-entry` mode `book_build` (write → machine
+  checks → model review → up to 2 fix-ups, `generate-entry/book-day.ts`).
+  Pacing is `book-pacing.ts`: next section only after the reader opened the
+  current one (`daily_entries.opened_on`, set by `mark_entry_opened`); an
+  unopened day is carried forward (its date moves), never copied. A book day
+  fills the normal entry fields with its key verse so old builds show it.
+  Progress is position only ("section 9 of 48"), never time.
+  Checks: `bash scripts/book-threads-checks.sh` (needs the private local copy:
+  `bash scripts/localdb-setup.sh`, then `supabase functions serve --workdir
+  localdb --env-file localdb/.env.functions --no-verify-jwt`). Live diff:
+  `bash scripts/diff-live-function.sh <fn> [git-ref]`.
 - `generate-entry` imports `spotify.ts`; song lookup is dormant until
   `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` secrets are set.
 - Old build artefacts clutter the root (`vite.config.ts.timestamp-*`, deploy

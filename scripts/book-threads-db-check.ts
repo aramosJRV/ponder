@@ -79,7 +79,7 @@ const parts: string[] = [
   extra,
   // Two readers, one book thread with one book day (Mark 1:1-8, key verse 7-8).
   `insert into auth.users (id, aud, role) values (${lit(A)}, 'authenticated', 'authenticated'), (${lit(B)}, 'authenticated', 'authenticated');
-   insert into public.profiles (id, timezone) values (${lit(A)}, 'Australia/Sydney'), (${lit(B)}, 'UTC') on conflict (id) do nothing;
+   insert into public.profiles (id, timezone) values (${lit(A)}, 'Australia/Sydney'), (${lit(B)}, 'UTC') on conflict (id) do update set timezone = excluded.timezone;
    insert into public.topics (id, user_id, title, description, book_number)
      values ('00000000-0000-0000-0000-0000000000f1', ${lit(A)}, 'Mark', '', 41);`,
   `insert into public.daily_entries (id, topic_id, user_id, date, verse_ref, book_number, chapter, verse_start, verse_end,
