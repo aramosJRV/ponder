@@ -188,7 +188,8 @@ export interface DailyEntry {
    * did not verify. Null on every entry generated before this shipped — no
    * backfill — so absence is the normal case: skip straight to the questions.
    */
-  meditation?: Partial<Record<Translation, string[]>> | null;
+  /** Book days keep whole-section phrases under `passage` instead. */
+  meditation?: (Partial<Record<Translation, string[]>> & { passage?: Partial<Record<Translation, string[]>> }) | null;
   /** Present only on a book day. */
   book_section?: BookSection | null;
   /** The reader's local date this entry was first shown; null until then. */

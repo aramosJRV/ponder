@@ -1,6 +1,5 @@
-import { bookLabel, rangeLabel, usePassageContext } from "../lib/passageContext";
-import type { DailyEntry, Translation } from "../lib/types";
-import { Passage, Unavailable } from "./PassageContextSheet";
+import { bookLabel, rangeLabel } from "../lib/passageContext";
+import type { DailyEntry } from "../lib/types";
 
 /**
  * The parts of the entry card that only a book day has.
@@ -27,27 +26,6 @@ export function BookProgress({ entry }: { entry: DailyEntry }) {
         <div className="h-full rounded-full bg-moss" style={{ width: `${(s.index / s.count) * 100}%` }} />
       </div>
     </div>
-  );
-}
-
-/**
- * The whole section in the reader's version, key verse highlighted. The
- * section is the pericope the key verse sits in — the same passage the Full
- * passage sheet shows on any other day — so it comes from passage_context
- * and never from anything the writer produced.
- */
-export function BookPassage({ entry, translation }: { entry: DailyEntry; translation: Translation }) {
-  const state = usePassageContext(entry, translation, true);
-  return (
-    <section className="mb-8">
-      {state.status === "ready" ? (
-        <Passage entry={entry} translation={translation} rows={state.rows} />
-      ) : state.status === "unavailable" ? (
-        <Unavailable kind={state.kind} />
-      ) : (
-        <p aria-busy="true" className="text-base text-muted">Finding the passage…</p>
-      )}
-    </section>
   );
 }
 

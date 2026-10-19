@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { ContentLevel, DailyEntry, Note, Quote, Song, Translation } from "../lib/types";
+import type { ContentLevel, DailyEntry, Note, PassageContextRow, Quote, Song, Translation } from "../lib/types";
 import { useContentLevel } from "../lib/contentLevel";
 import {
   DEFAULT_TRANSLATION,
@@ -15,8 +15,8 @@ import PonderFlow from "./PonderFlow";
 import { WalkControls, WalkText, inReadingOrder, useFollowPhrase, useWalkStep } from "./VerseWalk";
 import type { Walk } from "./VerseWalk";
 import ReportButton from "./ReportButton";
-import { BookPassage, BookProgress } from "./BookDay";
-import { bookLabel, rangeLabel } from "../lib/passageContext";
+import { BookProgress } from "./BookDay";
+import { bookLabel, rangeLabel, usePassageContext } from "../lib/passageContext";
 
 /**
  * The entry card.
@@ -75,11 +75,23 @@ export default function EntryCard({
     setOffline(false);
   }, [entry.id, preferred]);
 
-  const passage = usePassage(entry, translation);
+  // A book day's hero is the whole section, not the key verse.
+  const book = !!entry.book_section;
+  const keyVerse = usePassage(entry, translation);
+  const section = usePassageContext(entry, translation, book);
+  const rows = book && section.status === "ready" ? section.rows : undefined;
+  const passage: PassageState = !book
+    ? keyVerse
+    : rows
+    ? { status: "ready", text: sectionText(rows) }
+    : section.status === "unavailable"
+    ? { status: "unavailable" }
+    : { status: "loading", text: "" };
 
   // The verse walk is offered only for a version whose phrases were verified
-  // against its own text, and only once that text is on screen.
-  const phrases = entry.meditation?.[translation];
+  // against its own text, and only once that text is on screen. A book day's
+  // phrases span the section and sit under `passage` (see generate-entry).
+  const phrases = book ? entry.meditation?.passage?.[translation] : entry.meditation?.[translation];
   const walkable =
     passage.status === "ready" && !!phrases && phrases.length >= 2
       ? { phrases: inReadingOrder(phrases, passage.text), text: passage.text, translation }
@@ -127,7 +139,6 @@ export default function EntryCard({
       {entry.book_section && (
         <>
           <BookProgress entry={entry} />
-          <BookPassage entry={entry} translation={translation} />
         </>
       )}
 
@@ -136,6 +147,7 @@ export default function EntryCard({
         challenge={challenge}
         translation={translation}
         passage={passage}
+        rows={rows}
         offline={offline}
         onSelect={(t) => {
           setOffline(false);
@@ -229,6 +241,56 @@ export default function EntryCard({
   );
 }
 
+/** The section as one string, the same way generate-entry joins it for the walk. */
+function sectionText(rows: PassageContextRow[]): string {
+  return rows.filter((r) => r.verse_text).map((r) => r.verse_text!.trim()).join(" ");
+}
+
+/**
+ * A book day's section with verse numbers. While walking, `phrase` is lit
+ * and the rest dims; the phrase is found in sectionText, so it may cross a
+ * verse number.
+ */
+function SectionText({ rows, phrase, challenge }: { rows: PassageContextRow[]; phrase?: string; challenge: boolean }) {
+  const at = phrase ? sectionText(rows).indexOf(phrase) : -1;
+  const end = at + (phrase?.length ?? 0);
+  const dim = at >= 0 ? "text-ink/30 transition-colors duration-300" : undefined;
+  const lit = `transition-colors duration-300 ${challenge ? "text-rust" : "text-moss"}`;
+  let offset = 0;
+  let lastChapter = rows[0].chapter;
+  return (
+    <>
+      {rows.map((r, i) => {
+        const crossed = r.chapter !== lastChapter;
+        lastChapter = r.chapter;
+        const text = r.verse_text?.trim();
+        const start = offset;
+        if (text) offset += text.length + 1;
+        const a = Math.min(Math.max(at - start, 0), text?.length ?? 0);
+        const b = Math.min(Math.max(end - start, 0), text?.length ?? 0);
+        return (
+          <span key={`${r.chapter}:${r.verse}`}>
+            {crossed && <span className="mx-1 text-sm font-bold text-moss">{r.chapter}</span>}
+            <sup className="mr-0.5 font-sans text-xs font-bold text-muted">{r.verse}</sup>
+            {text == null ? (
+              <em className="text-base text-muted">[not in this version]</em>
+            ) : at < 0 || b <= a ? (
+              <span className={dim}>{text}</span>
+            ) : (
+              <>
+                <span className={dim}>{text.slice(0, a)}</span>
+                <span data-walk-lit className={lit}>{text.slice(a, b)}</span>
+                <span className={dim}>{text.slice(b)}</span>
+              </>
+            )}
+            {i < rows.length - 1 ? " " : null}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
 /**
  * The passage — the typographic hero, bleeding on warm ground.
  *
@@ -250,6 +312,7 @@ function VerseHero({
   challenge,
   translation,
   passage,
+  rows,
   offline,
   onSelect,
   onReadContext,
@@ -262,6 +325,8 @@ function VerseHero({
   challenge: boolean;
   translation: Translation;
   passage: PassageState;
+  /** A book day: the whole section, shown with verse numbers. */
+  rows?: PassageContextRow[];
   offline: boolean;
   onSelect: (t: Translation) => void;
   /** Omitted on a book day, whose card already shows the whole section. */
@@ -274,7 +339,7 @@ function VerseHero({
   onEndWalk: () => void;
 }) {
   const step = useWalkStep(walk);
-  const verseRef = useRef<HTMLParagraphElement>(null);
+  const verseRef = useRef<HTMLDivElement & HTMLParagraphElement>(null);
   useFollowPhrase(verseRef, step.at, walk);
   const accent = challenge ? "text-rust" : "text-moss";
   // "unavailable" is a single frame: the parent reverts to the WEB the moment
@@ -288,7 +353,15 @@ function VerseHero({
   }`;
   return (
     <section className={`-mx-6 px-6 py-8 ${challenge ? "bg-rust-soft" : "bg-moss-soft"}`}>
-      {passage.status === "absent" ? (
+      {rows ? (
+        <div ref={verseRef} className="font-display text-xl font-medium leading-relaxed">
+          <SectionText rows={rows} phrase={walk?.phrases[step.at]} challenge={challenge} />
+        </div>
+      ) : entry.book_section && passage.status !== "absent" ? (
+        <p aria-busy={passage.status === "loading"} className="text-base text-muted">
+          {passage.status === "unavailable" ? "Couldn’t reach the passage. Check your connection." : "Finding the passage…"}
+        </p>
+      ) : passage.status === "absent" ? (
         <p className="font-display text-2xl font-medium leading-snug text-ink/60">
           This passage isn’t in the {translationName(translation)}.
         </p>
@@ -313,7 +386,7 @@ function VerseHero({
       <p
         className={`mt-4 text-sm font-bold uppercase tracking-[0.18em] ${accent}`}
       >
-        {entry.verse_ref} · {translation}
+        {rows ? rangeLabel(bookLabel(entry.verse_ref), rows[0]) : entry.verse_ref} · {translation}
       </p>
 
       {walk ? (

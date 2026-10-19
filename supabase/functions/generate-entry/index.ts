@@ -34,7 +34,7 @@ import {
   meditationRequest,
   parseMeditation,
 } from "./meditation.ts";
-import { BOOK_TRANSLATIONS, type CallTool, type Section, writeCheckedBookDay } from "./book-day.ts";
+import { BOOK_TRANSLATIONS, type CallTool, type Section, sectionRef, writeCheckedBookDay } from "./book-day.ts";
 import { localDateAt, nextBookStep } from "./book-pacing.ts";
 
 // ---------------------------------------------------------------- config
@@ -1457,10 +1457,12 @@ async function writeMeditation(
   coords: { book_number: number; chapter: number; verse_start: number; verse_end: number },
   model: string,
   ledgerDetail: Record<string, unknown>,
+  /** Already-loaded text per translation; skips the passage_text lookups. */
+  given?: MeditationTexts,
 ): Promise<Meditation | null> {
   try {
-    const texts: MeditationTexts = {};
-    for (const t of MEDITATION_TRANSLATIONS) {
+    const texts: MeditationTexts = { ...given };
+    for (const t of given ? [] : MEDITATION_TRANSLATIONS) {
       const { data, error } = await db.rpc("passage_text", {
         p_book_number: coords.book_number,
         p_chapter: coords.chapter,
@@ -2147,11 +2149,15 @@ async function buildBookSection(db: SupabaseClient, job: SectionKey & { attempts
     const r = await writeCheckedBookDay(section, bookCallTool(db, { ...key, attempt }), { writer: MODEL_BOOK, reviewer: MODEL_BOOK });
     if (!r.clean) throw new Error(`not clean after ${r.fixed.length} fix-up round(s): ${[...r.machine, ...r.review].join(" | ")}`);
     const k = r.day.key_verse;
-    const meditation = await writeMeditation(
-      db, displayRef(section.book, k.chapter, k.verse_start, k.verse_end),
-      { book_number: key.book_number, chapter: k.chapter, verse_start: k.verse_start, verse_end: k.verse_end },
-      MODEL_MEDITATION, { book_section: key },
+    // Read slowly walks the whole section, so its phrases sit under `passage`:
+    // 1.0.22 reads meditation[translation] against the key verse alone and
+    // would light nothing, so it gets no walk instead of a broken one.
+    const passage = await writeMeditation(
+      db, sectionRef(section),
+      { book_number: key.book_number, chapter: key.start_chapter, verse_start: key.start_verse, verse_end: section.verse_end },
+      MODEL_MEDITATION, { book_section: key }, section.texts,
     );
+    const meditation = passage ? { passage } : null;
     const { error } = await db.from("book_section_content").update({
       status: "ready",
       key_chapter: k.chapter, key_verse_start: k.verse_start, key_verse_end: k.verse_end,
