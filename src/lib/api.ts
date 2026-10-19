@@ -7,6 +7,7 @@ import {
   SynthesisQuotaError,
 } from "./entitlements";
 import type {
+  BookCatalogueRow,
   ContentReport,
   DailyEntry,
   Note,
@@ -51,7 +52,7 @@ const PROFILE_COLS =
 // One string literal, not a concatenation: supabase-js infers the row type
 // from the literal, and `+` collapses it to `string` and breaks the typing.
 // eslint-disable-next-line max-len
-const TOPIC_COLS = "id, user_id, title, description, status, focus, created_at, concluded_at, seed_book_number, seed_chapter, seed_verse_start, seed_verse_end, seed_verse_ref, seed_verse_text";
+const TOPIC_COLS = "id, user_id, title, description, status, focus, created_at, concluded_at, seed_book_number, seed_chapter, seed_verse_start, seed_verse_end, seed_verse_ref, seed_verse_text, book_number";
 
 /** The signed-in user's profile (timezone, notification hour, challenge freq).
  * Row is created by a signup trigger; returns null if not signed in / missing. */
@@ -347,6 +348,26 @@ export async function fetchVerseSetting(
   return ((data ?? []) as VerseSetting[])[0] ?? null;
 }
 
+/** Every book in Bible order with its section count, for the book picker. */
+export async function fetchBookCatalogue(): Promise<BookCatalogueRow[]> {
+  const { data, error } = await supabase.rpc("book_catalogue");
+  if (error) throw error;
+  return (data ?? []) as BookCatalogueRow[];
+}
+
+/**
+ * Tell the server this entry is on screen. On a book thread this is what lets
+ * the next section arrive tomorrow (and queues it to be written). Records the
+ * first time only. Best-effort: a missed call just means the book waits.
+ */
+export async function markEntryOpened(entryId: string): Promise<void> {
+  try {
+    await supabase.rpc("mark_entry_opened", { p_entry_id: entryId });
+  } catch {
+    /* non-fatal */
+  }
+}
+
 export async function createTopic(input: {
   title: string;
   description: string;
@@ -355,6 +376,8 @@ export async function createTopic(input: {
     ResolvedVerseRef,
     "book_number" | "chapter" | "verse_start" | "verse_end"
   > | null;
+  /** A book thread: title is the book's name, no seed. */
+  book_number?: number | null;
 }): Promise<Topic> {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id;

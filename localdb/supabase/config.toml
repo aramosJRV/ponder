@@ -1,0 +1,45 @@
+# Private local copy of Ponder's database, for checks and app run-throughs.
+# Never linked to the live project. Ports are shifted so it can run beside
+# other local Supabase projects.
+#   supabase start --workdir localdb
+#   supabase stop  --workdir localdb
+project_id = "ponder-local"
+
+[api]
+port = 55421
+
+[db]
+port = 55422
+shadow_port = 55420
+major_version = 17
+
+[db.seed]
+enabled = false
+
+[studio]
+enabled = false
+
+[inbucket]
+enabled = false
+
+[analytics]
+enabled = false
+
+[storage]
+enabled = false
+
+[realtime]
+enabled = false
+
+[auth]
+enable_anonymous_sign_ins = true
+site_url = "http://localhost:5173"
+
+[edge_runtime]
+inspector_port = 55483
+
+[functions.generate-entry]
+verify_jwt = false
+
+[functions.synthesize]
+verify_jwt = false

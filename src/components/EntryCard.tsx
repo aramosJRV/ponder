@@ -15,6 +15,8 @@ import PonderFlow from "./PonderFlow";
 import { WalkControls, WalkText, inReadingOrder, useFollowPhrase, useWalkStep } from "./VerseWalk";
 import type { Walk } from "./VerseWalk";
 import ReportButton from "./ReportButton";
+import { BookPassage, BookProgress } from "./BookDay";
+import { bookLabel, rangeLabel } from "../lib/passageContext";
 
 /**
  * The entry card.
@@ -122,6 +124,13 @@ export default function EntryCard({
         </div>
       )}
 
+      {entry.book_section && (
+        <>
+          <BookProgress entry={entry} />
+          <BookPassage entry={entry} translation={translation} />
+        </>
+      )}
+
       <VerseHero
         entry={entry}
         challenge={challenge}
@@ -132,7 +141,8 @@ export default function EntryCard({
           setOffline(false);
           setTranslation(t);
         }}
-        onReadContext={() => setContextOpen(true)}
+        // A book day already shows the whole section above the hero.
+        onReadContext={entry.book_section ? undefined : () => setContextOpen(true)}
         onReadSetting={() => setSettingOpen(true)}
         onReadSlowly={walkable ? () => setWalk(walkable) : undefined}
         walk={walk}
@@ -254,7 +264,8 @@ function VerseHero({
   passage: PassageState;
   offline: boolean;
   onSelect: (t: Translation) => void;
-  onReadContext: () => void;
+  /** Omitted on a book day, whose card already shows the whole section. */
+  onReadContext?: () => void;
   onReadSetting: () => void;
   /** Opens the verse walk. Omitted when this version has no phrases. */
   onReadSlowly?: () => void;
@@ -328,13 +339,15 @@ function VerseHero({
           <button type="button" onClick={onReadSetting} className={pill}>
             Context
           </button>
-          <button
-            type="button"
-            onClick={onReadContext}
-            className={pill}
-          >
-            Full passage
-          </button>
+          {onReadContext && (
+            <button
+              type="button"
+              onClick={onReadContext}
+              className={pill}
+            >
+              Full passage
+            </button>
+          )}
         </div>
 
         <div
@@ -548,7 +561,10 @@ function Footnotes({
         <li className="flex gap-2">
           <span className="shrink-0 tabular-nums">1.</span>
           <span>
-            Passage: <span className="text-ink/70">{entry.verse_ref}</span>,{" "}
+            Passage:{" "}
+            <span className="text-ink/70">
+              {entry.book_section ? rangeLabel(bookLabel(entry.verse_ref), entry.book_section) : entry.verse_ref}
+            </span>,{" "}
             {translationName(translation)} (public domain).
           </span>
         </li>

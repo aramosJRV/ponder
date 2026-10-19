@@ -151,7 +151,7 @@ export default function PassageContextSheet({
  * paragraph look like a list of separate claims, which is the reading habit
  * this feature is trying to loosen.
  */
-function Passage({
+export function Passage({
   entry,
   translation,
   rows,
@@ -212,7 +212,7 @@ function Passage({
  * edge one. Say which failure it was — "you're offline" and "the server
  * broke" want different responses from the reader.
  */
-function Unavailable({ kind }: { kind: import("../lib/errors").ErrorKind }) {
+export function Unavailable({ kind }: { kind: import("../lib/errors").ErrorKind }) {
   const copy = errorCopy(kind);
   return (
     <div>

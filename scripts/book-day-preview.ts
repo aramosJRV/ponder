@@ -1,0 +1,231 @@
+// Book threads, phase 1: write sample book days WITHOUT deploying or writing
+// anything to the database. Uses the exact prompt and checker that will ship
+// (supabase/functions/generate-entry/book-day.ts), then a second model reads
+// each sample against the same guidelines and lists problems.
+//
+// Reads sections through the logged-in Supabase CLI (SELECT only — sql()
+// refuses anything else) and calls Anthropic with ANTHROPIC_API_KEY from the
+// shell or .env.
+//
+//   deno run --no-lock --node-modules-dir=none -A scripts/book-day-preview.ts [spec ...]
+//   deno run --no-lock --node-modules-dir=none -A scripts/book-day-preview.ts --check-only
+//
+// A spec is a book ("Mark" = its first section) or a reference inside a
+// section ("Judges 19:22"). --check-only re-runs the machine checks on the
+// saved samples and rewrites the report, with no API calls.
+// Exit code 0 only when every sample is clean on both passes.
+
+import {
+  BOOK_TRANSLATIONS,
+  type BookDay,
+  checkBookDay,
+  parseBookDay,
+  writeCheckedBookDay,
+  type Section,
+  sectionRef,
+} from "../supabase/functions/generate-entry/book-day.ts";
+
+const OUT_DIR = new URL("../content/book-threads/", import.meta.url);
+const JSON_OUT = new URL("samples.json", OUT_DIR);
+const MD_OUT = new URL("samples.md", OUT_DIR);
+const WRITER = Deno.env.get("WRITER_MODEL") ?? "claude-opus-5-5";
+const REVIEWER = Deno.env.get("REVIEWER_MODEL") ?? "claude-opus-5-5";
+const SPECS = [
+  "Mark", "Psalms", "Ruth", "Philippians", "Leviticus", "Judges 19:22", "1 Chronicles", "Song of Solomon",
+];
+
+type Sample = {
+  section: Section; day: BookDay; machine: string[]; review: string[];
+  /** Problems sent back in each fix-up round, oldest first. */
+  fixed?: string[][];
+  writer: string; reviewer: string;
+};
+
+// ------------------------------------------------------------- database
+
+export function assertReadOnly(query: string) {
+  if (!/^\s*(select|with)\b/i.test(query) || /;\s*\S/.test(query)) {
+    throw new Error(`refusing non-SELECT query: ${query.slice(0, 80)}`);
+  }
+}
+
+async function sql(query: string): Promise<Record<string, unknown>[]> {
+  assertReadOnly(query);
+  const out = await new Deno.Command("supabase", {
+    args: ["db", "query", "--linked", "--agent", "no", "-o", "json", query],
+    stdout: "piped",
+    stderr: "piped",
+  }).output();
+  const txt = new TextDecoder().decode(out.stdout);
+  const start = txt.indexOf("[");
+  if (!out.success || start < 0) {
+    throw new Error(`supabase db query failed:\n${new TextDecoder().decode(out.stderr)}${txt}`);
+  }
+  return JSON.parse(txt.slice(start));
+}
+
+const lit = (s: string) => `'${s.replace(/'/g, "''")}'`;
+
+export async function loadSection(spec: string): Promise<Section> {
+  const m = spec.match(/^(.+?)\s+(\d+):(\d+)$/);
+  const book = m ? m[1] : spec;
+  const at = m ? Number(m[2]) * 1000 + Number(m[3]) : 0;
+  // Ends are derived from the next start (see the bible_pericopes migration).
+  const rows = await sql(
+    `with p as (
+       select b.book_number, p.start_ord,
+              row_number() over (order by p.start_ord) as idx,
+              count(*) over () as cnt,
+              lead(p.start_ord) over (order by p.start_ord) as next_ord
+       from bible_pericopes p join bible_books b using (book_number)
+       where b.name = ${lit(book)}
+     )
+     select p.idx, p.cnt, v.translation, v.chapter, v.verse, v.text
+     from p join bible_verses v
+       on v.book_number = p.book_number
+      and v.chapter * 1000 + v.verse >= p.start_ord
+      and (p.next_ord is null or v.chapter * 1000 + v.verse < p.next_ord)
+     where v.translation in ('WEB','BSB','KJV')
+       and p.idx = coalesce((select max(idx) from p where start_ord <= ${at}), 1)
+     order by v.translation, v.chapter, v.verse`,
+  );
+  if (!rows.length) throw new Error(`no section found for "${spec}"`);
+  const web = rows.filter((r) => r.translation === "WEB");
+  const first = web[0] ?? rows[0], last = web[web.length - 1] ?? rows[rows.length - 1];
+  const texts: Section["texts"] = {};
+  for (const t of BOOK_TRANSLATIONS) {
+    const vs = rows.filter((r) => r.translation === t);
+    if (vs.length) texts[t] = vs.map((r) => String(r.text).trim()).join(" ");
+  }
+  return {
+    book, index: Number(first.idx), count: Number(first.cnt),
+    chapter_start: Number(first.chapter), verse_start: Number(first.verse),
+    chapter_end: Number(last.chapter), verse_end: Number(last.verse), texts,
+  };
+}
+
+// ------------------------------------------------------------- model calls
+
+async function loadKey(): Promise<string> {
+  const fromShell = Deno.env.get("ANTHROPIC_API_KEY");
+  if (fromShell) return fromShell;
+  try {
+    const env = await Deno.readTextFile(new URL("../.env", import.meta.url));
+    const line = env.split("\n").find((l) => l.trim().startsWith("ANTHROPIC_API_KEY="));
+    if (line) return line.split("=").slice(1).join("=").trim().replace(/^["']|["']$/g, "");
+  } catch { /* no .env */ }
+  console.error("Set ANTHROPIC_API_KEY in this shell or in .env first.");
+  Deno.exit(1);
+}
+
+async function callTool(key: string, body: Record<string, unknown>, tool: string): Promise<unknown> {
+  for (let attempt = 1; ; attempt++) {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "x-api-key": key,
+        "anthropic-version": "2023-06-01",
+        "anthropic-beta": "server-side-fallback-2026-07-01",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ ...body, fallbacks: "default" }),
+    });
+    if ((res.status === 429 || res.status >= 500) && attempt < 4) {
+      await new Promise((r) => setTimeout(r, 5000 * attempt));
+      continue;
+    }
+    const data = await res.json();
+    if (!res.ok) throw new Error(`API ${res.status}: ${JSON.stringify(data).slice(0, 400)}`);
+    if (data.stop_reason === "refusal") throw new Error(`refused: ${JSON.stringify(data.stop_details)}`);
+    const block = (data.content ?? []).find((b: { type: string; name?: string }) => b.type === "tool_use" && b.name === tool);
+    if (!block) throw new Error(`model did not call ${tool} (stop_reason ${data.stop_reason})`);
+    return block.input;
+  }
+}
+
+// ------------------------------------------------------------- report
+
+function render(samples: Sample[]): string {
+  const clean = samples.filter((s) => !s.machine.length && !s.review.length).length;
+  const lines = [
+    `# Book threads: sample readings`,
+    ``,
+    `Generated by \`scripts/book-day-preview.ts\`. Nothing was written to the database.`,
+    `Writer: ${samples[0]?.writer ?? "?"} · Reviewer: ${samples[0]?.reviewer ?? "?"}`,
+    ``,
+    `## Check results: ${clean} of ${samples.length} clean`,
+    ``,
+    `| Section | Machine checks | Reviewer |`,
+    `|---|---|---|`,
+    ...samples.map((s) =>
+      `| ${sectionRef(s.section)} (section ${s.section.index} of ${s.section.count}) | ` +
+      `${s.machine.length ? `${s.machine.length} problem(s)` : "pass"} | ` +
+      `${s.review.length ? `${s.review.length} problem(s)` : "pass"} |`
+    ),
+    ``,
+    `Machine checks: all parts present, length limits, key verse inside the section, quotes word-for-word in WEB, BSB and KJV, no time-on-thread wording, no belittling or other-faith words, no "God is telling you", no "thread", no formatting.`,
+    ``,
+  ];
+  for (const s of samples) {
+    const k = s.day.key_verse;
+    lines.push(
+      `---`, ``,
+      `## ${sectionRef(s.section)}`,
+      `*${s.section.book} · section ${s.section.index} of ${s.section.count} · key verse ${s.section.book} ${k.chapter}:${k.verse_start}${k.verse_end !== k.verse_start ? `-${k.verse_end}` : ""}*`,
+      ``,
+      `<details><summary>Passage (WEB)</summary>`, ``, s.section.texts.WEB ?? "", ``, `</details>`, ``,
+      `**Thought**`, ``, s.day.thought, ``,
+      `**Illustration**`, ``, s.day.illustration, ``,
+      `**Ponder**`, ``, ...s.day.ponder.map((q) => `- ${q}`), ``,
+      `**Prayer**`, ``, ...s.day.prayer_prompts.map((q) => `- ${q}`), ``,
+      ...(s.fixed?.length
+        ? [`*Fixed in ${s.fixed.length} fix-up round(s). Problems sent back:*`, ...s.fixed.flat().map((x) => `- ${x}`), ``]
+        : []),
+      `**Checks:** machine ${s.machine.length ? "" : "pass"}${s.machine.map((x) => `\n- ${x}`).join("")}`,
+      ``,
+      `reviewer ${s.review.length ? "" : "pass"}${s.review.map((x) => `\n- ${x}`).join("")}`,
+      ``,
+    );
+  }
+  return lines.join("\n");
+}
+
+// ------------------------------------------------------------- main
+
+if (import.meta.main) {
+  let samples: Sample[];
+  if (Deno.args.includes("--check-only")) {
+    samples = JSON.parse(await Deno.readTextFile(JSON_OUT));
+    for (const s of samples) s.machine = checkBookDay(s.day, s.section);
+  } else {
+    const key = await loadKey();
+    const specs = Deno.args.length ? Deno.args : SPECS;
+    // Sections are cached: one at a time, because parallel CLI logins collide
+    // (28P01), and only once, so later rounds never touch the database.
+    await Deno.mkdir(OUT_DIR, { recursive: true });
+    const cacheUrl = new URL("sections.json", OUT_DIR);
+    const cache: Record<string, Section> = await Deno.readTextFile(cacheUrl).then(JSON.parse).catch(() => ({}));
+    for (const spec of specs) cache[spec] ??= await loadSection(spec);
+    await Deno.writeTextFile(cacheUrl, JSON.stringify(cache, null, 2));
+    samples = await Promise.all(specs.map(async (spec) => {
+      const section = cache[spec];
+      try {
+        const r = await writeCheckedBookDay(section, (body, tool) => callTool(key, body, tool), { writer: WRITER, reviewer: REVIEWER });
+        console.log(`${sectionRef(section)}: ${r.clean ? "clean" : "NOT clean"} after ${r.fixed.length} fix-up round(s)`);
+        return { section, day: r.day, machine: r.machine, review: r.review, fixed: r.fixed, writer: WRITER, reviewer: REVIEWER };
+      } catch (e) {
+        console.log(`${sectionRef(section)}: FAILED ${e}`);
+        return { section, day: parseBookDay({}), machine: [`generation failed: ${e}`], review: [], writer: WRITER, reviewer: REVIEWER };
+      }
+    }));
+    await Deno.writeTextFile(JSON_OUT, JSON.stringify(samples, null, 2));
+  }
+  await Deno.writeTextFile(MD_OUT, render(samples));
+  for (const s of samples) {
+    for (const x of s.machine) console.log(`  [machine] ${sectionRef(s.section)}: ${x}`);
+    for (const x of s.review) console.log(`  [review]  ${sectionRef(s.section)}: ${x}`);
+  }
+  const dirty = samples.filter((s) => s.machine.length || s.review.length).length;
+  console.log(`\n${samples.length - dirty} of ${samples.length} clean. Report: content/book-threads/samples.md`);
+  Deno.exit(dirty ? 1 : 0);
+}

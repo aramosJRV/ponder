@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   fetchActiveTopics,
   fetchEntriesForDate,
   fetchNotesForEntries,
   generateEntryNow,
+  markEntryOpened,
 } from "../lib/api";
+import ConclusionFlow from "../components/ConclusionFlow";
+import { BookEnd } from "../components/BookDay";
 import { GenerationDelayedError } from "../lib/entitlements";
 import { refreshDailyReminder, reminderTopicForDate } from "../lib/notifications";
 import { loadTodayCache, saveTodayCache } from "../lib/cache";
@@ -34,6 +37,7 @@ export default function Today({ onStartFirstThread }: Props) {
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const [genError, setGenError] = useState("");
+  const [concluding, setConcluding] = useState<Topic | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -92,6 +96,23 @@ export default function Today({ onStartFirstThread }: Props) {
     () => (entry ? notes.filter((n) => n.entry_id === entry.id) : []),
     [notes, entry],
   );
+
+  // A book thread moves on only once its entry has been seen. Recorded the
+  // first time it is on screen; never from the cached offline copy.
+  useEffect(() => {
+    if (entry?.book_section && !entry.opened_on && !offline) void markEntryOpened(entry.id);
+  }, [entry, offline]);
+
+  // A book day costs nothing to fetch (the writing already exists), so a
+  // missing one is fetched straight away rather than behind a button.
+  const autoFetched = useRef<string | null>(null);
+  useEffect(() => {
+    if (state !== "ready" || offline || entry || !selectedTopic?.book_number) return;
+    if (autoFetched.current === selectedTopic.id) return;
+    autoFetched.current = selectedTopic.id;
+    void generate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, offline, entry, selectedTopic]);
 
   async function generate() {
     if (!selectedTopicId) return;
@@ -210,7 +231,22 @@ export default function Today({ onStartFirstThread }: Props) {
             offline={offline}
             onAdded={(n) => setNotes((cur) => [...cur, n])}
           />
+          {entry.book_section && entry.book_section.index === entry.book_section.count && (
+            <BookEnd book={selectedTopic.title} onFinish={() => setConcluding(selectedTopic)} />
+          )}
         </>
+      )}
+
+      {concluding && (
+        <ConclusionFlow
+          topic={concluding}
+          onClose={() => setConcluding(null)}
+          onConcluded={() => {
+            setConcluding(null);
+            setSelectedTopicId(null);
+            void load();
+          }}
+        />
       )}
 
       {selectedTopic && !entry && (
