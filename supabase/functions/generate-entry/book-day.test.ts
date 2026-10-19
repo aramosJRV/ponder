@@ -85,3 +85,57 @@ Deno.test("catches verdicts, the word thread, and formatting", () => {
   expectCaught("thread", bad({ ponder: ["How does this touch your thread?", "b?"] }), '"thread"');
   expectCaught("bold", bad({ thought: `**Famine** ${pad(140)}` }), "formatting");
 });
+
+// ------------------------------------------------ the write/check/fix loop
+
+import { writeCheckedBookDay } from "./book-day.ts";
+
+/** A fake model: hands back scripted tool inputs in order and records requests. */
+function fakeModel(script: unknown[]) {
+  const seen: { tool: string; body: Record<string, unknown> }[] = [];
+  const call = (body: Record<string, unknown>, tool: string) => {
+    seen.push({ tool, body });
+    if (!script.length) throw new Error("fake model ran out of answers");
+    return Promise.resolve(script.shift());
+  };
+  return { call, seen };
+}
+const asInput = (d: BookDay) => ({
+  key_verse: d.key_verse, thought: d.thought, illustration: d.illustration,
+  ponder_1: d.ponder[0], ponder_2: d.ponder[1], prayer_1: d.prayer_prompts[0], prayer_2: d.prayer_prompts[1],
+});
+const OPTS = { writer: "w", reviewer: "r" };
+
+Deno.test("loop: clean first time -> one write, one review, no fix-up", async () => {
+  const m = fakeModel([asInput(GOOD), { problems: [] }]);
+  const r = await writeCheckedBookDay(SECTION, m.call, OPTS);
+  if (!r.clean || r.fixed.length || m.seen.length !== 2) throw new Error(JSON.stringify(r));
+});
+
+Deno.test("loop: reviewer problem goes back to the writer, then clean", async () => {
+  const m = fakeModel([asInput(GOOD), { problems: ["misreads verse 5"] }, asInput(GOOD), { problems: [] }]);
+  const r = await writeCheckedBookDay(SECTION, m.call, OPTS);
+  if (!r.clean || r.fixed.length !== 1) throw new Error(JSON.stringify(r));
+  const fix = JSON.stringify(m.seen[2].body);
+  if (m.seen[2].tool !== "record_book_day" || !fix.includes("misreads verse 5")) throw new Error("fix request lacks the problem");
+});
+
+Deno.test("loop: machine problem goes back too, without asking the reviewer first", async () => {
+  const bad = { ...asInput(GOOD), thought: "too short" };
+  const m = fakeModel([bad, asInput(GOOD), { problems: [] }]);
+  const r = await writeCheckedBookDay(SECTION, m.call, OPTS);
+  if (!r.clean || r.fixed.length !== 1 || m.seen[1].tool !== "record_book_day") throw new Error(JSON.stringify(r));
+});
+
+Deno.test("loop: still failing after 2 fix-ups -> not clean, problems kept", async () => {
+  const p = { problems: ["still wrong"] };
+  const m = fakeModel([asInput(GOOD), p, asInput(GOOD), p, asInput(GOOD), p]);
+  const r = await writeCheckedBookDay(SECTION, m.call, OPTS);
+  if (r.clean || r.fixed.length !== 2 || !r.review.includes("still wrong")) throw new Error(JSON.stringify(r));
+});
+
+Deno.test("loop: a malformed review is never a pass", async () => {
+  const m = fakeModel([asInput(GOOD), {}, asInput(GOOD), {}, asInput(GOOD), {}]);
+  const r = await writeCheckedBookDay(SECTION, m.call, OPTS);
+  if (r.clean) throw new Error("malformed review counted as clean");
+});

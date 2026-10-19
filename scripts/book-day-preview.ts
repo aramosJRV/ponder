@@ -16,12 +16,11 @@
 // Exit code 0 only when every sample is clean on both passes.
 
 import {
-  BOOK_DAY_SYSTEM,
   BOOK_TRANSLATIONS,
   type BookDay,
-  bookDayRequest,
   checkBookDay,
   parseBookDay,
+  writeCheckedBookDay,
   type Section,
   sectionRef,
 } from "../supabase/functions/generate-entry/book-day.ts";
@@ -41,7 +40,6 @@ type Sample = {
   fixed?: string[][];
   writer: string; reviewer: string;
 };
-const FIX_ROUNDS = 2;
 
 // ------------------------------------------------------------- database
 
@@ -145,52 +143,6 @@ async function callTool(key: string, body: Record<string, unknown>, tool: string
   }
 }
 
-const REVIEW_TOOL = {
-  name: "record_review",
-  description: "Record every problem found. An empty list means the reading is clean.",
-  strict: true,
-  input_schema: {
-    type: "object",
-    additionalProperties: false,
-    required: ["problems"],
-    properties: {
-      problems: {
-        type: "array",
-        items: { type: "string" },
-        description: "One plain sentence per problem, quoting the words at fault. Empty if none.",
-      },
-    },
-  },
-};
-
-const REVIEW_SYSTEM = `You are reviewing a devotional reading written for a slow read-through of a book of the Bible. Below are the exact guidelines the writer was given, between the markers. Check the reading against every one of them, and also check that it describes the passage accurately: nothing the passage does not say, nothing important misread, no factual or theological error.
-
-List only real problems: a broken guideline, an inaccuracy, a claim about the reader's time or progress, belittling or interpretive wording about other peoples or faiths, a verdict about what God is telling the reader, self-improvement, or a hard passage handled glibly. Do not list matters of taste or ways it could be "even better". Do not report length or word counts: those are checked by machine. If there are no real problems, return an empty list.
-
-=== WRITER GUIDELINES ===
-${BOOK_DAY_SYSTEM}
-=== END GUIDELINES ===
-
-Respond only by calling the record_review tool.`;
-
-function reviewRequest(s: Section, d: BookDay) {
-  return {
-    model: REVIEWER,
-    max_tokens: 16000,
-    output_config: { effort: "high" },
-    system: REVIEW_SYSTEM,
-    tools: [REVIEW_TOOL],
-    tool_choice: { type: "auto" },
-    messages: [{
-      role: "user",
-      content:
-        `SECTION: ${sectionRef(s)}\n\n` +
-        BOOK_TRANSLATIONS.filter((t) => s.texts[t]).map((t) => `${t}:\n${s.texts[t]}`).join("\n\n") +
-        `\n\nREADING TO REVIEW:\n${JSON.stringify(d, null, 2)}`,
-    }],
-  };
-}
-
 // ------------------------------------------------------------- report
 
 function render(samples: Sample[]): string {
@@ -258,23 +210,9 @@ if (import.meta.main) {
     samples = await Promise.all(specs.map(async (spec) => {
       const section = cache[spec];
       try {
-        // Write, check, then up to FIX_ROUNDS fix-up rounds: the problems go
-        // back to the writer, and the corrected reading is checked again.
-        let day = parseBookDay(await callTool(key, bookDayRequest(WRITER, section), "record_book_day"));
-        const fixed: string[][] = [];
-        for (let round = 0; ; round++) {
-          const machine = checkBookDay(day, section);
-          const review = ((await callTool(key, reviewRequest(section, day), "record_review")) as { problems?: string[] })
-            .problems ?? [];
-          console.log(`${sectionRef(section)} round ${round}: machine ${machine.length}, reviewer ${review.length}`);
-          if ((!machine.length && !review.length) || round === FIX_ROUNDS) {
-            return { section, day, machine, review, fixed, writer: WRITER, reviewer: REVIEWER };
-          }
-          fixed.push([...machine, ...review]);
-          day = parseBookDay(
-            await callTool(key, bookDayRequest(WRITER, section, { day, problems: [...machine, ...review] }), "record_book_day"),
-          );
-        }
+        const r = await writeCheckedBookDay(section, (body, tool) => callTool(key, body, tool), { writer: WRITER, reviewer: REVIEWER });
+        console.log(`${sectionRef(section)}: ${r.clean ? "clean" : "NOT clean"} after ${r.fixed.length} fix-up round(s)`);
+        return { section, day: r.day, machine: r.machine, review: r.review, fixed: r.fixed, writer: WRITER, reviewer: REVIEWER };
       } catch (e) {
         console.log(`${sectionRef(section)}: FAILED ${e}`);
         return { section, day: parseBookDay({}), machine: [`generation failed: ${e}`], review: [], writer: WRITER, reviewer: REVIEWER };
