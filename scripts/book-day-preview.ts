@@ -35,7 +35,13 @@ const SPECS = [
   "Mark", "Psalms", "Ruth", "Philippians", "Leviticus", "Judges 19:22", "1 Chronicles", "Song of Solomon",
 ];
 
-type Sample = { section: Section; day: BookDay; machine: string[]; review: string[]; writer: string; reviewer: string };
+type Sample = {
+  section: Section; day: BookDay; machine: string[]; review: string[];
+  /** Problems sent back in each fix-up round, oldest first. */
+  fixed?: string[][];
+  writer: string; reviewer: string;
+};
+const FIX_ROUNDS = 2;
 
 // ------------------------------------------------------------- database
 
@@ -220,6 +226,9 @@ function render(samples: Sample[]): string {
       `**Illustration**`, ``, s.day.illustration, ``,
       `**Ponder**`, ``, ...s.day.ponder.map((q) => `- ${q}`), ``,
       `**Prayer**`, ``, ...s.day.prayer_prompts.map((q) => `- ${q}`), ``,
+      ...(s.fixed?.length
+        ? [`*Fixed in ${s.fixed.length} fix-up round(s). Problems sent back:*`, ...s.fixed.flat().map((x) => `- ${x}`), ``]
+        : []),
       `**Checks:** machine ${s.machine.length ? "" : "pass"}${s.machine.map((x) => `\n- ${x}`).join("")}`,
       ``,
       `reviewer ${s.review.length ? "" : "pass"}${s.review.map((x) => `\n- ${x}`).join("")}`,
@@ -249,12 +258,23 @@ if (import.meta.main) {
     samples = await Promise.all(specs.map(async (spec) => {
       const section = cache[spec];
       try {
-        const day = parseBookDay(await callTool(key, bookDayRequest(WRITER, section), "record_book_day"));
-        const machine = checkBookDay(day, section);
-        const review = ((await callTool(key, reviewRequest(section, day), "record_review")) as { problems?: string[] })
-          .problems ?? [];
-        console.log(`${sectionRef(section)}: machine ${machine.length}, reviewer ${review.length}`);
-        return { section, day, machine, review, writer: WRITER, reviewer: REVIEWER };
+        // Write, check, then up to FIX_ROUNDS fix-up rounds: the problems go
+        // back to the writer, and the corrected reading is checked again.
+        let day = parseBookDay(await callTool(key, bookDayRequest(WRITER, section), "record_book_day"));
+        const fixed: string[][] = [];
+        for (let round = 0; ; round++) {
+          const machine = checkBookDay(day, section);
+          const review = ((await callTool(key, reviewRequest(section, day), "record_review")) as { problems?: string[] })
+            .problems ?? [];
+          console.log(`${sectionRef(section)} round ${round}: machine ${machine.length}, reviewer ${review.length}`);
+          if ((!machine.length && !review.length) || round === FIX_ROUNDS) {
+            return { section, day, machine, review, fixed, writer: WRITER, reviewer: REVIEWER };
+          }
+          fixed.push([...machine, ...review]);
+          day = parseBookDay(
+            await callTool(key, bookDayRequest(WRITER, section, { day, problems: [...machine, ...review] }), "record_book_day"),
+          );
+        }
       } catch (e) {
         console.log(`${sectionRef(section)}: FAILED ${e}`);
         return { section, day: parseBookDay({}), machine: [`generation failed: ${e}`], review: [], writer: WRITER, reviewer: REVIEWER };

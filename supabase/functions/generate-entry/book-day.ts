@@ -122,7 +122,11 @@ const BOOK_DAY_TOOL = {
 };
 
 /** Messages API request body for writing one section. */
-export function bookDayRequest(model: string, s: Section) {
+/**
+ * With `fix`, the writer gets its own draft and the problems found in it,
+ * and returns a corrected reading (the fix-up round).
+ */
+export function bookDayRequest(model: string, s: Section, fix?: { day: BookDay; problems: string[] }) {
   const shown = BOOK_TRANSLATIONS.filter((t) => s.texts[t]);
   return {
     model,
@@ -137,7 +141,12 @@ export function bookDayRequest(model: string, s: Section) {
         `BOOK: ${s.book} (section ${s.index} of ${s.count} — for your orientation only; never mention it)\n` +
         `SECTION: ${sectionRef(s)}\n\n` +
         shown.map((t) => `${t}:\n${s.texts[t]}`).join("\n\n") +
-        `\n\nWrite the reading for this section and record it with record_book_day.`,
+        (fix
+          ? `\n\nYOUR DRAFT:\n${JSON.stringify(fix.day, null, 2)}\n\nPROBLEMS FOUND IN IT:\n` +
+            fix.problems.map((x) => `- ${x}`).join("\n") +
+            `\n\nCheck each problem against the passage. Fix every real one, change nothing else that is sound, ` +
+            `and record the whole corrected reading with record_book_day.`
+          : `\n\nWrite the reading for this section and record it with record_book_day.`),
     }],
   };
 }
