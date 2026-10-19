@@ -14,12 +14,12 @@ export function BookProgress({ entry }: { entry: DailyEntry }) {
   return (
     <div className="mb-5">
       <p className="text-sm font-semibold text-moss">
-        {rangeLabel(bookLabel(entry.verse_ref), s)} · section {s.index} of {s.count}
+        {rangeLabel(bookLabel(entry.verse_ref), s)} · passage {s.index} of {s.count}
       </p>
       <div
         className="mt-2 h-1 overflow-hidden rounded-full bg-hairline"
         role="progressbar"
-        aria-label={`Section ${s.index} of ${s.count}`}
+        aria-label={`Passage ${s.index} of ${s.count}`}
         aria-valuemin={1}
         aria-valuemax={s.count}
         aria-valuenow={s.index}
