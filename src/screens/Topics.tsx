@@ -357,7 +357,7 @@ function CreateTopicSheet({
               <p className="mt-1 text-sm text-muted">What would you like to follow?</p>
               <div className="mt-5 space-y-3">
                 <KindChoice
-                  title="A question"
+                  title="Something I’m sensing"
                   body="Something you sense God may be speaking about. Each day brings a passage to sit with."
                   onClick={() => setKind("question")}
                 />
