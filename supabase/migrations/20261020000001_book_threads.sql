@@ -116,6 +116,7 @@ as $$
 $$;
 
 revoke execute on function public.queue_book_section(int, int, int) from public, anon, authenticated;
+grant execute on function public.queue_book_section(int, int, int) to service_role;
 
 -- ------------------------------------------------------------
 -- 5. The app calls this when it shows an entry. Records the first-open

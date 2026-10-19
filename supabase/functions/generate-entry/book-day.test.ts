@@ -139,3 +139,11 @@ Deno.test("loop: a malformed review is never a pass", async () => {
   const r = await writeCheckedBookDay(SECTION, m.call, OPTS);
   if (r.clean) throw new Error("malformed review counted as clean");
 });
+
+Deno.test("a time phrase the passage itself uses is allowed (Philippians 1:5, 'until now')", () => {
+  const phil: Section = { ...SECTION, texts: { WEB: "for your partnership in furtherance of the Good News from the first day until now", BSB: "because of your partnership in the gospel from the first day until now", KJV: "For your fellowship in the gospel from the first day until now" } };
+  const p = checkBookDay({ ...GOOD, thought: `Paul thanks them for their partnership from the first day until now. ${pad(140)}`, key_verse: { chapter: 1, verse_start: 1, verse_end: 1 } }, phil);
+  if (p.some((x) => x.includes("until now"))) throw new Error(JSON.stringify(p));
+  // ...but not when the passage does not say it
+  expectCaught("not in passage", bad({ thought: `Until now you have waited. ${pad(140)}` }), "until now");
+});

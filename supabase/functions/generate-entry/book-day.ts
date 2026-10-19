@@ -346,7 +346,11 @@ export function checkBookDay(d: BookDay, s: Section): string[] {
   for (const w of TIME_WORDS) {
     if (wordsUsed.has(w) && !passageWords.has(w)) p.push(`time word "${w}" (not in the passage)`);
   }
-  for (const re of TIME_PHRASES) if (re.test(lower)) p.push(`time phrase ${re.source.replace(/\\b/g, "")}`);
+  const passageText = ` ${foldedTexts.join(" ")} `;
+  for (const re of TIME_PHRASES) {
+    // Describing the passage in its own words is fine ("from the first day until now").
+    if (re.test(lower) && !re.test(passageText)) p.push(`time phrase ${re.source.replace(/\\b/g, "")}`);
+  }
   for (const w of FAITH_WORDS) {
     if (wordsUsed.has(w) && !passageWords.has(w)) p.push(`other-faith or belittling word "${w}"`);
   }

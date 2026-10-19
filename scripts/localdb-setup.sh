@@ -20,4 +20,9 @@ fi
 supabase start --workdir localdb
 docker exec -i $DB psql -U postgres -q -X -v ON_ERROR_STOP=1 < localdb/prod-schema.sql
 docker exec -i $DB psql -U postgres -q -X -v ON_ERROR_STOP=1 < localdb/prod-reference-data.sql
+# The live project creates a profile for each new user from a trigger on
+# auth.users, which the public-schema dump does not carry.
+docker exec $DB psql -U postgres -q -c "create trigger on_auth_user_created after insert on auth.users for each row execute function public.handle_new_user();"
+# Book threads change (applied here for app run-throughs; db-check copes either way).
+docker exec -i $DB psql -U postgres -q -X -v ON_ERROR_STOP=1 < supabase/migrations/20261020000001_book_threads.sql
 docker exec $DB psql -U postgres -tAc "select count(*) || ' verses' from public.bible_verses"

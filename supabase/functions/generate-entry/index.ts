@@ -34,6 +34,8 @@ import {
   meditationRequest,
   parseMeditation,
 } from "./meditation.ts";
+import { BOOK_TRANSLATIONS, type CallTool, type Section, writeCheckedBookDay } from "./book-day.ts";
+import { localDateAt, nextBookStep } from "./book-pacing.ts";
 
 // ---------------------------------------------------------------- config
 
@@ -91,11 +93,12 @@ function modelFor(entryType: string, attempt: number): string {
 const PRICING: Record<string, { in: number; out: number }> = {
   "claude-sonnet-4-6": { in: 3, out: 15 },
   "claude-haiku-4-5-20251001": { in: 1, out: 5 },
+  "claude-opus-5-5": { in: 4, out: 20 },
 };
 
 // An unknown model is priced as the expensive one. Guessing low here would
 // let a model swap quietly blow through the ceiling.
-const FALLBACK_PRICE = { in: 3, out: 15 };
+const FALLBACK_PRICE = { in: 4, out: 20 };
 
 interface Usage {
   input_tokens?: number;
@@ -591,7 +594,7 @@ const SEED_VERSE_COOLDOWN_DAYS = 0;
 // topic_themes table in 20260825000001. ensureTheme() reads it there, and
 // tryPool() goes through select_pool_entry(), which joins it server-side.
 const TOPIC_COLS =
-  "id, user_id, title, description, created_at, seed_verse_ref, seed_verse_text";
+  "id, user_id, title, description, created_at, seed_verse_ref, seed_verse_text, book_number";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -1938,6 +1941,8 @@ async function finalizeEntry(
 /** Synchronous generation — the on-demand path. Someone is waiting. */
 // deno-lint-ignore no-explicit-any
 async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: string) {
+  // Book threads never reach the library, the classifier or the model here.
+  if (topic.book_number) return await ensureBookDay(db, topic, forceDate);
   const topicId = topic.id as string;
   const userId = topic.user_id as string;
 
@@ -2024,6 +2029,220 @@ async function generateForTopic(db: SupabaseClient, topic: any, forceDate?: stri
     }
   }
   return outcome;
+}
+
+// ---------------------------------------------------------- book threads
+//
+// A book thread reads one bible_pericopes section a day. The writing for a
+// section is the SAME for every reader: written once by buildBookSections
+// (write, machine checks, model review, fix-up rounds — book-day.ts), kept in
+// book_section_content, and copied into each reader's daily_entries row.
+// The verse_* fields hold the key verse, so any app version shows a book day
+// as an ordinary day. Pacing is book-pacing.ts.
+
+const MODEL_BOOK = Deno.env.get("ANTHROPIC_MODEL_BOOK") ?? "claude-opus-5-5";
+/** A section that fails this many times is marked failed and logged. */
+const BOOK_MAX_ATTEMPTS = 3;
+/** Sections written side by side in one background run. */
+const BOOK_BUILD_PARALLEL = 3;
+/** A claimed section still pending after this long is taken to be abandoned. */
+const BOOK_CLAIM_STALE_MS = 15 * 60_000;
+
+type SectionKey = { book_number: number; start_chapter: number; start_verse: number };
+
+async function bookStarts(db: SupabaseClient, bookNumber: number) {
+  const { data, error } = await db.from("bible_pericopes")
+    .select("start_chapter, start_verse").eq("book_number", bookNumber).order("start_ord");
+  if (error) throw new Error(`bible_pericopes read failed: ${error.message}`);
+  return (data ?? []) as { start_chapter: number; start_verse: number }[];
+}
+
+/** One section in every translation. Bounds come from passage_context, the
+ *  same pericope the Context and Full passage buttons show. */
+async function loadBookSection(db: SupabaseClient, key: SectionKey): Promise<Section> {
+  const starts = await bookStarts(db, key.book_number);
+  const index = starts.findIndex((s) => s.start_chapter === key.start_chapter && s.start_verse === key.start_verse) + 1;
+  if (!index) throw new Error(`no section starts at ${JSON.stringify(key)}`);
+  const { data: book, error: bookErr } = await db.from("bible_books")
+    .select("name").eq("book_number", key.book_number).single();
+  if (bookErr) throw new Error(`bible_books read failed: ${bookErr.message}`);
+
+  const texts: Section["texts"] = {};
+  let bounds: { start_chapter: number; start_verse: number; end_chapter: number; end_verse: number } | null = null;
+  for (const t of BOOK_TRANSLATIONS) {
+    const { data, error } = await db.rpc("passage_context", {
+      p_book_number: key.book_number, p_chapter: key.start_chapter, p_verse: key.start_verse, p_translation: t,
+    });
+    if (error) throw new Error(`passage_context failed: ${error.message}`);
+    const rows = (data ?? []) as { start_chapter: number; start_verse: number; end_chapter: number; end_verse: number; verse_text: string | null }[];
+    if (!rows.length) continue;
+    bounds ??= rows[0];
+    const text = rows.filter((r) => r.verse_text).map((r) => r.verse_text!.trim()).join(" ");
+    if (text) texts[t] = text;
+  }
+  if (!bounds || !texts.WEB) throw new Error(`no text for section ${JSON.stringify(key)}`);
+  if (bounds.start_chapter !== key.start_chapter || bounds.start_verse !== key.start_verse) {
+    throw new Error(`passage_context bounds ${JSON.stringify(bounds)} do not start at ${JSON.stringify(key)}`);
+  }
+  return {
+    book: book.name, index, count: starts.length,
+    chapter_start: key.start_chapter, verse_start: key.start_verse,
+    chapter_end: bounds.end_chapter, verse_end: bounds.end_verse, texts,
+  };
+}
+
+/** Messages API caller for the book writer: spend recorded, transient errors retried. */
+function bookCallTool(db: SupabaseClient, detail: Record<string, unknown>): CallTool {
+  return async (body, tool) => {
+    for (let attempt = 1; ; attempt++) {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { ...anthropicHeaders(), "anthropic-beta": "server-side-fallback-2026-07-01" },
+        body: JSON.stringify({ ...body, fallbacks: "default" }),
+      });
+      if (!res.ok) {
+        if (isTransient(res.status) && attempt < 3) {
+          await sleep(attempt * 5000);
+          continue;
+        }
+        throw new Error(`Anthropic API ${res.status}: ${(await res.text()).slice(0, 300)}`);
+      }
+      const data = await res.json();
+      await recordSpend(db, tool === "record_review" ? "book_review" : "book_write",
+        String(data.model ?? body.model), (data.usage ?? {}) as Usage, { detail });
+      if (data.stop_reason === "refusal") throw new Error(`model refused (${JSON.stringify(data.stop_details)})`);
+      const block = (data.content ?? []).find((b: { type: string; name?: string }) => b.type === "tool_use" && b.name === tool);
+      if (!block) throw new Error(`model did not call ${tool} (stop_reason ${data.stop_reason})`);
+      return block.input;
+    }
+  };
+}
+
+/** Write up to BOOK_BUILD_PARALLEL queued sections. */
+async function buildBookSections(db: SupabaseClient) {
+  const stale = new Date(Date.now() - BOOK_CLAIM_STALE_MS).toISOString();
+  const { data: jobs, error } = await db.from("book_section_content")
+    .select("book_number, start_chapter, start_verse, attempts")
+    .eq("status", "pending")
+    .or(`attempts.eq.0,requested_at.lt.${stale}`)
+    .order("requested_at")
+    .limit(BOOK_BUILD_PARALLEL);
+  if (error) throw new Error(`book_section_content read failed: ${error.message}`);
+  await Promise.all((jobs ?? []).map((j) => buildBookSection(db, j)));
+  return { claimed: jobs?.length ?? 0 };
+}
+
+async function buildBookSection(db: SupabaseClient, job: SectionKey & { attempts: number }) {
+  const key: SectionKey = { book_number: job.book_number, start_chapter: job.start_chapter, start_verse: job.start_verse };
+  const attempt = job.attempts + 1;
+  // Claim it: only one run may move attempts on from the value it read.
+  const { data: claimed } = await db.from("book_section_content")
+    .update({ attempts: attempt, requested_at: new Date().toISOString() })
+    .match({ ...key, status: "pending", attempts: job.attempts })
+    .select("attempts");
+  if (!claimed?.length) return;
+
+  try {
+    const section = await loadBookSection(db, key);
+    const r = await writeCheckedBookDay(section, bookCallTool(db, { ...key, attempt }), { writer: MODEL_BOOK, reviewer: MODEL_BOOK });
+    if (!r.clean) throw new Error(`not clean after ${r.fixed.length} fix-up round(s): ${[...r.machine, ...r.review].join(" | ")}`);
+    const k = r.day.key_verse;
+    const meditation = await writeMeditation(
+      db, displayRef(section.book, k.chapter, k.verse_start, k.verse_end),
+      { book_number: key.book_number, chapter: k.chapter, verse_start: k.verse_start, verse_end: k.verse_end },
+      MODEL_MEDITATION, { book_section: key },
+    );
+    const { error } = await db.from("book_section_content").update({
+      status: "ready",
+      key_chapter: k.chapter, key_verse_start: k.verse_start, key_verse_end: k.verse_end,
+      thought: r.day.thought, illustration: r.day.illustration,
+      ponder: r.day.ponder, prayer_prompts: r.day.prayer_prompts,
+      meditation, review: { fixed: r.fixed }, model: MODEL_BOOK, ready_at: new Date().toISOString(),
+    }).match(key);
+    if (error) throw new Error(`saving section failed: ${error.message}`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    await db.from("generation_failures").insert({
+      date: new Date().toISOString().slice(0, 10), stage: "book_section", detail: { ...key, attempt, error: msg.slice(0, 4000) },
+    });
+    if (attempt >= BOOK_MAX_ATTEMPTS) {
+      await db.from("book_section_content").update({ status: "failed" }).match(key);
+    }
+  }
+}
+
+/**
+ * Make sure a book thread has its entry for today: carry the current one
+ * forward, start the book, or move on one section, per nextBookStep. A
+ * section not written yet is queued and reported as failed, which every app
+ * version shows as "running late"; the 5-minute writer picks it up.
+ */
+// deno-lint-ignore no-explicit-any
+async function ensureBookDay(db: SupabaseClient, topic: any, forceDate?: string) {
+  const topicId = topic.id as string;
+  const userId = topic.user_id as string;
+  const bookNumber = Number(topic.book_number);
+  const { data: profile } = await db.from("profiles").select("timezone").eq("id", userId).single();
+  const date = forceDate ?? localDateAt(profile?.timezone ?? "UTC", new Date());
+
+  const { data: latest, error: latestErr } = await db.from("daily_entries")
+    .select("id, date, opened_on, book_section")
+    .eq("topic_id", topicId).order("date", { ascending: false }).limit(1).maybeSingle();
+  if (latestErr) throw new Error(`daily_entries read failed: ${latestErr.message}`);
+  const bs = latest?.book_section as { index: number; count: number } | null | undefined;
+  const step = nextBookStep(
+    latest && bs ? { id: latest.id, date: latest.date, opened_on: latest.opened_on, index: bs.index, count: bs.count } : null,
+    date,
+  );
+
+  if (step.kind === "none") return { topic_id: topicId, status: "exists", date };
+  if (step.kind === "roll") {
+    const { error } = await db.from("daily_entries").update({ date }).eq("id", step.id);
+    if (error) throw new Error(`carrying entry forward failed: ${error.message}`);
+    return { topic_id: topicId, status: "exists", date };
+  }
+
+  const starts = await bookStarts(db, bookNumber);
+  const index = step.kind === "first" ? 1 : step.after.index + 1;
+  const start = starts[index - 1];
+  if (!start) return { topic_id: topicId, status: "exists", date };
+  const key: SectionKey = { book_number: bookNumber, ...start };
+
+  const { data: c, error: cErr } = await db.from("book_section_content").select("*").match(key).maybeSingle();
+  if (cErr) throw new Error(`book_section_content read failed: ${cErr.message}`);
+  if (c?.status !== "ready") {
+    await db.rpc("queue_book_section", {
+      p_book_number: key.book_number, p_start_chapter: key.start_chapter, p_start_verse: key.start_verse,
+    });
+    return { topic_id: topicId, status: "failed", date, error: "book_section_pending" };
+  }
+
+  const section = await loadBookSection(db, key);
+  // Hard rule 4: the verse text is copied from bible_verses, never from the writer.
+  const { data: verses, error: vErr } = await db.from("bible_verses")
+    .select("verse, text").eq("translation", "WEB").eq("book_number", bookNumber).eq("chapter", c.key_chapter)
+    .gte("verse", c.key_verse_start).lte("verse", c.key_verse_end).order("verse");
+  if (vErr) throw new Error(`bible_verses read failed: ${vErr.message}`);
+  if ((verses ?? []).length !== c.key_verse_end - c.key_verse_start + 1) {
+    throw new Error(`key verse ${c.key_chapter}:${c.key_verse_start}-${c.key_verse_end} does not resolve`);
+  }
+
+  const { error: insErr } = await db.from("daily_entries").insert({
+    topic_id: topicId, user_id: userId, date,
+    verse_ref: displayRef(section.book, c.key_chapter, c.key_verse_start, c.key_verse_end),
+    book_number: bookNumber, chapter: c.key_chapter, verse_start: c.key_verse_start, verse_end: c.key_verse_end,
+    verse_text: verses!.map((v) => v.text).join(" "),
+    thought: c.thought, illustration: c.illustration, ponder: c.ponder, prayer_prompts: c.prayer_prompts,
+    entry_type: "affirming", fallback_used: false, cross_refs: [], meditation: c.meditation,
+    book_section: {
+      start_chapter: section.chapter_start, start_verse: section.verse_start,
+      end_chapter: section.chapter_end, end_verse: section.verse_end,
+      index: section.index, count: section.count,
+    },
+  });
+  if (insErr?.code === "23505") return { topic_id: topicId, status: "exists", date }; // a parallel call won
+  if (insErr) throw new Error(`book day insert failed: ${insErr.message}`);
+  return { topic_id: topicId, status: "created", date };
 }
 
 // -------------------------------------------------------- pool building
@@ -2313,8 +2532,18 @@ async function submitBatch(
   const items: Record<string, unknown>[] = [];
   let skipped = 0;
   let pooled = 0;
+  let bookDays = 0;
 
   for (const topic of topics) {
+    if (topic.book_number) {
+      // Book threads never reach the library, the classifier or the batch.
+      try {
+        if ((await ensureBookDay(db, topic, forceDate)).status === "created") bookDays++;
+      } catch (e) {
+        console.error(`book day failed for ${topic.id}: ${e}`);
+      }
+      continue;
+    }
     let ctx: EntryContext | null = null;
     try {
       ctx = await buildContext(db, topic, forceDate);
@@ -2363,7 +2592,7 @@ async function submitBatch(
   }
 
   if (!requests.length) {
-    return { submitted: 0, skipped, pooled, batch_id: null };
+    return { submitted: 0, skipped, pooled, book_days: bookDays, batch_id: null };
   }
 
   const res = await fetch(BATCH_API, {
@@ -2387,7 +2616,7 @@ async function submitBatch(
     .insert(items.map((i) => ({ ...i, batch_id: row.id })));
   if (itemErr) throw new Error(`recording batch items failed: ${itemErr.message}`);
 
-  return { submitted: requests.length, skipped, pooled, batch_id: batch.id };
+  return { submitted: requests.length, skipped, pooled, book_days: bookDays, batch_id: batch.id };
 }
 
 /**
@@ -2713,7 +2942,7 @@ Deno.serve(async (req) => {
     topic_id?: string;
     force_date?: string;
     user_ids?: string[];
-    mode?: "batch_submit" | "batch_collect" | "pool_build";
+    mode?: "batch_submit" | "batch_collect" | "pool_build" | "book_build";
     theme_slug?: string;
     entry_type?: string;
     count?: number;
@@ -2754,6 +2983,17 @@ Deno.serve(async (req) => {
       console.error(`batch_collect failed: ${msg}`);
       return json(500, { error: msg });
     }
+  }
+
+  // Book threads: write queued sections (pg_cron, every 5 minutes). Service
+  // key only, behind the tripwire. Runs in the background because one
+  // section takes minutes and pg_net gives up waiting long before that.
+  if (body.mode === "book_build") {
+    if (who.role !== "service") return json(403, { error: "service key required" });
+    if (!(await generationAllowed(db))) return json(429, { error: "spend_tripwire" });
+    const work = buildBookSections(db).catch((e) => console.error(`book_build failed: ${e}`));
+    inBackground(work);
+    return json(202, { started: true });
   }
 
   // NO spend gate on the user path, deliberately. The tripwire exists to stop

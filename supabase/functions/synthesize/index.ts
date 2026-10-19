@@ -305,7 +305,11 @@ function buildPrompt(topic: any, entries: any[], notes: any[], kind: string): st
   return `SYNTHESIS KIND: ${kind}
 
 THREAD: ${topic.title}
-THE PERSON'S OWN WORDS ABOUT IT: ${topic.description || "(none provided)"}
+${
+  topic.book_number
+    ? `THIS THREAD IS A READ-THROUGH OF THE BOOK OF ${String(topic.title).toUpperCase()}, one section at a time. The person did not bring a question to it: the entries are the book's own sections, in order. Reflect on what emerged as they read the book, and on their notes. Do not invent a question or struggle they never named. Speak of the book and its passages, not of the reader's time with it: never use "journey", "season", "so far" or "you have been", and never describe how long they spent reading.`
+    : `THE PERSON'S OWN WORDS ABOUT IT: ${topic.description || "(none provided)"}`
+}
 ${
   topic.seed_verse_ref
     ? `THE PASSAGE THAT STARTED IT: ${topic.seed_verse_ref} — "${String(topic.seed_verse_text ?? "").slice(0, 600)}"
@@ -319,7 +323,12 @@ ${entryBlock}
 THE PERSON'S NOTES (their own reflections, chronological; ${notes.length} total):
 ${noteBlock}
 
-${describeSpan(entries, notes)}
+${
+  // A book is read by position, never by time: no span for the model to quote.
+  topic.book_number
+    ? "TIMELINE: not given for a book read-through. Say nothing at all about elapsed time, days, weeks or how long the reading took."
+    : describeSpan(entries, notes)
+}
 
 Read the whole arc and call record_synthesis exactly once. Ground every item in what you actually see above — name specific threads, real tensions, and invitational next steps.`;
 }
@@ -446,7 +455,7 @@ Deno.serve(async (req) => {
   // Load the topic (scoped to the user when a user token is used).
   let topicQuery = db
     .from("topics")
-    .select("id, user_id, title, description, seed_verse_ref, seed_verse_text")
+    .select("id, user_id, title, description, seed_verse_ref, seed_verse_text, book_number")
     .eq("id", body.topic_id);
   if (who.role === "user") topicQuery = topicQuery.eq("user_id", who.userId);
   const { data: topic, error: topicErr } = await topicQuery.maybeSingle();

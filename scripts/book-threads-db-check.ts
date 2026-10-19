@@ -67,10 +67,15 @@ end $t$;`;
 const extraIdx = Deno.args.indexOf("--extra-sql");
 const extra = extraIdx >= 0 ? await Deno.readTextFile(Deno.args[extraIdx + 1]) : "";
 
+// The copy may already carry the migration (app run-throughs need it applied).
+const applied = (await run("docker", ["exec", DB, "psql", "-U", "postgres", "-tAc",
+  "select 1 from information_schema.columns where table_name = 'topics' and column_name = 'book_number'"])).out.trim() === "1";
+if (applied) console.log("(migration already applied to the local copy; checking it as it stands)\n");
+
 const parts: string[] = [
   "\\set ON_ERROR_STOP 1",
   "begin;",
-  await Deno.readTextFile(MIGRATION),
+  applied ? "" : await Deno.readTextFile(MIGRATION),
   extra,
   // Two readers, one book thread with one book day (Mark 1:1-8, key verse 7-8).
   `insert into auth.users (id, aud, role) values (${lit(A)}, 'authenticated', 'authenticated'), (${lit(B)}, 'authenticated', 'authenticated');
