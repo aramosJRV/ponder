@@ -147,3 +147,9 @@ Deno.test("a time phrase the passage itself uses is allowed (Philippians 1:5, 'u
   // ...but not when the passage does not say it
   expectCaught("not in passage", bad({ thought: `Until now you have waited. ${pad(140)}` }), "until now");
 });
+
+Deno.test("a passage word with a possessive apostrophe still counts (Deuteronomy 1:2, \"eleven days’ journey\")", () => {
+  const deut: Section = { ...SECTION, texts: { WEB: "It is eleven days’ journey from Horeb", BSB: "It is an eleven-day journey from Horeb", KJV: "There are eleven days' journey from Horeb" } };
+  const p = checkBookDay({ ...GOOD, thought: `The trip from Horeb should take eleven days. ${pad(140)}`, key_verse: { chapter: 1, verse_start: 1, verse_end: 1 } }, deut);
+  if (p.some((x) => x.includes('"days"'))) throw new Error(JSON.stringify(p));
+});

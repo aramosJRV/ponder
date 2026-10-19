@@ -264,6 +264,8 @@ const fold = (s: string) =>
   s.toLowerCase()
     .replace(/[‘’ʼ]/g, "'")
     .replace(/[^\p{L}\p{N}' ]+/gu, " ")
+    // An apostrophe at a word's edge ("days' journey") is not part of the word.
+    .replace(/(?<=^|\s)'+|'+(?=\s|$)/g, "")
     .replace(/\s+/g, " ")
     .trim();
 const words = (s: string) => (s.trim() ? s.trim().split(/\s+/).length : 0);
