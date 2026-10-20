@@ -18,6 +18,8 @@ spec.loader.exec_module(shots)
 PAPER, INK, MOSS, MUTED, load_font = shots.PAPER, shots.INK, shots.MOSS, shots.MUTED, shots.load_font
 
 OUT = HERE / "screenshots" / "instagram-books"
+ICON = HERE.parent / "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png"
+LOGO = 88
 W, H = 1080, 1350
 MARGIN = 100
 
@@ -69,8 +71,12 @@ def render(lines) -> Image.Image:
         assert draw.textlength(text, font=font) <= W - 2 * MARGIN, f"too wide: {text}"
         draw.text((MARGIN, y), text, font=font, fill=colour)
         y += h
-    # Moss rule bottom-left, same accent the other posts use.
-    draw.line([(MARGIN, H - 120), (MARGIN + 100, H - 120)], fill=MOSS, width=3)
+    # App icon + name, bottom-left.
+    icon = shots.rounded(Image.open(ICON).convert("RGB").resize((LOGO, LOGO), Image.LANCZOS), LOGO // 5)
+    top = H - 100 - LOGO
+    img.paste(icon, (MARGIN, top), icon)
+    name = load_font(44)
+    draw.text((MARGIN + LOGO + 24, top + LOGO / 2), "Ponder", font=name, fill=INK, anchor="lm")
     return img
 
 
