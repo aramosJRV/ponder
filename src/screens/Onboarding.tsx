@@ -36,7 +36,8 @@ const SLIDES: Slide[] = [
     title: "Start with a thread",
     body:
       "A thread is something you sense God may be speaking to you about — patience, a decision, a relationship. Hold several at once; each unfolds a day at a time.",
-    footnote: "Notice what stirs. Name what you sense.",
+    footnote:
+      "Or make a thread of a book of the Bible and read it through from the beginning, one passage at a time.",
     Mark: MarkStack,
   },
   {
