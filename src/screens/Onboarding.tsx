@@ -36,9 +36,16 @@ const SLIDES: Slide[] = [
     title: "Start with a thread",
     body:
       "A thread is something you sense God may be speaking to you about — patience, a decision, a relationship. Hold several at once; each unfolds a day at a time.",
-    footnote:
-      "Or make a thread of a book of the Bible and read it through from the beginning, one passage at a time.",
+    footnote: "Notice what stirs. Name what you sense.",
     Mark: MarkStack,
+  },
+  {
+    eyebrow: "Or read a whole book",
+    title: "A book of the Bible as a thread",
+    body:
+      "Choose a book — Mark, Psalms, Romans — and read it through from the beginning, one passage at a time, each with a reflection and questions to sit with.",
+    footnote: "Read slowly, and see where you are in the book as you go.",
+    Mark: MarkBook,
   },
   {
     eyebrow: "Each day",
@@ -266,6 +273,16 @@ function MarkVerse() {
     <g {...stroke}>
       <path d="M24 12c-3-2.5-8-3-12-2v22c4-1 9-.5 12 2 3-2.5 8-3 12-2V10c-4-1-9-.5-12 2z" fill="currentColor" fillOpacity={0.1} />
       <path d="M24 12v22" />
+    </g>
+  );
+}
+
+function MarkBook() {
+  return frame(
+    <g {...stroke}>
+      <path d="M24 12c-3-2.5-8-3-12-2v22c4-1 9-.5 12 2 3-2.5 8-3 12-2V10c-4-1-9-.5-12 2z" fill="currentColor" fillOpacity={0.1} />
+      <path d="M24 12v22" />
+      <path d="M30 9.5V20l2.5-2 2.5 2V9.8" />
     </g>
   );
 }
