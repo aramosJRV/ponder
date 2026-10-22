@@ -1,7 +1,7 @@
 // Pacing for book threads. No network.
 //   deno test --no-lock --node-modules-dir=none supabase/functions/generate-entry/book-pacing.test.ts
 
-import { type LatestBookEntry, localDateAt, nextBookStep } from "./book-pacing.ts";
+import { datesToShiftBack, dayBefore, type LatestBookEntry, localDateAt, nextBookStep } from "./book-pacing.ts";
 
 const eq = (a: unknown, b: unknown, what: string) => {
   if (JSON.stringify(a) !== JSON.stringify(b)) throw new Error(`${what}: got ${JSON.stringify(a)}, want ${JSON.stringify(b)}`);
@@ -70,4 +70,15 @@ Deno.test("local date around midnight, three time zones", () => {
 
 Deno.test("an unknown time zone falls back to UTC instead of failing", () => {
   eq(localDateAt("Not/AZone", new Date("2026-10-20T12:00:00Z")), "2026-10-20", "fallback");
+});
+
+Deno.test("dayBefore crosses months and years", () => {
+  eq([dayBefore("2026-11-01"), dayBefore("2027-01-01")], ["2026-10-31", "2026-12-31"], "dayBefore");
+});
+
+Deno.test("reading ahead moves back today's entry and the unbroken run behind it, oldest first", () => {
+  eq(datesToShiftBack(["2026-10-21", "2026-10-20", "2026-10-19", "2026-10-15", "2026-10-14"]),
+    ["2026-10-19", "2026-10-20", "2026-10-21"], "run stops at the gap");
+  eq(datesToShiftBack(["2026-10-21", "2026-10-18"]), ["2026-10-21"], "gap right behind");
+  eq(datesToShiftBack(["2026-10-21"]), ["2026-10-21"], "first section");
 });

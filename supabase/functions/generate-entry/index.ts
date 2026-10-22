@@ -35,7 +35,7 @@ import {
   parseMeditation,
 } from "./meditation.ts";
 import { BOOK_TRANSLATIONS, type CallTool, type Section, sectionRef, writeCheckedBookDay } from "./book-day.ts";
-import { localDateAt, nextBookStep } from "./book-pacing.ts";
+import { datesToShiftBack, dayBefore, localDateAt, nextBookStep } from "./book-pacing.ts";
 
 // ---------------------------------------------------------------- config
 
@@ -2187,7 +2187,6 @@ async function buildBookSection(db: SupabaseClient, job: SectionKey & { attempts
 async function ensureBookDay(db: SupabaseClient, topic: any, forceDate?: string) {
   const topicId = topic.id as string;
   const userId = topic.user_id as string;
-  const bookNumber = Number(topic.book_number);
   const { data: profile } = await db.from("profiles").select("timezone").eq("id", userId).single();
   const date = forceDate ?? localDateAt(profile?.timezone ?? "UTC", new Date());
 
@@ -2208,8 +2207,49 @@ async function ensureBookDay(db: SupabaseClient, topic: any, forceDate?: string)
     return { topic_id: topicId, status: "exists", date };
   }
 
+  return await placeBookSection(db, topic, step.kind === "first" ? 1 : step.after.index + 1, date);
+}
+
+/**
+ * The reader asked for the next section now, from the entry on today
+ * (`fromEntryId`, so a double tap moves on once). The next section takes
+ * today and the entries behind it step back a day each, so tomorrow carries
+ * on from the furthest one read.
+ */
+// deno-lint-ignore no-explicit-any
+async function readBookAhead(db: SupabaseClient, topic: any, fromEntryId: string, forceDate?: string) {
+  const topicId = topic.id as string;
+  const { data: profile } = await db.from("profiles").select("timezone").eq("id", topic.user_id).single();
+  const date = forceDate ?? localDateAt(profile?.timezone ?? "UTC", new Date());
+
+  const { data: entries, error } = await db.from("daily_entries")
+    .select("id, date, book_section").eq("topic_id", topicId).order("date", { ascending: false });
+  if (error) throw new Error(`daily_entries read failed: ${error.message}`);
+  const latest = entries?.[0];
+  const bs = latest?.book_section as { index: number; count: number } | null | undefined;
+  if (!latest || !bs || latest.id !== fromEntryId || latest.date !== date || bs.index >= bs.count) {
+    return { topic_id: topicId, status: "exists", date };
+  }
+
+  return await placeBookSection(db, topic, bs.index + 1, date, async () => {
+    for (const d of datesToShiftBack(entries!.map((e) => e.date))) {
+      const { error: shiftErr } = await db.from("daily_entries")
+        .update({ date: dayBefore(d) }).eq("topic_id", topicId).eq("date", d);
+      if (shiftErr) throw new Error(`moving entry back from ${d} failed: ${shiftErr.message}`);
+    }
+  });
+}
+
+/** Put section `index` (1-based) of the thread's book on `date`, once
+ *  `makeRoom` (if any) has freed that date. */
+async function placeBookSection(
+  // deno-lint-ignore no-explicit-any
+  db: SupabaseClient, topic: any, index: number, date: string, makeRoom?: () => Promise<void>,
+) {
+  const topicId = topic.id as string;
+  const userId = topic.user_id as string;
+  const bookNumber = Number(topic.book_number);
   const starts = await bookStarts(db, bookNumber);
-  const index = step.kind === "first" ? 1 : step.after.index + 1;
   const start = starts[index - 1];
   if (!start) return { topic_id: topicId, status: "exists", date };
   const key: SectionKey = { book_number: bookNumber, ...start };
@@ -2233,6 +2273,7 @@ async function ensureBookDay(db: SupabaseClient, topic: any, forceDate?: string)
     throw new Error(`key verse ${c.key_chapter}:${c.key_verse_start}-${c.key_verse_end} does not resolve`);
   }
 
+  await makeRoom?.();
   const { error: insErr } = await db.from("daily_entries").insert({
     topic_id: topicId, user_id: userId, date,
     verse_ref: displayRef(section.book, c.key_chapter, c.key_verse_start, c.key_verse_end),
@@ -2952,6 +2993,8 @@ Deno.serve(async (req) => {
     theme_slug?: string;
     entry_type?: string;
     count?: number;
+    /** Book threads: read the section after this entry now (the app's Next). */
+    read_ahead_from?: string;
   } = {};
   try {
     body = await req.json();
@@ -3051,7 +3094,9 @@ Deno.serve(async (req) => {
   const results = [];
   for (const t of topics) {
     try {
-      results.push(await generateForTopic(db, t, body.force_date));
+      results.push(body.read_ahead_from && t.book_number
+        ? await readBookAhead(db, t, body.read_ahead_from, body.force_date)
+        : await generateForTopic(db, t, body.force_date));
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       await db.from("generation_failures").insert({

@@ -7,7 +7,8 @@
 //
 // Walks: start -> same day again -> next day unopened (carried forward) ->
 // opened -> next day (section 2 not written yet: "running late", queued) ->
-// written -> next day (section 2) -> nightly path -> question threads untouched.
+// written -> next day (section 2) -> nightly path -> reading ahead -> question
+// threads untouched.
 
 const status = JSON.parse(new TextDecoder().decode((await new Deno.Command("supabase", {
   args: ["status", "--workdir", "localdb", "-o", "json"], stdout: "piped", stderr: "null",
@@ -122,6 +123,30 @@ check("nightly path carries the unopened section 2 forward, submits nothing", r.
   r.body?.submitted === 0 && e.length === 2 && e[1].date === D3, [r.body, e.map((x) => x.date)]);
 const themed = await rest(`topic_themes?topic_id=eq.${TOPIC}`, SERVICE);
 check("book thread never reaches the theme classifier", Array.isArray(themed.body) && themed.body.length === 0, themed.body);
+
+// ---- reading ahead: open section 2, then ask for section 3 on the same day
+await rest("rpc/mark_entry_opened", USER, { method: "POST", json: { p_entry_id: e[1].id } });
+const s3 = (await rest("book_section_content?book_number=eq.8&status=eq.pending&select=start_chapter,start_verse", SERVICE)).body?.[0];
+const ahead = (from: string) =>
+  call("/functions/v1/generate-entry", USER, { method: "POST", json: { topic_id: TOPIC, read_ahead_from: from, force_date: D3 } });
+r = await ahead(e[1].id);
+check("read ahead before the next section is written: running late, nothing moved", r.body?.results?.[0]?.status === "failed" &&
+  JSON.stringify((await entries()).map((x) => x.date)) === JSON.stringify([D1, D3]), r.body);
+await rest(`book_section_content?book_number=eq.8&start_chapter=eq.${s3.start_chapter}&start_verse=eq.${s3.start_verse}`, SERVICE, {
+  method: "PATCH", json: { ...ready(s3.start_verse, [s3.start_verse, s3.start_verse]), start_chapter: s3.start_chapter, key_chapter: s3.start_chapter },
+});
+r = await ahead(e[1].id);
+e = await entries();
+// Section 1 sits on D1 with D2 free behind section 2, so only section 2 moves.
+check("read ahead: section 3 takes today, section 2 steps back to the free day", r.body?.results?.[0]?.status === "created" &&
+  JSON.stringify(e.map((x) => [x.date, x.book_section.index])) === JSON.stringify([[D1, 1], [D2, 2], [D3, 3]]), e.map((x) => [x.date, x.book_section.index]));
+r = await ahead(e[1].id);
+check("a second tap from the old passage moves nothing", r.body?.results?.[0]?.status === "exists" && (await entries()).length === 3, r.body);
+await rest("rpc/mark_entry_opened", USER, { method: "POST", json: { p_entry_id: e[2].id } });
+r = await gen(addDays(TODAY, 4));
+const s4 = (await rest("book_section_content?book_number=eq.8&status=eq.pending&select=start_chapter,start_verse", SERVICE)).body;
+check("next day carries on after the furthest section read (section 4 queued)", r.body?.results?.[0]?.status === "failed" &&
+  s4?.length === 1 && (s4[0].start_chapter > s3.start_chapter || s4[0].start_verse > s3.start_verse), [r.body, s4]);
 
 // ---- the writer job refuses a reader's token
 r = await call("/functions/v1/generate-entry", USER, { method: "POST", json: { mode: "book_build" } });

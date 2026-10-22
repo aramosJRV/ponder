@@ -3,11 +3,13 @@ import {
   fetchActiveTopics,
   fetchEntriesForDate,
   fetchNotesForEntries,
+  fetchTopicEntries,
+  fetchTopicNotes,
   generateEntryNow,
   markEntryOpened,
 } from "../lib/api";
 import ConclusionFlow from "../components/ConclusionFlow";
-import { BookEnd } from "../components/BookDay";
+import { BookEnd, BookNav } from "../components/BookDay";
 import { GenerationDelayedError } from "../lib/entitlements";
 import { refreshDailyReminder, reminderTopicForDate } from "../lib/notifications";
 import { loadTodayCache, saveTodayCache } from "../lib/cache";
@@ -38,6 +40,12 @@ export default function Today({ onStartFirstThread }: Props) {
   const [generating, setGenerating] = useState(false);
   const [genError, setGenError] = useState("");
   const [concluding, setConcluding] = useState<Topic | null>(null);
+  // Book threads: the thread's passages oldest first, fetched on the first
+  // Previous, and the one on screen when it is not today's.
+  const [passages, setPassages] = useState<DailyEntry[] | null>(null);
+  const [viewingId, setViewingId] = useState<string | null>(null);
+  const [navBusy, setNavBusy] = useState(false);
+  const [navError, setNavError] = useState("");
 
   const load = useCallback(async () => {
     try {
@@ -92,10 +100,61 @@ export default function Today({ onStartFirstThread }: Props) {
     () => entries.find((e) => e.topic_id === selectedTopicId) ?? null,
     [entries, selectedTopicId],
   );
-  const entryNotes = useMemo(
-    () => (entry ? notes.filter((n) => n.entry_id === entry.id) : []),
-    [notes, entry],
+  const shown = useMemo(
+    () => passages?.find((e) => e.id === viewingId) ?? entry,
+    [passages, viewingId, entry],
   );
+  const entryNotes = useMemo(
+    () => (shown ? notes.filter((n) => n.entry_id === shown.id) : []),
+    [notes, shown],
+  );
+  useEffect(() => {
+    setPassages(null);
+    setViewingId(null);
+    setNavError("");
+  }, [selectedTopicId]);
+
+  async function previousPassage() {
+    if (!selectedTopicId || !shown) return;
+    setNavBusy(true);
+    setNavError("");
+    try {
+      let list = passages;
+      if (!list) {
+        const [e, n] = await Promise.all([fetchTopicEntries(selectedTopicId), fetchTopicNotes(selectedTopicId)]);
+        list = e.reverse();
+        setPassages(list);
+        setNotes((cur) => [...cur, ...n.filter((x) => !cur.some((c) => c.id === x.id))]);
+      }
+      const i = list.findIndex((e) => e.id === shown.id);
+      if (i > 0) setViewingId(list[i - 1].id);
+    } catch (e) {
+      logError("Today.previousPassage", e);
+      setNavError("Couldn't load that passage. Try again in a moment.");
+    } finally {
+      setNavBusy(false);
+    }
+  }
+
+  async function nextPassage() {
+    if (!selectedTopicId || !shown || !entry) return;
+    setNavError("");
+    if (shown.id !== entry.id) {
+      const next = passages![passages!.findIndex((e) => e.id === shown.id) + 1];
+      setViewingId(!next || next.id === entry.id ? null : next.id);
+      return;
+    }
+    setNavBusy(true);
+    try {
+      await generateEntryNow(selectedTopicId, entry.id);
+      setPassages(null);
+      await load();
+    } catch {
+      setNavError("The next passage isn't ready yet. Try again in a few minutes.");
+    } finally {
+      setNavBusy(false);
+    }
+  }
 
   // A book thread moves on only once its entry has been seen. Recorded the
   // first time it is on screen; never from the cached offline copy.
@@ -214,8 +273,18 @@ export default function Today({ onStartFirstThread }: Props) {
               <span className="font-semibold text-ink">{selectedTopic.title}</span>
             </p>
           )}
+          {shown!.book_section && !offline && (
+            <BookNav
+              entry={shown!}
+              isToday={shown!.id === entry.id}
+              busy={navBusy}
+              error={navError}
+              onPrevious={() => void previousPassage()}
+              onNext={() => void nextPassage()}
+            />
+          )}
           <EntryCard
-            entry={entry}
+            entry={shown!}
             notes={entryNotes}
             offline={offline}
             onNoteAdded={(n) => setNotes((cur) => [...cur, n])}
@@ -226,12 +295,12 @@ export default function Today({ onStartFirstThread }: Props) {
               the general notes now — per-question ones appear against their
               question inside the card. */}
           <NoteComposer
-            entry={entry}
+            entry={shown!}
             notes={entryNotes.filter((n) => n.ponder_index == null)}
             offline={offline}
             onAdded={(n) => setNotes((cur) => [...cur, n])}
           />
-          {entry.book_section && entry.book_section.index === entry.book_section.count && (
+          {shown!.book_section && shown!.book_section.index === shown!.book_section.count && (
             <BookEnd book={selectedTopic.title} onFinish={() => setConcluding(selectedTopic)} />
           )}
         </>

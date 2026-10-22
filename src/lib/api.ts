@@ -747,9 +747,10 @@ async function quotaRefused(payload: {
 }
 
 /** On-demand generation for a topic missing today's entry (new topic created
- * mid-day, or cron hasn't run). Invokes the edge function with the user JWT —
+ * mid-day, or cron hasn't run). With `readAheadFrom` (a book day on today),
+ * puts the next section on today instead. Invokes the edge function with the user JWT —
  * the function restricts user tokens to their own topics. */
-export async function generateEntryNow(topicId: string): Promise<void> {
+export async function generateEntryNow(topicId: string, readAheadFrom?: string): Promise<void> {
   const { data: sessionData } = await supabase.auth.getSession();
   const token = sessionData.session?.access_token;
   if (!token) throw new Error("Not signed in");
@@ -760,7 +761,7 @@ export async function generateEntryNow(topicId: string): Promise<void> {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ topic_id: topicId }),
+    body: JSON.stringify({ topic_id: topicId, read_ahead_from: readAheadFrom }),
   });
   const payload = await res.json().catch(() => ({}));
   if (res.status === 429) throw await quotaRefused(payload);
