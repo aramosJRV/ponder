@@ -101,6 +101,10 @@ Order: backend/migration first, app build second.
   only a label), the app's hero IS the section, and Read slowly phrases span
   the section under `meditation.passage` (old builds then show no walk).
   Progress is position only ("section 9 of 48"), never time.
+  Previous / Next (gen v46): "Read the next one" sends `read_ahead_from`; the
+  next section takes today and the entries behind it step back a day each
+  until a free date (one entry per date still holds). Journal shows book
+  passages under `opened_on`.
   Checks: `bash scripts/book-threads-checks.sh` (needs the private local copy:
   `bash scripts/localdb-setup.sh`, then `supabase functions serve --workdir
   localdb --env-file localdb/.env.functions --no-verify-jwt`). Live diff:
