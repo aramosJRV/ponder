@@ -44,3 +44,26 @@ export function localDateAt(tz: string, at: Date): string {
     return new Intl.DateTimeFormat("en-CA", { timeZone: "UTC" }).format(at);
   }
 }
+
+/** The calendar date one day before `date`. */
+export function dayBefore(date: string): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * Reading ahead puts the next section on today, so today's entry must step
+ * back a day to make room, and so must every entry right behind it until a
+ * free date. Takes the thread's entry dates newest first (the first one is
+ * today's) and returns the dates to move, oldest first: the only order that
+ * never lands on a date still taken.
+ */
+export function datesToShiftBack(datesNewestFirst: string[]): string[] {
+  const run = datesNewestFirst.slice(0, 1);
+  for (const d of datesNewestFirst.slice(1)) {
+    if (d !== dayBefore(run[run.length - 1])) break;
+    run.push(d);
+  }
+  return run.reverse();
+}

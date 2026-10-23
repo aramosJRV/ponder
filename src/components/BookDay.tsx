@@ -48,3 +48,33 @@ export function BookEnd({ book, onFinish }: { book: string; onFinish: () => void
     </section>
   );
 }
+
+/** Previous / Next between the passages of a book thread. Next from today's
+ *  passage reads the following one now, and tomorrow carries on from there. */
+export function BookNav({ entry, isToday, busy, error, onPrevious, onNext }: {
+  entry: DailyEntry;
+  isToday: boolean;
+  busy: boolean;
+  error: string;
+  onPrevious: () => void;
+  onNext: () => void;
+}) {
+  const s = entry.book_section!;
+  // Quiet text links: the tap area stays 44px tall, only the look is light.
+  const btn = "min-h-[44px] text-sm text-muted transition-colors hover:text-moss disabled:invisible";
+  return (
+    <div className="-mt-2 mb-3">
+      <div className="flex justify-between gap-3">
+        <button type="button" className={btn} disabled={busy || s.index <= 1} onClick={onPrevious}>
+          ‹ Previous
+        </button>
+        {s.index < s.count && (
+          <button type="button" className={btn} disabled={busy} onClick={onNext}>
+            {isToday ? "Read the next one ›" : "Next ›"}
+          </button>
+        )}
+      </div>
+      {error && <p className="mt-2 text-sm text-muted">{error}</p>}
+    </div>
+  );
+}

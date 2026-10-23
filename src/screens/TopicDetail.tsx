@@ -135,7 +135,7 @@ export default function TopicDetail({ topicId, onBack }: Props) {
         >
           ← {topic.title}
         </button>
-        <p className="mb-4 font-display text-xl text-muted">{formatLongDate(openEntry.date)}</p>
+        <p className="mb-4 font-display text-xl text-muted">{formatLongDate(readOn(openEntry))}</p>
         {/* Read-only: no onNoteAdded, so the flow shows the questions and any
             notes already written against them, without composers. */}
         <EntryCard entry={openEntry} notes={notes.filter((n) => n.entry_id === openEntry.id)} />
@@ -211,7 +211,7 @@ export default function TopicDetail({ topicId, onBack }: Props) {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-muted">
-                      {formatLongDate(e.date)}
+                      {formatLongDate(readOn(e))}
                     </span>
                     {challenge && (
                       <span className="rounded-full bg-rust-soft px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-rust">
@@ -396,4 +396,10 @@ function questionFor(
   }
   const text = entry.ponder[index - 1];
   return text ? { text } : null;
+}
+
+/** A book passage is filed under the day it was read: reading ahead moves
+ *  earlier passages back a day each behind the scenes. */
+function readOn(e: DailyEntry): string {
+  return e.book_section && e.opened_on ? e.opened_on : e.date;
 }
