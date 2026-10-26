@@ -113,6 +113,13 @@ export default function Today({ onStartFirstThread }: Props) {
     setViewingId(null);
     setNavError("");
   }, [selectedTopicId]);
+  // Previous / Next sit under the passage, so a new passage starts from the top.
+  const shownId = shown?.id;
+  const lastShown = useRef(shownId);
+  useEffect(() => {
+    if (lastShown.current && shownId && lastShown.current !== shownId) window.scrollTo({ top: 0 });
+    lastShown.current = shownId;
+  }, [shownId]);
 
   async function previousPassage() {
     if (!selectedTopicId || !shown) return;
@@ -273,18 +280,18 @@ export default function Today({ onStartFirstThread }: Props) {
               <span className="font-semibold text-ink">{selectedTopic.title}</span>
             </p>
           )}
-          {shown!.book_section && !offline && (
-            <BookNav
-              entry={shown!}
-              isToday={shown!.id === entry.id}
-              busy={navBusy}
-              error={navError}
-              onPrevious={() => void previousPassage()}
-              onNext={() => void nextPassage()}
-            />
-          )}
           <EntryCard
             entry={shown!}
+            belowPassage={shown!.book_section && !offline && (
+              <BookNav
+                entry={shown!}
+                isToday={shown!.id === entry.id}
+                busy={navBusy}
+                error={navError}
+                onPrevious={() => void previousPassage()}
+                onNext={() => void nextPassage()}
+              />
+            )}
             notes={entryNotes}
             offline={offline}
             onNoteAdded={(n) => setNotes((cur) => [...cur, n])}

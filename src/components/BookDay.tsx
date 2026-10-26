@@ -63,7 +63,7 @@ export function BookNav({ entry, isToday, busy, error, onPrevious, onNext }: {
   // Quiet text links: the tap area stays 44px tall, only the look is light.
   const btn = "min-h-[44px] text-sm text-muted transition-colors hover:text-moss disabled:invisible";
   return (
-    <div className="-mt-2 mb-3">
+    <div className="mt-3 mb-2">
       <div className="flex justify-between gap-3">
         <button type="button" className={btn} disabled={busy || s.index <= 1} onClick={onPrevious}>
           ‹ Previous

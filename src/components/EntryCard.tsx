@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import type { ContentLevel, DailyEntry, Note, PassageContextRow, Quote, Song, Translation } from "../lib/types";
 import { useContentLevel } from "../lib/contentLevel";
 import {
@@ -40,6 +40,7 @@ export default function EntryCard({
   // translation that could not be fetched, not about the network.
   offline: notesOffline = false,
   onNoteAdded,
+  belowPassage,
 }: {
   entry: DailyEntry;
   /** Notes on this entry. Per-question ones are shown against their question. */
@@ -47,6 +48,8 @@ export default function EntryCard({
   offline?: boolean;
   /** Omit to render the ponder flow read-only (the TopicDetail viewer does). */
   onNoteAdded?: (note: Note) => void;
+  /** Shown straight under the passage (a book day's Previous / Next). */
+  belowPassage?: ReactNode;
 }) {
   const level = useContentLevel();
   const [expanded, setExpanded] = useState(false);
@@ -160,6 +163,7 @@ export default function EntryCard({
         walk={walk}
         onEndWalk={() => setWalk(null)}
       />
+      {belowPassage}
 
       <PassageContextSheet
         entry={entry}
