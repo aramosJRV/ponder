@@ -9,7 +9,7 @@ import {
   markEntryOpened,
 } from "../lib/api";
 import ConclusionFlow from "../components/ConclusionFlow";
-import { BookEnd, BookNav } from "../components/BookDay";
+import { BookEnd } from "../components/BookDay";
 import { GenerationDelayedError } from "../lib/entitlements";
 import { refreshDailyReminder, reminderTopicForDate } from "../lib/notifications";
 import { loadTodayCache, saveTodayCache } from "../lib/cache";
@@ -282,16 +282,12 @@ export default function Today({ onStartFirstThread }: Props) {
           )}
           <EntryCard
             entry={shown!}
-            belowPassage={shown!.book_section && !offline && (
-              <BookNav
-                entry={shown!}
-                isToday={shown!.id === entry.id}
-                busy={navBusy}
-                error={navError}
-                onPrevious={() => void previousPassage()}
-                onNext={() => void nextPassage()}
-              />
-            )}
+            nav={shown!.book_section && !offline ? {
+              busy: navBusy,
+              error: navError,
+              onPrevious: shown!.book_section.index > 1 ? () => void previousPassage() : undefined,
+              onNext: shown!.book_section.index < shown!.book_section.count ? () => void nextPassage() : undefined,
+            } : undefined}
             notes={entryNotes}
             offline={offline}
             onNoteAdded={(n) => setNotes((cur) => [...cur, n])}

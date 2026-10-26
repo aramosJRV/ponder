@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ContentLevel, DailyEntry, Note, PassageContextRow, Quote, Song, Translation } from "../lib/types";
 import { useContentLevel } from "../lib/contentLevel";
 import {
@@ -15,7 +15,7 @@ import PonderFlow from "./PonderFlow";
 import { WalkControls, WalkText, inReadingOrder, useFollowPhrase, useWalkStep } from "./VerseWalk";
 import type { Walk } from "./VerseWalk";
 import ReportButton from "./ReportButton";
-import { BookProgress } from "./BookDay";
+import { BookProgress, NavArrow, type PassageNav } from "./BookDay";
 import { bookLabel, rangeLabel, usePassageContext } from "../lib/passageContext";
 
 /**
@@ -40,7 +40,7 @@ export default function EntryCard({
   // translation that could not be fetched, not about the network.
   offline: notesOffline = false,
   onNoteAdded,
-  belowPassage,
+  nav,
 }: {
   entry: DailyEntry;
   /** Notes on this entry. Per-question ones are shown against their question. */
@@ -48,8 +48,8 @@ export default function EntryCard({
   offline?: boolean;
   /** Omit to render the ponder flow read-only (the TopicDetail viewer does). */
   onNoteAdded?: (note: Note) => void;
-  /** Shown straight under the passage (a book day's Previous / Next). */
-  belowPassage?: ReactNode;
+  /** A book day's Previous / Next, shown either side of the passage name. */
+  nav?: PassageNav;
 }) {
   const level = useContentLevel();
   const [expanded, setExpanded] = useState(false);
@@ -162,8 +162,8 @@ export default function EntryCard({
         onReadSlowly={walkable ? () => setWalk(walkable) : undefined}
         walk={walk}
         onEndWalk={() => setWalk(null)}
+        nav={walk ? undefined : nav}
       />
-      {belowPassage}
 
       <PassageContextSheet
         entry={entry}
@@ -324,6 +324,7 @@ function VerseHero({
   onReadSlowly,
   walk,
   onEndWalk,
+  nav,
 }: {
   entry: DailyEntry;
   challenge: boolean;
@@ -341,6 +342,7 @@ function VerseHero({
   /** The walk in progress: the hero lights one phrase at a time. */
   walk: Walk | null;
   onEndWalk: () => void;
+  nav?: PassageNav;
 }) {
   const step = useWalkStep(walk);
   const verseRef = useRef<HTMLDivElement & HTMLParagraphElement>(null);
@@ -387,11 +389,14 @@ function VerseHero({
         </p>
       )}
 
-      <p
-        className={`mt-4 text-sm font-bold uppercase tracking-[0.18em] ${accent}`}
-      >
-        {rows ? rangeLabel(bookLabel(entry.verse_ref), rows[0]) : entry.verse_ref} · {translation}
-      </p>
+      <div className={`flex items-center ${nav ? "-mx-3 mt-1" : "mt-4"}`}>
+        {nav && <NavArrow dir="previous" nav={nav} />}
+        <p className={`text-sm font-bold uppercase tracking-[0.18em] ${accent}`}>
+          {rows ? rangeLabel(bookLabel(entry.verse_ref), rows[0]) : entry.verse_ref} · {translation}
+        </p>
+        {nav && <NavArrow dir="next" nav={nav} />}
+      </div>
+      {nav?.error && <p className="mt-2 text-sm text-muted">{nav.error}</p>}
 
       {walk ? (
         <WalkControls
