@@ -15,7 +15,7 @@ import PonderFlow from "./PonderFlow";
 import { WalkControls, WalkText, inReadingOrder, useFollowPhrase, useWalkStep } from "./VerseWalk";
 import type { Walk } from "./VerseWalk";
 import ReportButton from "./ReportButton";
-import { BookProgress, NavArrow, type PassageNav } from "./BookDay";
+import { BookProgress, type PassageNav } from "./BookDay";
 import { bookLabel, rangeLabel, usePassageContext } from "../lib/passageContext";
 
 /**
@@ -141,7 +141,7 @@ export default function EntryCard({
 
       {entry.book_section && (
         <>
-          <BookProgress entry={entry} />
+          <BookProgress entry={entry} nav={walk ? undefined : nav} />
         </>
       )}
 
@@ -162,7 +162,6 @@ export default function EntryCard({
         onReadSlowly={walkable ? () => setWalk(walkable) : undefined}
         walk={walk}
         onEndWalk={() => setWalk(null)}
-        nav={walk ? undefined : nav}
       />
 
       <PassageContextSheet
@@ -324,7 +323,6 @@ function VerseHero({
   onReadSlowly,
   walk,
   onEndWalk,
-  nav,
 }: {
   entry: DailyEntry;
   challenge: boolean;
@@ -342,7 +340,6 @@ function VerseHero({
   /** The walk in progress: the hero lights one phrase at a time. */
   walk: Walk | null;
   onEndWalk: () => void;
-  nav?: PassageNav;
 }) {
   const step = useWalkStep(walk);
   const verseRef = useRef<HTMLDivElement & HTMLParagraphElement>(null);
@@ -389,14 +386,11 @@ function VerseHero({
         </p>
       )}
 
-      <div className={`flex items-center ${nav ? "-mx-3 mt-1" : "mt-4"}`}>
-        {nav && <NavArrow dir="previous" nav={nav} />}
-        <p className={`text-sm font-bold uppercase tracking-[0.18em] ${accent}`}>
-          {rows ? rangeLabel(bookLabel(entry.verse_ref), rows[0]) : entry.verse_ref} · {translation}
-        </p>
-        {nav && <NavArrow dir="next" nav={nav} />}
-      </div>
-      {nav?.error && <p className="mt-2 text-sm text-muted">{nav.error}</p>}
+      <p
+        className={`mt-4 text-sm font-bold uppercase tracking-[0.18em] ${accent}`}
+      >
+        {rows ? rangeLabel(bookLabel(entry.verse_ref), rows[0]) : entry.verse_ref} · {translation}
+      </p>
 
       {walk ? (
         <WalkControls

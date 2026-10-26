@@ -8,13 +8,17 @@ import type { DailyEntry } from "../lib/types";
  * count, never anything about time, never "behind" — the reader moves on by
  * opening what is in front of them, whenever that is.
  */
-export function BookProgress({ entry }: { entry: DailyEntry }) {
+export function BookProgress({ entry, nav }: { entry: DailyEntry; nav?: PassageNav }) {
   const s = entry.book_section!;
   return (
     <div className="mb-5">
-      <p className="text-sm font-semibold text-moss">
-        {rangeLabel(bookLabel(entry.verse_ref), s)} · passage {s.index} of {s.count}
-      </p>
+      <div className={nav ? "-mx-3 -my-3 flex items-center" : ""}>
+        {nav && <NavArrow dir="previous" nav={nav} />}
+        <p className="text-sm font-semibold text-moss">
+          {rangeLabel(bookLabel(entry.verse_ref), s)} · passage {s.index} of {s.count}
+        </p>
+        {nav && <NavArrow dir="next" nav={nav} />}
+      </div>
       <div
         className="mt-2 h-1 overflow-hidden rounded-full bg-hairline"
         role="progressbar"
@@ -25,6 +29,7 @@ export function BookProgress({ entry }: { entry: DailyEntry }) {
       >
         <div className="h-full rounded-full bg-moss" style={{ width: `${(s.index / s.count) * 100}%` }} />
       </div>
+      {nav?.error && <p className="mt-2 text-sm text-muted">{nav.error}</p>}
     </div>
   );
 }
@@ -59,7 +64,7 @@ export type PassageNav = {
   onNext?: () => void;
 };
 
-/** A faint arrow either side of the passage name, inside the passage. */
+/** A faint arrow either side of the passage name. */
 export function NavArrow({ dir, nav }: { dir: "previous" | "next"; nav: PassageNav }) {
   const onClick = dir === "previous" ? nav.onPrevious : nav.onNext;
   return (
