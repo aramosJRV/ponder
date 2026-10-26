@@ -8,13 +8,17 @@ import type { DailyEntry } from "../lib/types";
  * count, never anything about time, never "behind" — the reader moves on by
  * opening what is in front of them, whenever that is.
  */
-export function BookProgress({ entry }: { entry: DailyEntry }) {
+export function BookProgress({ entry, nav }: { entry: DailyEntry; nav?: PassageNav }) {
   const s = entry.book_section!;
   return (
     <div className="mb-5">
-      <p className="text-sm font-semibold text-moss">
-        {rangeLabel(bookLabel(entry.verse_ref), s)} · passage {s.index} of {s.count}
-      </p>
+      <div className={nav ? "-mx-3 -my-3 flex items-center" : ""}>
+        {nav && <NavArrow dir="previous" nav={nav} />}
+        <p className="text-sm font-semibold text-moss">
+          {rangeLabel(bookLabel(entry.verse_ref), s)} · passage {s.index} of {s.count}
+        </p>
+        {nav && <NavArrow dir="next" nav={nav} />}
+      </div>
       <div
         className="mt-2 h-1 overflow-hidden rounded-full bg-hairline"
         role="progressbar"
@@ -25,6 +29,7 @@ export function BookProgress({ entry }: { entry: DailyEntry }) {
       >
         <div className="h-full rounded-full bg-moss" style={{ width: `${(s.index / s.count) * 100}%` }} />
       </div>
+      {nav?.error && <p className="mt-2 text-sm text-muted">{nav.error}</p>}
     </div>
   );
 }
@@ -50,31 +55,28 @@ export function BookEnd({ book, onFinish }: { book: string; onFinish: () => void
 }
 
 /** Previous / Next between the passages of a book thread. Next from today's
- *  passage reads the following one now, and tomorrow carries on from there. */
-export function BookNav({ entry, isToday, busy, error, onPrevious, onNext }: {
-  entry: DailyEntry;
-  isToday: boolean;
+ *  passage reads the following one now, and tomorrow carries on from there.
+ *  An omitted handler hides that arrow (first or last passage). */
+export type PassageNav = {
   busy: boolean;
   error: string;
-  onPrevious: () => void;
-  onNext: () => void;
-}) {
-  const s = entry.book_section!;
-  // Quiet text links: the tap area stays 44px tall, only the look is light.
-  const btn = "min-h-[44px] text-sm text-muted transition-colors hover:text-moss disabled:invisible";
+  onPrevious?: () => void;
+  onNext?: () => void;
+};
+
+/** A faint arrow either side of the passage name. */
+export function NavArrow({ dir, nav }: { dir: "previous" | "next"; nav: PassageNav }) {
+  const onClick = dir === "previous" ? nav.onPrevious : nav.onNext;
   return (
-    <div className="-mt-2 mb-3">
-      <div className="flex justify-between gap-3">
-        <button type="button" className={btn} disabled={busy || s.index <= 1} onClick={onPrevious}>
-          ‹ Previous
-        </button>
-        {s.index < s.count && (
-          <button type="button" className={btn} disabled={busy} onClick={onNext}>
-            {isToday ? "Read the next one ›" : "Next ›"}
-          </button>
-        )}
-      </div>
-      {error && <p className="mt-2 text-sm text-muted">{error}</p>}
-    </div>
+    <button
+      type="button"
+      aria-label={dir === "previous" ? "Previous passage" : "Next passage"}
+      disabled={nav.busy || !onClick}
+      onClick={onClick}
+      // 44px tap area; only the glyph is light. Invisible keeps the name still.
+      className="flex h-11 w-11 shrink-0 items-center justify-center text-2xl leading-none text-ink/30 transition-colors hover:text-moss disabled:invisible"
+    >
+      {dir === "previous" ? "‹" : "›"}
+    </button>
   );
 }

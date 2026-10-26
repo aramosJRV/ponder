@@ -15,7 +15,7 @@ import PonderFlow from "./PonderFlow";
 import { WalkControls, WalkText, inReadingOrder, useFollowPhrase, useWalkStep } from "./VerseWalk";
 import type { Walk } from "./VerseWalk";
 import ReportButton from "./ReportButton";
-import { BookProgress } from "./BookDay";
+import { BookProgress, type PassageNav } from "./BookDay";
 import { bookLabel, rangeLabel, usePassageContext } from "../lib/passageContext";
 
 /**
@@ -40,6 +40,7 @@ export default function EntryCard({
   // translation that could not be fetched, not about the network.
   offline: notesOffline = false,
   onNoteAdded,
+  nav,
 }: {
   entry: DailyEntry;
   /** Notes on this entry. Per-question ones are shown against their question. */
@@ -47,6 +48,8 @@ export default function EntryCard({
   offline?: boolean;
   /** Omit to render the ponder flow read-only (the TopicDetail viewer does). */
   onNoteAdded?: (note: Note) => void;
+  /** A book day's Previous / Next, shown either side of the passage name. */
+  nav?: PassageNav;
 }) {
   const level = useContentLevel();
   const [expanded, setExpanded] = useState(false);
@@ -138,7 +141,7 @@ export default function EntryCard({
 
       {entry.book_section && (
         <>
-          <BookProgress entry={entry} />
+          <BookProgress entry={entry} nav={walk ? undefined : nav} />
         </>
       )}
 
